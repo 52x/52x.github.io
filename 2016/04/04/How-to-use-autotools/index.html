@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            autotools使用介绍 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,tools">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="autotools使用介绍 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="tools"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">autotools系列工具—-自动生成Makefile</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">autotools 使用流程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">使用autoscan命令自动生成configure.scan文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">将configure.scan重命名为configure.in</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">运行aclocal命令,生成"aclocal.m4"文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">运行autoconf命令生成configure可执行文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">运行autoheader命令, 生成config.h.in文件.</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">运行automake命令, 生成Makefile.in文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.7.</span> <span class="post-toc-text">运行configure, 生成Makfefile文件</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">使用由autotools生成的Makefile</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">make 编译源程序</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">make install 执行该命令</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">make clean</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">make dist</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">参考</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                autotools使用介绍
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>4月 04, 2016</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/tools/">tools</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=autotools使用介绍&url=http://yoursite.com//2016/04/04/How-to-use-autotools/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=autotools使用介绍&url=http://yoursite.com//2016/04/04/How-to-use-autotools/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2016/04/04/How-to-use-autotools/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2016/04/04/How-to-use-autotools/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h2>autotools系列工具—-自动生成Makefile</h2>
+<p>在较大项目中, 如果手动维护Makefile, 那将是一件复杂并痛苦的事情. 那么, 有没有一种轻松的手段生成Makefile呢? autotools系列工具正是在这样的呼声中诞生的. 它只需用户输入简单的目标文件, 依赖文件, 文件目录等就可以轻松地生成Makefile了. 另外, 这些工具还可以完成系统配置信息的收集, 从而可以方便地处理各种移植性问题. autotools是系列工具, 它含有:</p>
+<ul>
+<li>autoscan</li>
+<li>aclocal</li>
+<li>autoconf</li>
+<li>autoheader</li>
+<li>automake</li>
+</ul>
+<h2>autotools 使用流程</h2>
+<p>下面用一个简单的hello.c程序, 演示autotools的使用流程. hello.c如下:</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ ls</div><div class="line">hello.c</div><div class="line">username@pc:~/automake$ cat hello.c</div><div class="line"><span class="comment">#include </span></div><div class="line">int <span class="function"><span class="title">main</span></span>()</div><div class="line">&#123;</div><div class="line">  <span class="built_in">printf</span>(<span class="string">"Hello, autotools!\n"</span>);</div><div class="line">  <span class="built_in">return</span> 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>使用autoscan命令自动生成configure.scan文件</h3>
+<p>&lt;!--more--&gt;</p>
+<p>它会在给定目录及其子目录树中检查源文件, 若没有给出目录, 就在当前目录及其子目录树中进行检查.它会搜索源文件以寻找一般的移植性问题并创建一个文件&quot;configure.scan&quot;, 该文件就是接下来autoconf要用到的&quot;configure.ac&quot;原型.</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ autoscan</div><div class="line">username@pc:~/automake$ ls</div><div class="line">autoscan.log  configure.scan  hello.c</div></pre></td></tr></table></figure></p>
+<h3>将configure.scan重命名为configure.in</h3>
+<p>并做适当修改 configure.scan的内容:</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ cat configure.scan</div><div class="line"><span class="comment">#                                               -*- Autoconf -*-</span></div><div class="line"><span class="comment"># Process this file with autoconf to produce a configure script.</span></div><div class="line"></div><div class="line">AC_PREREQ([2.65])</div><div class="line">AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])</div><div class="line">AC_CONFIG_SRCDIR([hello.c])</div><div class="line">AC_CONFIG_HEADERS([config.h])</div><div class="line"></div><div class="line"><span class="comment"># Checks for programs.</span></div><div class="line">AC_PROG_CC</div><div class="line"></div><div class="line"><span class="comment"># Checks for libraries.</span></div><div class="line"></div><div class="line"><span class="comment"># Checks for header files.</span></div><div class="line"></div><div class="line"><span class="comment"># Checks for typedefs, structures, and compiler characteristics.</span></div><div class="line"></div><div class="line"><span class="comment"># Checks for library functions.</span></div><div class="line"></div><div class="line">AC_OUTPUT</div></pre></td></tr></table></figure></p>
+<p>将configure.scan重命名为configure.ac</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ mv configure.scan configure.in</div></pre></td></tr></table></figure></p>
+<p>根据具体情况, 适当修改, 以下加粗部分是修改的内容:</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ cat configure.in</div><div class="line"><span class="comment">#                                               -*- Autoconf -*-</span></div><div class="line"><span class="comment"># Process this file with autoconf to produce a configure script.</span></div><div class="line"></div><div class="line">AC_PREREQ([2.65])</div><div class="line"><span class="comment">#AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS]) </span></div><div class="line">AC_INIT(hello,1.0)</div><div class="line">AC_CONFIG_SRCDIR([hello.c])</div><div class="line">AC_CONFIG_HEADERS([config.h])</div><div class="line">AM_INIT_AUTOMAKE</div><div class="line"></div><div class="line"><span class="comment"># Checks for programs.</span></div><div class="line">AC_PROG_CC</div><div class="line"></div><div class="line"><span class="comment"># Checks for libraries.</span></div><div class="line"></div><div class="line"><span class="comment"># Checks for header files.</span></div><div class="line"></div><div class="line"><span class="comment"># Checks for typedefs, structures, and compiler characteristics.</span></div><div class="line"></div><div class="line"><span class="comment"># Checks for library functions.</span></div><div class="line">AC_CONFIG_FILES([Makefile])</div><div class="line">AC_OUTPUT</div></pre></td></tr></table></figure></p>
+<p>说明:</p>
+<ul>
+<li>以&quot;#&quot;号开始的行为注释</li>
+<li>AC_PREREQ宏声明本文要求的autoconf版本, 如本例中的版本 2.65</li>
+<li>AC_INIT宏用来定义软件的名称和版本等信息, 在本例中省略了BUG-REPROT-ADDRESS, 一般为作者的E-mail</li>
+<li>AM_INIT_AUTOMAKE是手动添加的, 它是automake所必备的宏, 也同前面一样, PACKAGE是所要产生软件套件的名称,VERSION是版本编号.</li>
+<li>AC_CONFIG_SCRDIR宏用来侦测所指定的源码文件是否存在, 来确定源码目录的有效性. 在此处指当前目录下hello.c</li>
+<li>AC_CONFIG_FILES宏用于生成相应的Makefile文件.</li>
+</ul>
+<h3>运行aclocal命令,生成&quot;aclocal.m4&quot;文件</h3>
+<p>该文件主要处理本地的宏定义</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ aclocal</div><div class="line">username@pc:~/automake$ ls</div><div class="line">aclocal.m4 autom4te.cache  autoscan.log  configure.in  hello.c</div></pre></td></tr></table></figure></p>
+<h3>运行autoconf命令生成configure可执行文件</h3>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ autoconf</div><div class="line">username@pc:~/automake$ ls</div><div class="line">aclocal.m4 autom4te.cache  autoscan.log  configure  configure.in  hello.c</div></pre></td></tr></table></figure></p>
+<h3>运行autoheader命令, 生成config.h.in文件.</h3>
+<p>该工具通常会从&quot;acconfig.h&quot;文件中复制用户附加的符号定义. 本例中没有附加的符号定义, 所以不需要创建&quot;acconfig.h&quot;文件.</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ autoheader</div><div class="line">username@pc:~/automake$ ls</div><div class="line">aclocal.m4 autom4te.cache  autoscan.log  config.h.in  configure  configure.in  hello.c</div></pre></td></tr></table></figure></p>
+<h3>运行automake命令, 生成Makefile.in文件</h3>
+<p>这一步是创建Makefile很重要的一步, automake要用的脚本配置文件是Makefile.am, 用户需要自己创建相应的文件. 之后, automake工具将自动转换成Makefile.in 本例中, 创建的文件为Makefile.am, 内容如下:</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ cat Makefile.am</div><div class="line">AUTOMAKE_OPTIONS=foreign</div><div class="line">bin_PROGRAMS=hello</div><div class="line">hello_SOURCES=hello.c</div></pre></td></tr></table></figure></p>
+<p>说明:</p>
+<ul>
+<li>其中的AUTOMAKE_OPTIONS为设置automake的选项. 由于GNU对自己发布的软件有严格的规范, 比如必须附带许可证声明文件COPYING等, 否则automake执行时会报错. automake提供了3中软件等级:foreign, gnu和gnits, 供用户选择. 默认级别是gnu. 在本例中, 使用了foreign等级, 它只检测必须的文件.</li>
+<li>bin_PROGRAMS定义要产生的执行文件名. 如果要产生多个执行文件, 每个文件名用空格隔开</li>
+<li>hello_SOURCES 定义&quot;hello&quot;这个可执行程序所需的原始文件. 如果&quot;hello&quot;这个程序是由多个源文件所产生的, 则必须把它所用到的所有源文件都列出来, 并用空格隔开. 如果要定义多个可执行程序, 那么需要对每个可执行程序建立对应的file_SOURCES.</li>
+</ul>
+<p>在这里使用&quot;--add-missiing&quot;选项可以让automake自动添加一些必须的脚本文件.</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ automake --add-missing</div><div class="line">configure.in:7: installing `./install-sh<span class="string">'</span></div><div class="line">configure.in:7: installing `./missing'</div><div class="line">Makefile.am: installing `./depcomp<span class="string">'</span></div><div class="line">username@pc:~/automake$ ls</div><div class="line">aclocal.m4      autoscan.log  configure     depcomp  install-sh   Makefile.in</div><div class="line">autom4te.cache  config.h.in   configure.in  hello.c  Makefile.am  missing</div></pre></td></tr></table></figure></p>
+<h3>运行configure, 生成Makfefile文件</h3>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ ./configure</div><div class="line">checking <span class="keyword">for</span> a BSD-compatible install... /usr/bin/install -c</div><div class="line">checking whether build environment is sane... yes</div><div class="line">checking <span class="keyword">for</span> a thread-safe mkdir -p... /bin/mkdir -p</div><div class="line">checking <span class="keyword">for</span> gawk... gawk</div><div class="line">checking whether make sets $(MAKE)... yes</div><div class="line">checking <span class="keyword">for</span> gcc... gcc</div><div class="line">checking whether the C compiler works... yes</div><div class="line">checking <span class="keyword">for</span> C compiler default output file name... a.out</div><div class="line">checking <span class="keyword">for</span> suffix of executables...</div><div class="line">checking whether we are cross compiling... no</div><div class="line">checking <span class="keyword">for</span> suffix of object files... o</div><div class="line">checking whether we are using the GNU C compiler... yes</div><div class="line">checking whether gcc accepts -g... yes</div><div class="line">checking <span class="keyword">for</span> gcc option to accept ISO C89... none needed</div><div class="line">checking <span class="keyword">for</span> style of include used by make... GNU</div><div class="line">checking dependency style of gcc... gcc3</div><div class="line">configure: creating ./config.status</div><div class="line">config.status: creating Makefile</div><div class="line">config.status: creating config.h</div><div class="line">config.status: executing depfiles commands</div><div class="line">username@pc:~/automake$ ls</div><div class="line">aclocal.m4      config.h     config.status  depcomp     Makefile     missing</div><div class="line">autom4te.cache  config.h.in  configure      hello.c     Makefile.am  stamp-h1</div><div class="line">autoscan.log    config.log   configure.in   install-sh  Makefile.in</div></pre></td></tr></table></figure></p>
+<p>autotools生成Makefile流程图如下:</p>
+<p><img src="http://7xsd89.com1.z0.glb.clouddn.com/autotools_1.jpg" alt="autotools生成的Makefile流程图">
+<img src="http://7xsd89.com1.z0.glb.clouddn.com/autotools_process_meitu_1.jpg" alt="autotools生成Makefile的流程图"></p>
+<h2>使用由autotools生成的Makefile</h2>
+<p>autotools生成的Makefile具有以下主要功能:</p>
+<h3>make 编译源程序</h3>
+<p>键入make, 默认执行&quot;make all&quot;命令</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ make</div><div class="line">make  all-am</div><div class="line">make[1]: Entering directory <span class="string">'/home/username/automake'</span></div><div class="line">gcc -DHAVE_CONFIG_H -I.     -g -O2 -MT hello.o -MD -MP -MF .deps/hello.Tpo -c -o hello.o hello.c</div><div class="line">mv <span class="_">-f</span> .deps/hello.Tpo .deps/hello.Po</div><div class="line">gcc  -g -O2   -o hello hello.o</div><div class="line">make[1]: Leaving directory `/home/username/automake<span class="string">'</span></div></pre></td></tr></table></figure></p>
+<p>此时在本目录下就生成了可执行文件&quot;hello&quot;, 运行&quot;./hello&quot;就能看到程序的执行结果:</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ ./hello</div><div class="line">Hello, autotools!</div></pre></td></tr></table></figure></p>
+<h3>make install 执行该命令</h3>
+<p>可以把程序安装到系统目录中</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ sudo make install</div></pre></td></tr></table></figure></p>
+<p>此时, 直接在console输入hello, 就可以看到程序的运行结果</p>
+<h3>make clean</h3>
+<p>清除之前所编译的可执行文件及目标文件</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ make clean</div><div class="line"><span class="built_in">test</span> -z <span class="string">"hello"</span> || rm <span class="_">-f</span> hello</div><div class="line">rm <span class="_">-f</span> *.o</div></pre></td></tr></table></figure></p>
+<h3>make dist</h3>
+<p>将程序和相关的文档打包为一个压缩文档以供发布</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">username@pc:~/automake$ make dist</div><div class="line">username@pc:~/automake$ ls <span class="_">-l</span> hello-1.0.tar.gz</div><div class="line">hello-1.0.tar.gz</div></pre></td></tr></table></figure></p>
+<p>可见该命令生成了一个hello-1.0.tar.gz的压缩文档.</p>
+<h2>参考</h2>
+<ul>
+<li><a href="http://www.worldhello.net/2010/04/07/954.html" target="_blank" rel="external">autotools系列工具--自动生成Makefile</a></li>
+<li><a href="https://www.lrde.epita.fr/~adl/dl/autotools.pdf" target="_blank" rel="external">autotools官方教程文档</a></li>
+</ul>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2016/04/02/notes/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2016/04/05/Introduction-of-general-license/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

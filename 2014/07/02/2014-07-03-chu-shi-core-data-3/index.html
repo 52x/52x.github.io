@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            初识Core Data(3) | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,Swift,Core Data">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="初识Core Data(3) | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="Swift"> <meta property="og:article:tag" content="Core Data"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">建立数据模型</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">Swift与Objective-C桥接</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">NSFetchedResultsController</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">UITextField键盘响应</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">随机选择算法</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                初识Core Data(3)
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>7月 03, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/Core-Data/">Core Data</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/Swift/">Swift</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=初识Core Data(3)&url=http://yoursite.com//2014/07/02/2014-07-03-chu-shi-core-data-3/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=初识Core Data(3)&url=http://yoursite.com//2014/07/02/2014-07-03-chu-shi-core-data-3/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/07/02/2014-07-03-chu-shi-core-data-3/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/07/02/2014-07-03-chu-shi-core-data-3/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>在Swift发布后，我尝试用Swift和Core Data做了一个小Demo，名字叫“<a href="http://hardchoice.yulingtianxia.com" target="_blank" rel="external">HardChoice</a>”。它用于帮助人们随机生成一个问题的结果，当然结果是预设好的，并可以加入权值。本文将通过这个Demo来进一步阐述Core Data的知识。</p>
+<p>本文包含以下内容：</p>
+<ul>
+<li>建立数据模型</li>
+<li>Swift与Objective-C桥接</li>
+<li>NSFetchedResultsController</li>
+<li>UITextField键盘响应</li>
+<li>随机选择算法</li>
+</ul>
+<p>&lt;!--more--&gt;
+你可以在<a href="https://github.com/yulingtianxia/HardChoice" target="_blank" rel="external">GitHub</a>上下载HardChoice的代码</p>
+<p>在没弄懂Core Data的基础知识之前，我建议你先阅读我之前的两篇博文：</p>
+<p><a href="http://yulingtianxia.com/blog/2014/05/01/chu-shi-core-data-1/" target="_blank" rel="external">初识Core Data(1)</a><br>
+<a href="http://yulingtianxia.com/blog/2014/05/02/chu-shi-core-data-2/" target="_blank" rel="external">初识Core Data(2)</a></p>
+<p>如果你不懂Swift也没关系，只要了解OC和Core Data，总是能看懂的</p>
+<p>在写代码前先了解下我们要做什么：<br>
+<img src="http://7ni3rk.com1.z0.glb.clouddn.com/140435701469.png" alt="">
+<img src="http://7ni3rk.com1.z0.glb.clouddn.com/1404357012.png" alt=""></p>
+<p>先在第一个页面添加问题（吃啥？），然后点击问题进入到第二个添加选项（鸭子，蛋，猪）的页面。每个选项左边是选项名，右边是该选项的权值。摇动手机就能随机从所有选项中选出答案（就像第二张图那样）。</p>
+<h2>建立数据模型</h2>
+<p>还是像以前那样新建一个Master-Detail Application，勾选Use Core Data选项，语言选择Swift，然后Xcode会自动生成一个具有<code>UITableView</code>的Demo，这些内容之前说过。下面我们需要打开xcdatamodeld文件来建立我们的数据模型：</p>
+<p><img src="http://7ni3rk.com1.z0.glb.clouddn.com/140436356516.png" alt=""></p>
+<p><code>Question</code>这个实体只具有一个属性，那就是问题内容<code>content</code>，类型为<code>String</code>；<code>Choice</code>实体有一个类型为<code>String</code>的<code>name</code>属性和一个类型为<code>Integer32</code>的<code>weight</code>属性，分别代表问题选项的名字和权重。</p>
+<p>下面我们来建立<code>Question</code>和<code>Choice</code>这两个实体之间的关系：</p>
+<p>假设每个问题都对应多个选项，也可以没有选项：</p>
+<p><img src="http://7ni3rk.com1.z0.glb.clouddn.com/14043675716.png" alt=""></p>
+<p><code>Optional</code>被打钩是因为问题可以没有任何选项，在Tpye那里我们选择<code>To Many</code></p>
+<p>相反，每个选项一定会对应一个问题，并且是唯一的问题：</p>
+<p><img src="http://7ni3rk.com1.z0.glb.clouddn.com/140436793089.png" alt=""></p>
+<p><code>Optional</code>那里不打钩是为了避免关系的目标为空，在<code>Tpye</code>那里我们选择了<code>To One</code></p>
+<p><strong>关于<code>Delete Rule</code>的选择</strong></p>
+<p>下面会通过部门与员工的例子来阐述<code>Delete Rule</code>的用法</p>
+<ul>
+<li><strong><code>Deny</code></strong> 如果关系指向的目标仍然有对象，那么关系的源对象就不会被删除，比如你想删除一个部门，必须先确保该部门所有员工已经调到其他部门（或被解雇），否则这个部门就不会被删除。</li>
+<li><strong><code>Nullify</code></strong> 将被删除对象反向关系的目标设为null，比如如果你删除了一个部门，那么将这个部门所有成员的department关系目标设为null。需要注意的是员工的department关系应该被勾选为Optional，或者是在删除部门之后马上给该部门员工设置一个新的部门。</li>
+<li><strong><code>Cascade</code></strong> 顾名思义它会传递删除命令，删除一个对象会导致这个对象关系中所指向的所有目标对象也被删除。比如如果你删除了一个部门那么这个部门所有员工都会被立即删除。</li>
+<li><strong><code>No Action</code></strong> 无为而治。比如如果你删除了一个部门，那么这个部门底下的所有员工什么都不知道，他们还以为自己还属于这个部门。</li>
+</ul>
+<p>回到我们的例子，因为<code>Question</code>指向<code>Choice</code>的<code>choices</code>关系具有从属的性质，问题被删除后<code>choices</code>所指向的选项也应该被删除，所以<code>choices</code>关系中的<code>Delete Rule</code>我们选择<code>Cascade</code>；而<code>Choice</code>指向<code>Question</code>的<code>question</code>关系中<code>Delete Rule</code>被设置成了<code>Nullify</code>，也就是解除了<code>Question</code>与这个<code>Choice</code>的关系，并且我们之前已经设置<code>Question</code>的<code>choices</code>关系设置为<code>Optional</code>来满足<code>Nullify</code>这一选项的要求。</p>
+<p><strong>注意：每当你修改过数据模型后，需要将以前生成好的APP删除后再重新Run一下，这样才不会发生错误。这是因为手动删除APP会连同将其数据一起删除，然后重新Run一下会将新的数据表结构安装在模拟器或真机上</strong></p>
+<p>如果你对建立数据模型的过程生疏，建议回到<a href="http://yulingtianxia.com/blog/2014/05/02/chu-shi-core-data-2/" target="_blank" rel="external">初识Core Data(2)</a>中复习下“使用数据模型设计器”一节</p>
+<h2>Swift与Objective-C桥接</h2>
+<p>在使用Xcode6 Beta2生成<code>NSManagedObject</code>子类的时候，生成的代码依然是Objective-C的代码（即使我的工程是用Swift语言建立的），这就涉及到在Swift工程中调用Objective-C类的问题。苹果给我们提供了一个比较简单的解决方案。在你向工程中加入OC文件时，Xcode会自动弹出消息问你是否需要生成一个桥接头文件（“工程名-Bridging-Header.h”），然后我们在这个头文件中加入想要在Swift中调用的OC类的头文件：</p>
+<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">//  Use this file to import your target's public headers that you would like to expose to Swift.</span></div><div class="line"><span class="comment">//</span></div><div class="line"></div><div class="line"><span class="meta">#import <span class="meta-string">"Question.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">"Choice.h"</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">"CustomIOS7AlertView.h"</span></span></div></pre></td></tr></table></figure></p>
+<p><code>Question</code>和<code>Choice</code>这两个类是用之前数据模型中同名实例创建的<code>NSManagedObject</code>子类，<code>CustomIOS7AlertView</code>类是本项目用到的一个自定义AlertView（iOS7之后苹果不再允许自定义<code>UIAlertView</code>了）</p>
+<p>这样在Swift文件中不用<code>import</code>任何东西就可以直接使用上面被引入的OC类了</p>
+<p>有关Swift和OC在同一项目中混合使用的方法详见<a href="https://github.com/CocoaChina-editors/Welcome-to-Swift/blob/master/Using%20Swift%20with%20Cocoa%20and%20Objective-C/03Mix%20and%20Match/Swift%20and%20Objective-C%20in%20the%20Same%20Project.md" target="_blank" rel="external">这里</a></p>
+<h2>NSFetchedResultsController</h2>
+<p>在<a href="http://yulingtianxia.com/blog/2014/05/01/chu-shi-core-data-1/" target="_blank" rel="external">初识Core Data(1)</a>中我们提到过<code>NSFetchedResultsController</code>的作用，简单地说，<code>NSFetchedResultsController</code>的作用就是有效率的管理从CoreData获取请求的数据结果，并将结果提供给<code>UITableView</code>作为数据源。</p>
+<p>在<code>MasterViewController.swift</code>文件中，Xcode生成了两个<code>NSFetchedResultsController</code>属性：一个只读计算属性<code>fetchedResultsController</code>和一个可选存储属性<code>_fetchedResultsController</code>，通过两者搭配来实现setter，这里不再多说，将计算属性<code>fetchedResultsController</code>的定义替换如下：</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> fetchedResultsController: <span class="type">NSFetchedResultsController</span> &#123;</div><div class="line">       <span class="keyword">if</span> _fetchedResultsController != <span class="literal">nil</span> &#123;</div><div class="line">           <span class="keyword">return</span> _fetchedResultsController!</div><div class="line">       &#125;</div><div class="line">       </div><div class="line">       <span class="keyword">let</span> fetchRequest = <span class="type">NSFetchRequest</span>()</div><div class="line">       <span class="comment">// Edit the entity name as appropriate.</span></div><div class="line">       <span class="keyword">let</span> entity = <span class="type">NSEntityDescription</span>.entityForName(<span class="string">"Question"</span>, inManagedObjectContext: <span class="keyword">self</span>.managedObjectContext)</div><div class="line">       fetchRequest.entity = entity</div><div class="line">       </div><div class="line">       <span class="comment">// Set the batch size to a suitable number.</span></div><div class="line">       fetchRequest.fetchBatchSize = <span class="number">20</span></div><div class="line">       </div><div class="line">       <span class="comment">// Edit the sort key as appropriate.</span></div><div class="line">       <span class="keyword">let</span> sortDescriptor = <span class="type">NSSortDescriptor</span>(key: <span class="string">"content"</span>, ascending: <span class="literal">true</span>)</div><div class="line">       <span class="keyword">let</span> sortDescriptors = [sortDescriptor]</div><div class="line">       </div><div class="line">       fetchRequest.sortDescriptors = sortDescriptors</div><div class="line">       </div><div class="line">       <span class="comment">// Edit the section name key path and cache name if appropriate.</span></div><div class="line">       <span class="comment">// nil for section name key path means "no sections".</span></div><div class="line">       <span class="keyword">let</span> aFetchedResultsController = <span class="type">NSFetchedResultsController</span>(fetchRequest: fetchRequest, managedObjectContext: <span class="keyword">self</span>.managedObjectContext, sectionNameKeyPath: <span class="literal">nil</span>, cacheName: <span class="string">"Master"</span>)</div><div class="line">       aFetchedResultsController.delegate = <span class="keyword">self</span></div><div class="line">       _fetchedResultsController = aFetchedResultsController</div><div class="line">       </div><div class="line">   	<span class="keyword">var</span> error: <span class="type">NSError</span>? = <span class="literal">nil</span></div><div class="line">   	<span class="keyword">if</span> !_fetchedResultsController!.performFetch(&amp;error) &#123;</div><div class="line">   	     <span class="comment">// Replace this implementation with code to handle the error appropriately.</span></div><div class="line">   	     <span class="comment">// abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. </span></div><div class="line">            <span class="comment">//println("Unresolved error \(error), \(error.userInfo)")</span></div><div class="line">   	     abort()</div><div class="line">   	&#125;</div><div class="line">       </div><div class="line">       <span class="keyword">return</span> _fetchedResultsController!</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p><code>NSFetchRequest</code>对象描述了从数据持久层获取数据的标准，也就是相当于SQL中的from和where等条件语句，它是初始化<code>NSFetchedResultsController</code>的必要参数之一，因为它规定了从<code>NSManagedObjectContext</code>实例中获取什么样的数据。</p>
+<p><img src="http://img41.wal8.com/img41/425047_20140623222918/140353389167.png" alt=""></p>
+<p><code>NSFetchRequest</code>的属性<code>NSEntityDescription</code>，<code>predicate</code>和<code>sortDescriptors</code>分别对应着SQL中的from，where和order by语句，只不过<code>NSFetchRequest</code>把复杂的SQL语句进行了简化，查抄条件和排序方法更加灵活。</p>
+<p>在上面的<code>fetchedResultsController</code>属性中我们设置了<code>NSFetchRequest</code>实例：获取所有<code>Question</code>实体对应的数据，并将结果按照<code>content</code>属性的升序排列。</p>
+<p><code>init(fetchRequest: NSFetchRequest!, managedObjectContext context: NSManagedObjectContext!, sectionNameKeyPath: String!, cacheName name: String!)</code>是<code>NSFetchedResultsController</code>的指定构造器，除了刚才提到的<code>fetchRequest</code>参数外，还需传入一个必要参数<code>managedObjectContext</code>，在这里我们传入的<code>managedObjectContext</code>是来自<code>AppDelegate</code>的<code>managedObjectContext</code>属性。有关<code>NSManagedObjectContext</code>的知识参见<a href="http://yulingtianxia.com/blog/2014/05/01/chu-shi-core-data-1/" target="_blank" rel="external">初识Core Data(1)</a>，这里不再赘述。<strong>当构造器执行结束后，你就不能再修改<code>NSFetchedResultsController</code>的<code>fetchRequest</code>属性了</strong>。</p>
+<p><code>sectionNameKeyPath</code>参数是用来指定抓取数据结果的<code>section</code>信息的，这样<code>UITableView</code>的<code>section</code>信息此时已经预编译好了。因为我们的程序只需要一个<code>section</code>，所以只需传入<code>nil</code>；<code>cacheName</code>参数用于指定缓存<code>section</code>预编译信息的文件名，我们不需要缓存<code>section</code>信息，所以传入<code>nil</code>。</p>
+<p>当执行<code>performFetch(error: NSErrorPointer) -&gt; Bool</code>方法成功后，你可以通过<code>NSFetchedResultsController</code>的<code>fetchedObjects</code>属性来获取数据结果，如果为<code>UITableView</code>提供数据，可以用<code>objectAtIndexPath(indexPath: NSIndexPath!) -&gt; AnyObject!</code>方法来更加便捷的将数据与<code>NSIndexPath</code>对接上。在我们的例子中，会把数据结果转化为<code>NSManagedObject</code>的子类<code>Question</code>或<code>Choice</code>类：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) &#123;</div><div class="line">       let object = self.fetchedResultsController.objectAtIndexPath(indexPath) as Question</div><div class="line">       cell.textLabel.text = object.content</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>下面修改<code>insertNewObject</code>方法来添加新的<code>Question</code>：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var addAV = CustomIOS7AlertView()</div><div class="line">func insertNewObject(sender: AnyObject) &#123;</div><div class="line">       let textField = UITextField(frame:CGRectMake(0,0,290,50))</div><div class="line">       textField.becomeFirstResponder()</div><div class="line">       textField.placeholder = &quot;question&quot;</div><div class="line">       textField.keyboardType = .Default</div><div class="line">       textField.returnKeyType = .Done</div><div class="line">       textField.delegate = self</div><div class="line">       addAV.containerView = textField</div><div class="line">       addAV.buttonTitles = [&quot;OK&quot;,&quot;Cancel&quot;]</div><div class="line">       addAV.delegate = self</div><div class="line">       addAV.useMotionEffects = true</div><div class="line">       addAV.show()</div><div class="line">       </div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>有了添加<code>Question</code>功能，当然还会有修改功能：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">var modifyAV = CustomIOS7AlertView()</div><div class="line">func modifyObject(indexPath:NSIndexPath)&#123;</div><div class="line">       let question = self.fetchedResultsController.objectAtIndexPath(indexPath) as Question</div><div class="line">       let textField = UITextField(frame:CGRectMake(0,0,290,50))</div><div class="line">       textField.becomeFirstResponder()</div><div class="line">       textField.placeholder = &quot;question&quot;</div><div class="line">       textField.keyboardType = .Default</div><div class="line">       textField.returnKeyType = .Done</div><div class="line">       textField.delegate = self</div><div class="line">       modifyAV.containerView = textField</div><div class="line">       modifyAV.buttonTitles = [&quot;OK&quot;,&quot;Cancel&quot;]</div><div class="line">       modifyAV.delegate = self</div><div class="line">       modifyAV.useMotionEffects = true</div><div class="line">       (modifyAV.containerView as UITextField).text = question.content</div><div class="line">       modifyAV.show()</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p><code>CustomIOS7AlertView</code>是一个第三方的开源AlertView，它允许我们自定义AlertView的内容，并提供了<code>CustomIOS7AlertViewDelegate</code>协议来用于按钮点击的回调，我们将这两个<code>CustomIOS7AlertView</code>实例的<code>delegate</code>属性都设置为<code>self</code>，然后在<code>MasterViewController</code>中的实现协议中唯一的方法<code>customIOS7dialogButtonTouchUpInside(alertView:AnyObject!, clickedButtonAtIndex buttonIndex:Int)</code>：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">func customIOS7dialogButtonTouchUpInside(alertView:AnyObject!, clickedButtonAtIndex buttonIndex:Int)&#123;</div><div class="line">       switch buttonIndex&#123;</div><div class="line">           case 0:</div><div class="line">           let context = self.fetchedResultsController.managedObjectContext</div><div class="line">           let entity = self.fetchedResultsController.fetchRequest.entity</div><div class="line">           var newManagedObject:Question!</div><div class="line">           let av = alertView as CustomIOS7AlertView</div><div class="line">           if addAV == av&#123;</div><div class="line">               newManagedObject = NSEntityDescription.insertNewObjectForEntityForName(entity.name, inManagedObjectContext: context) as Question</div><div class="line">           &#125;</div><div class="line">           if modifyAV == av&#123;</div><div class="line">               newManagedObject = self.fetchedResultsController.objectAtIndexPath(selectedIndexPath) as Question</div><div class="line">           &#125;</div><div class="line">           // If appropriate, configure the new managed object.</div><div class="line">           // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.</div><div class="line">           newManagedObject.content = (av.containerView as UITextField).text</div><div class="line">           </div><div class="line">           // Save the context.</div><div class="line">           var error: NSError? = nil</div><div class="line">           if !context.save(&amp;error) &#123;</div><div class="line">               // Replace this implementation with code to handle the error appropriately.</div><div class="line">               // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.</div><div class="line">               //println(&quot;Unresolved error \(error), \(error.userInfo)&quot;)</div><div class="line">               abort()</div><div class="line">           &#125;</div><div class="line">           alertView.close()</div><div class="line">           default:</div><div class="line">           alertView.close()</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>当用户点击<code>alertView</code>的OK按钮时，判断<code>alertView</code>对象是<code>addAV</code>还是<code>modifyAV</code>，然后对应通过不同途径（新插入到<code>ManagedObjectContext</code>还是从<code>ManagedObjectContext</code>中取出）产生<code>Question</code>实例<code>newManagedObject</code>，最后的结果会保存回<code>ManagedObjectContext</code>中，最后关闭<code>alertView</code>。</p>
+<p>添加<code>Question</code>时使用的<code>insertNewObjectForEntityForName(entityName: String!, inManagedObjectContext context: NSManagedObjectContext!) -&gt; AnyObject!</code>方法是一个配置和添加实体，并返回该实体对应<code>NSManagedObject</code>子类（在这里是<code>Question</code>类）的便捷方法，这是一个很强大的类方法，我们无需知道创建<code>Question</code>类的细节就能创建并添加一个<code>Question</code>实例到<code>NSManagedObjectContext</code>中，在保存前我们还可以对这个方法返回的<code>Question</code>实例做修改，然后再通过<code>save(error: NSErrorPointer) -&gt; Bool</code>方法保存。</p>
+<p>修改<code>Question</code>的过程其实就是先通过<code>objectAtIndexPath(indexPath: NSIndexPath!) -&gt; AnyObject!</code>方法取出数据请求结果当中的某一项并转换成<code>Question</code>对象，对其进行修改后再保存。在界面中通过点击cell右侧带有字母i的蓝色圆圈来修改<code>Question</code>内容：</p>
+<p><img src="http://7ni3rk.com1.z0.glb.clouddn.com/140438530596.png" alt=""></p>
+<p>上图的中的蓝色圆圈是<code>AccessoryButton</code>，需要在IB中设置<code>TableViewCell</code>的<code>Identifier</code>为<code>QuestionCell</code>，<code>Accessory</code>为<code>Detail Disclosure</code>，这样我们就能在<code>UITableViewDelegate</code>的<code>tableView(tableView: UITableView!, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath!)</code>方法中响应<code>AccessoryButton</code>了：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">override func tableView(tableView: UITableView!, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath!)&#123;</div><div class="line">       selectedIndexPath = indexPath</div><div class="line">       modifyObject(indexPath)</div><div class="line">       </div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>导航栏右侧的添加<code>Question</code>按钮已经通过下面的代码配置了响应函数：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: &quot;insertNewObject:&quot;)</div><div class="line">self.navigationItem.rightBarButtonItem = addButton</div></pre></td></tr></table></figure></p>
+<p>在<code>UITableViewDelegate</code>中删除<code>Question</code>的代码如下：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) &#123;</div><div class="line">       if editingStyle == .Delete &#123;</div><div class="line">           let context = self.fetchedResultsController.managedObjectContext</div><div class="line">           context.deleteObject(self.fetchedResultsController.objectAtIndexPath(indexPath) as NSManagedObject)</div><div class="line">               </div><div class="line">           var error: NSError? = nil</div><div class="line">           if !context.save(&amp;error) &#123;</div><div class="line">               // Replace this implementation with code to handle the error appropriately.</div><div class="line">               // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.</div><div class="line">               //println(&quot;Unresolved error \(error), \(error.userInfo)&quot;)</div><div class="line">               abort()</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>这里多说一嘴，如果你想打印出错误信息的话，不要直接反注释那行<code>println</code>代码，还需要在<code>error</code>后加上感叹号，因为<code>error</code>是可选类型，需要强制解析：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">println(&quot;Unresolved error \(error!), \(error!.userInfo)&quot;)</div></pre></td></tr></table></figure></p>
+<h2>UITextField键盘响应</h2>
+<p>在将<code>UITextField</code>实例赋值给<code>CustomIOS7AlertView</code>的<code>containerView</code>属性前需要先让其获取当前焦点，并将<code>UITextField</code>的<code>delegate</code>属性设为<code>self</code>：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">var addAV = CustomIOS7AlertView()</div><div class="line">func insertNewObject(sender: AnyObject) &#123;</div><div class="line">       let textField = UITextField(frame:CGRectMake(0,0,290,50))</div><div class="line">       textField.becomeFirstResponder()//获取当前焦点</div><div class="line">       textField.placeholder = &quot;question&quot;</div><div class="line">       textField.keyboardType = .Default</div><div class="line">       textField.returnKeyType = .Done</div><div class="line">       textField.delegate = self</div><div class="line">       addAV.containerView = textField</div><div class="line">       addAV.buttonTitles = [&quot;OK&quot;,&quot;Cancel&quot;]</div><div class="line">       addAV.delegate = self</div><div class="line">       addAV.useMotionEffects = true</div><div class="line">       addAV.show()</div><div class="line">       </div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>然后让<code>MasterViewController</code>遵循<code>UITextFieldDelegate</code>协议，并实现下面两个协议中的方法：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">func textFieldDidBeginEditing(textField: UITextField!)&#123;</div><div class="line">       let animationDuration:NSTimeInterval  = 1</div><div class="line">       var frame = self.view.frame;</div><div class="line">       frame.origin.y-=116</div><div class="line">       frame.size.height+=116</div><div class="line">       self.view.frame = frame;</div><div class="line">       UIView.animateWithDuration(animationDuration)&#123;</div><div class="line">           self.view.frame = frame;</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   func textFieldShouldEndEditing(textField: UITextField!) -&gt; Bool&#123;</div><div class="line">       let animationDuration:NSTimeInterval  = 1</div><div class="line">       var frame = self.view.frame;</div><div class="line">       frame.origin.y+=116;</div><div class="line">       frame.size.height-=116;</div><div class="line">       self.view.frame = frame;</div><div class="line">       //self.view移回原位置</div><div class="line">       UIView.animateWithDuration(animationDuration)&#123;</div><div class="line">           self.view.frame = frame;</div><div class="line">       &#125;</div><div class="line">       textField.resignFirstResponder();</div><div class="line">       return true</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>这里我将键盘高度硬编码为116，当<code>UITextField</code>开始编辑时获取焦点键盘弹出，背景上移；当其结束编辑时键盘消失，背景移回原位。</p>
+<p>在Xcode6 beta2中的模拟器不是很好使，经常不能弹出键盘，这里给出的代码有很多疏漏，只提供个参考，主要是处理<code>UITextField</code>代理的思想</p>
+<h2>随机选择算法</h2>
+<p><code>DetailViewController</code>的内容跟<code>MasterViewController</code>内容很像，最大的区别在于多了一个从<code>Choice</code>数据中随机抽选的一个方法。因为是通过摇一摇的方式来触发随机算法，所以我们重载<code>motionBegan(motion: UIEventSubtype, withEvent event: UIEvent!)</code>方法来响应手机摇动：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">override func motionBegan(motion: UIEventSubtype, withEvent event: UIEvent!) &#123;</div><div class="line">        if motion == .MotionShake&#123;</div><div class="line">            </div><div class="line">            let count = self.fetchedResultsController.fetchedObjects.count</div><div class="line">            var arr = fetchedResultsController.fetchedObjects</div><div class="line">            var sum:Int = 0</div><div class="line">            for object : AnyObject in arr&#123;</div><div class="line">                sum+=(object as Choice).weight.integerValue</div><div class="line">            &#125;</div><div class="line">            if sum&gt;0&#123;</div><div class="line">                var lucknum = arc4random()%UInt32(sum)</div><div class="line">//                println(&quot;\(lucknum)&quot;)</div><div class="line">                var num = 0</div><div class="line">                var n:UInt32 = 0</div><div class="line">                while lucknum&gt;0&#123;</div><div class="line">                    if lucknum &lt;= n&#123;</div><div class="line">                        break</div><div class="line">                    &#125;</div><div class="line">                    else&#123;</div><div class="line">                        num++</div><div class="line">                        lucknum-=n</div><div class="line">                        if num&gt;=count&#123;</div><div class="line">                            break</div><div class="line">                        &#125;</div><div class="line">                        n = UInt32((arr[num] as Choice).weight.integerValue)</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">//                println(&quot;\(num)&quot;)</div><div class="line">                var alertView = UIAlertView()</div><div class="line">                alertView.alertViewStyle = .Default</div><div class="line">                alertView.title = &quot;恭喜&quot;</div><div class="line">                alertView.message = &quot;\(detailItem!.content)的答案是：\n\((arr[num] as Choice).name)&quot;</div><div class="line">                alertView.addButtonWithTitle(&quot;OK&quot;)</div><div class="line">                alertView.show()</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>前面提到过<code>NSFetchedResultsController</code>对象在执行<code>performFetch(error: NSErrorPointer) -&gt; Bool</code>方法后会将获取的数据存在<code>fetchedObjects</code>数组中，上面这段代码首先获取该问题对应的选项数量，并通过加权运算得到总的权重，然后通过随机数算法生成一个幸运数字，最后计算幸运数字落在哪个选项上。</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/06/29/2014-06-29-migrating-from-tfs-to-git-to-visual-studio-online-the-survival-guide/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/07/10/2014-07-11-setup-your-own-vpn-with-pptp/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

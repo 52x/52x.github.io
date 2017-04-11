@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            R Package ggvis Flashback | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,R,dplyr,visualization,ggvis,ggplot2">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="R Package ggvis Flashback | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="R"> <meta property="og:article:tag" content="dplyr"> <meta property="og:article:tag" content="visualization"> <meta property="og:article:tag" content="ggvis"> <meta property="og:article:tag" content="ggplot2"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">Why ggvis?</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">Basic ggvis Syntax</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Basic Components</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">Global vs. Local Declaration & Multiple Layers</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">Assignment Symbols = & :=</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">Layers & Properties</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Barchart, Histogram & Frequency Polygon</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Boxplot</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">Density Plot</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">Lines & Paths</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">Scatterplot</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">Special Layers: Model Prediction & Smooths</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">Layers Equivalence</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">Model Prediction, Smooths & Densities</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">Equivalence of Histograms</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">Equivalence of Density Plot</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">Equivalence of Barchart</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.5.</span> <span class="post-toc-text">Working with dplyr Package</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">Interactive Output</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">Single Checkbox</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">Selection from A List</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">Slider</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">Numeric & Text Input Box</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">Axes, Legends & Scales</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">Axes</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">Legends</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">Scales</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">Reference</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                R Package ggvis Flashback
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>10月 07, 2015</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/R/">R</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/dplyr/">dplyr</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/ggplot2/">ggplot2</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/ggvis/">ggvis</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/visualization/">visualization</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=R Package ggvis Flashback&url=http://yoursite.com//2015/10/07/Codage-8-ggvis/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=R Package ggvis Flashback&url=http://yoursite.com//2015/10/07/Codage-8-ggvis/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2015/10/07/Codage-8-ggvis/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2015/10/07/Codage-8-ggvis/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h2>Why ggvis?</h2>
+<p><code>ggvis</code> is an awesome data visualization package which builds data graphics with a syntax similar to <code>ggplot2</code> and creates rich interactive plots like <code>shiny</code>. Since the syntax is very structural, it's easy to learn and to use.</p>
+<p>&lt;!-- more --&gt;</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">require</span>(ggvis, quietly = <span class="literal">T</span>)</div><div class="line"><span class="keyword">require</span>(dplyr, quietly = <span class="literal">T</span>)</div></pre></td></tr></table></figure></p>
+<h2>Basic ggvis Syntax</h2>
+<h3>Basic Components</h3>
+<p><code>ggvis</code> recreates the grammar of graphics. The key syntax is like this:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">data                                                                %&gt;%</div><div class="line">  ggvis(~&lt;x axis var1&gt;, ~&lt;y axisvar2&gt;, fill = ~&lt;fill property&gt;)     %&gt;%</div><div class="line">  layer_&lt;marks&gt;()</div></pre></td></tr></table></figure></p>
+<p>You could find 4 components from the chunk above:</p>
+<p>$$ Graphic = Data + CoordinateSystem + Properties + Marks $$</p>
+<p>For example, using built-in dataset <code>mtcars</code>:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mtcars                                                              %&gt;%</div><div class="line">  ggvis(~hp, ~mpg, fill := <span class="string">"blue"</span>)                                  %&gt;%</div><div class="line">  layer_points()</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot1.png" alt="img1"></p>
+<p>Noticed that the coordinates, properties can be moved to the <code>layer_&lt;marks&gt;()</code>, <code>ggvis()</code> can generates plot without <code>layer_&lt;marks&gt;()</code>. Those will all be concretely introduced in the following part.</p>
+<h3>Global vs. Local Declaration &amp; Multiple Layers</h3>
+<p><code>ggvis</code> allows multiple layers overlaid. When you put the coordinates and properties in <code>ggvis()</code>, you declare them globally. That means the coordinates and properties will be used commonly in all the following <code>layer_&lt;marks&gt;()</code></p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mtcars                                                              %&gt;%</div><div class="line">  ggvis(~hp, ~mpg, stroke := <span class="string">"blue"</span>)                                %&gt;%</div><div class="line">  layer_points()                                                    %&gt;%</div><div class="line">  layer_smooths()</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot2.png" alt="img2"></p>
+<p>We specify <code>~hp, ~mpg, stroke := &quot;blue&quot;</code> in <code>ggvis()</code>, they are applied on all the layers: respectively on <code>layer_points()</code> and <code>layer_smooths()</code> for the color of border of the points and the color of the smooth line. By default the <code>fill</code> color of points is black.</p>
+<p>When we do that locally, we put the properties in each layer:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mtcars                                                              %&gt;%</div><div class="line">  ggvis(~hp, ~mpg)                                                  %&gt;%</div><div class="line">  layer_points(fill := <span class="string">"white"</span>, stroke := <span class="string">"blue"</span>)                   %&gt;%</div><div class="line">  layer_smooths(stroke := <span class="string">"red"</span>)                                    %&gt;%</div><div class="line">  layer_model_predictions(model = <span class="string">"lm"</span>, stroke := <span class="string">"navy"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot3.png" alt="img3"></p>
+<p>The properties are declared locally and both layers use <code>stroke</code> but the property works sperately in 2 layers and <code>fill</code> has no impact on <code>layer_smooths()</code>. Why we keep <code>~hp, ~mpg</code> in <code>ggvis()</code>? Because the program doesn't have to run them twice in each layer. Keeping them in <code>ggvis()</code> makes it more efficient.</p>
+<h3>Assignment Symbols <code>=</code> &amp; <code>:=</code></h3>
+<p>The most important symbols are <code>=</code> and <code>:=</code>. You can note them as &quot;mapping&quot; and &quot;setting&quot;.</p>
+<p>There are 2 spaces when plotting something - a data space and a visualization space. For example the color have HTML color codes, RGB color codes, etc. If you provide a variable to specify the <code>fill</code> using <code>=</code> (normally followed by a tilde <code>~</code>, making <code>ggvis</code> to treat it as a variable), <code>ggvis</code> will <strong>mapping</strong> the variable value on color scales first before plotting.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">pressure                                                            %&gt;%</div><div class="line">  ggvis(~temperature, ~pressure, </div><div class="line">        fill = ~pressure, size = ~temperature)                      %&gt;%</div><div class="line">  layer_points()</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot4.png" alt="img4"></p>
+<p>If you directly pass a string with quotation mark to it, <code>ggvis</code> read it as a raw value.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">pressure                                                            %&gt;%</div><div class="line">  ggvis(~temperature, ~pressure, </div><div class="line">        fill := <span class="string">"skyblue"</span>, size := <span class="number">80</span>)                              %&gt;%</div><div class="line">  layer_points()</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot5.png" alt="img5"></p>
+<p><em>settings vs. mapping only works for a property instead of a parameter.</em>
+You could directly use <code>=</code> + values for a parameter.</p>
+<p>Besides, <code>%&gt;%</code> is based on package <code>magrittr</code> and is used widely in <code>dplyr</code>. It's a symbol of chaining and makes the program more readable.</p>
+<h2>Layers &amp; Properties</h2>
+<p>If you don't specify layer type, <code>ggvis</code> will use <code>layer_guess()</code> to give an approximate estimation (<code>?ggvis::layer_guess</code>). Besides the magic <code>layer_guess()</code>, I'd strongly recommand to learn more specified layers. We just show you 2 kinds of properties in previous. The basic layers and properties are as below (column names are <code>layer_&lt;marks&gt;</code> functions, row names are properties):</p>
+<table>
+<thead>
+<tr>
+<th>layer_</th>
+<th>bars</th>
+<th>boxplots</th>
+<th>densities</th>
+<th>freqpolys</th>
+<th>histograms</th>
+<th>lines</th>
+<th>paths</th>
+<th>points</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x / x2</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td>y / y2</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td>width</td>
+<td>O</td>
+<td>O</td>
+<td>X</td>
+<td>O</td>
+<td>O</td>
+<td>X</td>
+<td>X</td>
+<td>O</td>
+</tr>
+<tr>
+<td>opacity</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td>fill</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td>fillOpacity</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td>stroke</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td>strokeWidth</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td>strokeOpacity</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+<td>O</td>
+</tr>
+<tr>
+<td>size</td>
+<td>X</td>
+<td>O</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>O</td>
+</tr>
+<tr>
+<td>shape</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>X</td>
+<td>O</td>
+</tr>
+</tbody>
+</table>
+<p>Where <code>O</code> means supported, <code>X</code> means not supported.</p>
+<h3>Barchart, Histogram &amp; Frequency Polygon</h3>
+<p>For bar graphs of counts at each unique x value, in contrast to a histogram's bins along x ranges. Barchar and histogram both have <code>width</code> argument. However, the former one is used as column width in graphical space, the latter one to group the coutinuous data on x-axis.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># barchart</span></div><div class="line">pressure                                                          %&gt;% </div><div class="line">  ggvis(~temperature, ~pressure, fill := <span class="string">"red"</span>, opacity := <span class="number">.4</span>)    %&gt;% </div><div class="line">  layer_bars(width = <span class="number">15</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot6.png" alt="img6"></p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># histogram</span></div><div class="line">iris                                                              %&gt;% </div><div class="line">  ggvis(~Sepal.Length, fill := <span class="string">"red"</span>, opacity := <span class="number">.7</span>)              %&gt;% </div><div class="line">  layer_histograms(width = <span class="number">0.5</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot7.png" alt="img7"></p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># freqpoly</span></div><div class="line">iris                                                              %&gt;% </div><div class="line">  ggvis(~Sepal.Length)                                            %&gt;% </div><div class="line">  layer_freqpolys(width = <span class="number">0.5</span>, fill := <span class="string">"red"</span>, fillOpacity := <span class="number">.3</span>,</div><div class="line">                  strokeWidth := <span class="number">3</span>, stroke := <span class="string">"orange"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot8.png" alt="img8"></p>
+<p>Frequency polygon treats the continuous data in the same logic as histogram but use a line to describe the frequency evolution across ranges. Notice that I use <code>fillOpacity</code> instead of <code>opacity</code> in the third plot. That means the transparency effect is not applied on the stroke (not applied on every layer). By default there is nothing filled under the curve of frequency polygon, since we specify it, the region is filled by transparent red.</p>
+<h3>Boxplot</h3>
+<p><code>width</code> is also a parameter of <code>layer_boxplots()</code>, the default value is 0.9. This parameter specify the distance among groups / the width of boxes. Besides the normal properties <code>fill</code>, <code>stroke</code>, etc., you can assign the <code>size</code> of outliers.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">iris                                                              %&gt;% </div><div class="line">  ggvis(~Species, ~Sepal.Width)                                   %&gt;% </div><div class="line">  layer_boxplots(size := <span class="number">20</span>, width = <span class="number">.7</span>, strokeOpacity := <span class="number">.7</span>,</div><div class="line">                 strokeWidth := <span class="number">2</span>, fill = ~Species)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot9.png" alt="img9"></p>
+<p><em>Currently the <code>layer_boxplots()</code> seems to have a bit problems under <code>ggvis</code> (version 0.4.2) when we modify the value of <code>size</code> - the mustach move but the boxes don't. Waiting for the package update.</em></p>
+<h3>Density Plot</h3>
+<p>Density plots provide another way to display the distribution of a single variable. A density plot uses a line to display the density of a variable at each point in its range. You can think of a density plot as a continuous version of a histogram with a different y scale (although this is not exactly accurate).</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">faithful                                                          %&gt;% </div><div class="line">  ggvis(~waiting)                                                 %&gt;%</div><div class="line">  layer_densities(stroke := <span class="string">"red"</span>, fill := <span class="string">"red"</span>, area = <span class="literal">FALSE</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot10.png" alt="img10"></p>
+<p>You can specify the <code>area</code> parameter to decide whether there should be a shaded region drawn under the curve. In the chunk above, even you assign &quot;red&quot; to <code>fill</code>, there is nothing under the density curve (the dault setting is to draw a grey shadow).</p>
+<h3>Lines &amp; Paths</h3>
+<p>Firstly we compare these 2 layers:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;%</div><div class="line">  ggvis(~wt, ~mpg)                                                %&gt;%</div><div class="line">  layer_points(size := <span class="number">30</span>, shape := <span class="string">"cross"</span>, fill := <span class="string">"grey"</span>)      %&gt;%</div><div class="line">  layer_lines(stroke := <span class="string">"red"</span>)                                    %&gt;%</div><div class="line">  layer_paths(stroke := <span class="string">"skyblue"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot11.png" alt="img11"></p>
+<p>It seems that the <code>layer_paths()</code> is chaos, but it is not. It plots starting from the very first record until the last. Let's reorder the dataset.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;%</div><div class="line">  arrange(wt, desc(mpg))                                          %&gt;%</div><div class="line">  ggvis(~wt, ~mpg)                                                %&gt;%</div><div class="line">  layer_lines(stroke := <span class="string">"red"</span>, strokeWidth := <span class="number">4</span>, </div><div class="line">              strokeOpacity := <span class="number">.5</span>)                                %&gt;%</div><div class="line">  layer_paths(strokeWidth := <span class="number">1</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot12.png" alt="img12"></p>
+<p>Now <code>layer_paths()</code> have same trend as <code>layer_lines()</code>. <code>layer_paths()</code> is more powerful on geographical plots.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">library</span>(maps)</div><div class="line">texas &lt;- ggplot2::map_data(<span class="string">"state"</span>, region = <span class="string">"texas"</span>)</div><div class="line">texas %&gt;% ggvis(~long, ~lat) %&gt;% layer_paths()</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot13.png" alt="img13"></p>
+<p>lines and paths plot can also use <code>fill</code> property.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">texas %&gt;% ggvis(~long, ~lat) %&gt;% layer_paths(fill := <span class="string">"darkorange"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot14.png" alt="img14"></p>
+<h3>Scatterplot</h3>
+<p>We've been talking about <code>layer_points()</code> for many times. To be noticed that there are many values for the shape of points: <code>&quot;circle&quot;</code>(default), <code>&quot;square&quot;</code>, <code>&quot;diamond&quot;</code>, <code>&quot;cross&quot;</code>, <code>&quot;triangle-up&quot;</code> and <code>&quot;triangle-down&quot;</code>.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;%</div><div class="line">  ggvis(~hp, ~mpg)                                                %&gt;%</div><div class="line">  layer_points(shape := <span class="string">"triangle-up"</span>, fill = ~factor(cyl))</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot15.png" alt="img15"></p>
+<p><code>factor()</code> converts <code>cyl</code> from numeric to categorical data and that makes the plot more clear.</p>
+<h3>Special Layers: Model Prediction &amp; Smooths</h3>
+<p><code>layer_model_predictions()</code> fits a model to the data and draw it with <code>layer_paths()</code> and, optionally, <code>layer_ribbons()</code>. <code>layer_smooths()</code> is a special case of layering model predictions where the model is a smooth <code>loess</code> curve whose smoothness is controlled by the span parameter. Both use same properties as <code>layer_paths()</code> and <code>layer_lines()</code>.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mtcars %&gt;% ggvis(~wt, ~mpg) %&gt;% layer_smooths()</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot16.png" alt="img16"></p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mtcars %&gt;% ggvis(~wt, ~mpg) %&gt;% layer_smooths(se = <span class="literal">T</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot17.png" alt="img17"></p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;% </div><div class="line">  ggvis(~wt, ~mpg)                                                %&gt;% </div><div class="line">  layer_points(shape := <span class="string">"diamond"</span>, size := <span class="number">25</span>, fill = ~cyl)       %&gt;%</div><div class="line">  layer_model_predictions(formula = mpg ~ wt, model = <span class="string">"lm"</span>,</div><div class="line">                          stroke := <span class="string">"red"</span>, strokeOpacity := <span class="number">.5</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot18.png" alt="img18"></p>
+<p>If you don't specify the <code>formula</code> argument in <code>layer_model_predictions()</code>, <code>ggvis</code> will guess it based on the input in the global data space of <code>ggvis()</code>.</p>
+<p>There are more properties and <code>layer_&lt;marks&gt;()</code>, you could make a research by typing <code>?ggvis::marks</code> and <code>??ggvis::layer_</code>.</p>
+<h2>Layers Equivalence</h2>
+<h3>Model Prediction, Smooths &amp; Densities</h3>
+<p>Some layers can be realized in another way. Consider how is the <code>layer_model_predictions()</code> processed. 1. Estimate the model based on the dataset; 2. Compute predicted data; 3. Plot the predicted line.</p>
+<p>In <code>ggvis</code>, <code>compute_model_prediction()</code> realizes the first 2 steps.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;%</div><div class="line">  compute_model_prediction(mpg ~ wt, model = <span class="string">"lm"</span>)                %&gt;%</div><div class="line">  head()</div></pre></td></tr></table></figure></p>
+<p>The function returns 2 columns <code>pred_</code> and <code>resp_</code>.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;%</div><div class="line">  compute_model_prediction(mpg ~ wt, model = <span class="string">"lm"</span>)                %&gt;%</div><div class="line">  ggvis(~pred_, ~resp_)                                           %&gt;%</div><div class="line">  layer_paths(stroke := <span class="string">"blue"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot19.png" alt="img19"></p>
+<p>The chunk returns the same line as the <code>layer_model_predictions()</code> did before. <code>layer_smooths()</code> and <code>layer_densities()</code> can be splitted to 2 steps in the same way.</p>
+<p>And you can easily find the corresponding relations as below:</p>
+<table>
+<thead>
+<tr>
+<th>layer_</th>
+<th>compute_</th>
+<th>layer_</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>model_predictions</strong></td>
+<td>model_predictions</td>
+<td>paths</td>
+</tr>
+<tr>
+<td><strong>smooths</strong></td>
+<td>smooths</td>
+<td>paths</td>
+</tr>
+<tr>
+<td><strong>histograms</strong></td>
+<td>bin</td>
+<td>rects</td>
+</tr>
+<tr>
+<td><strong>densities</strong></td>
+<td>density</td>
+<td>lines</td>
+</tr>
+<tr>
+<td><strong>bar</strong></td>
+<td>count/tabulate/stack/align</td>
+<td>rects</td>
+</tr>
+<tr>
+<td><strong>boxplots</strong></td>
+<td>boxplot/stack</td>
+<td>rects</td>
+</tr>
+</tbody>
+</table>
+<h3>Equivalence of Histograms</h3>
+<p><code>compute_bin()</code> returns 5 columns where <code>count_</code> is the count in the each interval, <code>xmin_</code> and <code>xmax_</code> are the left-most and right-most border of the interval. We can use these 3 columns to plot the rectangles in the intervals.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">iris                                                              %&gt;%</div><div class="line">  compute_bin(~Sepal.Length, width = <span class="number">0.5</span>)                         %&gt;%</div><div class="line">  ggvis(x = ~xmin_, x2 = ~xmax_, y = <span class="number">0</span>, y2 = ~count_)             %&gt;% </div><div class="line">  layer_rects(fill := <span class="string">"red"</span>, opacity := <span class="number">.7</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot20.png" alt="img20"></p>
+<h3>Equivalence of Density Plot</h3>
+<p><code>compute_density()</code> returns <code>pred_</code> and <code>resp_</code> - concatenate them by <code>layer_lines()</code> brings the exact density line.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">faithful                                                          %&gt;%</div><div class="line">  compute_density(~waiting)                                       %&gt;%</div><div class="line">  ggvis(~pred_, ~resp_)                                           %&gt;%</div><div class="line">  layer_lines(stroke := <span class="string">"red"</span>, fill := <span class="string">"red"</span>, fillOpacity := <span class="number">0.5</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot21.png" alt="img21"></p>
+<h3>Equivalence of Barchart</h3>
+<p><code>compute_count()</code> and <code>compute_tabulate()</code> only returns 2 columns - <code>x_</code> at which point what's the level of corresponding data <code>count_</code>. And <code>compute_align()</code> helps to set up the lower and upper bound of interval.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">pressure                                                          %&gt;%</div><div class="line">  compute_count(~temperature, ~pressure)                          %&gt;%</div><div class="line">  compute_align(~x_, length = <span class="number">15</span>)                                 %&gt;%</div><div class="line">  ggvis(x = ~xmin_, x2 = ~xmax_, y = <span class="number">0</span>, y2= ~count_)              %&gt;% </div><div class="line">  layer_rects(fill := <span class="string">"red"</span>, opacity := <span class="number">.5</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot22.png" alt="img22"></p>
+<p>In <code>compute_align()</code>, <code>length</code> limits the length of an interval. It's equivalent to the <code>width</code> in <code>layer_bars()</code></p>
+<p>How does <code>compute_stack()</code> works?</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;%</div><div class="line">  compute_stack(stack_var = ~wt, group_var = ~cyl)                %&gt;%</div><div class="line">  ggvis(~cyl, ~wt)                                                %&gt;%</div><div class="line">  layer_rects(x = ~cyl - <span class="number">0.5</span>, x2 = ~cyl + <span class="number">0.5</span>, </div><div class="line">              y = ~stack_upr_, y2 = ~stack_lwr_)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot23.png" alt="img23"></p>
+<p><code>compute_stack()</code> generates 3 new variables based on data source: <code>group__</code>, <code>stack_upr_</code> and <code>stack_lwr_</code>. The latter 2 variables indicate the upper and lower y coordinates of each stack.</p>
+<p>Try another classic stacked barchart:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">library</span>(data.table, quietly = <span class="literal">T</span>)</div><div class="line"></div><div class="line">FordSales &lt;- data.frame(ID = <span class="number">1</span>:<span class="number">16</span>,</div><div class="line">                        Year = rep(<span class="number">2011</span>:<span class="number">2014</span>, each = <span class="number">4</span>),</div><div class="line">                        Car = c(<span class="string">"Fiesta"</span>, <span class="string">"Focus"</span>, <span class="string">"Mondeo"</span>, <span class="string">"Escort"</span>),</div><div class="line">                        Sales = round((rnorm(<span class="number">16</span>)+<span class="number">10</span>)*<span class="number">100</span>, <span class="number">0</span>))</div><div class="line"></div><div class="line">FordSales                                                         %&gt;%</div><div class="line">  compute_stack(stack_var = ~Sales, group_var = ~Year)            %&gt;%</div><div class="line">  ggvis(~factor(Year), ~Sales, fill = ~Car, fillOpacity := <span class="number">.5</span>)    %&gt;%</div><div class="line">  layer_rects(x = ~Year - <span class="number">.3</span>, x2 = ~Year + <span class="number">.3</span>,</div><div class="line">              y = ~stack_upr_, y2 = ~stack_lwr_)</div><div class="line"><span class="comment"># You may find the ticks on x-axis are not appropriate.</span></div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot24.png" alt="img24"></p>
+<p>The compound way to realize a layer helps to understand how the high level layer is generated, and gives you a way to grab the key data for plotting.</p>
+<h3>Working with <code>dplyr</code> Package</h3>
+<p><code>ggvis</code> can work along with <code>dplyr</code> package. For example to recreate the plot above:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">FordSales                                                         %&gt;%</div><div class="line">  group_by(Car)                                                   %&gt;%</div><div class="line">  ggvis(~factor(Year), ~Sales)                                    %&gt;%</div><div class="line">  layer_bars(fill = ~Car, fillOpacity := <span class="number">.5</span>, width = <span class="number">0.6</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot25.png" alt="img25"></p>
+<p><code>group_by()</code> also works for multiple variables.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;% </div><div class="line">  group_by(cyl, am)                                               %&gt;% </div><div class="line">  ggvis(~mpg, fill = ~factor(cyl))                                %&gt;%</div><div class="line">  layer_densities()</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot26.png" alt="img26"></p>
+<h2>Interactive Output</h2>
+<hr>
+<p><em>In this article, all interactivity is disabled, only screenshots are provided</em></p>
+<hr>
+<p><code>ggvis</code> enables interactive HTML output by a series of <code>input_&lt;form_controls&gt;()</code> functions. There are 7 input widgets:</p>
+<ul>
+<li><code>input_checkbox()</code> creates an interactive checkbox;</li>
+<li><code>input_select()</code>, <code>input_checkboxgroup()</code> and <code>input_radiobuttons()</code>
+create interactive control to select on or more options from a list;</li>
+<li><code>input_slider()</code> creates an interactive slider; <code>input_numeric()</code>;</li>
+<li><code>input_text()</code> create an interactive numeric or text input box.</li>
+</ul>
+<h3>Single Checkbox</h3>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;% </div><div class="line">  ggvis(~wt, ~mpg)                                                %&gt;%</div><div class="line">  layer_smooths(se = input_checkbox(label = <span class="string">"Confidence interval"</span>))</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot27.png" alt="img27"></p>
+<p>You can also split the plotting steps if the input clause is too long.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">model_type &lt;- input_checkbox(label = <span class="string">"Use flexible curve"</span>,</div><div class="line">  map = <span class="keyword">function</span>(val) <span class="keyword">if</span>(val) <span class="string">"loess"</span> <span class="keyword">else</span> <span class="string">"lm"</span>)</div><div class="line"></div><div class="line">mtcars                                                            %&gt;% </div><div class="line">  ggvis(~wt, ~mpg)                                                %&gt;%</div><div class="line">  layer_model_predictions(model = model_type)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot28.png" alt="img28"></p>
+<h3>Selection from A List</h3>
+<p><code>input_select()</code> and <code>input_checkboxgroup()</code> allows multiple choice. <code>input_radiobuttons()</code> allows only one option to be picked up in the list.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># input_select()</span></div><div class="line">faithful                                                          %&gt;% </div><div class="line">  ggvis(~waiting, ~eruptions, fillOpacity := <span class="number">0.5</span>, </div><div class="line">        shape := input_select(label = <span class="string">"Choose shape:"</span>, </div><div class="line">                              choices = c(<span class="string">"circle"</span>, <span class="string">"square"</span>, </div><div class="line">                                          <span class="string">"cross"</span>, <span class="string">"diamond"</span>, </div><div class="line">                                          <span class="string">"triangle-up"</span>,</div><div class="line">                                          <span class="string">"triangle-down"</span>)),</div><div class="line">        fill := input_select(label = <span class="string">"Choose color:"</span>, </div><div class="line">                             choice = c(<span class="string">"black"</span>, <span class="string">"red"</span>, </div><div class="line">                                        <span class="string">"blue"</span>, <span class="string">"green"</span>)))        %&gt;% </div><div class="line">  layer_points()</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot29.png" alt="img29"></p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;% </div><div class="line">  ggvis(~mpg, ~wt, </div><div class="line">        fill = input_select(label = <span class="string">"Choose fill variable:"</span>, </div><div class="line">                            choice = names(mtcars), </div><div class="line">                            map = as.name))                       %&gt;% </div><div class="line">  layer_points()</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot30.png" alt="img30"></p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># input_radiobuttons()</span></div><div class="line">mtcars                                                            %&gt;%</div><div class="line">  ggvis(~wt, ~mpg)                                                %&gt;%</div><div class="line">  layer_model_predictions(model = input_radiobuttons(</div><div class="line">    choices = c(<span class="string">"Linear"</span> = <span class="string">"lm"</span>, <span class="string">"LOESS"</span> = <span class="string">"loess"</span>),</div><div class="line">    selected = <span class="string">"loess"</span>,</div><div class="line">    label = <span class="string">"Model type"</span>))</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot31.png" alt="img31"></p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># input_checkboxgroup()</span></div><div class="line">mtcars                                                            %&gt;%</div><div class="line">  ggvis(x = ~wt, y = ~mpg)                                        %&gt;%</div><div class="line">  layer_points(</div><div class="line">    fill := input_checkboxgroup(</div><div class="line">      choices = c(<span class="string">"Red"</span> = <span class="string">"r"</span>, <span class="string">"Green"</span> = <span class="string">"g"</span>, <span class="string">"Blue"</span> = <span class="string">"b"</span>),</div><div class="line">      label = <span class="string">"Point color components"</span>,</div><div class="line">      map = <span class="keyword">function</span>(val) &#123;</div><div class="line">        rgb(<span class="number">0.8</span> * <span class="string">"r"</span> %<span class="keyword">in</span>% val, <span class="number">0.8</span> * <span class="string">"g"</span> %<span class="keyword">in</span>% val, <span class="number">0.8</span> * <span class="string">"b"</span> %<span class="keyword">in</span>% val)</div><div class="line">      &#125;</div><div class="line">    )</div><div class="line">  )</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot32.png" alt="img32"></p>
+<p>The argument <code>map</code> should be function with one single argument and returns a modified value based on this funciton. <strong>When you maps the variable name to a property, remember to use<code>=</code> instead of <code>:=</code></strong></p>
+<h3>Slider</h3>
+<p>A slider is quite useful for controlling the argument of continuous data, for example, control the binwidth of a histogram:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;% </div><div class="line">  ggvis(~mpg)                                                     %&gt;% </div><div class="line">  layer_histograms(width = input_slider(label = <span class="string">"Choose a binwidth:"</span>, </div><div class="line">                                        min = <span class="number">1</span>, max = <span class="number">20</span>))</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot33.png" alt="img33"></p>
+<h3>Numeric &amp; Text Input Box</h3>
+<p>To control the binwidth, you could also directly assign a value by <code>select_numeric()</code>.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;% </div><div class="line">  ggvis(~mpg)                                                     %&gt;% </div><div class="line">  layer_histograms(width = input_numeric(label = <span class="string">"Choose a binwidth:"</span>, </div><div class="line">                                         value = <span class="number">1</span>))</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot34.png" alt="img34"></p>
+<p>To control the fill color, you could use <code>select_text()</code>.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;% </div><div class="line">  ggvis(~mpg)                                                     %&gt;% </div><div class="line">  layer_histograms(fill := input_text(label = <span class="string">"Choose a color:"</span>, </div><div class="line">                                      value = <span class="string">"skyblue"</span>))</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot35.png" alt="img35"></p>
+<h2>Axes, Legends &amp; Scales</h2>
+<h3>Axes</h3>
+<p>We use <code>add_axis()</code> to adjust the axis.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">faithful                                                          %&gt;% </div><div class="line">  ggvis(~waiting, ~eruptions)                                     %&gt;% </div><div class="line">  layer_points(fill := <span class="string">"red"</span>, fillOpacity := <span class="number">.3</span>, size := <span class="number">50</span>)      %&gt;% </div><div class="line">  add_axis(<span class="string">"y"</span>, title = <span class="string">"Duration of eruption (m)"</span>)               %&gt;%</div><div class="line">  add_axis(<span class="string">"x"</span>, title = <span class="string">"Time since previous eruption (m)"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot36.png" alt="img36"></p>
+<p>The first argument specify horizontal or vertical axis. Use <code>title</code> to name the axes. You can add more details:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">faithful                                                          %&gt;% </div><div class="line">  ggvis(~waiting, ~eruptions)                                     %&gt;% </div><div class="line">  layer_points(fill := <span class="string">"red"</span>, fillOpacity := <span class="number">.3</span>, size := <span class="number">50</span>)      %&gt;% </div><div class="line">  add_axis(<span class="string">"y"</span>, title = <span class="string">"Duration of eruption (m)"</span>,</div><div class="line">           value = <span class="number">2</span>:<span class="number">5</span>, subdivide = <span class="number">9</span>, orient = <span class="string">"right"</span>)          %&gt;%</div><div class="line">  add_axis(<span class="string">"x"</span>, title = <span class="string">"Time since previous eruption (m)"</span>,</div><div class="line">           values = seq(<span class="number">50</span>, <span class="number">90</span>, <span class="number">10</span>), subdivide = <span class="number">9</span>, orient = <span class="string">"top"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot37.png" alt="img37"></p>
+<p>Compare carefully the difference between the 2 plots and you will find what do those arguments serve for.</p>
+<h3>Legends</h3>
+<p><code>add_legend()</code> works similarly to <code>add_axis()</code>, except that it alters the legend of a plot. Instead of specifying which axis to change, you have to specify the property you want to add to the legend. For example:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">pressure                                                          %&gt;% </div><div class="line">  ggvis(~temperature, ~pressure, fill = ~pressure)                %&gt;%</div><div class="line">  layer_points()                                                  %&gt;%</div><div class="line">  add_legend(<span class="string">"fill"</span>, title = <span class="string">"~ pressure"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot38.png" alt="img38"></p>
+<p><code>ggvis</code> will create a separate legend for each property that you use. To do this, you just need to feed <code>add_legend()</code> a vector of property names as its first argument. The code below creates legend for 3 properties: <code>fill</code>, <code>shape</code> and <code>size</code>.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">faithful                                                          %&gt;% </div><div class="line">  ggvis(~waiting, ~eruptions, opacity := <span class="number">0.6</span>, </div><div class="line">        fill = ~factor(round(eruptions)), </div><div class="line">        shape = ~factor(round(eruptions)), </div><div class="line">        size = ~round(eruptions))                                 %&gt;%</div><div class="line">  layer_points()                                                  %&gt;%</div><div class="line">  add_legend(c(<span class="string">"fill"</span>, <span class="string">"shape"</span>, <span class="string">"size"</span>), title = <span class="string">"~ duration (m)"</span>, </div><div class="line">             orient = <span class="string">"left"</span>, values = c(<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>))</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot39.png" alt="img39"></p>
+<h3>Scales</h3>
+<p><code>ggvis</code> provides several different functions for creating scales: <code>scale_datetime()</code>, <code>scale_logical()</code>, <code>scale_nominal()</code>, <code>scale_numeric()</code>, <code>scale_singular()</code>. Each maps a different type of data input to the visual properties that <code>ggvis</code> uses.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;% </div><div class="line">  ggvis(~wt, ~mpg, fill = ~disp, stroke = ~disp, strokeWidth := <span class="number">2</span>)%&gt;%</div><div class="line">  layer_points()                                                  %&gt;%</div><div class="line">  scale_numeric(<span class="string">"fill"</span>, range = c(<span class="string">"red"</span>, <span class="string">"yellow"</span>))               %&gt;%</div><div class="line">  scale_numeric(<span class="string">"stroke"</span>, range = c(<span class="string">"darkred"</span>, <span class="string">"orange"</span>))</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot40.png" alt="img40"></p>
+<p>The chunk above maps the value of <code>disp</code> on the scale range between <code>red</code> and <code>yellow</code> for <code>fill</code> color, between <code>darkred</code> and <code>orange</code> for <code>stroke</code> color.</p>
+<p>The chunk below maps a categorical variable to fill. <code>cyl</code> has 3 unique values so we can provide a range of length 3 with the color names.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;% </div><div class="line">  ggvis(~wt, ~mpg, fill = ~factor(cyl))                           %&gt;%</div><div class="line">  layer_points()                                                  %&gt;%</div><div class="line">  scale_nominal(<span class="string">"fill"</span>, range = c(<span class="string">"purple"</span>, <span class="string">"blue"</span>, <span class="string">"green"</span>))</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot41.png" alt="img41"></p>
+<p>You can adjust any visual property in your graph with a scale (not just color). For example you can specify the opacity and the domain of axes.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;% </div><div class="line">  ggvis(x = ~wt, y = ~mpg, fill = ~factor(cyl), opacity = ~hp)    %&gt;%</div><div class="line">  layer_points()                                                  %&gt;%</div><div class="line">  scale_numeric(<span class="string">"opacity"</span>, range = c(<span class="number">.2</span>, <span class="number">1</span>))</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot42.png" alt="img42"></p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mtcars                                                            %&gt;% </div><div class="line">  ggvis(~wt, ~mpg, fill = ~disp)                                  %&gt;%</div><div class="line">  layer_points()                                                  %&gt;%</div><div class="line">  scale_numeric(<span class="string">"y"</span>, domain = c(<span class="number">0</span>, <span class="literal">NA</span>))                           %&gt;%</div><div class="line">  scale_numeric(<span class="string">"x"</span>, domain = c(<span class="number">0</span>, <span class="number">6</span>))</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/codage8-plot43.png" alt="img43"></p>
+<p><code>scale_numeric(&quot;y&quot;, domain = c(0, NA))</code> means there is no limit on the maximum value on the y-axis.</p>
+<hr>
+<p><strong>Be aware: ggvis interactivity cannot be displayed in HTML file converted from <code>.Rmd</code> by <code>knitr</code>.</strong></p>
+<hr>
+<h2>Reference</h2>
+<ol>
+<li><a href="https://github.com/rstudio/ggvis" target="_blank" rel="external">Github - RStudio ggvis repository</a></li>
+<li><a href="http://ggvis.rstudio.com/" target="_blank" rel="external">ggvis 0.4 overview</a></li>
+<li><a href="https://www.datacamp.com/courses/ggvis-data-visualization-r-tutorial" target="_blank" rel="external">Data Visualization in R with ggvis</a></li>
+<li><a href="ggvis:%20Interactive,%20intuitive%20graphics%20with%20R" target="_blank" rel="external">ggvis: Interactive, intuitive graphics with R</a></li>
+<li><a href="http://www.r-bloggers.com/goodbye-static-graphs-hello-shiny-ggvis-rmarkdown-vs-js-solutions/" target="_blank" rel="external">Goodbye static graphs, hello shiny, ggvis, rmarkdown (vs JS solutions)</a></li>
+</ol>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2015/10/06/Beauty-of-Programming-chapter-3/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2015/10/07/16.jquery-event-bind/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

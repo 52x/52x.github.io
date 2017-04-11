@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            Linux内核代码风格 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Linux内核代码风格 | Hexo">
+    <meta property="og:description" content="null">
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">Chinese maintainer: Zhang Le <r0bertz@gentoo.org></span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">以下为正文</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">第一章：缩进</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">第二章：把长的行和字符串打散</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">第三章：大括号和空格的放置</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">3.1：空格</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">第四章：命名</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">第五章：Typedef</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">8.</span> <span class="post-toc-text">第六章：函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">9.</span> <span class="post-toc-text">第七章：集中的函数退出途径</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">10.</span> <span class="post-toc-text">第八章：注释</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">11.</span> <span class="post-toc-text">第九章：你已经把事情弄糟了</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">12.</span> <span class="post-toc-text">第十章：Kconfig配置文件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">13.</span> <span class="post-toc-text">第十一章：数据结构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">14.</span> <span class="post-toc-text">第十二章：宏，枚举和RTL</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">15.</span> <span class="post-toc-text">第十三章：打印内核消息</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">16.</span> <span class="post-toc-text">第十四章：分配内存</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">17.</span> <span class="post-toc-text">第十五章：内联弊病</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">18.</span> <span class="post-toc-text">第十六章：函数返回值及命名</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">19.</span> <span class="post-toc-text">第十七章：不要重新发明内核宏</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">20.</span> <span class="post-toc-text">第十八章：编辑器模式行和其他需要罗嗦的事情</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">21.</span> <span class="post-toc-text">附录 I：参考</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Linux内核代码风格
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>3月 04, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Linux内核代码风格&url=http://yoursite.com//2014/03/04/codingstyle/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Linux内核代码风格&url=http://yoursite.com//2014/03/04/codingstyle/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/03/04/codingstyle/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/03/04/codingstyle/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>Chinese translated version of Documentation/CodingStyle</p>
+<p>If you have any comment or update to the content, please post to LKML directly.
+However, if you have problem communicating in English you can also ask the
+Chinese maintainer for help.  Contact the Chinese maintainer, if this
+translation is outdated or there is problem with translation.</p>
+<h2>Chinese maintainer: Zhang Le &lt;r0bertz@gentoo.org&gt;</h2>
+<p>Documentation/CodingStyle的中文翻译</p>
+<p>如果想评论或更新本文的内容，请直接发信到LKML。如果你使用英文交流有困难的话，也可
+以向中文版维护者求助。如果本翻译更新不及时或者翻译存在问题，请联系中文版维护者。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>中文版维护者：</td>
+<td>张乐 Zhang Le &lt;r0bertz@gentoo.org&gt;</td>
+</tr>
+<tr>
+<td>中文版翻译者：</td>
+<td>张乐 Zhang Le &lt;r0bertz@gentoo.org&gt;</td>
+</tr>
+<tr>
+<td>中文版校译者：</td>
+<td>王聪 Wang Cong &lt;xiyou.wangcong@gmail.com&gt;</td>
+</tr>
+<tr>
+<td></td>
+<td>wheelz &lt;kernel.zeng@gmail.com&gt;</td>
+</tr>
+<tr>
+<td></td>
+<td>管旭东 Xudong Guan &lt;xudong.guan@gmail.com&gt;</td>
+</tr>
+<tr>
+<td></td>
+<td>Li Zefan &lt;lizf@cn.fujitsu.com&gt;</td>
+</tr>
+<tr>
+<td></td>
+<td>Wang Chen &lt;wangchen@cn.fujitsu.com&gt;</td>
+</tr>
+</tbody>
+</table>
+<h2>以下为正文</h2>
+<p>这是一个简短的文档，描述了linux内核的首选代码风格。代码风格是因人而异的，而且我
+不愿意把我的观点强加给任何人，不过这里所讲述的是我必须要维护的代码所遵守的风格，
+并且我也希望绝大多数其他代码也能遵守这个风格。请在写代码时至少考虑一下本文所述的
+风格。
+&lt;!--more--&gt;</p>
+<p>首先，我建议你打印一份GNU代码规范，然后不要读它。烧了它，这是一个具有重大象征性
+意义的动作。</p>
+<p>不管怎样，现在我们开始：</p>
+<h2>第一章：缩进</h2>
+<p>制表符是8个字符，所以缩进也是8个字符。有些异端运动试图将缩进变为4（乃至2）个字符
+深，这几乎相当于尝试将圆周率的值定义为3。</p>
+<p>理由：缩进的全部意义就在于清楚的定义一个控制块起止于何处。尤其是当你盯着你的屏幕
+连续看了20小时之后，你将会发现大一点的缩进会使你更容易分辨缩进。</p>
+<p>现在，有些人会抱怨8个字符的缩进会使代码向右边移动的太远，在80个字符的终端屏幕上
+就很难读这样的代码。这个问题的答案是，如果你需要3级以上的缩进，不管用何种方式你
+的代码已经有问题了，应该修正你的程序。</p>
+<p>简而言之，8个字符的缩进可以让代码更容易阅读，还有一个好处是当你的函数嵌套太深的
+时候可以给你警告。留心这个警告。</p>
+<p>在<code>switch</code>语句中消除多级缩进的首选的方式是让“<code>switch</code>”和从属于它的“<code>case</code>”标签对齐于同
+一列，而不要“两次缩进”“<code>case</code>”标签。比如：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">switch</span> (suffix) &#123;</div><div class="line"><span class="keyword">case</span> <span class="string">'G'</span>:</div><div class="line"><span class="keyword">case</span> <span class="string">'g'</span>:</div><div class="line">	mem &lt;&lt;= <span class="number">30</span>;</div><div class="line">	<span class="keyword">break</span>;</div><div class="line"><span class="keyword">case</span> <span class="string">'M'</span>:</div><div class="line"><span class="keyword">case</span> <span class="string">'m'</span>:</div><div class="line">	mem &lt;&lt;= <span class="number">20</span>;</div><div class="line">	<span class="keyword">break</span>;</div><div class="line"><span class="keyword">case</span> <span class="string">'K'</span>:</div><div class="line"><span class="keyword">case</span> <span class="string">'k'</span>:</div><div class="line">	mem &lt;&lt;= <span class="number">10</span>;</div><div class="line">	<span class="comment">/* fall through */</span></div><div class="line"><span class="keyword">default</span>:</div><div class="line">	<span class="keyword">break</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>不要把多个语句放在一行里，除非你有什么东西要隐藏：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (condition) do_this;</div><div class="line">  do_something_everytime;</div></pre></td></tr></table></figure></p>
+<p>也不要在一行里放多个赋值语句。内核代码风格超级简单。就是避免可能导致别人误读的表
+达式。</p>
+<p>除了注释、文档和Kconfig之外，不要使用空格来缩进，前面的例子是例外，是有意为之。</p>
+<p>选用一个好的编辑器，不要在行尾留空格。</p>
+<h2>第二章：把长的行和字符串打散</h2>
+<p>代码风格的意义就在于使用平常使用的工具来维持代码的可读性和可维护性。</p>
+<p>每一行的长度的限制是80列，我们强烈建议您遵守这个惯例。</p>
+<p>长于80列的语句要打散成有意义的片段。每个片段要明显短于原来的语句，而且放置的位置
+也明显的靠右。同样的规则也适用于有很长参数列表的函数头。长字符串也要打散成较短的
+字符串。唯一的例外是超过80列可以大幅度提高可读性并且不会隐藏信息的情况。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">if</span> (condition)</div><div class="line">		printk(KERN_WARNING <span class="string">"Warning this is a long printk with "</span></div><div class="line">						<span class="string">"3 parameters a: %u b: %u "</span></div><div class="line">						<span class="string">"c: %u \n"</span>, a, b, c);</div><div class="line">	<span class="keyword">else</span></div><div class="line">		next_statement;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>第三章：大括号和空格的放置</h2>
+<p>C语言风格中另外一个常见问题是大括号的放置。和缩进大小不同，选择或弃用某种放置策
+略并没有多少技术上的原因，不过首选的方式，就像Kernighan和Ritchie展示给我们的，是
+把起始大括号放在行尾，而把结束大括号放在行首，所以：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (x is <span class="literal">true</span>) &#123;</div><div class="line">	we <span class="keyword">do</span> y</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这适用于所有的非函数语句块（if、switch、for、while、do）。比如：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">switch</span> (action) &#123;</div><div class="line"><span class="keyword">case</span> KOBJ_ADD:</div><div class="line">	<span class="keyword">return</span> <span class="string">"add"</span>;</div><div class="line"><span class="keyword">case</span> KOBJ_REMOVE:</div><div class="line">	<span class="keyword">return</span> <span class="string">"remove"</span>;</div><div class="line"><span class="keyword">case</span> KOBJ_CHANGE:</div><div class="line">	<span class="keyword">return</span> <span class="string">"change"</span>;</div><div class="line"><span class="keyword">default</span>:</div><div class="line">	<span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>不过，有一个例外，那就是函数：函数的起始大括号放置于下一行的开头，所以：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">function</span><span class="params">(<span class="keyword">int</span> x)</span></span></div><div class="line">&#123;</div><div class="line">	body of function</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>全世界的异端可能会抱怨这个不一致性是……呃……不一致的，不过所有思维健全的人都知道（
+a）K&amp;R是_正确的_，并且（b）K&amp;R是正确的。此外，不管怎样函数都是特殊的（在C语言中
+，函数是不能嵌套的）。</p>
+<p>注意结束大括号独自占据一行，除非它后面跟着同一个语句的剩余部分，也就是<code>do</code>语句中的
+“<code>while</code>”或者<code>if</code>语句中的“<code>else</code>”，像这样：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">do</span> &#123;</div><div class="line">	body of <span class="keyword">do</span>-loop</div><div class="line">&#125; <span class="keyword">while</span> (condition);</div></pre></td></tr></table></figure></p>
+<p>和
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (x == y) &#123;</div><div class="line">	..</div><div class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (x &gt; y) &#123;</div><div class="line">	...</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">	....</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>理由：K&amp;R。</p>
+<p>也请注意这种大括号的放置方式也能使空（或者差不多空的）行的数量最小化，同时不失可
+读性。因此，由于你的屏幕上的新行是不可再生资源（想想25行的终端屏幕），你将会有更
+多的空行来放置注释。</p>
+<p>当只有一个单独的语句的时候，不用加不必要的大括号。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (condition)</div><div class="line">	action();</div></pre></td></tr></table></figure></p>
+<p>这点不适用于本身为某个条件语句的一个分支的单独语句。这时需要在两个分支里都使用大
+括号。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (condition) &#123;</div><div class="line">	do_this();</div><div class="line">	do_that();</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">	otherwise();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>3.1：空格</h3>
+<p>Linux内核的空格使用方式（主要）取决于它是用于函数还是关键字。（大多数）关键字后
+要加一个空格。值得注意的例外是<code>sizeof</code>、<code>typeof</code>、<code>alignof</code>和<code>attribute</code>，这些关键字
+某些程度上看起来更像函数（它们在Linux里也常常伴随小括号而使用，尽管在C语言里这样
+的小括号不是必需的，就像“<code>struct fileinfo info</code>”声明过后的“<code>sizeof info</code>”）。</p>
+<p>所以在这些关键字之后放一个空格：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>, <span class="keyword">switch</span>, <span class="keyword">case</span>, <span class="keyword">for</span>, <span class="keyword">do</span>, <span class="keyword">while</span></div></pre></td></tr></table></figure></p>
+<p>但是不要在<code>sizeof</code>、<code>typeof</code>、<code>alignof</code>或者<code>attribute</code>这些关键字之后放空格。例如，
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">s = <span class="keyword">sizeof</span>(<span class="keyword">struct</span> file);</div></pre></td></tr></table></figure></p>
+<p>不要在小括号里的表达式两侧加空格。这是一个反例：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">s = <span class="keyword">sizeof</span>( <span class="keyword">struct</span> file );</div></pre></td></tr></table></figure></p>
+<p>当声明指针类型或者返回指针类型的函数时，“*”的首选使用方式是使之靠近变量名或者函
+数名，而不是靠近类型名。例子：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">char</span> *linux_banner;</div><div class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> <span class="title">memparse</span><span class="params">(<span class="keyword">char</span> *ptr, <span class="keyword">char</span> **retptr)</span></span>;</div><div class="line"><span class="function"><span class="keyword">char</span> *<span class="title">match_strdup</span><span class="params">(<span class="keyword">substring_t</span> *s)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>在大多数二元和三元操作符两侧使用一个空格，例如下面所有这些操作符：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">=  +  -  &lt;  &gt;  *  /  %  |  &amp;  ^  &lt;=  &gt;=  ==  !=  ?  :</div></pre></td></tr></table></figure></p>
+<p>但是一元操作符后不要加空格：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&amp;  *  +  -  ~  !  <span class="keyword">sizeof</span>  typeof  <span class="keyword">alignof</span>  __attribute__  defined</div></pre></td></tr></table></figure></p>
+<p>后缀自加和自减一元操作符前不加空格：
+[cc lang=&quot;c&quot;]
+	++  --
+[/cc]
+前缀自加和自减一元操作符后不加空格：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">++  --</div></pre></td></tr></table></figure></p>
+<p>“<code>.</code>”和“<code>-&gt;</code>”结构体成员操作符前后不加空格。</p>
+<p>不要在行尾留空白。有些可以自动缩进的编辑器会在新行的行首加入适量的空白，然后你
+就可以直接在那一行输入代码。不过假如你最后没有在那一行输入代码，有些编辑器就不
+会移除已经加入的空白，就像你故意留下一个只有空白的行。包含行尾空白的行就这样产
+生了。</p>
+<p>当git发现补丁包含了行尾空白的时候会警告你，并且可以应你的要求去掉行尾空白；不过
+如果你是正在打一系列补丁，这样做会导致后面的补丁失败，因为你改变了补丁的上下文。</p>
+<h2>第四章：命名</h2>
+<p>C是一个简朴的语言，你的命名也应该这样。和Modula-2和Pascal程序员不同，C程序员不使
+用类似ThisVariableIsATemporaryCounter这样华丽的名字。C程序员会称那个变量为“tmp”
+，这样写起来会更容易，而且至少不会令其难于理解。</p>
+<p>不过，虽然混用大小写的名字是不提倡使用的，但是全局变量还是需要一个具描述性的名字
+。称一个全局函数为“foo”是一个难以饶恕的错误。</p>
+<p>全局变量（只有当你真正需要它们的时候再用它）需要有一个具描述性的名字，就像全局函
+数。如果你有一个可以计算活动用户数量的函数，你应该叫它“<code>count_active_users()</code>”或者
+类似的名字，你不应该叫它“<code>cntuser()</code>”。</p>
+<p>在函数名中包含函数类型（所谓的匈牙利命名法）是脑子出了问题——编译器知道那些类型而
+且能够检查那些类型，这样做只能把程序员弄糊涂了。难怪微软总是制造出有问题的程序。</p>
+<p>本地变量名应该简短，而且能够表达相关的含义。如果你有一些随机的整数型的循环计数器
+，它应该被称为“i”。叫它“<code>loop_counter</code>”并无益处，如果它没有被误解的可能的话。类似
+的，“<code>tmp</code>”可以用来称呼任意类型的临时变量。</p>
+<p>如果你怕混淆了你的本地变量名，你就遇到另一个问题了，叫做函数增长荷尔蒙失衡综合症
+。请看第六章（函数）。</p>
+<h2>第五章：Typedef</h2>
+<p>不要使用类似“<code>vps_t</code>”之类的东西。</p>
+<p>对结构体和指针使用<code>typedef</code>是一个错误。当你在代码里看到：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">vps_t</span> a;</div></pre></td></tr></table></figure></p>
+<p>这代表什么意思呢？</p>
+<p>相反，如果是这样
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> virtual_container *a;</div></pre></td></tr></table></figure></p>
+<p>你就知道“<code>a</code>”是什么了。</p>
+<p>很多人认为<code>typedef</code>“能提高可读性”。实际不是这样的。它们只在下列情况下有用：</p>
+<p>(a) 完全不透明的对象（这种情况下要主动使用<code>typedef</code>来隐藏这个对象实际上是什么）。
+例如：“<code>pte_t</code>”等不透明对象，你只能用合适的访问函数来访问它们。
+注意！不透明性和“访问函数”本身是不好的。我们使用pte_t等类型的原因在于真的是
+完全没有任何共用的可访问信息。</p>
+<p>(b) 清楚的整数类型，如此，这层抽象就可以帮助消除到底是“<code>int</code>”还是“<code>long</code>”的混淆。
+u8/u16/u32是完全没有问题的typedef，不过它们更符合类别(d)而不是这里。
+再次注意！要这样做，必须事出有因。如果某个变量是“<code>unsigned long</code>“，那么没有必要
+<code>typedef unsigned long myflags_t;</code>
+不过如果有一个明确的原因，比如它在某种情况下可能会是一个“<code>unsigned int</code>”而在
+其他情况下可能为“<code>unsigned long</code>”，那么就不要犹豫，请务必使用<code>typedef</code>。</p>
+<p>(c) 当你使用<code>sparse</code>按字面的创建一个新类型来做类型检查的时候。</p>
+<p>(d) 和标准C99类型相同的类型，在某些例外的情况下。
+虽然让眼睛和脑筋来适应新的标准类型比如“<code>uint32_t</code>”不需要花很多时间，可是有些
+人仍然拒绝使用它们。
+因此，Linux特有的等同于标准类型的“u8/u16/u32/u64”类型和它们的有符号类型是被
+允许的——尽管在你自己的新代码中，它们不是强制要求要使用的。
+当编辑已经使用了某个类型集的已有代码时，你应该遵循那些代码中已经做出的选择。</p>
+<p>(e) 可以在用户空间安全使用的类型。
+在某些用户空间可见的结构体里，我们不能要求C99类型而且不能用上面提到的“<code>u32</code>”
+类型。因此，我们在与用户空间共享的所有结构体中使用<code>__u32</code>和类似的类型。</p>
+<p>可能还有其他的情况，不过基本的规则是永远不要使用<code>typedef</code>，除非你可以明确的应用上
+述某个规则中的一个。</p>
+<p>总的来说，如果一个指针或者一个结构体里的元素可以合理的被直接访问到，那么它们就不
+应该是一个<code>typedef</code>。</p>
+<h2>第六章：函数</h2>
+<p>函数应该简短而漂亮，并且只完成一件事情。函数应该可以一屏或者两屏显示完（我们都知
+道ISO/ANSI屏幕大小是80x24），只做一件事情，而且把它做好。</p>
+<p>一个函数的最大长度是和该函数的复杂度和缩进级数成反比的。所以，如果你有一个理论上
+很简单的只有一个很长（但是简单）的<code>case</code>语句的函数，而且你需要在每个<code>case</code>里做很多很
+小的事情，这样的函数尽管很长，但也是可以的。</p>
+<p>不过，如果你有一个复杂的函数，而且你怀疑一个天分不是很高的高中一年级学生可能甚至
+搞不清楚这个函数的目的，你应该严格的遵守前面提到的长度限制。使用辅助函数，并为之
+取个具描述性的名字（如果你觉得它们的性能很重要的话，可以让编译器内联它们，这样的
+效果往往会比你写一个复杂函数的效果要好。）</p>
+<p>函数的另外一个衡量标准是本地变量的数量。此数量不应超过5－10个，否则你的函数就有
+问题了。重新考虑一下你的函数，把它分拆成更小的函数。人的大脑一般可以轻松的同时跟
+踪7个不同的事物，如果再增多的话，就会糊涂了。即便你聪颖过人，你也可能会记不清你2
+个星期前做过的事情。</p>
+<p>在源文件里，使用空行隔开不同的函数。如果该函数需要被导出，它的<code>EXPORT*</code>宏应该紧贴
+在它的结束大括号之下。比如：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">system_is_up</span><span class="params">(<span class="keyword">void</span>)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">return</span> system_state == SYSTEM_RUNNING;</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL(system_is_up);</div></pre></td></tr></table></figure></p>
+<p>在函数原型中，包含函数名和它们的数据类型。虽然C语言里没有这样的要求，在Linux里这
+是提倡的做法，因为这样可以很简单的给读者提供更多的有价值的信息。</p>
+<h2>第七章：集中的函数退出途径</h2>
+<p>虽然被某些人声称已经过时，但是<code>goto</code>语句的等价物还是经常被编译器所使用，具体形式是
+无条件跳转指令。</p>
+<p>当一个函数从多个位置退出并且需要做一些通用的清理工作的时候，<code>goto</code>的好处就显现出来
+了。</p>
+<p>理由是：</p>
+<ul>
+<li>无条件语句容易理解和跟踪</li>
+<li>嵌套程度减小</li>
+<li>可以避免由于修改时忘记更新某个单独的退出点而导致的错误</li>
+<li>减轻了编译器的工作，无需删除冗余代码;)</li>
+</ul>
+<p><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">fun</span><span class="params">(<span class="keyword">int</span> a)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">int</span> result = <span class="number">0</span>;</div><div class="line">	<span class="keyword">char</span> *buffer = kmalloc(SIZE);</div><div class="line"></div><div class="line">	<span class="keyword">if</span> (buffer == <span class="literal">NULL</span>)</div><div class="line">		<span class="keyword">return</span> -ENOMEM;</div><div class="line"></div><div class="line">	<span class="keyword">if</span> (condition1) &#123;</div><div class="line">		<span class="keyword">while</span> (loop1) &#123;</div><div class="line">			...</div><div class="line">		&#125;</div><div class="line">		result = <span class="number">1</span>;</div><div class="line">		<span class="keyword">goto</span> out;</div><div class="line">	&#125;</div><div class="line">	...</div><div class="line">out:</div><div class="line">	kfree(buffer);</div><div class="line">	<span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>第八章：注释</h2>
+<p>注释是好的，不过有过度注释的危险。永远不要在注释里解释你的代码是如何运作的：更好
+的做法是让别人一看你的代码就可以明白，解释写的很差的代码是浪费时间。</p>
+<p>一般的，你想要你的注释告诉别人你的代码做了什么，而不是怎么做的。也请你不要把注释
+放在一个函数体内部：如果函数复杂到你需要独立的注释其中的一部分，你很可能需要回到
+第六章看一看。你可以做一些小注释来注明或警告某些很聪明（或者槽糕）的做法，但不要
+加太多。你应该做的，是把注释放在函数的头部，告诉人们它做了什么，也可以加上它做这
+些事情的原因。</p>
+<p>当注释内核API函数时，请使用kernel-doc格式。请看
+Documentation/kernel-doc-nano-HOWTO.txt和scripts/kernel-doc以获得详细信息。</p>
+<p>Linux的注释风格是C89“<code>/* ... */</code>”风格。不要使用C99风格“<code>// ...</code>”注释。</p>
+<p>长（多行）的首选注释风格是：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * This is the preferred style for multi-line</div><div class="line"> * comments in the Linux kernel source code.</div><div class="line"> * Please use it consistently.</div><div class="line"> *</div><div class="line"> * Description:  A column of asterisks on the left side,</div><div class="line"> * with beginning and ending almost-blank lines.</div><div class="line"> */</div></pre></td></tr></table></figure></p>
+<p>注释数据也是很重要的，不管是基本类型还是衍生类型。为了方便实现这一点，每一行应只
+声明一个数据（不要使用逗号来一次声明多个数据）。这样你就有空间来为每个数据写一段
+小注释来解释它们的用途了。</p>
+<h2>第九章：你已经把事情弄糟了</h2>
+<p>这没什么，我们都是这样。可能你的使用了很长时间Unix的朋友已经告诉你“GNU emacs”能
+自动帮你格式化C源代码，而且你也注意到了，确实是这样，不过它所使用的默认值和我们
+想要的相去甚远（实际上，甚至比随机打的还要差——无数个猴子在GNU emacs里打字永远不
+会创造出一个好程序）（译注：请参考Infinite Monkey Theorem）</p>
+<p>所以你要么放弃GNU emacs，要么改变它让它使用更合理的设定。要采用后一个方案，你可
+以把下面这段粘贴到你的.emacs文件里。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">(defun linux-c-mode ()</div><div class="line">  &quot;C mode with adjusted defaults for use with the Linux kernel.&quot;</div><div class="line">  (interactive)</div><div class="line">  (c-mode)</div><div class="line">  (c-set-style &quot;K&amp;R&quot;)</div><div class="line">  (setq tab-width 8)</div><div class="line">  (setq indent-tabs-mode t)</div><div class="line">  (setq c-basic-offset 8))</div></pre></td></tr></table></figure></p>
+<p>这样就定义了M-x linux-c-mode命令。当你hack一个模块的时候，如果你把字符串
+-<em>- linux-c -</em>-放在头两行的某个位置，这个模式将会被自动调用。如果你希望在你修改
+/usr/src/linux里的文件时魔术般自动打开linux-c-mode的话，你也可能需要添加
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(setq auto-mode-alist (cons &apos;(&quot;/usr/src/linux.*/.*\\.[ch]$&quot; . linux-c-mode)</div><div class="line">			auto-mode-alist))</div></pre></td></tr></table></figure></p>
+<p>到你的.emacs文件里。</p>
+<p>不过就算你尝试让emacs正确的格式化代码失败了，也并不意味着你失去了一切：还可以用“
+indent”。</p>
+<p>不过，GNU indent也有和GNU emacs一样有问题的设定，所以你需要给它一些命令选项。不
+过，这还不算太糟糕，因为就算是GNU indent的作者也认同K&amp;R的权威性（GNU的人并不是坏
+人，他们只是在这个问题上被严重的误导了），所以你只要给indent指定选项“<code>-kr -i8</code>”
+（代表“K&amp;R，8个字符缩进”），或者使用“scripts/Lindent”，这样就可以以最时髦的方式
+缩进源代码。</p>
+<p>“indent”有很多选项，特别是重新格式化注释的时候，你可能需要看一下它的手册页。不过
+记住：“indent”不能修正坏的编程习惯。</p>
+<h2>第十章：Kconfig配置文件</h2>
+<p>对于遍布源码树的所有Kconfig*配置文件来说，它们缩进方式与C代码相比有所不同。紧挨
+在“config”定义下面的行缩进一个制表符，帮助信息则再多缩进2个空格。比如：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">config AUDIT</div><div class="line">	bool &quot;Auditing support&quot;</div><div class="line">	depends on NET</div><div class="line">	help</div><div class="line">	  Enable auditing infrastructure that can be used with another</div><div class="line">	  kernel subsystem, such as SELinux (which requires this for</div><div class="line">	  logging of avc messages output).  Does not do system-call</div><div class="line">	  auditing without CONFIG_AUDITSYSCALL.</div></pre></td></tr></table></figure></p>
+<p>而那些危险的功能（比如某些文件系统的写支持）应该在它们的提示字符串里显著的声明这
+一点：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">config ADFS_FS_RW</div><div class="line">	bool &quot;ADFS write support (DANGEROUS)&quot;</div><div class="line">	depends on ADFS_FS</div><div class="line">	...</div></pre></td></tr></table></figure></p>
+<p>要查看配置文件的完整文档，请看Documentation/kbuild/kconfig-language.txt。</p>
+<h2>第十一章：数据结构</h2>
+<p>如果一个数据结构，在创建和销毁它的单线执行环境之外可见，那么它必须要有一个引用计
+数器。内核里没有垃圾收集（并且内核之外的垃圾收集慢且效率低下），这意味着你绝对需
+要记录你对这种数据结构的使用情况。</p>
+<p>引用计数意味着你能够避免上锁，并且允许多个用户并行访问这个数据结构——而不需要担心
+这个数据结构仅仅因为暂时不被使用就消失了，那些用户可能不过是沉睡了一阵或者做了一
+些其他事情而已。</p>
+<p>注意上锁不能取代引用计数。上锁是为了保持数据结构的一致性，而引用计数是一个内存管
+理技巧。通常二者都需要，不要把两个搞混了。</p>
+<p>很多数据结构实际上有2级引用计数，它们通常有不同“类”的用户。子类计数器统计子类用
+户的数量，每当子类计数器减至零时，全局计数器减一。</p>
+<p>这种“多级引用计数”的例子可以在内存管理（“<code>struct mm_struct</code>”：<code>mm_users</code>和<code>mm_count</code>）
+和文件系统（“<code>struct super_block</code>”：<code>s_count</code>和<code>s_active</code>）中找到。</p>
+<p>记住：如果另一个执行线索可以找到你的数据结构，但是这个数据结构没有引用计数器，这
+里几乎肯定是一个bug。</p>
+<h2>第十二章：宏，枚举和RTL</h2>
+<p>用于定义常量的宏的名字及枚举里的标签需要大写。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> CONSTANT 0x12345</span></div></pre></td></tr></table></figure></p>
+<p>在定义几个相关的常量时，最好用枚举。</p>
+<p>宏的名字请用大写字母，不过形如函数的宏的名字可以用小写字母。</p>
+<p>一般的，如果能写成内联函数就不要写成像函数的宏。</p>
+<p>含有多个语句的宏应该被包含在一个do-while代码块里：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> macrofun(a, b, c) 			\</span></div><div class="line">	do &#123;					\</div><div class="line">		<span class="meta-keyword">if</span> (a == 5)			\</div><div class="line">			do_this(b, c);		\</div><div class="line">	&#125; while (0)</div></pre></td></tr></table></figure></p>
+<p>使用宏的时候应避免的事情：</p>
+<ol>
+<li>影响控制流程的宏：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> FOO(x)					\</span></div><div class="line">	do &#123;					\</div><div class="line">		<span class="meta-keyword">if</span> (blah(x) &lt; 0)		\</div><div class="line">			return -EBUGGERED;	\</div><div class="line">	&#125; while(0)</div></pre></td></tr></table></figure></li>
+</ol>
+<p>非常不好。它看起来像一个函数，不过却能导致“调用”它的函数退出；不要打乱读者大脑里
+的语法分析器。</p>
+<ol start="2">
+<li>依赖于一个固定名字的本地变量的宏：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> FOO(val) bar(index, val)</span></div></pre></td></tr></table></figure></li>
+</ol>
+<p>可能看起来像是个不错的东西，不过它非常容易把读代码的人搞糊涂，而且容易导致看起来
+不相关的改动带来错误。</p>
+<ol start="3">
+<li>
+<p>作为左值的带参数的宏：<code>FOO(x) = y；</code>如果有人把FOO变成一个内联函数的话，这种用
+法就会出错了。</p>
+</li>
+<li>
+<p>忘记了优先级：使用表达式定义常量的宏必须将表达式置于一对小括号之内。带参数的
+宏也要注意此类问题。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> CONSTANT 0x4000</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> CONSTEXP (CONSTANT | 3)</span></div></pre></td></tr></table></figure></p>
+</li>
+</ol>
+<p>cpp手册对宏的讲解很详细。Gcc internals手册也详细讲解了RTL（译注：register
+transfer language），内核里的汇编语言经常用到它。</p>
+<h2>第十三章：打印内核消息</h2>
+<p>内核开发者应该是受过良好教育的。请一定注意内核信息的拼写，以给人以好的印象。不要
+用不规范的单词比如“dont”，而要用“do not”或者“don't”。保证这些信息简单、明了、无
+歧义。</p>
+<p>内核信息不必以句号（译注：英文句号，即点）结束。</p>
+<p>在小括号里打印数字(<code>%d</code>)没有任何价值，应该避免这样做。</p>
+<p>&lt;linux/device.h&gt;里有一些驱动模型诊断宏，你应该使用它们，以确保信息对应于正确的
+设备和驱动，并且被标记了正确的消息级别。这些宏有：<code>dev_err()</code>,<code>dev_warn()</code>,
+<code>dev_info()</code>等等。对于那些不和某个特定设备相关连的信息，&lt;linux/kernel.h&gt;定义了
+<code>pr_debug()</code>和<code>pr_info()</code>。</p>
+<p>写出好的调试信息可以是一个很大的挑战；当你写出来之后，这些信息在远程除错的时候
+就会成为极大的帮助。当DEBUG符号没有被定义的时候，这些信息不应该被编译进内核里
+（也就是说，默认地，它们不应该被包含在内）。如果你使用<code>dev_dbg()</code>或者<code>pr_debug()</code>，
+就能自动达到这个效果。很多子系统拥有Kconfig选项来启用-DDEBUG。还有一个相关的惯例
+是使用<code>VERBOSE_DEBUG</code>来添加<code>dev_vdbg()</code>消息到那些已经由DEBUG启用的消息之上。</p>
+<h2>第十四章：分配内存</h2>
+<p>内核提供了下面的一般用途的内存分配函数：<code>kmalloc()</code>，<code>kzalloc()</code>，<code>kcalloc()</code>和
+<code>vmalloc()</code>。请参考API文档以获取有关它们的详细信息。</p>
+<p>传递结构体大小的首选形式是这样的：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">p = kmalloc(<span class="keyword">sizeof</span>(*p), ...);</div></pre></td></tr></table></figure></p>
+<p>另外一种传递方式中，<code>sizeof</code>的操作数是结构体的名字，这样会降低可读性，并且可能会引
+入bug。有可能指针变量类型被改变时，而对应的传递给内存分配函数的<code>sizeof</code>的结果不变。</p>
+<p>强制转换一个<code>void</code>指针返回值是多余的。C语言本身保证了从<code>void</code>指针到其他任何指针类型
+的转换是没有问题的。</p>
+<h2>第十五章：内联弊病</h2>
+<p>有一个常见的误解是内联函数是gcc提供的可以让代码运行更快的一个选项。虽然使用内联
+函数有时候是恰当的（比如作为一种替代宏的方式，请看第十二章），不过很多情况下不是
+这样。<code>inline</code>关键字的过度使用会使内核变大，从而使整个系统运行速度变慢。因为大内核
+会占用更多的指令高速缓存（译注：一级缓存通常是指令缓存和数据缓存分开的）而且会导
+致pagecache的可用内存减少。想象一下，一次pagecache未命中就会导致一次磁盘寻址，将
+耗时5毫秒。5毫秒的时间内CPU能执行很多很多指令。</p>
+<p>一个基本的原则是如果一个函数有3行以上，就不要把它变成内联函数。这个原则的一个例
+外是，如果你知道某个参数是一个编译时常量，而且因为这个常量你确定编译器在编译时能
+优化掉你的函数的大部分代码，那仍然可以给它加上<code>inline</code>关键字。<code>kmalloc()</code>内联函数就
+是一个很好的例子。</p>
+<p>人们经常主张给<code>static</code>的而且只用了一次的函数加上<code>inline</code>，如此不会有任何损失，因为没
+有什么好权衡的。虽然从技术上说这是正确的，但是实际上这种情况下即使不加<code>inline</code> gcc
+也可以自动使其内联。而且其他用户可能会要求移除<code>inline</code>，由此而来的争论会抵消<code>inline</code>
+自身的潜在价值，得不偿失。</p>
+<h2>第十六章：函数返回值及命名</h2>
+<p>函数可以返回很多种不同类型的值，最常见的一种是表明函数执行成功或者失败的值。这样
+的一个值可以表示为一个错误代码整数（-Exxx＝失败，0＝成功）或者一个“成功”布尔值（
+0＝失败，非0＝成功）。</p>
+<p>混合使用这两种表达方式是难于发现的bug的来源。如果C语言本身严格区分整形和布尔型变
+量，那么编译器就能够帮我们发现这些错误……不过C语言不区分。为了避免产生这种bug，请
+遵循下面的惯例：</p>
+<blockquote>
+<p>如果函数的名字是一个动作或者强制性的命令，那么这个函数应该返回错误代码整
+数。如果是一个判断，那么函数应该返回一个“成功”布尔值。</p>
+</blockquote>
+<p>比如，“<code>add work</code>”是一个命令，所以<code>add_work()</code>函数在成功时返回0，在失败时返回<code>-EBUSY</code>。
+类似的，因为“<code>PCI device present</code>”是一个判断，所以<code>pci_dev_present()</code>函数在成功找到
+一个匹配的设备时应该返回1，如果找不到时应该返回0。</p>
+<p>所有导出（译注：EXPORT）的函数都必须遵守这个惯例，所有的公共函数也都应该如此。私
+有（static）函数不需要如此，但是我们也推荐这样做。</p>
+<p>返回值是实际计算结果而不是计算是否成功的标志的函数不受此惯例的限制。一般的，他们
+通过返回一些正常值范围之外的结果来表示出错。典型的例子是返回指针的函数，他们使用
+<code>NULL</code>或者<code>ERR_PTR</code>机制来报告错误。</p>
+<h2>第十七章：不要重新发明内核宏</h2>
+<p>头文件include/linux/kernel.h包含了一些宏，你应该使用它们，而不要自己写一些它们的
+变种。比如，如果你需要计算一个数组的长度，使用这个宏
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))</span></div><div class="line">``</div><div class="line">类似的，如果你要计算某结构体成员的大小，使用</div><div class="line">```c</div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> FIELD_SIZEOF(t, f) (sizeof(((t*)0)-&gt;f))</span></div></pre></td></tr></table></figure></p>
+<p>还有可以做严格的类型检查的<code>min()</code>和<code>max()</code>宏，如果你需要可以使用它们。你可以自己看看
+那个头文件里还定义了什么你可以拿来用的东西，如果有定义的话，你就不应在你的代码里
+自己重新定义。</p>
+<h2>第十八章：编辑器模式行和其他需要罗嗦的事情</h2>
+<p>有一些编辑器可以解释嵌入在源文件里的由一些特殊标记标明的配置信息。比如，emacs
+能够解释被标记成这样的行：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-*- mode: c -*-</div></pre></td></tr></table></figure></p>
+<p>或者这样的：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line">Local Variables:</div><div class="line">compile-command: "gcc -DMAGIC_DEBUG_FLAG foo.c"</div><div class="line">End:</div><div class="line">*/</div></pre></td></tr></table></figure></p>
+<p>Vim能够解释这样的标记：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/* vim:set sw=8 noet */</div></pre></td></tr></table></figure></p>
+<p>不要在源代码中包含任何这样的内容。每个人都有他自己的编辑器配置，你的源文件不应
+该覆盖别人的配置。这包括有关缩进和模式配置的标记。人们可以使用他们自己定制的模
+式，或者使用其他可以产生正确的缩进的巧妙方法。</p>
+<h2>附录 I：参考</h2>
+<p>The C Programming Language, 第二版, 作者Brian W. Kernighan和Denni
+M. Ritchie. Prentice Hall, Inc., 1988. ISBN 0-13-110362-8 (软皮),
+0-13-110370-9 (硬皮). URL: <a href="http://cm.bell-labs.com/cm/cs/cbook/" target="_blank" rel="external">http://cm.bell-labs.com/cm/cs/cbook/</a></p>
+<p>The Practice of Programming 作者Brian W. Kernighan和Rob Pike.  Addison-Wesley,
+Inc., 1999.  ISBN 0-201-61586-X.  URL: <a href="http://cm.bell-labs.com/cm/cs/tpop/" target="_blank" rel="external">http://cm.bell-labs.com/cm/cs/tpop/</a></p>
+<p>cpp，gcc，gcc internals和indent的GNU手册——和K&amp;R及本文相符合的部分，全部可以在
+<a href="http://www.gnu.org/manual/" target="_blank" rel="external">http://www.gnu.org/manual/</a> 找到</p>
+<p>WG14是C语言的国际标准化工作组，URL: <a href="http://www.open-std.org/JTC1/SC22/WG14/" target="_blank" rel="external">http://www.open-std.org/JTC1/SC22/WG14/</a></p>
+<p>Kernel CodingStyle，作者greg@kroah.com发表于OLS 2002：
+<a href="http://www.kroah.com/linux/talks/ols_2002_kernel_codingstyle_talk/html/" target="_blank" rel="external">http://www.kroah.com/linux/talks/ols_2002_kernel_codingstyle_talk/html/</a></p>
+<p>--
+最后更新于2007年7月13日。</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/03/03/serio-bus/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/03/04/kobject/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

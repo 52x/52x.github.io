@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            分析内核源码如何入手（下） | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="分析内核源码如何入手（下） | Hexo">
+    <meta property="og:description" content="null">
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">从初始化函数开始</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">__init标记</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">模块参数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">可变参数宏</span></a></li></ol></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                分析内核源码如何入手（下）
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>4月 17, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=分析内核源码如何入手（下）&url=http://yoursite.com//2014/04/17/how-to-analysis-kernel-source-2/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=分析内核源码如何入手（下）&url=http://yoursite.com//2014/04/17/how-to-analysis-kernel-source-2/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/04/17/how-to-analysis-kernel-source-2/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/04/17/how-to-analysis-kernel-source-2/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>原文：<a href="http://blog.csdn.net/fudan_abc/article/details/5355062" target="_blank" rel="external">《Linux内核修炼之道》精华分享与讨论（7）——分析内核源码如何入手？（下） </a></p>
+<h2>从初始化函数开始</h2>
+<p>有了地图Kconfig和Makefile，我们可以在庞大复杂的内核代码中定位以及缩小了目标代码的范围。那么现在，为了研究内核对USB子系统的实现，我们还需要在目标代码中找到一个突破口，这个突破口就是USB子系统的初始化代码。
+&lt;!--more--&gt;
+针对某个子系统或某个驱动，内核使用<code>subsys_initcall</code>或<code>module_init</code>宏指定初始化函数。在drivers/usb/core/usb.c文件中，我们可以发现下面的代码。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">subsys_initcall(usb_init);</div><div class="line">module_exit(usb_exit);</div></pre></td></tr></table></figure></p>
+<p>我们看到一个<code>subsys_initcall</code>，它也是一个宏，我们可以把它理解为<code>module_init</code>，只不过因为这部分代码比较核心，开发者们把它看作一个子系统，而不仅仅是一个模块。这也很好理解，usbcore这个模块它代表的不是某一个设备，而是所有USB设备赖以生存的模块，Linux中，像这样一个类别的设备驱动被归结为一个子系统。比如PCI子系统，比如SCSI子系统，基本上，drivers/目录下面第一层的每个目录都算一个子系统，因为它们代表了一类设备。</p>
+<p><code>subsys_initcall(usb_init)</code>的意思就是告诉我们<code>usb_init</code>是USB子系统真正的初始化函数，而<code>usb_exit()</code>将是整个USB子系统的结束时的清理函数。于是为了研究USB子系统在内核中的实现，我们需要从<code>usb_init</code>函数开始看起。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> __<span class="function">init <span class="title">usb_init</span><span class="params">(<span class="keyword">void</span>)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> retval;</div><div class="line">    <span class="keyword">if</span> (nousb) &#123;</div><div class="line">        pr_info(<span class="string">"%s: USB support disabled/n"</span>, usbcore_name);</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    retval = ksuspend_usb_init();</div><div class="line">    <span class="keyword">if</span> (retval)</div><div class="line">        <span class="keyword">goto</span> out;</div><div class="line">    retval = bus_register(&amp;usb_bus_type);</div><div class="line">    <span class="keyword">if</span> (retval)</div><div class="line">        <span class="keyword">goto</span> bus_register_failed;</div><div class="line">    retval = usb_host_init();</div><div class="line">    <span class="keyword">if</span> (retval)</div><div class="line">        <span class="keyword">goto</span> host_init_failed;</div><div class="line">    retval = usb_major_init();</div><div class="line">    <span class="keyword">if</span> (retval)</div><div class="line">        <span class="keyword">goto</span> major_init_failed;</div><div class="line">    retval = usb_register(&amp;usbfs_driver);</div><div class="line">    <span class="keyword">if</span> (retval)</div><div class="line">        <span class="keyword">goto</span> driver_register_failed;</div><div class="line">    retval = usb_devio_init();</div><div class="line">    <span class="keyword">if</span> (retval)</div><div class="line">        <span class="keyword">goto</span> usb_devio_init_failed;</div><div class="line">    retval = usbfs_init();</div><div class="line">    <span class="keyword">if</span> (retval)</div><div class="line">        <span class="keyword">goto</span> fs_init_failed;</div><div class="line">    retval = usb_hub_init();</div><div class="line">    <span class="keyword">if</span> (retval)</div><div class="line">        <span class="keyword">goto</span> hub_init_failed;</div><div class="line">    retval = usb_register_device_driver(&amp;usb_generic_driver, THIS_MODULE);</div><div class="line">    <span class="keyword">if</span> (!retval)</div><div class="line">        <span class="keyword">goto</span> out;</div><div class="line"></div><div class="line">    usb_hub_cleanup();</div><div class="line">hub_init_failed:</div><div class="line">    usbfs_cleanup();</div><div class="line">fs_init_failed:</div><div class="line">    usb_devio_cleanup();</div><div class="line">usb_devio_init_failed:</div><div class="line">    usb_deregister(&amp;usbfs_driver);</div><div class="line">driver_register_failed:</div><div class="line">    usb_major_cleanup();</div><div class="line">major_init_failed:</div><div class="line">    usb_host_cleanup();</div><div class="line">host_init_failed:</div><div class="line">    bus_unregister(&amp;usb_bus_type);</div><div class="line">bus_register_failed:</div><div class="line">    ksuspend_usb_cleanup();</div><div class="line">out:</div><div class="line">    <span class="keyword">return</span> retval;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>__init标记</h3>
+<p>关于<code>usb_init</code>，第一个问题是，<code>__init</code>标记具有什么意义？</p>
+<p>写过驱动的应该不会陌生，它对内核来说就是一种暗示，表明这个函数仅在初始化期间使用，在模块被装载之后，它占用的资源就会释放掉用作它处。它的暗示你懂，可你的暗示，她却不懂或者懂装不懂，多么让人感伤。它在自己短暂的一生中一直从事繁重的工作，吃的是草吐出的是牛奶，留下的是整个USB子系统的繁荣。</p>
+<p>受这种精神所感染，我觉得有必要为它说的更多些。<code>__init</code>的定义在include/linux/init.h文件里
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> __init    __attribute__ ((__section__ (<span class="meta-string">".init.text"</span>)))</span></div></pre></td></tr></table></figure></p>
+<p>好像这里引出了更多的疑问，<code>__attribute__</code>是什么？Linux内核代码使用了大量的GNU C扩展，以至于GNU C成为能够编译内核的唯一编译器，GNU C的这些扩展对代码优化、目标代码布局、安全检查等方面也提供了很强的支持。而<code>__attribute__</code>就是这些扩展中的一个，它主要被用来声明一些特殊的属性，这些属性主要被用来指示编译器进行特定方面的优化和更仔细的代码检查。GNU C支持十几个属性，<code>section</code>是其中的一个，我们查看GCC的手册可以看到下面的描述：</p>
+<blockquote>
+<p>‘section (&quot;section-name&quot;)'&gt;
+　　 Normally, the compiler places the code it generates in the <code>text'&gt; 　　 section.　Sometimes, however, you need additional sections, or you&gt; 　　 need certain particular functions to appear in special sections.&gt; 　　 The</code>section' attribute specifies that a function lives in a&gt;
+　　 particular section.　For example, the declaration:&gt;</p>
+<p>extern void foobar (void) <strong>attribute</strong> ((section (&quot;bar&quot;)));&gt;</p>
+<p>puts the function ‘foobar' in the ‘bar' section.&gt;</p>
+<p>Some file formats do not support arbitrary sections so the&gt;
+　　 ‘section' attribute is not available on all platforms.　If you&gt;
+　　 need to map the entire contents of a module to a particular&gt;
+　　 section, consider using the facilities of the linker instead.
+通常编译器将函数放在<code>.text</code>节，变量放在<code>.data</code>或<code>.bss</code>节，使用<code>section</code>属性，可以让编译器将函数或变量放在指定的节中。那么前面对<code>__init</code>的定义便表示将它修饰的代码放在<code>.init.text</code>节。链接器可以把相同节的代码或数据安排在一起，比如<code>__init</code>修饰的所有代码都会被放在<code>.init.text</code>节里，初始化结束后就可以释放这部分内存。</p>
+</blockquote>
+<p>问题可以到此为止，也可以更深入，即&lt;span style=&quot;color:red;&quot;&gt;内核又是如何调用到这些<code>__init</code>修饰的初始化函数？&lt;/span&gt;要回答这个问题，还需要回顾一下<code>subsys_initcall</code>宏，它也在include/linux/init.h里定义
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> subsys_initcall(fn)    __define_initcall(<span class="meta-string">"4"</span>,fn,4)</span></div></pre></td></tr></table></figure></p>
+<p>这里又出现了一个宏<code>__define_initcall</code>，它用于将指定的函数指针<code>fn</code>放到<code>.initcall.init</code>节里 而对于具体的<code>subsys_initcall</code>宏，则是把<code>fn</code>放到<code>.initcall.init</code>的子节<code>.initcall4.init</code>里。要弄清楚<code>.initcall.init</code>、<code>.init.text</code>和<code>.initcall4.init</code>这样的东东，我们还需要了解一点内核可执行文件相关的概念。</p>
+<p>内核可执行文件由许多链接在一起的对象文件组成。对象文件有许多节，如文本、数据、init数据、bss等等。这些对象文件都是由一个称为链接器脚本的文件链接并装入的。这个链接器脚本的功能是将输入对象文件的各节映射到输出文件中；换句话说，它将所有输入对象文件都链接到单一的可执行文件中，将该可执行文件的各节装入到指定地址处。vmlinux.lds是存在于arch/&lt;target&gt;/ 目录中的内核链接器脚本，它负责链接内核的各个节并将它们装入内存中特定偏移量处。</p>
+<p>我可以负责任的告诉你，要看懂vmlinux.lds这个文件是需要一番功夫的，不过大家都是聪明人，聪明人做聪明事，所以你需要做的只是搜索initcall.init，然后便会看到似曾相识的内容
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">__inicall_start = .;</div><div class="line">.initcall.init : AT(ADDR(.initcall.init) – 0xC0000000) &#123;</div><div class="line">*(.initcall1.init)</div><div class="line">*(.initcall2.init)</div><div class="line">*(.initcall3.init)</div><div class="line">*(.initcall4.init)</div><div class="line">*(.initcall5.init)</div><div class="line">*(.initcall6.init)</div><div class="line">*(.initcall7.init)</div><div class="line">&#125;</div><div class="line">__initcall_end = .;</div></pre></td></tr></table></figure></p>
+<p>这里的<code>__initcall_start</code>指向<code>.initcall.init</code>节的开始，<code>__initcall_end</code>指向它的结尾。而<code>.initcall.init</code>节又被分为了7个子节，分别是
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">.initcall1.init</div><div class="line">.initcall2.init</div><div class="line">.initcall3.init</div><div class="line">.initcall4.init</div><div class="line">.initcall5.init</div><div class="line">.initcall6.init</div><div class="line">.initcall7.init</div></pre></td></tr></table></figure></p>
+<p>我们的<code>subsys_initcall</code>宏便是将指定的函数指针放在了<code>.initcall4.init</code>子节。其它的比如<code>core_initcall</code>将函数指针放在<code>.initcall1.init</code>子节，<code>device_initcall</code>将函数指针放在了<code>.initcall6.init</code>子节等等，都可以从include/linux/init.h文件找到它们的定义。&lt;span style=&quot;color:red;&quot;&gt;各个子节的顺序是确定的，即先调用<code>.initcall1.init</code>中的函数指针，再调用<code>.initcall2.init</code>中的函数指针，等等。<code>__init</code>修饰的初始化函数在内核初始化过程中调用的顺序和<code>.initcall.init</code>节里函数指针的顺序有关，不同的初始化函数被放在不同的子节中，因此也就决定了它们的调用顺序。&lt;/span&gt;</p>
+<p>至于实际执行函数调用的地方，就在/init/main.c文件里，内核的初始化么，不在那里还能在哪里，里面的<code>do_initcalls</code>函数会直接用到这里的<code>__initcall_start</code>、<code>__initcall_end</code>来进行判断。</p>
+<p>相关宏定义(include/linux/init.h)：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* initcalls are now grouped by functionality into separate</span></div><div class="line"> * subsections. Ordering inside the subsections is determined</div><div class="line"> * by link order.</div><div class="line"> * For backwards compatibility, initcall() puts the call in</div><div class="line"> * the device init subsection.</div><div class="line"> *</div><div class="line"> * The `id' arg to __define_initcall() is needed so that multiple initcalls</div><div class="line"> * can point at the same handler without causing duplicate-symbol build errors.</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> __define_initcall(level,fn,id) \</span></div><div class="line">        static initcall_t __initcall_##fn##id __attribute_used__ \</div><div class="line">        __attribute__((__section__(<span class="meta-string">".initcall"</span> level <span class="meta-string">".init"</span>))) = fn</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * A "pure" initcall has no dependencies on anything else, and purely</div><div class="line"> * initializes variables that couldn't be statically initialized.</div><div class="line"> *</div><div class="line"> * This only exists for built-in code, not for modules.</div><div class="line"> */</div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> pure_initcall(fn)               __define_initcall(<span class="meta-string">"0"</span>,fn,1)</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> core_initcall(fn)               __define_initcall(<span class="meta-string">"1"</span>,fn,1)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> core_initcall_sync(fn)          __define_initcall(<span class="meta-string">"1s"</span>,fn,1s)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> postcore_initcall(fn)           __define_initcall(<span class="meta-string">"2"</span>,fn,2)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> postcore_initcall_sync(fn)      __define_initcall(<span class="meta-string">"2s"</span>,fn,2s)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> arch_initcall(fn)               __define_initcall(<span class="meta-string">"3"</span>,fn,3)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> arch_initcall_sync(fn)          __define_initcall(<span class="meta-string">"3s"</span>,fn,3s)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> subsys_initcall(fn)             __define_initcall(<span class="meta-string">"4"</span>,fn,4)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> subsys_initcall_sync(fn)        __define_initcall(<span class="meta-string">"4s"</span>,fn,4s)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> fs_initcall(fn)                 __define_initcall(<span class="meta-string">"5"</span>,fn,5)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> fs_initcall_sync(fn)            __define_initcall(<span class="meta-string">"5s"</span>,fn,5s)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> rootfs_initcall(fn)             __define_initcall(<span class="meta-string">"rootfs"</span>,fn,rootfs)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> device_initcall(fn)             __define_initcall(<span class="meta-string">"6"</span>,fn,6)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> device_initcall_sync(fn)        __define_initcall(<span class="meta-string">"6s"</span>,fn,6s)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> late_initcall(fn)               __define_initcall(<span class="meta-string">"7"</span>,fn,7)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> late_initcall_sync(fn)          __define_initcall(<span class="meta-string">"7s"</span>,fn,7s)</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> __initcall(fn) device_initcall(fn)</span></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * module_init() - driver initialization entry point</div><div class="line"> * @x: function to be run at kernel boot time or module insertion</div><div class="line"> *</div><div class="line"> * module_init() will either be called during do_initcalls() (if</div><div class="line"> * builtin) or at module insertion time (if a module).  There can only</div><div class="line"> * be one per module.</div><div class="line"> */</div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> module_init(x)  __initcall(x);</span></div></pre></td></tr></table></figure></p>
+<h3>模块参数</h3>
+<p>关于<code>usb_init</code>函数，第二个问题是，<code>nousb</code>表示什么？</p>
+<p>知道C语言的人都会知道<code>nousb</code>是一个标志，只是不同的标志有不一样的精彩，这里的<code>nousb</code>是用来让我们在启动内核的时候通过内核参数去掉USB子系统的，Linux社会是一个很人性化的世界，它不会去逼迫我们接受USB，一切都只关乎我们自己的需要。不过我想我们一般来说是不会去指定<code>nousb</code>的吧。如果你真的指定了<code>nousb</code>，那它就只会幽怨的说一句“USB support disabled”，然后退出<code>usb_init</code>。</p>
+<p>nousb在drivers/usb/core/usb.c文件中定义为：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> nousb; <span class="comment">/* Disable USB when built into kernel image */</span></div><div class="line"><span class="comment">/* format to disable USB on kernel command line is: nousb */</span></div><div class="line">__module_param_call(<span class="string">""</span>, nousb, param_set_bool, param_get_bool, &amp;nousb, <span class="number">0444</span>);</div><div class="line"></div><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> usb_autosuspend_delay = <span class="number">2</span>;           <span class="comment">/* Default delay value, in seconds */</span></div><div class="line">module_param_named(autosuspend, usb_autosuspend_delay, uint, <span class="number">0644</span>);</div><div class="line">MODULE_PARM_DESC(autosuspend, <span class="string">"default autosuspend delay"</span>);</div></pre></td></tr></table></figure></p>
+<p>从中可知<code>nousb</code>是个模块参数。关于模块参数，我们都知道可以在加载模块的时候可以指定，但是如何在内核启动的时候指定？
+打开系统的grub文件，然后找到kernel行，比如：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kernel  /boot/vmlinuz-2.6.18-kdb root=/dev/sda1 ro splash=silent vga=0x314</div></pre></td></tr></table></figure></p>
+<p>其中的<code>ro</code>，<code>splash</code>，<code>vga</code>等都表示内核参数。当某一模块被编译进内核的时候，它的模块参数便需要在kernel行来指定，格式为“&lt;span style=&quot;color:red;&quot;&gt;模块名.参数=值&lt;/span&gt;”，比如：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">modprobe usbcore autosuspend=2</div></pre></td></tr></table></figure></p>
+<p>对应到kernel行，即为 ：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">usbcore.autosuspend=2</div></pre></td></tr></table></figure></p>
+<p>通过命令<code>modinfo -p ${modulename}</code>可以得知一个模块有哪些参数可以使用。同时，对于已经加载到内核里的模块，它们的模块参数会列举在<code>/sys/module/${modulename}/parameters/</code>目录下面，可以使用<code>echo -n ${value} &gt; /sys/module/${modulename}/parameters/${parm}</code>这样的命令去修改。</p>
+<h3>可变参数宏</h3>
+<p>关于<code>usb_init</code>函数，第三个问题是，<code>pr_info</code>如何实现与使用？</p>
+<p><code>pr_info</code>只是一个打印信息的可辨参数宏，<code>printk</code>的变体，在include/linux/kernel.h里定义：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> pr_info(fmt,arg...) /</span></div><div class="line">        printk(KERN_INFO fmt,##arg)</div></pre></td></tr></table></figure></p>
+<p>99年的ISO C标准里规定了可变参数宏，和函数语法类似，比如
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> debug(format, ...) fprintf (stderr, format, __VA_ARGS__)</span></div></pre></td></tr></table></figure></p>
+<p>里面的“<code>…</code>”就表示可变参数，调用时，它们就会替代宏体里的<code>__VA_ARGS__</code>。GCC总是会显得特立独行一些，它支持更复杂的形式，可以给可变参数取个名字，比如
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> debug(format, args...) fprintf (stderr, format, args)</span></div></pre></td></tr></table></figure></p>
+<p>有了名字总是会容易交流一些。是不是与<code>pr_info</code>比较接近了？除了‘<code>##</code>’，它主要是针对空参数的情况。既然说是可变参数，那传递空参数也总是可以的，空即是多，多即是空，股市里的哲理这里同样也是适合的。如果没有‘<code>##</code>’，传递空参数的时候，比如
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">debug (<span class="string">"A message"</span>);</div></pre></td></tr></table></figure></p>
+<p>展开后，里面的字符串后面会多个多余的逗号。这个逗号你应该不会喜欢，而‘<code>##</code>’则会使预处理器去掉这个多余的逗号。</p>
+<p>关于<code>usb_init</code>函数，上面的三个问题之外，余下的代码分别完成usb各部分的初始化，接下来就需要围绕它们分别进行深入分析。这里只是演示如何入手分析，所以就不做深入分析了。</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/04/17/2014-04-17-han-shu-zhi-zhen-yu-zhi-zhen-han-shu/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/04/17/linux-driver-model/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

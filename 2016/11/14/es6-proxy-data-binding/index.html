@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            手把手教你写一个 Javascript 框架：使用 ES6 Proxy 实现数据绑定 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,翻译,ES6,数据绑定">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="手把手教你写一个 Javascript 框架：使用 ES6 Proxy 实现数据绑定 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="翻译"> <meta property="og:article:tag" content="ES6"> <meta property="og:article:tag" content="数据绑定"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">知识回顾</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">nx-observe</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">实现简单的 observable</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">注册变化</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">observer 执行</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">建立动态 observable tree</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">与 ES5 对比</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">扩展属性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">getter 和 setter</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">不足之处</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">一点笔记</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">垃圾清理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">多次包装</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">继承</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">内部属性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.5.</span> <span class="post-toc-text">异步特性</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">写在最后</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">8.</span> <span class="post-toc-text">译者补记</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                手把手教你写一个 Javascript 框架：使用 ES6 Proxy 实现数据绑定
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>11月 14, 2016</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/ES6/">ES6</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/数据绑定/">数据绑定</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/翻译/">翻译</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=手把手教你写一个 Javascript 框架：使用 ES6 Proxy 实现数据绑定&url=http://yoursite.com//2016/11/14/es6-proxy-data-binding/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=手把手教你写一个 Javascript 框架：使用 ES6 Proxy 实现数据绑定&url=http://yoursite.com//2016/11/14/es6-proxy-data-binding/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2016/11/14/es6-proxy-data-binding/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2016/11/14/es6-proxy-data-binding/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p><strong>本文是“编写 JavaScript 框架”系列的第五章。在本章中，我将介绍如何使用 ES6 Proxy 实现简单、强大的数据绑定。</strong></p>
+<p>本系列主要是如何开发一个开源的客户端框架，框架名为 NX。我将在本系列中分享框架编写过程中如何克服遇到的主要困难。对 NX 感兴趣的朋友可以点击 NX 项目<a href="http://nx-framework.com" target="_blank" rel="external">主页</a>查看。</p>
+<p>本系列章节如下：</p>
+<ol>
+<li><a href="/2016/nx-project-structure/">项目结构（Project structuring）</a></li>
+<li><a href="/2016/execution-timing/">执行调度（Execution timing）</a></li>
+<li><a href="/2016/sandbox-code-evaluation/">沙箱求值（Sandboxed code evaluation）</a></li>
+<li><a href="/2016/data-bind-dirty-checking">数据绑定简介</a></li>
+<li>ES6 Proxy 实现数据绑定 (本文)</li>
+<li>自定义元素</li>
+<li>客户端路由</li>
+</ol>
+<h2>知识回顾</h2>
+<p>ES6 让 JavaScript 变得更加优雅，但多数新特性不过是语法糖罢了。Proxy 是少数几个无法 polyfill 的新增特性。如果还不太熟悉 Proxy，请先看一眼 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy" target="_blank" rel="external">MDN 上的 Proxy 文档</a>。</p>
+<p>如果对 ES6 中的 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect" target="_blank" rel="external">Reflection API</a>、<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set" target="_blank" rel="external">Set</a>、 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map" target="_blank" rel="external">Map</a> 以及 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap" target="_blank" rel="external">WeakMap</a> 有所了解，那便是极好的。</p>
+<h2>nx-observe</h2>
+<p><a href="https://github.com/RisingStack/nx-observe" target="_blank" rel="external">nx-observe</a> 是一个不到 140 行代码的数据绑定方案。对外暴露的 <code>observable(obj)</code> 、<code>observe(fn)</code>二者分别用于创建 observable 和 observer 函数。当使用到的 observable 对象发生属性变化时，observer 函数将自动执行。示例如下：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 这是一个 observable object</span></div><div class="line"><span class="keyword">const</span> person = observable(&#123;<span class="attr">name</span>: <span class="string">'John'</span>, <span class="attr">age</span>: <span class="number">20</span>&#125;)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">print</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person.name&#125;</span>, <span class="subst">$&#123;person.age&#125;</span>`</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 创建一个 observer 函数</span></div><div class="line"><span class="comment">// 控制台打印出 'John, 20'</span></div><div class="line">observe(print)</div><div class="line"></div><div class="line"><span class="comment">// 控制台打印出 'Dave, 20'</span></div><div class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> person.name = <span class="string">'Dave'</span>, <span class="number">100</span>)</div><div class="line"></div><div class="line"><span class="comment">// 控制台打印出 'Dave, 22'</span></div><div class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> person.age = <span class="number">22</span>, <span class="number">200</span>)</div></pre></td></tr></table></figure></p>
+<p>每当 <code>person.name</code> 或 <code>person.age</code> 发生变化，传给 <code>observe()</code> 的 <code>print</code> 函数就会重新运行。在这里，<code>print</code> 被称为 observer 函数。</p>
+<p>如果对更多例子感兴趣，可以点开 <a href="https://github.com/RisingStack/nx-observe#example" target="_blank" rel="external">GitHub readme</a> 或 <a href="http://nx-framework.com/docs/spa/observer" target="_blank" rel="external">NX 主页</a>，看看更逼真的场景。</p>
+<h2>实现简单的 observable</h2>
+<p>接下来的小节解释 nx-observe 底层发生了什么。首先介绍 observable 对象的属性变化是如何被侦测到的，又是如何匹配 observer 的。然后再展示怎样运行这些由变化触发的 observer 函数。</p>
+<h3>注册变化</h3>
+<p>变化是通过由 ES6 Proxy 包装后的 observable 对象注册的。在 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect" target="_blank" rel="external">Reflection API</a> 的协助下，这些 proxy 能够完美拦截 get 和 set 操作。</p>
+<p>下面代码中使用的 <code>currentObserver</code> 和 <code>queueObserver()</code> 会在下一节中解释。目前只需要知道，<code>currentObserver</code> 总是指向当前执行的 observer 函数，<code>queueObserver()</code> 把即将执行的 observer 加入队列。</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/* 将 observable 对象的属性映射到</span></div><div class="line">   那些使用了这些属性的 observer 函数集合中 */</div><div class="line"><span class="keyword">const</span> observers = <span class="keyword">new</span> <span class="built_in">WeakMap</span>()</div><div class="line"></div><div class="line"><span class="comment">/* 指向当前正在执行的 observer 函数，</span></div><div class="line">   也可能是 undefined */</div><div class="line"><span class="keyword">let</span> currentObserver</div><div class="line"></div><div class="line"><span class="comment">/* 将对象包装成 proxy，从而将其转换为 observable 对象，</span></div><div class="line">   还为 observers 添加了一个空 Map，</div><div class="line">   用于保存 property-observer 组合 */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">observable</span> (<span class="params">obj</span>) </span>&#123;</div><div class="line">  observers.set(obj, <span class="keyword">new</span> <span class="built_in">Map</span>())</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Proxy</span>(obj, &#123;get, set&#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 拦截 get 操作，若当前没有正在</span></div><div class="line">   执行的 observer，则不会做任何事 */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">get</span> (<span class="params">target, key, receiver</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> result = <span class="built_in">Reflect</span>.get(target, key, receiver)</div><div class="line">   <span class="keyword">if</span> (currentObserver) &#123;</div><div class="line">     registerObserver(target, key, currentObserver)</div><div class="line">   &#125;</div><div class="line">  <span class="keyword">return</span> result</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 若当前有 observer 函数正在运行，</span></div><div class="line">   本函数会将该 observer 函数与</div><div class="line">   当前取到的 observable 对象的属性进行配对，</div><div class="line">   并将它们保存到 observers Map 中 */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">registerObserver</span> (<span class="params">target, key, observer</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> observersForKey = observers.get(target).get(key)</div><div class="line">  <span class="keyword">if</span> (!observersForKey) &#123;</div><div class="line">    observersForKey = <span class="keyword">new</span> <span class="built_in">Set</span>()</div><div class="line">    observers.get(target).set(key, observersForKey)</div><div class="line">  &#125;</div><div class="line">  observersForKey.add(observer)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 拦截 set 操作，与当前设置的属性相关联的</span></div><div class="line">   所有 observer 加入执行队列 */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">set</span> (<span class="params">target, key, value, receiver</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> observersForKey = observers.get(target).get(key)</div><div class="line">  <span class="keyword">if</span> (observersForKey) &#123;</div><div class="line">    observersForKey.forEach(queueObserver)</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="built_in">Reflect</span>.set(target, key, value, receiver)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>尚未设置 <code>currentObserver</code> 时，<code>get</code> 不会做任何事情。否则，<code>get</code> 操作会将拿到的 observable 对象属性与当前运行的 observer 函数组合（pair）在一起，保存到 <code>observers</code> WeakMap 中。对于 observable 对象的每个属性，observer 函数都保存在一个 <code>Set</code> 中。这样可以保证不会出现重复。</p>
+<p><code>set</code> 会检索所有与 observable 对象变动的属性相关的 observer，并将它们加入稍后执行的队列。</p>
+<p>下图展示了前面的例子的执行步骤。</p>
+<p><img src="https://blog-assets.risingstack.com/2016/11/writing-a-javascript-framework-data-binding-with-es6-proxy-observables-code.png" alt="JavaScript data binding with es6 proxy - observable code sample"></p>
+<ol>
+<li>创建 observable 对象 <code>person</code>；</li>
+<li><code>currentObserver</code> 被设为 <code>print</code>；</li>
+<li><code>print</code> 开始执行；</li>
+<li>在 <code>print</code> 内部检索到 <code>person.name</code>；</li>
+<li>在 <code>person</code> 上触发 <code>get</code>；</li>
+<li><code>observers.get(person).get('name')</code> 检索到 <code>(person, name)</code> 组合的 observer Set；</li>
+<li><code>currentObserver</code> (print) 被添加到 observer Set 中；</li>
+<li>对 <code>person.age</code>，同理，执行前面 4-7 步；</li>
+<li><code>${person.name}, ${person.age}</code> 打印出来；</li>
+<li><code>print</code> 函数执行结束；</li>
+<li><code>currentObserver</code> 变为 undefined；</li>
+<li>其他代码开始运行；</li>
+<li>设置 <code>person.age</code> 为新的值（22）；</li>
+<li><code>person</code> 上触发 <code>set</code>；</li>
+<li><code>observers.get(person).get('age')</code> 检索到 <code>(person, age)</code> 组合的 observer Set，</li>
+<li>observer Set 中的 observer（包括 <code>print</code>）入队准备执行；</li>
+<li>再次执行 <code>print</code>。</li>
+</ol>
+<h3>observer 执行</h3>
+<p>队列中的 observer 是分批异步执行的，因此性能很好。注册期间，这些 observer 被异步地添加到 <code>queuedObservers</code> <code>Set</code> 中。<code>Set</code> 中不会包含重复元素，所以多次加入同一个 observer 也不会导致重复执行。如果该 <code>Set</code> 之前是空的，则会加入新的任务，在一段时间后迭代执行队列中所有的 observer。</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 包含触发的将要执行的 observer 函数 */</span></div><div class="line"><span class="keyword">const</span> queuedObservers = <span class="keyword">new</span> <span class="built_in">Set</span>()</div><div class="line"></div><div class="line"><span class="comment">/* 指向当前正在执行的 observer 函数，</span></div><div class="line">   也可能是 undefined */</div><div class="line"><span class="keyword">let</span> currentObserver</div><div class="line"></div><div class="line"><span class="comment">/* 暴露的 observe 函数 */</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">observe</span> (<span class="params">fn</span>) </span>&#123;</div><div class="line">  queueObserver(fn)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 将 observer 添加到队列中，</span></div><div class="line">   并确保队列会尽快执行 */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">queueObserver</span> (<span class="params">observer</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (queuedObservers.size === <span class="number">0</span>) &#123;</div><div class="line">    <span class="built_in">Promise</span>.resolve().then(runObservers)</div><div class="line">  &#125;</div><div class="line">  queuedObservers.add(observer)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 执行队列中的 observer，</span></div><div class="line">   完成后 currentObserver 置为 undefined */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">runObservers</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    queuedObservers.forEach(runObserver)</div><div class="line">  &#125; <span class="keyword">finally</span> &#123;</div><div class="line">    currentObserver = <span class="literal">undefined</span></div><div class="line">    queuedObservers.clear()</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 将全局的 currentObserver 变量</span></div><div class="line">  指向 observer 并执行 */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">runObserver</span> (<span class="params">observer</span>) </span>&#123;</div><div class="line">  currentObserver = observer</div><div class="line">  observer()</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>执行某一个 observer 时，上面的代码确保全局变量 <code>currentObserver</code> 指向该 observer。设置  <code>currentObserver</code>，会启用 <code>get</code>，监听、匹配执行时用到的 observable 对象的所有属性。</p>
+<h2>建立动态 observable tree</h2>
+<p>到目前为止，模型结合单层数据结构使用起来还挺好，但还需要用 observable 手动包装那些值是对象的属性。比如，下面的代码就没法达到预期：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> person = observable(&#123;<span class="attr">data</span>: &#123;<span class="attr">name</span>: <span class="string">'John'</span>&#125;&#125;)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">print</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(person.data.name)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 控制台打印出 'John'</span></div><div class="line">observe(print)</div><div class="line"></div><div class="line"><span class="comment">// does nothing</span></div><div class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> person.data.name = <span class="string">'Dave'</span>, <span class="number">100</span>)</div></pre></td></tr></table></figure></p>
+<p>为了让代码正常工作，还需要将 <code>observable({data: {name: 'John'}})</code> 替换成 <code>observable({data: observable({name: 'John'})})</code>。幸运的是，稍微修改一下 <code>get</code> 就能解决问题。</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">get</span> (<span class="params">target, key, receiver</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> result = <span class="built_in">Reflect</span>.get(target, key, receiver)</div><div class="line">  <span class="keyword">if</span> (currentObserver) &#123;</div><div class="line">    registerObserver(target, key, currentObserver)</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> result === <span class="string">'object'</span>) &#123;</div><div class="line">      <span class="keyword">const</span> observableResult = observable(result)</div><div class="line">      <span class="built_in">Reflect</span>.set(target, key, observableResult, receiver)</div><div class="line">      <span class="keyword">return</span> observableResult</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> result</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果要返回的值是对象，那么在返回之前，<code>get</code> 会将其包装成 observable 对象。从性能方面来看也很完美，只会在需要的时候才会创建 observable 对象。</p>
+<h2>与 ES5 对比</h2>
+<p>利用 ES5 的属性访问器（getter/setter）也能实现类似的数据绑定。很多流行的框架/库都在使用，如 <a href="https://mobxjs.github.io/mobx/" target="_blank" rel="external">MobX</a> 和 <a href="https://vuejs.org/" target="_blank" rel="external">Vue</a>。相较于访问器，使用 Proxy 有两大优势，也有一点不足之处。</p>
+<h3>扩展属性</h3>
+<p>在 JavaScript 中，扩展属性（Expando properties） 是指动态添加的属性。ES5 技术不支持扩展属性，每个属性的访问器都必须预先定义才能实现拦截操作。这也是为何当今预定义的键值集合成为趋势的原因。</p>
+<p>而 Proxy 技术可以真正支持扩展属性，因为 Proxy 是按照单个对象定义的，对象的所有属性操作都可以拦截。</p>
+<p>扩展属性很重要，典型例子就是数组。离开添加、删除功能，JavaScript 数组几乎毫无用处。针对此问题，ES5 数据绑定技术通常自定义数组方法，或者干脆重写。</p>
+<h3>getter 和 setter</h3>
+<p>通过某些特殊的语法，一些使用 ES5 方法的框架/库提供 <code>computed</code> 绑定属性。这些属性都有相应的原生实现，即 getter 和 setter。因为内部使用 getter 和 setter 实现数据绑定逻辑，那么也就无法再利用属性访问器了。</p>
+<p>而 Proxy 可以拦截包括 getter 和 setter 在内的所有类型的属性访问和变动，所以这对 ES6 方法来说不构成问题。</p>
+<h3>不足之处</h3>
+<p>使用 Proxy 最大的不足还是在于浏览器支持。只有<a href="http://caniuse.com/#feat=proxy" target="_blank" rel="external">比较新的浏览器</a>才支持，而 Proxy API 最精华的部分却无法通过 polyfill 实现。</p>
+<h2>一点笔记</h2>
+<p>上面介绍的数据绑定方法能够工作，但为了更容易理解，我进行了一些简化处理。下面会提到一些之前没有提到的问题。</p>
+<h3>垃圾清理</h3>
+<p>内存泄漏比较恶心。前面的代码在某种意义上来说有所避免，因为使用了 <code>WeakMap</code> 保存 observer。因此，observable  对象及与其关联的 observer 也会同时被回收。</p>
+<p>不过，实际使用场景常常是中心化、持久化的存储，伴随着频繁的 DOM 变动。这种情况下，DOM 在垃圾回收之前，必须释放所有为其注册的 observer。前面的例子并没有实现该功能，但可以在 <a href="https://github.com/RisingStack/nx-observe/blob/master/observer.js" target="_blank" rel="external">nx-observe 的代码</a> 中可以看到 <code>unobserve()</code> 方法如何实现。</p>
+<h3>多次包装</h3>
+<p>Proxy 是透明的，没有分辨 Proxy 和普通对象的原生方法。此外，它们还能无限嵌套，若不进行必要的预防，最终可能导致不停地对 observable 对象进行包装。</p>
+<p>分辨 Proxy 与普通对象的办法有很多，例子中没有提到。其中一种办法是设置一个名为 <code>proxies</code> 的 <code>WeakSet</code> 对象，之后检查该 WeakSet 中是否存在某个 Proxy 对象即可。如果对 nx-observe 中的 <code>isObservable()</code> 方法感兴趣，可以去看<a href="https://github.com/RisingStack/nx-observe/blob/master/observer.js" target="_blank" rel="external">代码</a>。</p>
+<h3>继承</h3>
+<p>nx-observe 还能与原型继承搭配工作。请看示例：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> parent = observable(&#123;<span class="attr">greeting</span>: <span class="string">'Hello'</span>&#125;)</div><div class="line"><span class="keyword">const</span> child = observable(&#123;<span class="attr">subject</span>: <span class="string">'World!'</span>&#125;)</div><div class="line"><span class="built_in">Object</span>.setPrototypeOf(child, parent)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">print</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;child.greeting&#125;</span> <span class="subst">$&#123;child.subject&#125;</span>`</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 控制台打印出 'Hello World!'</span></div><div class="line">observe(print)</div><div class="line"></div><div class="line"><span class="comment">// 控制台打印出 'Hello There!'</span></div><div class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> child.subject = <span class="string">'There!'</span>)</div><div class="line"></div><div class="line"><span class="comment">// 控制台打印出 'Hey There!'</span></div><div class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> parent.greeting = <span class="string">'Hey'</span>, <span class="number">100</span>)</div><div class="line"></div><div class="line"><span class="comment">// 控制台打印出 'Look There!'</span></div><div class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> child.greeting = <span class="string">'Look'</span>, <span class="number">200</span>)</div></pre></td></tr></table></figure></p>
+<p>沿着原型链中的每个对象都会触发 <code>get</code> 操作，直到找到属性，因此在所有可能需要的地方都会注册 observer。</p>
+<p>还有一个鲜为人知事情，<code>set</code> 操作同样会（偷偷摸摸地）沿着原型链进行。有些极端情况就是因此造成的，这里略过不谈。</p>
+<h3>内部属性</h3>
+<p>Proxy 还能拦截“内部属性访问”。你的代码中可能会使用许多通常基本都不考虑的内部属性。这样一些属性，通常会使用如 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol" target="_blank" rel="external">Symbol</a> 这样的值作为 key。这些属性也通常也能被 Proxy 拦截到，不过也也会有一些出现 bug 的情况。</p>
+<h3>异步特性</h3>
+<p>拦截到 <code>set</code>  操作时，observer 可以同步运行。这样有一些优势，比如减低复杂度，时序也可预测，堆栈跟踪更优雅。但某些场景下也会造成混乱。</p>
+<p>想象一下，在单个循环中向6一个 observable 数组中添加 1000 项。数组长度会变化一千次，关联的 observer 也会在接连执行一千次。这恐怕不是什么好事。</p>
+<p>另一个场景是双向观测。如若 observer 同步执行，下面的代码会造成无限循环。</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> observable1 = observable(&#123;<span class="attr">prop</span>: <span class="string">'value1'</span>&#125;)</div><div class="line"><span class="keyword">const</span> observable2 = observable(&#123;<span class="attr">prop</span>: <span class="string">'value2'</span>&#125;)</div><div class="line"></div><div class="line">observe(<span class="function"><span class="params">()</span> =&gt;</span> observable1.prop = observable2.prop)</div><div class="line">observe(<span class="function"><span class="params">()</span> =&gt;</span> observable2.prop = observable1.prop)</div></pre></td></tr></table></figure></p>
+<p>鉴于这些，nx-observe 将 observer 添加到不允许重复的队列中一起执行，以避免<a href="https://en.wikipedia.org/wiki/Flash_of_unstyled_content" target="_blank" rel="external">无样式内容闪动</a>。如果你对 microtask 的概念还不熟悉，请查看我之前关于浏览器时间控制的<a href="https://blog.risingstack.com/writing-a-javascript-framework-execution-timing-beyond-settimeout/" target="_blank" rel="external">文章</a>。</p>
+<h2>写在最后</h2>
+<p>如果对 NX 框架感兴趣，请访问 <a href="http://nx-framework.com" target="_blank" rel="external">主页</a>。胆大的读者还可以在Github 上查看 <a href="https://github.com/RisingStack/nx-framework" target="_blank" rel="external">NX 源码</a> 和 <a href="https://github.com/RisingStack/nx-observe" target="_blank" rel="external">nx-observe 源码</a>。</p>
+<p>希望你喜欢这篇文章，下一章我们将讨论自定义 HTML 元素。</p>
+<h2>译者补记</h2>
+<p>关于 Proxy，可以参阅：</p>
+<ul>
+<li>
+<p><a href="http://es6.ruanyifeng.com/#docs/proxy" target="_blank" rel="external">ECMAScript 6 入门</a></p>
+</li>
+<li>
+<p><a href="http://exploringjs.com/es6/ch_proxies.html" target="_blank" rel="external">Metaprogramming with proxies</a></p>
+</li>
+<li>
+<p><a href="http://www.2ality.com/2016/11/proxying-builtins.html" target="_blank" rel="external">Pitfall: not all objects can be proxied transparently</a></p>
+</li>
+<li>
+<p><a href="http://pinggod.com/2016/%E5%AE%9E%E4%BE%8B%E8%A7%A3%E6%9E%90-ES6-Proxy-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF/" target="_blank" rel="external">实例解析 ES6 Proxy 使用场景</a></p>
+</li>
+<li>
+<p><a href="http://www.cnblogs.com/ziyunfei/p/3187867.html" target="_blank" rel="external">ES6中的代理对象</a></p>
+</li>
+</ul>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2016/11/14/data-bind-dirty-checking/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2016/11/14/execution-timing/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            linux内核链表之klist | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="linux内核链表之klist | Hexo">
+    <meta property="og:description" content="null">
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">数据结构及接口声明</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">参考</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                linux内核链表之klist
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>3月 09, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=linux内核链表之klist&url=http://yoursite.com//2014/03/09/klist/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=linux内核链表之klist&url=http://yoursite.com//2014/03/09/klist/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/03/09/klist/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/03/09/klist/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p><code>klist</code>是<code>list</code>的线程安全版本，它提供了整个链表的自旋锁，查找链表节点，对链表节点的插入和删除操作都要获得这个自旋锁。<code>klist</code>的节点数据结构是<code>klist_node</code>，<code>klist_node</code>引入引用计数，只有当引用计数减到0时才允许该<code>node</code>从链表中移除。当一个内核线程要移除一个<code>node</code>，必须要等待到<code>node</code>的引用计数释放，在此期间线程处于休眠状态。为了方便线程等待，<code>klist</code>引入等待移除节点者结构体<code>klist_waiter</code>，<code>klist_waiter</code>组成<code>klist_remove_waiters</code>（内核全局变量）链表，为保护<code>klist_remove_waiters</code>线程安全，引入<code>klist_remove_lock</code>（内核全局变量）自旋锁。为方便遍历<code>klist</code>，引入了迭代器<code>klist_iter</code>。
+&lt;!--more--&gt;</p>
+<h2>数据结构及接口声明</h2>
+<p>include/linux/klist.h：
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">struct klist_node;</div><div class="line">struct klist &#123;</div><div class="line">        spinlock_t              k_lock;</div><div class="line">        struct list_head        k_list;</div><div class="line">        void                    (*get)(struct klist_node *);</div><div class="line">        void                    (*put)(struct klist_node *);</div><div class="line">&#125; __attribute__ ((aligned (sizeof(void *))));</div><div class="line"></div><div class="line">#define KLIST_INIT(_name, _get, _put)                                   \</div><div class="line">        &#123; .k_lock       = __SPIN_LOCK_UNLOCKED(_name.k_lock),           \</div><div class="line">          .k_list       = LIST_HEAD_INIT(_name.k_list),                 \</div><div class="line">          .get          = _get,                                         \</div><div class="line">          .put          = _put, &#125;</div><div class="line"></div><div class="line">#define DEFINE_KLIST(_name, _get, _put)                                 \</div><div class="line">        struct klist _name = KLIST_INIT(_name, _get, _put)</div><div class="line"></div><div class="line">extern void klist_init(struct klist *k, void (*get)(struct klist_node *),</div><div class="line">                       void (*put)(struct klist_node *));</div><div class="line"></div><div class="line">struct klist_node &#123;</div><div class="line">        void                    *n_klist;       /* never access directly */</div><div class="line">        struct list_head        n_node;</div><div class="line">        struct kref             n_ref;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">extern void klist_add_tail(struct klist_node *n, struct klist *k);</div><div class="line">extern void klist_add_head(struct klist_node *n, struct klist *k);</div><div class="line">extern void klist_add_after(struct klist_node *n, struct klist_node *pos);</div><div class="line">extern void klist_add_before(struct klist_node *n, struct klist_node *pos);</div><div class="line"></div><div class="line">extern void klist_del(struct klist_node *n);</div><div class="line">extern void klist_remove(struct klist_node *n);</div><div class="line"></div><div class="line">extern int klist_node_attached(struct klist_node *n);</div><div class="line"></div><div class="line">struct klist_iter &#123;</div><div class="line">        struct klist            *i_klist;</div><div class="line">        struct klist_node       *i_cur;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">extern void klist_iter_init(struct klist *k, struct klist_iter *i);</div><div class="line">extern void klist_iter_init_node(struct klist *k, struct klist_iter *i,</div><div class="line">                                 struct klist_node *n);</div><div class="line">extern void klist_iter_exit(struct klist_iter *i);</div><div class="line">extern struct klist_node *klist_next(struct klist_iter *i);</div></pre></td></tr></table></figure></p>
+<p><strong>klist_node</strong></p>
+<p><code>klist_node</code>有个<code>dead</code>字段，联合在<code>n_klist</code>指针中，<code>n_klist</code>只能默认指向<code>klist</code>。<code>klist</code>的定义中，<code>__attribute__ ((aligned (sizeof(void *))))</code>要求按<code>void</code>指针类型大小进行内存字节对齐，这意味着<code>klist</code>实例的地址低2位（x86_32）或者低3位（x86_64）总是0，这些为0的低位刚好可以作为其他用处，对该指针解引用前需与掉相应位。来看源码：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * Use the lowest bit of n_klist to mark deleted nodes and exclude</div><div class="line"> * dead ones from iteration.</div><div class="line"> */</div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> KNODE_DEAD		1LU</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> KNODE_KLIST_MASK	~KNODE_DEAD</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">struct</span> klist *<span class="title">knode_klist</span><span class="params">(<span class="keyword">struct</span> klist_node *knode)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">return</span> (<span class="keyword">struct</span> klist *)</div><div class="line">		((<span class="keyword">unsigned</span> <span class="keyword">long</span>)knode-&gt;n_klist &amp; KNODE_KLIST_MASK);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">bool</span> <span class="title">knode_dead</span><span class="params">(<span class="keyword">struct</span> klist_node *knode)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">return</span> (<span class="keyword">unsigned</span> <span class="keyword">long</span>)knode-&gt;n_klist &amp; KNODE_DEAD;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">knode_set_klist</span><span class="params">(<span class="keyword">struct</span> klist_node *knode, <span class="keyword">struct</span> klist *klist)</span></span></div><div class="line">&#123;</div><div class="line">	knode-&gt;n_klist = klist;</div><div class="line">	<span class="comment">/* no knode deserves to start its life dead */</span></div><div class="line">	WARN_ON(knode_dead(knode));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">knode_kill</span><span class="params">(<span class="keyword">struct</span> klist_node *knode)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="comment">/* and no knode should die twice ever either, see we're very humane */</span></div><div class="line">	WARN_ON(knode_dead(knode));</div><div class="line">	*(<span class="keyword">unsigned</span> <span class="keyword">long</span> *)&amp;knode-&gt;n_klist |= KNODE_DEAD;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>为什么要引入这个dead标识呢？</p>
+<p>如果一个内核线程要让某个<code>node</code>无效，不能简单的从<code>klist</code>中把<code>node</code>摘下来，只能减少<code>node</code>的引用计数，但是由于其他内核线程也拥有该<code>node</code>的引用计数，所以节点还是在<code>klist</code>链中，遍历节点等操作时无法避开该<code>node</code>。引入这个标识后，只要设置这个标识，尽管该<code>node</code>还在<code>klist</code>链上，但是迭代操作的时候通过这个标识避开<code>dead</code>的节点。这样在该节点上不会有新的操作，通过链表遍历也无法获取到该节点，当其他内核线程不再引用该<code>node</code>后，该<code>node</code>自动从<code>klist</code>链中移除。所以<code>dead</code>的作用是禁止再使用该<code>node</code>，但是已经被人家在用的还是可以继续使用。调用<code>klist_del()</code>会标示该<code>node</code>为<code>dead</code>，并最终删除节点。</p>
+<p>前面的四个函数都是内部静态函数，用于辅助API实现：
+<code>knode_klist</code>是从节点找到链表头，<code>knode_dead</code>是检查该节点是否已被请求删除，
+<code>knode_set_klist</code>设置节点的链表头，<code>knode_kill</code>将请求删除一个节点。
+细心的话大家会发现这四个函数是对称的，而且都是操作节点的内部函数。</p>
+<p><strong>klist 的定义和初始化</strong></p>
+<p>常规定义：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> klist myklist;</div><div class="line">klist_init(&amp;myklist,get,put);</div></pre></td></tr></table></figure></p>
+<p>便捷宏方式定义：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DEFINE_KLIST(myklist,get,put);<span class="comment">//定义一个myklist，并初始化</span></div></pre></td></tr></table></figure></p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> * klist_init - Initialize a klist structure.</div><div class="line"> * @k: The klist we're initializing.</div><div class="line"> * @get: The get function for the embedding object (NULL if none)</div><div class="line"> * @put: The put function for the embedding object (NULL if none)</div><div class="line"> *</div><div class="line"> * Initialises the klist structure.  If the klist_node structures are</div><div class="line"> * going to be embedded in refcounted objects (necessary for safe</div><div class="line"> * deletion) then the get/put arguments are used to initialise</div><div class="line"> * functions that take and release references on the embedding</div><div class="line"> * objects.</div><div class="line"> */</div><div class="line">void klist_init(struct klist *k, void (*get)(struct klist_node *),</div><div class="line">                void (*put)(struct klist_node *))</div><div class="line">&#123;</div><div class="line">        INIT_LIST_HEAD(&amp;k-&gt;k_list);</div><div class="line">        spin_lock_init(&amp;k-&gt;k_lock);</div><div class="line">        k-&gt;get = get;</div><div class="line">        k-&gt;put = put;</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL_GPL(klist_init);</div></pre></td></tr></table></figure></p>
+<p>注意函数注释中对get/put参数（函数指针）的说明。</p>
+<p><strong>插入节点</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> klist_node mynode;</div><div class="line">klist_add_tail(&amp;mynode,&amp;mylist);</div></pre></td></tr></table></figure></p>
+<p><code>klist_add_xxx</code>函数初始化<code>node</code>，并将其插入链表，插入链表后，引用计数为1
+<code>klist_add_tail</code>向后插入，<code>klist_add_head</code>向前插入；
+<code>kilst_add_after</code>在某个节点的后面插入，<code>klist_add_before</code>在某个节点的前面插入。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">add_head</span><span class="params">(<span class="keyword">struct</span> klist *k, <span class="keyword">struct</span> klist_node *n)</span></span></div><div class="line">&#123;</div><div class="line">	spin_lock(&amp;k-&gt;k_lock);</div><div class="line">	list_add(&amp;n-&gt;n_node, &amp;k-&gt;k_list);</div><div class="line">	spin_unlock(&amp;k-&gt;k_lock);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">add_tail</span><span class="params">(<span class="keyword">struct</span> klist *k, <span class="keyword">struct</span> klist_node *n)</span></span></div><div class="line">&#123;</div><div class="line">	spin_lock(&amp;k-&gt;k_lock);</div><div class="line">	list_add_tail(&amp;n-&gt;n_node, &amp;k-&gt;k_list);</div><div class="line">	spin_unlock(&amp;k-&gt;k_lock);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">klist_node_init</span><span class="params">(<span class="keyword">struct</span> klist *k, <span class="keyword">struct</span> klist_node *n)</span></span></div><div class="line">&#123;</div><div class="line">	INIT_LIST_HEAD(&amp;n-&gt;n_node);</div><div class="line">	kref_init(&amp;n-&gt;n_ref);</div><div class="line">	knode_set_klist(n, k);</div><div class="line">	<span class="keyword">if</span> (k-&gt;get)</div><div class="line">		k-&gt;get(n);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>三个内部函数，<code>add_head</code>将节点加入链表头，<code>add_tail</code>将节点加入链表尾，<code>klist_node_init</code>是初始化节点。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * klist_add_head - Initialize a klist_node and add it to front.</div><div class="line"> * @n: node we're adding.</div><div class="line"> * @k: klist it's going on.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">klist_add_head</span><span class="params">(<span class="keyword">struct</span> klist_node *n, <span class="keyword">struct</span> klist *k)</span></span></div><div class="line">&#123;</div><div class="line">        klist_node_init(k, n);</div><div class="line">        add_head(k, n);</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL_GPL(klist_add_head);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * klist_add_tail - Initialize a klist_node and add it to back.</div><div class="line"> * @n: node we're adding.</div><div class="line"> * @k: klist it's going on.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">klist_add_tail</span><span class="params">(<span class="keyword">struct</span> klist_node *n, <span class="keyword">struct</span> klist *k)</span></span></div><div class="line">&#123;</div><div class="line">        klist_node_init(k, n);</div><div class="line">        add_tail(k, n);</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL_GPL(klist_add_tail);</div></pre></td></tr></table></figure></p>
+<p><code>klist_add_head</code>将节点初始化，并将其加入链表头，<code>klist_add_tail</code>将节点初始化，并将其加入链表尾。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * klist_add_after - Init a klist_node and add it after an existing node</div><div class="line"> * @n: node we're adding.</div><div class="line"> * @pos: node to put @n after</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">klist_add_after</span><span class="params">(<span class="keyword">struct</span> klist_node *n, <span class="keyword">struct</span> klist_node *pos)</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">struct</span> klist *k = knode_klist(pos);</div><div class="line"></div><div class="line">        klist_node_init(k, n);</div><div class="line">        spin_lock(&amp;k-&gt;k_lock);</div><div class="line">        list_add(&amp;n-&gt;n_node, &amp;pos-&gt;n_node);</div><div class="line">        spin_unlock(&amp;k-&gt;k_lock);</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL_GPL(klist_add_after);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * klist_add_before - Init a klist_node and add it before an existing node</div><div class="line"> * @n: node we're adding.</div><div class="line"> * @pos: node to put @n after</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">klist_add_before</span><span class="params">(<span class="keyword">struct</span> klist_node *n, <span class="keyword">struct</span> klist_node *pos)</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">struct</span> klist *k = knode_klist(pos);</div><div class="line"></div><div class="line">        klist_node_init(k, n);</div><div class="line">        spin_lock(&amp;k-&gt;k_lock);</div><div class="line">        list_add_tail(&amp;n-&gt;n_node, &amp;pos-&gt;n_node);</div><div class="line">        spin_unlock(&amp;k-&gt;k_lock);</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL_GPL(klist_add_before);</div></pre></td></tr></table></figure></p>
+<p><code>klist_add_after</code>将节点加到指定节点后面，<code>klist_add_before</code>将节点加到指定节点前面。</p>
+<p><strong>删除节点</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">klist_del(&amp;mynode);</div></pre></td></tr></table></figure></p>
+<p><code>klist_del</code>调用<code>klist_put</code>，减少引用计数，并设<code>dead</code>标记，当引用计数减为0时，自动调用<code>klist_release</code>，把节点从<code>klist</code>中删除。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">klist_remove(&amp;mynode);</div></pre></td></tr></table></figure></p>
+<p><code>klist_remove</code>把当前线程加入等待移除链表，减少引用计数，如果有其他内核线程占用引用计数，把当前线程休眠。</p>
+<p><code>klist</code>是怎么迫使<code>remove</code>某个<code>node</code>的线程休眠的，又是怎么唤醒的？为了方便进程管理，引入了<code>klist_waiter</code>结构，如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> klist_waiter &#123;</div><div class="line">        <span class="keyword">struct</span> list_head <span class="built_in">list</span>;</div><div class="line">        <span class="keyword">struct</span> klist_node *node; <span class="comment">//等待删除的node</span></div><div class="line">        <span class="keyword">struct</span> task_struct *process; <span class="comment">//进程或者线程指针</span></div><div class="line">        <span class="keyword">int</span> woken; <span class="comment">//唤醒标记</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="title">DEFINE_SPINLOCK</span><span class="params">(klist_remove_lock)</span></span>;</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="title">LIST_HEAD</span><span class="params">(klist_remove_waiters)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>来看使线程进入休眠的代码，klist_remove函数：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * klist_remove - Decrement the refcount of node and wait for it to go away.</div><div class="line"> * @n: node we're removing.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">klist_remove</span><span class="params">(<span class="keyword">struct</span> klist_node *n)</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">struct</span> klist_waiter waiter;  <span class="comment">//创建一个waiter</span></div><div class="line"></div><div class="line">        waiter.node = n;</div><div class="line">        waiter.process = current;</div><div class="line">        waiter.woken = <span class="number">0</span>;</div><div class="line">        spin_lock(&amp;klist_remove_lock);  <span class="comment">//锁住klist_remove_lock，</span></div><div class="line">                                            <span class="comment">//klist_remove_lock专门是用来保护</span></div><div class="line">                                            <span class="comment">//klist_remove_waiters的</span></div><div class="line">        list_add(&amp;waiter.<span class="built_in">list</span>, &amp;klist_remove_waiters);  <span class="comment">//把waiter加入到klist_remove_waiters中</span></div><div class="line">                                                            <span class="comment">//这里把一个局部变量加入到一个全局的链表结构中，</span></div><div class="line">                                                            <span class="comment">//会不会引起内存越界后续讨论</span></div><div class="line">        spin_unlock(&amp;klist_remove_lock);</div><div class="line"></div><div class="line">        klist_del(n);  <span class="comment">//减少引用计数并判死刑</span></div><div class="line"></div><div class="line">        <span class="keyword">for</span> (;;) &#123;</div><div class="line">                set_current_state(TASK_UNINTERRUPTIBLE);  <span class="comment">//设置进程进入休眠状态</span></div><div class="line">                <span class="keyword">if</span> (waiter.woken)</div><div class="line">                        <span class="keyword">break</span>;</div><div class="line">                schedule();  <span class="comment">//调度进程时当前进程进入休眠状态</span></div><div class="line">        &#125;</div><div class="line">        __set_current_state(TASK_RUNNING);</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL_GPL(klist_remove);</div></pre></td></tr></table></figure></p>
+<p><code>klist_del</code>函数调用<code>klist_put</code>调用<code>klist_dec_and_del</code>调用<code>kref_put</code>，<code>kref_put</code>当引用计数减到0时回调<code>klist_release</code>函数，<code>klist_release</code>会释放等待者。
+进程的休眠与唤醒是<code>klist_remove</code>和<code>klist_release</code>共同作用的结果，我们来看<code>klist_release</code>的源码：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">klist_release</span><span class="params">(<span class="keyword">struct</span> kref *kref)</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">struct</span> klist_waiter *waiter, *tmp;</div><div class="line">        <span class="keyword">struct</span> klist_node *n = container_of(kref, <span class="keyword">struct</span> klist_node, n_ref);</div><div class="line"></div><div class="line">        WARN_ON(!knode_dead(n));  <span class="comment">//要释放的节点一定是被判死刑的节点</span></div><div class="line">        list_del(&amp;n-&gt;n_node);     <span class="comment">//把node从klist移除</span></div><div class="line">        spin_lock(&amp;klist_remove_lock);  <span class="comment">//保护klist_remove_waiters</span></div><div class="line">        <span class="comment">/* 遍历klist_remove_waiter */</span></div><div class="line">        list_for_each_entry_safe(waiter, tmp, &amp;klist_remove_waiters, <span class="built_in">list</span>) &#123;</div><div class="line">                <span class="keyword">if</span> (waiter-&gt;node != n)</div><div class="line">                        <span class="keyword">continue</span>;</div><div class="line"></div><div class="line">                list_del(&amp;waiter-&gt;<span class="built_in">list</span>);  <span class="comment">//把waiter结构体从klist_remove_waiters中移除</span></div><div class="line">                waiter-&gt;woken = <span class="number">1</span>;  <span class="comment">//设唤醒标示</span></div><div class="line">                mb();</div><div class="line">                wake_up_process(waiter-&gt;process);  <span class="comment">//唤醒该进程</span></div><div class="line">        &#125;</div><div class="line">        spin_unlock(&amp;klist_remove_lock);</div><div class="line">        knode_set_klist(n, <span class="literal">NULL</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">klist_dec_and_del</span><span class="params">(<span class="keyword">struct</span> klist_node *n)</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">return</span> kref_put(&amp;n-&gt;n_ref, klist_release);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">klist_put</span><span class="params">(<span class="keyword">struct</span> klist_node *n, <span class="keyword">bool</span> kill)</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">struct</span> klist *k = knode_klist(n);</div><div class="line">        <span class="keyword">void</span> (*put)(<span class="keyword">struct</span> klist_node *) = k-&gt;put;</div><div class="line"></div><div class="line">        spin_lock(&amp;k-&gt;k_lock);</div><div class="line">        <span class="keyword">if</span> (kill)</div><div class="line">                knode_kill(n);</div><div class="line">        <span class="keyword">if</span> (!klist_dec_and_del(n))</div><div class="line">                put = <span class="literal">NULL</span>;</div><div class="line">        spin_unlock(&amp;k-&gt;k_lock);</div><div class="line">        <span class="keyword">if</span> (put)</div><div class="line">                put(n);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * klist_del - Decrement the reference count of node and try to remove.</div><div class="line"> * @n: node we're deleting.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">klist_del</span><span class="params">(<span class="keyword">struct</span> klist_node *n)</span></span></div><div class="line">&#123;</div><div class="line">        klist_put(n, <span class="literal">true</span>);</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL_GPL(klist_del);</div></pre></td></tr></table></figure></p>
+<p><code>klist_remove</code>函数把局部变量加入到全局链表中，但是由于<code>klist_remove</code>会使线程休眠，它返回前总是由<code>klist_release</code>把<code>waiter</code>从<code>klist_remove_waiters</code>移走，所以不会导致崩溃。其实<code>klist_remove_waiters</code>的链表节点实际都是一些内核栈中的<code>waiter</code>结构，这些线程都休眠在<code>klist_remove</code>中。</p>
+<p><strong>遍历klist</strong></p>
+<p><code>klist</code>没有像<code>list</code>一样定义一系列的<code>list_for_each_xxx</code>宏。<code>klist</code>提供专门的迭代器结构提<code>klist_iter</code>，遍历前首先要初始化迭代器 ，<code>klist_next()</code>函数把当前迭代器向后移动，并返回移动后的<code>node</code>。<code>klist_iter_init()</code>，<code>klist_iter_init_node()</code>都是迭代器初始化函数，前者把迭代器当前位置设置为<code>NULL</code>，<code>klist_next()</code>自动从第一个<code>node</code>开始，后者可以指定当前<code>node</code>。迭代器指向<code>node</code>时会增加<code>node</code>的引用计数，当迭代器不用时必须调用<code>klist_iter_exit</code>退出迭代器，释放当前<code>node</code>的引用计数。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * klist_node_attached - Say whether a node is bound to a list or not.</div><div class="line"> * @n: Node that we're testing.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">klist_node_attached</span><span class="params">(<span class="keyword">struct</span> klist_node *n)</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">return</span> (n-&gt;n_klist != <span class="literal">NULL</span>);</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL_GPL(klist_node_attached);</div></pre></td></tr></table></figure></p>
+<p><code>klist_node_attached</code>检查节点是否被包含在某链表中。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * klist_iter_init_node - Initialize a klist_iter structure.</div><div class="line"> * @k: klist we're iterating.</div><div class="line"> * @i: klist_iter we're filling.</div><div class="line"> * @n: node to start with.</div><div class="line"> *</div><div class="line"> * Similar to klist_iter_init(), but starts the action off with @n,</div><div class="line"> * instead of with the list head.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">klist_iter_init_node</span><span class="params">(<span class="keyword">struct</span> klist *k, <span class="keyword">struct</span> klist_iter *i,</span></span></div><div class="line">                          <span class="keyword">struct</span> klist_node *n)</div><div class="line">&#123;</div><div class="line">        i-&gt;i_klist = k;</div><div class="line">        i-&gt;i_cur = n;</div><div class="line">        <span class="keyword">if</span> (n)</div><div class="line">                kref_get(&amp;n-&gt;n_ref);</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL_GPL(klist_iter_init_node);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * klist_iter_init - Iniitalize a klist_iter structure.</div><div class="line"> * @k: klist we're iterating.</div><div class="line"> * @i: klist_iter structure we're filling.</div><div class="line"> *</div><div class="line"> * Similar to klist_iter_init_node(), but start with the list head.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">klist_iter_init</span><span class="params">(<span class="keyword">struct</span> klist *k, <span class="keyword">struct</span> klist_iter *i)</span></span></div><div class="line">&#123;</div><div class="line">        klist_iter_init_node(k, i, <span class="literal">NULL</span>);</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL_GPL(klist_iter_init);</div></pre></td></tr></table></figure></p>
+<p><code>klist_iter_init_node</code>是从<code>klist</code>中的某个节点开始遍历，而<code>klist_iter_init</code>是从链表头开始遍历的。要注意，<code>klist_iter_init</code>和<code>klist_iter_init_node</code>的用法不同。<code>klist_iter_init_node</code>可以在其后直接对当前节点进行访问，也可以调用<code>klist_next</code>访问下一节点，而<code>klist_iter_init</code>只能调用<code>klist_next</code>访问下一节点。或许，<code>klist_iter_init_node</code>的本意不是从当前节点开始，而是从当前节点的下一节点开始。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * klist_iter_exit - Finish a list iteration.</div><div class="line"> * @i: Iterator structure.</div><div class="line"> *</div><div class="line"> * Must be called when done iterating over list, as it decrements the</div><div class="line"> * refcount of the current node. Necessary in case iteration exited before</div><div class="line"> * the end of the list was reached, and always good form.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">klist_iter_exit</span><span class="params">(<span class="keyword">struct</span> klist_iter *i)</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">if</span> (i-&gt;i_cur) &#123;</div><div class="line">                klist_put(i-&gt;i_cur, <span class="literal">false</span>);</div><div class="line">                i-&gt;i_cur = <span class="literal">NULL</span>;</div><div class="line">        &#125;</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL_GPL(klist_iter_exit);</div></pre></td></tr></table></figure></p>
+<p><code>klist_iter_exit</code>遍历结束函数。在遍历完成时调不调无所谓，但如果想中途结束，就一定要调用<code>klist_iter_exit</code>。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">struct</span> klist_node *<span class="title">to_klist_node</span><span class="params">(<span class="keyword">struct</span> list_head *n)</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">return</span> container_of(n, <span class="keyword">struct</span> klist_node, n_node);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * klist_next - Ante up next node in list.</div><div class="line"> * @i: Iterator structure.</div><div class="line"> *</div><div class="line"> * First grab list lock. Decrement the reference count of the previous</div><div class="line"> * node, if there was one. Grab the next node, increment its reference</div><div class="line"> * count, drop the lock, and return that next node.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">struct</span> klist_node *<span class="title">klist_next</span><span class="params">(<span class="keyword">struct</span> klist_iter *i)</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">void</span> (*put)(<span class="keyword">struct</span> klist_node *) = i-&gt;i_klist-&gt;put;</div><div class="line">        <span class="keyword">struct</span> klist_node *last = i-&gt;i_cur;</div><div class="line">        <span class="keyword">struct</span> klist_node *next;</div><div class="line"></div><div class="line">        spin_lock(&amp;i-&gt;i_klist-&gt;k_lock);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (last) &#123;</div><div class="line">                next = to_klist_node(last-&gt;n_node.next);</div><div class="line">                <span class="keyword">if</span> (!klist_dec_and_del(last))</div><div class="line">                        put = <span class="literal">NULL</span>;</div><div class="line">        &#125; <span class="keyword">else</span></div><div class="line">                next = to_klist_node(i-&gt;i_klist-&gt;k_list.next);</div><div class="line"></div><div class="line">        i-&gt;i_cur = <span class="literal">NULL</span>;</div><div class="line">        <span class="keyword">while</span> (next != to_klist_node(&amp;i-&gt;i_klist-&gt;k_list)) &#123;</div><div class="line">                <span class="keyword">if</span> (likely(!knode_dead(next))) &#123;</div><div class="line">                        kref_get(&amp;next-&gt;n_ref);</div><div class="line">                        i-&gt;i_cur = next;</div><div class="line">                        <span class="keyword">break</span>;</div><div class="line">                &#125;</div><div class="line">                next = to_klist_node(next-&gt;n_node.next);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        spin_unlock(&amp;i-&gt;i_klist-&gt;k_lock);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (put &amp;&amp; last)</div><div class="line">                put(last);</div><div class="line">        <span class="keyword">return</span> i-&gt;i_cur;</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL_GPL(klist_next);</div></pre></td></tr></table></figure></p>
+<p><code>klist_next</code>是将循环进行到下一节点，实现中需要注意两点问题：</p>
+<ol>
+<li>加锁，根据经验，单纯对某个节点操作不需要加锁，但对影响整个链表的操作需要加自旋锁。比如之前klist_iter_init_node中对节点增加引用计数，就不需要加锁，因为只有已经拥有节点引用计数的线程才会特别地从那个节点开始。而之后klist_next中则需要加锁，因为当前线程很可能没有引用计数，所以需要加锁，让情况固定下来。这既是保护链表，也是保护节点有效。符合kref引用计数的使用原则。</li>
+<li>要注意，虽然在节点切换的过程中是加锁的，但切换完访问当前节点时是解锁的，中间可能有节点被删除，也可能有节点被请求删除，这就需要注意。首先要忽略链表中已被请求删除的节点，然后在减少前一个节点引用计数时，可能就把前一个节点删除了。这里之所以不调用klist_put，是因为本身已处于加锁状态，但仍要有它的实现。这里的实现和klist_put中类似，代码不介意在加锁状态下唤醒另一个线程，但却不希望在加锁状态下调用put函数，那可能会涉及释放另一个更大的结构。</li>
+</ol>
+<h2>参考</h2>
+<p><a href="http://blog.csdn.net/qb_2008/article/details/6845854" target="_blank" rel="external">linux内核部件分析（四）——更强的链表klist</a>
+<a href="http://www.cnblogs.com/httpftpli/archive/2012/07/24/klist.html" target="_blank" rel="external">linux内核源代码分析----内核基础设施之klist</a></p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/03/09/objc_kvo_secret/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/03/10/2014-03-10-dragging-and-dropping-files-and-folders-into-vsix/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

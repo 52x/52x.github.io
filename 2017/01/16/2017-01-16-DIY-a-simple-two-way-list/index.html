@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            DIY 双向滑动列表 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="DIY 双向滑动列表 | Hexo">
+    <meta property="og:description" content="null">
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">需求简介</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">数据请求</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">格式设计</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">请求时机</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">可重用的 ItemView</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">感受</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                DIY 双向滑动列表
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>1月 16, 2017</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=DIY 双向滑动列表&url=http://yoursite.com//2017/01/16/2017-01-16-DIY-a-simple-two-way-list/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=DIY 双向滑动列表&url=http://yoursite.com//2017/01/16/2017-01-16-DIY-a-simple-two-way-list/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2017/01/16/2017-01-16-DIY-a-simple-two-way-list/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2017/01/16/2017-01-16-DIY-a-simple-two-way-list/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>公司项目中有个页面是双向滑动的列表，遂用 <code>UIScrollView</code> 手撸了之，把一些 UI 和数据上的心得记录下来。</p>
+<p>&lt;!--more--&gt;</p>
+<h2>需求简介</h2>
+<p>UI 上的主要内容就是一个 <code>UITableView</code>，其中一些 cell 内会嵌套一个横向滑动的 <code>ListView</code>，<code>ListView</code> 中包含一些尺寸相同可点击的 ItemView，ItemView 中的图片内容需要从网络加载。</p>
+<p>去掉一些跟本文内容无关的细枝末节，可以将原型抽象如下图：</p>
+<p><img src="http://7ni3rk.com1.z0.glb.clouddn.com/QQStoryMemory/%E5%8E%9F%E5%9E%8B.png" alt=""></p>
+<p>蓝色的为 ItemView，白色为 <code>ListView</code>，灰色为 TableView。</p>
+<p>竖向滑动会有分页加载和转菊花停顿，横向滑动无分页加载停顿，要求细腻丝滑。</p>
+<p>**如果只是单纯一个双向滑动列表，<code>UICollectionView</code> 完全可以胜任。**但是真正的需求里还掺杂着很多其他 UI 元素，所以只能 DIY 了。</p>
+<h2>数据请求</h2>
+<h3>格式设计</h3>
+<p>因为主体 UI 为竖向列表嵌套横向列表，所以两个方向都需要有数据请求。</p>
+<p>为了方便叙述，这里简化下数据格式。</p>
+<p>ItemView 对应的数据 <code>ItemModel</code> 包含唯一标识符 <code>itemID</code> 和图片地址 <code>imageURL</code>：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@interface ItemModel: NSObject</div><div class="line">@property (nonatomic, strong) NSString *itemID; // Item 唯一标识符</div><div class="line">@property (nonatomic, strong) NSString *imageURL; // 封面图片 URL</div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<p><code>ListView</code> 对应的数据 <code>ListModel</code> 包含分组唯一标识符 <code>listID</code>，首屏需要展现的 Item 数据 <code>items</code> 和列表所有 Item 的 ID <code>itemIDs</code>。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@interface ListModel: NSObject</div><div class="line">@property (nonatomic, strong) NSString *listID; // List 唯一标识符</div><div class="line">@property (nonatomic, strong) NSArray&lt;ItemModel *&gt; *items; // 包含首屏前几个 Item 数据</div><div class="line">@property (nonatomic, strong) NSArray&lt;NSString *&gt; *itemIDs; // 包含整行 List 所有 Item 的 ID</div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<p>竖向滑动时，TableView 会从后台分页获取 <code>ListModel</code> 数组。<code>ListModel</code> 中的 <code>items</code> 填充了初始数据（此时不需要横向滑动拉取数据）。</p>
+<p>之所以不干脆在 <code>ListModel</code> 装填所有 <code>ItemModel</code>，是为了节省一次请求的数据流量，降低失败率。因为第一次展示页面时只需要填充前几个 ItemView 的数据，等用户横向滑动后再继续根据 <code>itemIDs</code> 请求滑动到的 ItemView 对应数据。</p>
+<h3>请求时机</h3>
+<p>因为有了 <code>ListView</code> 中所有 ItemView 对应的 ID，所以横向滑动没有分页逻辑，就没有转菊花的停顿时间用来请求网络数据和等待接受处理数据。虽然可以用 ID 请求到对应的 <code>ItemModel</code>，但肯定不能在 <code>UITableView</code> 的 datasource 回调中为每个 cell 去单独请求数据。所以 <code>ListView</code> 即便直接使用 <code>UITableView</code> 或 <code>UICollectionView</code>，也无法享受到它带来的便捷，数据请求逻辑依然需要自己在 <code>UIScrollViewDelegate</code> 中实现。<strong>所以 <code>ListView</code> 是继承 <code>UIScrollView</code> 自己 DIY 了一个横向滑动列表。如何合理控制数据请求次数成为了性能优化的重点</strong></p>
+<p><em>文中示例代码均经过简化，去除了无关信息，并使用 MRC。</em></p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line">@interface `ListView` : UIScrollView</div><div class="line">@property (nonatomic, retain) ListModel *model;</div><div class="line">@property (nonatomic, retain) NSMutableArray&lt;ItemModel *&gt; *itemModels;</div><div class="line">@end</div><div class="line"></div><div class="line">@implementation</div><div class="line"></div><div class="line">const static CGFloat itemWidth = 80; // ItemView 宽度</div><div class="line">const static CGFloat itemHeight = 128; // ItemView 高度</div><div class="line">const static CGFloat itemGap = 2; // ItemView 间距</div><div class="line">const static CGFloat itemFirstToLeft = 0; // 最左边的 ItemView 的 leftMargin</div><div class="line"></div><div class="line">#pragma mark - UIScrollViewDelegate</div><div class="line"></div><div class="line">- (void)scrollViewDidScroll:(UIScrollView *)scrollView</div><div class="line">&#123;</div><div class="line">    if (scrollView.contentSize.width == 0) &#123;</div><div class="line">        return;</div><div class="line">    &#125;</div><div class="line">    // 计算滚动的区间</div><div class="line">    NSInteger indexLeft = floorf((scrollView.contentOffset.x - itemFirstToLeft) / (itemWidth + itemGap)) - 1;</div><div class="line">    indexLeft = MAX(indexLeft, 0);</div><div class="line">    indexLeft = MIN(indexLeft, self.model.itemIDs.count - 1);</div><div class="line">    </div><div class="line">    NSInteger indexRight = ceilf((scrollView.contentOffset.x - itemFirstToLeft + scrollView.width) / (itemWidth + itemGap));</div><div class="line">    indexRight = MAX(indexRight, 0);</div><div class="line">    indexRight = MIN(indexRight, self.model.itemIDs.count - 1);</div><div class="line">    </div><div class="line">    NSInteger length = indexRight - indexLeft + 1;</div><div class="line">    length = MAX(length, 0);</div><div class="line">    length = MIN(length, self.model.itemIDs.count);</div><div class="line">    </div><div class="line">    // 加载区间内的 Item</div><div class="line">    [self loadItems:NSMakeRange(indexLeft, length)];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView</div><div class="line">&#123;</div><div class="line">    [self reloadItemModels];</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView</div><div class="line">&#123;</div><div class="line">    [self reloadItemModels];</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> 在指定范围内加载可重用 Item</div><div class="line"> 针对本地没有数据的 itemID 请求数据</div><div class="line"> @param range 加载的范围</div><div class="line"> */</div><div class="line">- (void)loadItems:(NSRange)range</div><div class="line">&#123;</div><div class="line">// 省略...</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> 刷新页面数据，如果页面上有数据缺失，则再次请求数据</div><div class="line"> */</div><div class="line">- (void)reloadItemModels</div><div class="line">&#123;</div><div class="line">// 省略...</div><div class="line">&#125;</div><div class="line">// 省略一堆逻辑...</div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<p>在 <code>ListView</code> 中直接请求数据的位置有三处，但 <code>loadItems:</code> 和 <code>reloadItemModels</code> 这两个方法会被其他地方调用，所以可能间接请求数据的时机还是很多的。<code>reloadItemModels</code> 方法也会在接收到网络数据时被调用。<code>loadItems:</code> 计算滚动时屏幕上包含 <code>ItemView</code> 的区间的方法完全是根据 frame 坐标来计算的，并且会预留出屏幕外左右各一个 <code>ItemView</code>。<code>reloadItemModels</code> 方法只是重新装载下数据，因为 <code>itemID</code> 列表是完整的，但每个 <code>itemID</code> 不一定都缓存到了对应的 <code>ItemModel</code>，所以这个方法还对缺失数据进行请求，可以理解为『强刷』。</p>
+<p><code>UIScrollViewDelegate</code> 中实现策略如下：</p>
+<ol>
+<li>在列表滚动过程中计算当前显示在屏幕上的 ItemView 的区间，并调用 <code>loadItems:</code></li>
+<li>在列表即将开始滚动和停止滚动的时刻，调用 <code>reloadItemModels</code> 重新加载数据</li>
+</ol>
+<p>在计算需要加载的 <code>range</code> 的时候需要注意一些边界数值的处理，擅用 <code>floorf</code> 和 <code>ceilf</code> 函数进行取舍，并用 <code>MAX()</code> 和 <code>MIN()</code> 来检查边界值合法性。</p>
+<h2>可重用的 <code>ItemView</code></h2>
+<p>需要自己实现一个类似 <code>UICollectionView</code> 的 item 重用机制。</p>
+<p><img src="http://7ni3rk.com1.z0.glb.clouddn.com/QQStoryMemory/reusableitem.png" alt=""></p>
+<p>在用户横向滑动列表时，需要更新此时某个区间的 UI 和数据。这个任务是在 <code>loadItems:</code> 中实现的，原理是计算出需要被加载的 itemID 数组，并与已有的数据进行比较。将不再需要显示在屏幕上的 <code>ItemView</code> 进行回收（enqueue），并从根据 itemID 添加 <code>ItemView</code> 对象（dequeue）。因为一开始只加载了首屏的 <code>ItemModel</code> 数组，所以还需要对本地缓存中缺失的数据进行请求。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> 在指定范围内加载可重用 Item</div><div class="line"> 针对本地没有数据的 itemID 请求数据</div><div class="line"> @param range 加载的范围</div><div class="line"> */</div><div class="line">- (void)loadItems:(NSRange)range</div><div class="line">&#123;</div><div class="line">    NSMutableArray&lt;NSString *&gt; *itemIDsToLoad = [[self.model.itemIDs subarrayWithRange:range] mutableCopy];</div><div class="line">    NSMutableArray&lt;ItemView *&gt; *itemsToEnqueue = [NSMutableArray array];</div><div class="line">    // 比较需要加载的 itemID 数组和已经显示过的 itemID 数组，计算出需要新添加的 itemID 和不再需要显示而被回收的 Item</div><div class="line">    for (ItemView *item in self.visibleItems) &#123;</div><div class="line">        NSString *itemIDAlreadyLoad = nil;</div><div class="line">        for (NSString *itemIDToLoad in itemIDsToLoad) &#123;</div><div class="line">            if ([itemIDToLoad isEqualToString:item.itemID]) &#123;</div><div class="line">                itemIDAlreadyLoad = itemIDToLoad;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        if (!itemIDAlreadyLoad) &#123;</div><div class="line">            [itemsToEnqueue addObject:item];</div><div class="line">        &#125;</div><div class="line">        else &#123;</div><div class="line">            [itemIDsToLoad removeObject:itemIDAlreadyLoad];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    // 回收不需要显示的 Item</div><div class="line">    for (ItemView *item in itemsToEnqueue) &#123;</div><div class="line">        [item removeFromSuperview];</div><div class="line">        [self.visibleItems removeObject:item];</div><div class="line">        [self enqueueReusableItem:item];</div><div class="line">    &#125;</div><div class="line">    // 添加需要显示的 Item</div><div class="line">    NSMutableArray&lt;NSString *&gt; *itemIDsToRequest = [NSMutableArray array];</div><div class="line">    for (NSString *itemID in itemIDsToLoad) &#123;</div><div class="line">        if (![self addItemViewWithID:itemID]) &#123;</div><div class="line">            [itemIDsToRequest addObject:itemID];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    // 针对本地没有数据的 itemID 请求数据</div><div class="line">    if (itemIDsToRequest.count &gt; 0) &#123;</div><div class="line">        // 向后台请求 itemIDsToRequest 对应数据</div><div class="line">    &#125;</div><div class="line">    [itemIDsToLoad release];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>addItemViewWithID:</code> 负责从 reusable items 获取 <code>ItemView</code> 并设置 <code>frame</code> 添加到 <code>ListView</code> 中。因为 <code>ItemView</code> 是重用的，所以如果 dequeue 出的对象正好是上一次刚刚 enqueue 的对象，那么就不用重新填充数据了；否则需要重置 <code>ItemView</code> 的占位图，并填充新数据。<code>ItemView</code> 被填充了数据后会对数据进行处理，比如异步拉取图片资源。</p>
+<p>当无法向 <code>ItemView</code> 填充数据时，<code>addItemViewWithID:</code> 会返回 <code>NO</code>，暗示调用方需要用该 itemID 请求数据。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> 添加 itemID 对应的 Item</div><div class="line"></div><div class="line"> @param itemID @param itemID 视频 ID</div><div class="line"> @return 是否成功向 Item 填充数据</div><div class="line"> */</div><div class="line">- (BOOL)addItemViewWithID:(NSString *)itemID</div><div class="line">&#123;</div><div class="line">    ItemView *item = [self dequeueReusableItem];</div><div class="line">    NSUInteger index = [self.model.itemIDs indexOfObject:itemID];</div><div class="line">    </div><div class="line">    CGFloat originX = itemFirstToLeft + index * (itemWidth + itemGap);</div><div class="line">    item.frame = CGRectMake(originX, 0, itemWidth, itemHeight);</div><div class="line">    [self addSubview:item];</div><div class="line">    [self.visibleItems addObject:item];</div><div class="line">    if ([item.itemID isEqualToString:itemID]) &#123;</div><div class="line">        return YES;</div><div class="line">    &#125;</div><div class="line">    [item useDefaultCover];</div><div class="line">    item.itemID = itemID;</div><div class="line">    </div><div class="line">    for (ItemModel *model in self.itemModels)</div><div class="line">    &#123;</div><div class="line">        if ([model.itemID isEqualToString:itemID])</div><div class="line">        &#123;</div><div class="line">            item.model = model;</div><div class="line">            return YES;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return NO;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可重用 Item 列表的 dequeue 和 enqueue 操作实现如下，dequeue 也负责在可重用列表不够用时创建新的 <code>ItemView</code>：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line"> 从可重用队列中回收 Item</div><div class="line"> @param item  回收的 Item</div><div class="line"> */</div><div class="line">- (void)enqueueReusableItem:(ItemView *)item</div><div class="line">&#123;</div><div class="line">    [self.reusableItems addObject:item];</div><div class="line">&#125;</div><div class="line"></div><div class="line">/**</div><div class="line"> 从可重用队列中取出 Item</div><div class="line"> @return  取出的 Item</div><div class="line"> */</div><div class="line">- (ItemView *)dequeueReusableItem</div><div class="line">&#123;</div><div class="line">    ItemView *item = [self.reusableItems.firstObject retain];</div><div class="line">    if (item) &#123;</div><div class="line">        [self.reusableItems removeObject:item];</div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">        item = [ItemView new];</div><div class="line">    &#125;</div><div class="line">    return [item autorelease];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>感受</h2>
+<p>不得不承认一开始想 DIY 个列表还是有装逼嫌疑的，但后来发现还是 DIY 来的爽，好多事情都掌握在自己手里，批量请求数据也更方便（虽说直接用 <code>UICollectionView</code> 也可以办到，只是有些绕，且依然得自己实现 <code>UIScrollViewDelegate</code>）。最大的收获就是对 <code>UIScrollView</code> 的理解更深刻，对 <code>UITableView</code> 的实现机制有了掌握。</p>
+<p>还有就是在做之前把一些事情想的太简单了，然后开始动工后就会发现：卧槽还真就是这么简单！23333333</p>
+<p>其实还是遇到了一些项目中的 API 上的坑的，比如工程里的异步加载图片 ImageView 会忽略第二次相同的 url 请求，导致调试时花了些时间。</p>
+<p>曾经还设想把可重用的范围扩大到整个屏幕，也就是屏幕上所有横向滑动的 <code>ListView</code> 全都共用一个可重用列表。但后来计算一下这样做收益不高，毕竟横向滑动的 <code>ListView</code> 在正常滑动时可重用列表中会有一到两个 <code>ItemView</code> 对象，而全屏最多同时存在 5 个 <code>ListView</code>，节省的内存很有限。</p>
+<p>其实还有许多细节实现没有叙述，比如记录 <code>ListView</code> 上次横向滑动位置，因为 <code>ListView</code> 是加在全屏 TableView 的每个 cell 中，而 cell 也是重用的，所以上次滑动偏移是需要每次 cell 消失时记录和 cell 出现时刷新的。</p>
+<p>在公司项目用了快半年的 MRC，有时还要切换到 ARC 做做其他事情，或者来一发 Swift 玩票儿，真是一种奇(dan)妙(teng)的体验。</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2017/01/16/rxjs-http-timeout/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2017/01/19/pay/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

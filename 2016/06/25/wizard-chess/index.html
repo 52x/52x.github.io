@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            WizardChess: 一个国际象棋 AI 的实现 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,Node.js,Web">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="WizardChess: 一个国际象棋 AI 的实现 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="Node.js"> <meta property="og:article:tag" content="Web"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">建模</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">局面评估</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">极大极小搜索法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">Alpha/Beta 剪支</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">写在后</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">参考链接</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                WizardChess: 一个国际象棋 AI 的实现
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>6月 26, 2016</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/Node-js/">Node.js</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/Web/">Web</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=WizardChess: 一个国际象棋 AI 的实现&url=http://yoursite.com//2016/06/25/wizard-chess/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=WizardChess: 一个国际象棋 AI 的实现&url=http://yoursite.com//2016/06/25/wizard-chess/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2016/06/25/wizard-chess/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2016/06/25/wizard-chess/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <blockquote>
+<p>这篇文章由我 6 月末在 LeanCloud 进行的一次技术分享整理而来。</p>
+</blockquote>
+<p>我高一的时候曾读过一本「代码的力量：C/C++ 中国象棋程序入门与提高」，也想自己试着实现一个，连名字都想好了，就叫 Wizard Chess —— 哈利波特中的「巫师棋」。然而直到最近借着 AlphaGo 的热度，我才真正动起手来，代码开源在 <a href="https://github.com/jysperm/WizardChess" target="_blank" rel="external">GitHub</a>，因为是纯前端程序，所以你可以直接访问托管在云引擎上的 Demo <a href="http://wizard-chess.leanapp.cn" target="_blank" rel="external">http://wizard-chess.leanapp.cn</a>.</p>
+<p>国际象棋是一种「透明」的、「没有随机元素」的博弈游戏，所谓「透明」是说在任一时间，博弈双方对局面的了解都是一致的（而不像牌类游戏看不到对方的手牌），大部分棋类游戏，例如五子棋、围棋都是如此，这类游戏需要的是非常强的逻辑推理能力去预见若干回合之后的局面，本文介绍的方法也大体适用于这些棋类游戏。</p>
+<p>在技术选型上，我选择了用 TypeScript 来编写核心代码以便可以同时运行于浏览器和 Node.js, 借助 TypeScript 的编译期类型检查，可以让我们更早地发现和类型有关的错误，同时 Chrome 本身也有着非常好用的调试器和性能分析器来查找性能瓶颈。前端方面我选择用 React 来编写 UI, Web Worker 来运行计算 —— 毕竟如果在主线程进行 CPU 密集的运算会阻塞事件循环。</p>
+<p>最近一段时间，我发现在这种偏重于数据结构的程序中，「不可变」的数据类型将会极大地减少复杂度并且提高性能，但在我调研了 Immutable.js 后并没有直接使用它，因为我觉得可能我不需要它提供的那么复杂的数据结构，而是自己在编码时注意不要修改参数、函数总是返回新的对象。</p>
+<h3>建模</h3>
+<p>第一步是将国际象的规则建模到代码中，首先是定义一些数据结构来表示国际象棋中的元素（阵营、棋子、棋盘）：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">enum ChessType &#123;</div><div class="line">  king, queen, rook, bishop, knight, pawn</div><div class="line">&#125;</div><div class="line"></div><div class="line">enum Camp &#123;</div><div class="line">  black, white</div><div class="line">&#125;</div><div class="line"></div><div class="line">interface Piece &#123;</div><div class="line">  <span class="attr">type</span>: ChessType;</div><div class="line">  camp: Camp;</div><div class="line">&#125;</div><div class="line"></div><div class="line">interface Board &#123;</div><div class="line">  <span class="comment">/* from 0 to 63 */</span></div><div class="line">  pieces: <span class="built_in">Array</span>&lt;Piece&gt;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后需要为每一种棋子编写一个「生成走法」的函数，以便我们的程序知道一个棋子有哪些走法可走，在此以国王为例：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">generateMovesForKing</span>(<span class="params">board, piece, camp</span>) </span>&#123;</div><div class="line">  <span class="keyword">for</span> target <span class="keyword">in</span> ([<span class="number">-1</span>, <span class="number">-1</span>], [<span class="number">0</span>, <span class="number">-1</span>], [<span class="number">1</span>, <span class="number">-1</span>], [<span class="number">-1</span>, <span class="number">0</span>],</div><div class="line">                 [<span class="number">1</span>, <span class="number">0</span>], [<span class="number">-1</span>, <span class="number">1</span>], [<span class="number">0</span>, <span class="number">1</span>], [<span class="number">1</span>, <span class="number">1</span>]) &#123;</div><div class="line">    <span class="keyword">if</span> (target on the board and (target is empty or target.camp != piece.camp)) &#123;</div><div class="line">      <span class="keyword">yield</span> target</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>按照国际象棋的规则，国王可以以直线或斜线的方式移动一格，因此上面的代码会检查相邻一格的位置是否在棋盘范围内、是否是空的或者有对面的棋子（吃子）。</p>
+<p>然后还需要考虑到我们的程序和外部的输入输出，在国际象棋领域已有一个叫 FEN 的标准来表示当前的局势（各个棋子在棋盘上的位置），下面是一段表示开局状态的 FEN:</p>
+<pre><code>rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR
+</code></pre>
+<p>FEN 为每种棋子规定了一个字母、用大小写表示黑棋或者白棋、用斜线分割不同的行、用数字表示空白。在我们的程序的 Web 界面中有一个填写 FEN 的文本框，当你填入一个新的 FEN 时，棋盘上的棋子会随之改变；反过来当你移动棋子时，FEN 也会跟着改变，这将会让我们后续的调试变得非常简单。</p>
+<h3>局面评估</h3>
+<p>我们的程序会在每个回合中，从众多可能的走法中选择一个对自己而言最优的走法，所以我们需要一个函数去评估和量化一个走法对我们而言的优势。</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">evaluate</span>(<span class="params">board: Board, camp: camp</span>): <span class="title">number</span> </span>&#123;</div><div class="line">  <span class="keyword">var</span> ourScore = <span class="number">0</span>;</div><div class="line"></div><div class="line">  <span class="keyword">for</span> piece on board &#123;</div><div class="line">    <span class="keyword">if</span> (piece.camp == camp) &#123;</div><div class="line">      ourScore += getScode(board, piece)</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      ourScore -= getScode(board, piece)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> ourScore;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个函数会接受一个棋盘（board）和一个阵营（camp）作为参数，这个棋盘其实就是应用了某个走法之后，各个棋子的位置。这个函数会检查棋盘上每个棋子，如果这个棋子是我方的，就将其代表的分数加到「我方的优势分数」上；如果是对方的，就从我方的优势分数中减去对应的分数。</p>
+<p>每个棋子所代表的分数则按照下表来计算：</p>
+<table>
+<thead>
+<tr>
+<th>棋子</th>
+<th>基础分数</th>
+<th>每多一种走法的额外分数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>王</td>
+<td>10000</td>
+<td>2</td>
+</tr>
+<tr>
+<td>皇后</td>
+<td>1000</td>
+<td>2</td>
+</tr>
+<tr>
+<td>车</td>
+<td>500</td>
+<td>2</td>
+</tr>
+<tr>
+<td>马</td>
+<td>400</td>
+<td>2</td>
+</tr>
+<tr>
+<td>象</td>
+<td>300</td>
+<td>2</td>
+</tr>
+<tr>
+<td>兵</td>
+<td>100</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>在这里我们凭「直觉」，按照棋子的重要性，给了每个棋子一个基础分数。但如果只有基础分数的话就会出现这样的情况：我们只能区分出出现吃子行为时的优势，如果不发生吃子，那么所有局面的优势都是一样的。为了解决这个问题，我们可以为「每一个可能的走法」再增加两点分数，因为在象棋中，我们可以走到一个格子，就说明我们对这个格子有一定的控制能力（如果对方的棋子走到这个格子我们就可以吃掉它），引入这个代表「灵活性」的分数后，我们会认为有更多走法的局面是更具有优势的局面。</p>
+<p>关于局面评估函数应该考虑什么、不应该考虑什么是一个值得思考的话题。因为我们的 AI 主要是靠下文介绍的「搜索」算法来找到最优的走法的，搜索函数会模拟双方的走棋，如果棋子之间存在守护关系，会在搜索中得到体现，有时过于「自作聪明」的评估函数反而会影响到搜索。在五子棋这样简单（搜索树小）的游戏中，我们甚至可以将评估函数精简为一个「判断胜负」的函数，因为按照目前的计算力，是有可能直接在搜索中找到获胜的局面的，而在象棋这种搜索树庞大的游戏中，我们还是需要评估函数的。</p>
+<p>在我们的程序中，我将「灵活性分数」做成了一个默认不开启的选项，默认只计算棋子的基础分数，这是因为计算走法是一个相对开销较大的运算，会比较明显地减少搜索层数（减少一层）。</p>
+<h3>极大极小搜索法</h3>
+<p>棋类游戏的博弈 AI, 最核心的就是搜索算法，即通过轮流模拟双方走棋，找到最优的走法。搜索的层数就是模拟走棋的回合数，搜索层数越深代表博弈程序可以考虑得越远，能力也就越强，响应地消耗的计算资源也越多。</p>
+<p>我们首先介绍一个非常简单的搜索算法 —— 极大极小搜索法，这个算法平淡无奇，只是深度优先地轮流模拟双方走棋：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">negaMaxSearch</span>(<span class="params">depth: number, board: Board, camp: Camp</span>): <span class="title">number</span> </span>&#123;</div><div class="line">  <span class="keyword">if</span> (depth &lt;= <span class="number">0</span>) &#123;</div><div class="line">    <span class="keyword">return</span> evaluate(board, camp);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">return</span> getAllMoves(board, camp).reduce( <span class="function">(<span class="params">best, move</span>) =&gt;</span> &#123;</div><div class="line">      <span class="keyword">return</span> <span class="built_in">Math</span>.max(best, -negaMaxSearch(depth - <span class="number">1</span>, board.move(move), anotherCamp(camp)));</div><div class="line">    &#125;, -<span class="literal">Infinity</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我将这个算法实现为了递归的形式，参数 depth 用于控制搜索的深度，每递归一层便减少 1, 当减少到 0 的时候结束递归，使用评估函数评估这个局面的优势值；depth 大于 0 时则递归地搜索当前所有可能的走法（getAllMoves），返回其中优势值最大的局面。</p>
+<p>注意在进行递归时，我们需要用 anotherCamp 来切换阵营，同时对结果取负值。这是因为在象棋中，博弈双方是轮流走棋的，我们需要先模拟自己走棋，再模拟对方走棋。在模拟对方走棋时，我们需要站在对方的角度来考虑 —— 我们需要找到对我方最不利的走法，因为我们需要假设对方是聪明的，是会尽一切可能针对我方的，所以在递归时我们需要对 negaMaxSearch 的结果取负。</p>
+<p><img src="https://o5eoc29h5.qnssl.com/wizard-chess-negamaxsearch.jpg" alt="wizard-chess-negamaxsearch.jpg"></p>
+<p>在我的电脑上，这个算法可以在使用单核心的情况下，花费 1 分钟来搜索 4 层。在开局状态下，搜索树有 9341 个节点，最终评估了 220211 个局面：</p>
+<pre><code>White {search: 9341, evaluate: 220211}
+Black {search: 9341, evaluate: 220211}
+</code></pre>
+<h3>Alpha/Beta 剪支</h3>
+<p>但其实在前面的搜索树中，有很大一部分节点是「没有意义」的，即无论是否搜索这些节点，对最终的结果都不会有影响，我们可以通过接下来介绍的 Alpha/Beta 剪支算法来跳过对这些无意义的节点的搜索。</p>
+<p><img src="https://o5eoc29h5.qnssl.com/wizard-chess-alphabetasearch.jpg" alt="wizard-chess-alphabetasearch.jpg"></p>
+<p>例如在上图中，如果我们从左到右深度优先地搜索走法树，那么右侧灰色的节点就是我们需要跳过的节点。depth=1 最右标有 5 的节点的左侧子树（5 - 5 - 5）被搜索出之后，depth=1 最右标有 5 的节点的最小值就已经被确定为了 5 —— 因为在 depth=2 时我们需要站在对手的角度找到对我方估值最低的走法，既然左侧子树已经找到了 5, 那么无论其他子树的值是多少，这个节点估值都不可能比 5 更大了。</p>
+<p>如果 depth=1 最右标有 5 的节点的估值小于等于 5, 那么它对于父节点也是没有意义的，因为在 depth=1 的层我们需要找到估值最高的走法，既然在 depth=1 这层我们已经找到了一个估值为 6 的走法，那么我们就对估值小于等于 5 的走法不感兴趣了，因此图中灰色的节点我们都可以跳过。</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">alphaBetaSearch</span>(<span class="params">depth: number, board: Board, camp: Camp, currentCamp: Camp, alpha: number, beta: number</span>): <span class="title">number</span> </span>&#123;</div><div class="line">  <span class="keyword">if</span> (depth &lt;= <span class="number">0</span>) &#123;</div><div class="line">    <span class="keyword">return</span> evaluate(board, camp);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">for</span> move <span class="keyword">in</span> getAllMoves(board, camp) &#123;</div><div class="line">      <span class="keyword">if</span> (camp == currentCamp) &#123;</div><div class="line">        alpha = <span class="built_in">Math</span>.max(alpha,</div><div class="line">          alphaBetaSearch(depth - <span class="number">1</span>, board.move(move), camp, anotherCamp(currentCamp), alpha, beta)</div><div class="line">        );</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        beta = <span class="built_in">Math</span>.min(beta,</div><div class="line">          alphaBetaSearch(depth - <span class="number">1</span>, board.move(move), camp, anotherCamp(currentCamp), alpha, beta)</div><div class="line">        );</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="keyword">if</span> (beta &lt;= alpha) &#123;</div><div class="line">        <span class="keyword">break</span>;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (camp == currentCamp) &#123;</div><div class="line">      <span class="keyword">return</span> alpha;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="keyword">return</span> beta;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们在极大极小搜索法的基础上进行了修改，得到了带有剪支（跳过图中灰色节点）功能的 alphaBetaSearch, 它多了 currentCamp, alpha, beta 三个参数。alpha 表示在当前搜索路径中，我方至少可以得到 alpha 的分数，任何低于 alpha 的局面都不考虑（剪支）；beta 表示在当前搜索路径中，对方至少可以拿到 beta 的分数，任何高于 beta 的局面都不考虑（剪支），因对方不会放任你拿到更高的分数的；而 currentCamp 和 camp 将用于在搜索中区分「我方」和「对方」。</p>
+<p>在递归时，我们会区分当前是「我方」还是「对方」。我方走棋时，将最好的估值保存到 alpha, 对方走棋时，我们将最差的估值保存到 beta, 如果某个局面的估值在 beta 和 alpha 之间则进行剪支（break）。</p>
+<table>
+<thead>
+<tr>
+<th>depth</th>
+<th>worst case</th>
+<th>best case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>n</td>
+<td>b^n</td>
+<td>b^⌈n/2⌉+b^⌊n/2⌋−1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>40</td>
+<td>40</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1,600</td>
+<td>79</td>
+</tr>
+<tr>
+<td>3</td>
+<td>64,000</td>
+<td>1,639</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2,560,000</td>
+<td>3,199</td>
+</tr>
+<tr>
+<td>5</td>
+<td>102,400,000</td>
+<td>65,569</td>
+</tr>
+<tr>
+<td>6</td>
+<td>4,096,000,000</td>
+<td>127,999</td>
+</tr>
+<tr>
+<td>7</td>
+<td>163,840,000,000</td>
+<td>2,623,999</td>
+</tr>
+<tr>
+<td>8</td>
+<td>6,553,600,000,000</td>
+<td>5,119,999</td>
+</tr>
+</tbody>
+</table>
+<p>这个表格列出了 Alpha/Beta 剪支搜索在最好和最差的情况下搜索的局面数量级，所谓最好的情况就是每个最左子树都是最理想的估值，其余子树都被剪掉了，最差的情况就是每个子树都有着比左侧子树更理想的估值，因此我们需要搜索所有子树来找到最理想的估值。当然实际情况肯定是会介于最好和最坏的情况之间，在开局状态下，我们的程序表现如下，相比于前面的极大极小搜索，我们剪掉了 95% 的局面，只评估了 15k - 34k 的局面。</p>
+<pre><code>White {search: 1748, evaluate: 15854, cut: 1136}
+Black {search: 2071, evaluate: 34740, cut: 1547}
+</code></pre>
+<p>从上面的数据可以看到很有趣的一点，开局状态下明明黑白双方的棋子位置差不多，但搜索的局面数量却差了一倍。这是因为 Alpha/Beta 搜索会比较严重地依赖搜索每个走法的顺序 —— 如果先搜索的是估值理想的走法，那么就会触发更多的剪支，搜索更少的节点，反之则会搜索更多的节点。而我们完全没有对走法做排序，所以搜索的顺序会取决于棋子在棋盘上出现的顺序 —— 没错，差别就是这么大。</p>
+<p>因此在搜索子树的时候，对子树（走法）做一个预先的排序就显得很重要了，可以很大程度地提高剪支的效率。但同时这又是一个很矛盾的事情 —— 我们搜索就是为了找到最好的走法，但在搜之前却又需要先对走法进行一个排序。所以这个排序必须直观而简单，例如优先搜索皇后、车这类重要的棋子，</p>
+<h3>写在后</h3>
+<ul>
+<li>GitHub <a href="https://github.com/jysperm/WizardChess" target="_blank" rel="external">https://github.com/jysperm/WizardChess</a></li>
+<li>Demo <a href="http://wizard-chess.leanapp.cn" target="_blank" rel="external">http://wizard-chess.leanapp.cn</a></li>
+</ul>
+<p>说实话，因为我数学基础比较差，也没有进行太多的性能优化，最后实现出来的 AI 非常地弱，基本每一步棋都很「蠢」，但至少实现了一个棋类 AI 应有的骨架。我今后可能不会继续维护这个代码了，所以相比于代码，可能这篇文章对读者的帮助会更大。</p>
+<h3>参考链接</h3>
+<p>国际象棋规则：</p>
+<ul>
+<li>https://zh.wikipedia.org/wiki/%E5%9C%8B%E9%9A%9B%E8%B1%A1%E6%A3%8B</li>
+</ul>
+<p>FEN:</p>
+<ul>
+<li>https://www.xqbase.com/protocol/pgnfen2.htm</li>
+<li>https://chessprogramming.wikispaces.com/Forsyth-Edwards+Notation</li>
+</ul>
+<p>Alpha/Beta 搜索：</p>
+<ul>
+<li>https://chessprogramming.wikispaces.com/Alpha-Beta</li>
+<li>https://www.xqbase.com/computer/search_alphabeta.htm</li>
+</ul>
+<p>测试数据：</p>
+<ul>
+<li>https://www.chess.com/analysis-board-editor</li>
+<li>http://zh.lichess.org</li>
+</ul>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2016/06/25/javascript-argument/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2016/06/25/what-does-this-mean/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            JavaScript 读书心得之六：事件（Event） | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,JavaScript">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="JavaScript 读书心得之六：事件（Event） | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="JavaScript"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">兼容性</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">事件列表</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">默认操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">模拟事件的方法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">绑定事件处理函数</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">绑定事件的方法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">一般规则：</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">事件冒泡和捕获</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">让事件可以到浏览器外也可以触发</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">访问事件对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">事件对象</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">事件对象的属性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">访问目标对象</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">事件绑定的应用：</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                JavaScript 读书心得之六：事件（Event）
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>9月 22, 2015</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/JavaScript/">JavaScript</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=JavaScript 读书心得之六：事件（Event）&url=http://yoursite.com//2015/09/21/09.ecma06/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=JavaScript 读书心得之六：事件（Event）&url=http://yoursite.com//2015/09/21/09.ecma06/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2015/09/21/09.ecma06/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2015/09/21/09.ecma06/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h2>兼容性</h2>
+<p>这一部分是最可能出现浏览器兼容性问题的地方</p>
+<ul>
+<li>事件（用户采取的触发脚本的行为）===&gt; 少</li>
+<li>绑定事件处理（Attach Event Handler）函数（定义事件发生时执行哪个函数）===&gt; 有，多在 W3C 和微软标准间</li>
+<li>事件冒泡和捕获（元素和其祖先元素处理相同事件时，事件处理函数的触发顺序）===&gt; 少</li>
+<li>访问事件对象（该对象保存着脚本需要的事件信息）===&gt; 多，某些无法解决</li>
+<li>访问目标对象（发生事件的元素）===&gt; 少</li>
+</ul>
+<h2>事件列表</h2>
+<ul>
+<li>鼠标事件：
+<ul>
+<li>click 左键单击</li>
+<li>dblclick 左键双击</li>
+<li>mouseover/mouseout 鼠标移至和移开</li>
+<li>mousedown/mouseup 鼠标按下和释放</li>
+<li>mousemove 鼠标移动</li>
+<li>mousewheel 鼠标滚轮滚动</li>
+<li>mouseenter/mouseleave 鼠标移至和移开（一次触发。IE 优先支持，FF10、Chrome30 才开始支持，这是微软标准优于 W3C 标准的地方之一）。
+触发顺序：mousedown 首先触发，mouseup 接着触发，click 最后触发</li>
+</ul>
+</li>
+<li>键盘事件：
+<ul>
+<li>keydown/keyup 按下和释放按键</li>
+<li>keypress 按下按键（只字母、数字键有效，很少用）</li>
+</ul>
+</li>
+<li>接口事件：
+<ul>
+<li>focus/blur 获得和失去焦点</li>
+<li>change 表单域值改变（在失去焦点后才触发）</li>
+<li>input 表单域值改变 (随时触发，IE9+ 支持)</li>
+<li>contextmenu 右键菜单</li>
+<li>load/unload 元素加载和释放</li>
+<li>readystatechange 用来支持 XMLHttpRequest</li>
+<li>reset/submit 重置和提交表单</li>
+<li>resize 改变窗口尺寸</li>
+<li>scroll 滚动页面</li>
+</ul>
+</li>
+<li><a href="http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113/events.html#Events-MutationEvent" target="_blank" rel="external">W3C 事件</a>、<a href="https://msdn.microsoft.com/en-us/library/ms533051.aspx" target="_blank" rel="external">微软事件</a></li>
+</ul>
+<p>优化 resize 事件，在结束后集中触发
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> resizeCallback = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> delay = <span class="number">100</span>;</div><div class="line">    <span class="keyword">var</span> executionTimer;</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</div><div class="line">        <span class="keyword">var</span> winX = <span class="built_in">document</span>.documentElement.clientWidth;</div><div class="line">        <span class="keyword">var</span> winY = <span class="built_in">document</span>.documentElement.clientHeight;</div><div class="line">        <span class="keyword">if</span> (executionTimer) &#123;</div><div class="line">            clearTimeout(executionTimer);</div><div class="line">        &#125;</div><div class="line">        executionTimer = setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">            <span class="built_in">document</span>.getElementById(<span class="string">"delayEvent"</span>).innerHTML = <span class="string">"尺寸："</span> + winX + <span class="string">"："</span> + winY;</div><div class="line">        &#125;, delay);</div><div class="line">    &#125;;</div><div class="line">&#125;();</div><div class="line">addEvent(<span class="built_in">window</span>, <span class="string">'resize'</span>, resizeCallback);</div></pre></td></tr></table></figure></p>
+<h3>默认操作</h3>
+<p>很多事件有个关联的默认操作；一般是事件处理函数先执行，然后默认操作发生，所以事件处理函数可以取消默认操作；唯一例外是 unload，它不能被取消
+要让事件处理函数取消默认操作，该函数必须返回 false（其他任何值都会默认操作发生），并且要正确绑定</p>
+<p>绑定事件并能正确返回值的方法
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">demo</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"你在点击页面"</span>);</div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"><span class="comment">// 方法①：</span></div><div class="line"><span class="built_in">document</span>.onclick = demo;</div><div class="line"><span class="comment">// 方法②：</span></div><div class="line"><span class="built_in">document</span>.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> demo();</div><div class="line">&#125;</div><div class="line"><span class="comment">// 方法③：</span></div><div class="line">&lt;body onclick=<span class="string">"return demo()"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span></div></pre></td></tr></table></figure></p>
+<h2>模拟事件的方法</h2>
+<p>目前支持</p>
+<ul>
+<li>focus()</li>
+<li>blur()</li>
+<li>click()</li>
+<li>submit()（无法触发 submit 事件）</li>
+<li>reset()</li>
+</ul>
+<blockquote>
+<p>注：Opera 中，当按键按下时只会触发一次 keydown 事件，而在其他浏览器当中则都会按照一定的频率来触发</p>
+</blockquote>
+<p><a href="http://www.matts411.com/post/delaying_javascript_event_execution/" target="_blank" rel="external">延迟事件触发</a> 函数，可以减少事件触发次数，提高性能（闭包的应用）
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> onEventEnd = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> delay = <span class="number">100</span>;</div><div class="line">    <span class="keyword">var</span> executionTimer;</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;</div><div class="line">        <span class="keyword">var</span> evt = e || <span class="built_in">window</span>.event;</div><div class="line">        evtX = evt.pageX || evt.clientX + <span class="built_in">Math</span>.max(<span class="built_in">document</span>.documentElement.scrollLeft, <span class="built_in">document</span>.body.scrollLeft);</div><div class="line">        evtY = evt.pageY || evt.clientY + <span class="built_in">Math</span>.max(<span class="built_in">document</span>.documentElement.scrollTop, <span class="built_in">document</span>.body.scrollTop);</div><div class="line">        <span class="keyword">if</span> (executionTimer) &#123;</div><div class="line">            clearTimeout(executionTimer);</div><div class="line">        &#125;</div><div class="line">        executionTimer = setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">            <span class="built_in">document</span>.getElementById(<span class="string">"delayEvent"</span>).innerHTML = <span class="string">"鼠标位置："</span> + evtX + <span class="string">"："</span> + evtY;</div><div class="line">        &#125;, delay);</div><div class="line">    &#125;;</div><div class="line">&#125;();</div><div class="line">addEvent(<span class="built_in">document</span>,<span class="string">'mousemove'</span>,onEventEnd);</div></pre></td></tr></table></figure></p>
+<h2>绑定事件处理函数</h2>
+<h3>绑定事件的方法</h3>
+<ol start="0">
+<li>
+<p>内联（inline）方式
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">""</span> <span class="attr">onclick</span>=<span class="string">"demo()"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">"demo()"</span>&gt;</span></div><div class="line">el.setAttribute('onclick', 'demo()');</div></pre></td></tr></table></figure></p>
+<p>缺点：违背了结构和行为分离的原则，不推荐使用</p>
+</li>
+<li>
+<p>传统方式
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">x.onclick = demo;</div></pre></td></tr></table></figure></p>
+<p>注：函数名后无 ()，有了它表示立即执行函数并把返回值赋值给 x 的 onclick 属性
+优点：可以通过 x.onclick() 直接执行函数
+缺点：不能定义多个函数到一个事件中，后者会覆盖前者</p>
+</li>
+<li>
+<p>高级方式
+W3C 和微软都提供了高级的事件处理函数绑定模型来解决覆盖的问题，这些模型允许在同一个事件定义任意数量的事件处理函数
+W3C 标准使用 <code>addEventListener(type, listener[, useCapture])</code> 和 <code>removeEventListener(type, listener[, useCapture])</code>，微软标准使用 <code>attachEvent()</code> 和 <code>detachEvent()</code>；IE9+、现代浏览器支持前者，IE 支持后者
+两者区别：微软标准只支持事件冒泡，不支持事件捕获，不过这个影响不大；微软标准把事件处理函数作为一个全局函数，而不是被绑定元素的一个方法，这会影响到 this 关键字，因为它会永远指向 Window 对象
+缺点：不能移除一个事件上所有绑定的事件处理函数，因为高级方式要求必须提供要移除的函数名称；而传统方式可以使用 x.onclick = null;
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">addEventSimple</span>(<span class="params">obj, evt, fn</span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span> (obj.addEventListener) &#123;</div><div class="line">        obj.addEventListener(evt, fn, <span class="literal">false</span>);</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj.attachEvent) &#123;</div><div class="line">        obj.attachEvent(<span class="string">'on'</span> + evt, fn);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">removeEventSimple</span>(<span class="params">obj, evt, fn</span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span> (obj.removeEventListener) &#123;</div><div class="line">        obj.removeEventListener(evt, fn, <span class="literal">false</span>);</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj.detachEvent) &#123;</div><div class="line">        obj.detachEvent(<span class="string">'on'</span> + evt, fn);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</li>
+</ol>
+<p>事件绑定函数 by <a href="http://www.quirksmode.org/blog/archives/2005/10/_and_the_winner_1.html" target="_blank" rel="external">John Resig + PPK</a>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">addEvent</span>(<span class="params">obj,evt,fn</span>)</span>&#123;<span class="keyword">if</span>(obj.addEventListener)&#123;obj.addEventListener(evt,fn,<span class="literal">false</span>)&#125;<span class="keyword">else</span> <span class="keyword">if</span>(obj.attachEvent)&#123;obj[<span class="string">'e'</span>+evt+fn]=fn;obj[evt+fn]=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;obj[<span class="string">'e'</span>+evt+fn](<span class="built_in">window</span>.event)&#125;;obj.attachEvent(<span class="string">'on'</span>+evt,obj[evt+fn])&#125;&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">removeEvent</span>(<span class="params">obj,evt,fn</span>)</span>&#123;<span class="keyword">if</span>(obj.removeEventListener)&#123;obj.removeEventListener(evt,fn,<span class="literal">false</span>)&#125;<span class="keyword">else</span> <span class="keyword">if</span>(obj.detachEvent)&#123;obj.detachEvent(<span class="string">'on'</span>+evt,obj[evt+fn]);obj[evt+fn]=<span class="literal">null</span>;obj[<span class="string">'e'</span>+evt+fn]=<span class="literal">null</span>&#125;&#125;</div><div class="line"></div><div class="line">addEvent(<span class="built_in">window</span>, <span class="string">'load'</span>, <span class="function"><span class="keyword">function</span>);</span></div><div class="line"><span class="title">removeEvent</span>(<span class="params">window, <span class="string">'load'</span>, function</span>);</div></pre></td></tr></table></figure></p>
+<h3>一般规则：</h3>
+<ul>
+<li>一般不建议使用传统方式，尤其在整个站点由多人开发，会造成事件覆盖</li>
+<li>需要大量初始化或事件处理函数可能被反复使用时，使用高级方式 addEventSimple()，但是要特别注意，this 关键字无法正确工作（IE8-）</li>
+<li>当需要用到 this 关键字时，可以使用更强大的 addEvent() 函数；或者使用流行库解决（jQuery、Mootools）</li>
+</ul>
+<h2>事件冒泡和捕获</h2>
+<ul>
+<li>
+<p>当事件发生时，有多个可选的事件处理函数时，它们都会被触发；而触发的顺序有两种：</p>
+<ol start="0">
+<li>事件冒泡：事件从它的目标开始，触发对应的事件处理函数，然后沿着文档树逐级向上冒泡，直到 Document 对象为止；沿途对每个遇到的元素，都会触发相关的事件处理函数</li>
+<li>事件捕获：事件从 Document 对象开始，沿着文档树向下游历，直到事件目标为止；沿途对每个遇到的元素，都会触发相关的事件处理函数</li>
+</ol>
+</li>
+<li>
+<p>传统方式和微软标准只支持事件冒泡，W3C 标准两者都支持（<code>addEventListener()/removeEventListener()</code> 的第三个参数，true：事件捕获 / false：事件冒泡），注：为了避免兼容性问题，推荐只使用事件冒泡</p>
+</li>
+<li>
+<p>使用事件冒泡，可以把许多元素的事件集中到一个点，只需要在一个元素上设置事件处理函数，这样有事件在它的后代元素上发生时都会冒泡到该元素处，脚本处理就会很简单了</p>
+</li>
+<li>
+<p>接口事件不冒泡：不是所有的情况都冒泡，blur、focus、load 和 unload 是不冒泡的；另外在某些元素上有些事件是不合法的，比如 change、submit 之类接口事件就不会在 Window 对象或 Document 对象上发生。
+一般规则：在 Document 对象上，可以捕获鼠标和键盘事件，不能捕获接口事件</p>
+</li>
+<li>
+<p>取消事件冒泡：W3C 标准使用事件的 <code>stopPropagation()</code> 方法，微软标准使用事件的 <code>cancelBubble</code> 属性；在复杂的动态菜单中，使用了 mouseover 和 mouseout 后，取消它们的传播可以避免一些问题
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">stopBubble</span>(<span class="params">evt</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (evt.stopPropagation) &#123;</div><div class="line">        evt.stopPropagation();</div><div class="line">    &#125;</div><div class="line">    evt.cancelBubble = <span class="literal">true</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</li>
+<li>
+<p>取消事件默认操作：W3C 标准使用事件的 preventDefault() 方法，微软标准使用事件的 returnValue 属性
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">stopDefault</span>(<span class="params">evt</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (evt.preventDefault) &#123;</div><div class="line">        evt.preventDefault();</div><div class="line">    &#125;</div><div class="line">    evt.returnValue = <span class="literal">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<h3>让事件可以到浏览器外也可以触发</h3>
+<ul>
+<li>微软标准使用对象的 <code>setCapture()</code> 方法，这样对象的事件将会被继承到整个文档进行捕获。当不需要把事件继承到整个文档捕获时，要用 <code>releaseCapture()</code></li>
+<li>W3C 标准使用 <code>window.captureEvents(Event.eventType)</code> 和 <code>window.releaseEvents(Event.eventType)</code>，其中 eventType 包括：ABORT、BLUR、CLICK、CHANGE、DBLCLICK、DRAGDROP、ERROR、FOCUS、KEYDOWN、KEYPRESS、KEYUP、LOAD、MOUSEDOWN、MOUSEMOVE、MOUSEOUT、MOUSEOVER、MOUSEUP、MOVE、RESET、RESIZE、SELECT、SUBMIT、UNLOAD
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">alwaysCapture</span>(<span class="params">obj</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (obj.setCapture) &#123;</div><div class="line">        obj.setCapture();</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">window</span>.captureEvents) &#123;</div><div class="line">        <span class="built_in">window</span>.captureEvents(Event.MOUSEMOVE | Event.MOUSEUP);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></li>
+</ul>
+<h2>访问事件对象</h2>
+<ul>
+<li>当在元素绑定了事件处理函数，就需要访问事件对象了。事件发生时，浏览器会自动创建对象，它包括了事件的各种有用信息：目标对象、事件类型、鼠标位置、按下键值等等</li>
+<li>事件对象和其属性备受浏览器兼容性的影响：一些属性名称不一致，一些问题涉及到底层结构，一些属性并非所有浏览器都提供</li>
+</ul>
+<h3>事件对象</h3>
+<p>W3C 标准中，事件对象作为第一个参数被传递到当前的事件处理函数中；微软标准中，事件对象总是 window.event
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">handle</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> evt = e || <span class="built_in">window</span>.event;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>事件对象的属性</h3>
+<ul>
+<li>
+<p>type 属性：事件类型（click、mouseover、keydown、submit 等）</p>
+</li>
+<li>
+<p>timeStamp 属性：返回一个毫秒时间戳，表示事件发生的时间。</p>
+</li>
+<li>
+<p>目标对象（发生事件的元素）：W3C 标准使用 <code>target</code> 属性，微软标准使用 <code>srcElement</code> 属性</p>
+</li>
+<li>
+<p>鼠标事件（mouseover/mouseout）中与目标对象相关的元素：W3C 标准使用 <code>relatedTarget</code> 属性，微软标准使用两个属性：<code>fromElement（mouseover）</code> 指的是鼠标从上移走的元素，<code>toElement（mouseout）</code> 指的是鼠标移到其上的元素</p>
+</li>
+<li>
+<p>绑定事件处理函数的元素：W3C 标准使用 <code>currentTarget</code> 属性，微软标准的解决方法是使用 <code>this</code> 关键字
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">mover</span>(<span class="params">e</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> evt = e || <span class="built_in">window</span>.event;</div><div class="line">    <span class="keyword">var</span> evtTarget = evt.target || evt.srcElement;</div><div class="line">    <span class="comment">// 修正旧版 Safari 的弊端，它会把目标对象指向其元素包含的文本</span></div><div class="line">    <span class="keyword">if</span> (evtTarget.nodeType == <span class="number">3</span>) &#123;</div><div class="line">        evtTarget = evtTarget.parentNode;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (evt.type == <span class="string">"mouseover"</span>) &#123;</div><div class="line">        <span class="keyword">var</span> evtRel = evt.relatedTarget || evt.fromElement;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (evt.type == <span class="string">"mouseout"</span>) &#123;</div><div class="line">        <span class="keyword">var</span> evtRel = evt.relatedTarget || evt.toElement;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> evtObj = evt.currentTarget || <span class="keyword">this</span>;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"target="</span> + evtTarget.nodeName);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"relatedTarget="</span> + evtRel.nodeName);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"currentTarget="</span> + evtObj.nodeName);</div><div class="line">    evtObj.style.border = <span class="string">"1px solid #F00"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</li>
+<li>
+<p>鼠标位置，鼠标相对参考点的坐标</p>
+<ul>
+<li>screenX/screenY      参考点：屏幕                        兼容性：所有浏览器</li>
+<li>clientX/clientY      参考点：视口                        兼容性：所有浏览器</li>
+<li>pageX/pageY          参考点：页面                        兼容性：所有浏览器，除了 IE8-</li>
+<li>offsetX/offsetY      参考点：事件目标对象                兼容性：所有浏览器，除了 Firefox39-</li>
+<li>layerX/layerY        参考点：最近动态定位的祖先元素      兼容性：所有浏览器，除了 IE8-</li>
+</ul>
+<p>最有用的是 pageX/Y，读取鼠标相对于页面的坐标，但是 IE8- 不支持，但是 IE8- 支持 clientX/Y，这是相对于视口的，再加上页面的滚动偏移量 scrollLeft/Top，也能得到相同的结果
+通用读取鼠标坐标（相对于页面）函数
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">eventPos</span>(<span class="params">e</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> evt = e || <span class="built_in">window</span>.event;</div><div class="line">    <span class="built_in">console</span>.log(evt.type);</div><div class="line">    <span class="keyword">var</span> evtX = <span class="number">0</span>;</div><div class="line">    <span class="keyword">var</span> evtY = <span class="number">0</span>;</div><div class="line">    evtX = evt.pageX || evt.clientX + <span class="built_in">Math</span>.max(<span class="built_in">document</span>.documentElement.scrollLeft, <span class="built_in">document</span>.body.scrollLeft);</div><div class="line">    evtY = evt.pageY || evt.clientY + <span class="built_in">Math</span>.max(<span class="built_in">document</span>.documentElement.scrollTop, <span class="built_in">document</span>.body.scrollTop);</div><div class="line">    <span class="built_in">console</span>.log(evtX+<span class="string">"："</span>+evtY)</div><div class="line">&#125;</div><div class="line"><span class="built_in">document</span>.onclick = eventPos;</div></pre></td></tr></table></figure></p>
+</li>
+<li>
+<p>鼠标按键</p>
+<ul>
+<li>button 属性，鼠标按键的键值</li>
+<li>W3C 标准：左键（0）、中键（1）、右键（2）</li>
+<li>微软标准：左键（1）、中键（4）、右键（2，注：Maxthon 中启用鼠标手势后为 0）</li>
+<li>IE9+ 支持 W3C 标准，IE8- 支持微软标准</li>
+<li>mousedown/up 事件支持全部，click 事件仅支持左键
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 禁止鼠标右键菜单，注：某些浏览器有禁用它的选项</span></div><div class="line"><span class="built_in">document</span>.oncontextmenu = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>
+<p>键盘按键</p>
+<ul>
+<li>key 属性：返回一个按下的键名字符串。如果同时按下一个控制键和一个字符键，则返回字符键的键名。IE8-、Chrome 不支持</li>
+<li>keyCode 属性：键盘按键的键值（大小写字母不区分）
+数字键值范围为 48（0）～57（9），字母键值范围为 65（A）～90（Z），而按下 Alt、Ctrl、Shift、Win 键时，对应的 altKey、ctrlKey、shiftKey、metaKey 属性还会为 true</li>
+<li>charCode 属性：键盘按键对应的 ASCII 编码（大小写字母对应值不同）。
+比上个属性多了 97（a）～122（z）
+注：该属性已经从标准移除，虽然浏览器还支持，但应该尽量不使用。</li>
+<li>通过 keydown 和 keyup 事件可以读取 keyCode 值</li>
+<li>通过 keypress 事件（仅字母、数字键有效）
+<ul>
+<li>在 Firefox 中可以读取 charCode 值（keyCode 值为 0）；</li>
+<li>在 IE8- 中可以读取 keyCode 值（相当于 charCode 值）；</li>
+<li>在 IE9+、Chrome 中，可以读取 charCode 值（keyCode 和它一样）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">showKey</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> evt = e || <span class="built_in">window</span>.event;</div><div class="line">    <span class="built_in">console</span>.log(evt.keyCode);</div><div class="line">    <span class="keyword">if</span> (evt.altKey) &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">"alt"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (evt.ctrlKey) &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">"ctrl"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (evt.shiftKey) &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">"shift"</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="built_in">document</span>.onkeydown = showKey;</div></pre></td></tr></table></figure></p>
+<h3>访问目标对象</h3>
+<ul>
+<li>
+<p>访问目标对象有两种方法：</p>
+<ul>
+<li>使用事件对象的 target/srcElement 属性</li>
+<li>使用 this 关键字，它一般（并不总是）指向发生事件的元素
+this 关键字总是指向方法被调用的对象，也就是绑定事件处理函数的元素，相当于 W3C 标准的 currentTarget 属性；而且必须封闭在函数主体中才能正确工作，如：
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    test();</div><div class="line">&#125;;</div></pre></td></tr></table></figure></li>
+</ul>
+<p>test() 函数是通过全局对象来调用的，所以 test() 内的 this 关键字指向 Window 对象</p>
+<ol start="0">
+<li>使用内联方式绑定事件时，函数当作全局函数调用，this 关键字指向 Window 对象；除非直接使用 this 关键字：<code>&lt;p onclick=&quot;this.style.color='#000'&quot;&gt;、&lt;p onclick=&quot;setStyle(this)&quot;&gt;</code></li>
+<li>使用传统方式，函数作为元素的一个方法，this 关键字指向正确的元素</li>
+<li>使用 W3C 标准，函数作为元素的一个方法，this 关键字指向正确的元素</li>
+<li>使用微软标准，函数当作全局函数调用，this 关键字指向 Window 对象</li>
+</ol>
+</li>
+<li>
+<p>一般规则：</p>
+<ol start="0">
+<li>当绑定相同的事件处理函数到许多元素或想直接调用该事件处理函数（即使没有事件发生）时，使用 this 关键字</li>
+<li>当依赖于事件冒泡使得事件沿文档树由下往上传播时，使用目标对象（target/srcElement）属性
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">eventObj</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> obj = <span class="built_in">document</span>.getElementById(<span class="string">"eventUl"</span>).getElementsByTagName(<span class="string">"li"</span>);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>;i &lt; obj.length;i++) &#123;</div><div class="line">        obj[i].onmouseover = mover;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ul>
+<h2>事件绑定的应用：</h2>
+<p>屏蔽 F5 键，防止浏览器刷新页面
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">disableF5</span>(<span class="params">e</span>)</span>&#123;</div><div class="line">    e = e || <span class="built_in">window</span>.event;</div><div class="line">    <span class="keyword">if</span> (e.keyCode == <span class="number">116</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (<span class="built_in">document</span>.all) &#123;</div><div class="line">            e.keyCode = <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (e.preventDefault) &#123;</div><div class="line">            e.preventDefault()</div><div class="line">        &#125;</div><div class="line">        e.returnValue = <span class="literal">false</span>;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    addEvent(<span class="built_in">document</span>,<span class="string">"keydown"</span>, disableF5);</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>表单验证
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">initForm</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> f = <span class="built_in">document</span>.forms[<span class="number">0</span>];</div><div class="line">    <span class="keyword">if</span> (!f) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">    f.onsubmit = validateForm;</div><div class="line">    <span class="keyword">var</span> x = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'textarea'</span>);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; x.length; i++) &#123;</div><div class="line">        <span class="keyword">if</span> (x[i].getAttribute(<span class="string">'maxlength'</span>)) &#123;</div><div class="line">            addEvent(x[i], <span class="string">"change"</span>, checkLength);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkLength</span>(<span class="params">e</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> evt = e || <span class="built_in">window</span>.event;</div><div class="line">    <span class="comment">//console.log(evt.type);</span></div><div class="line">    <span class="comment">//console.log(this.nodeName);</span></div><div class="line">    <span class="keyword">var</span> max = <span class="keyword">this</span>.getAttribute(<span class="string">'maxlength'</span>);</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.value.length &gt; max) &#123;</div><div class="line">        <span class="keyword">var</span> show = <span class="built_in">document</span>.createElement(<span class="string">"span"</span>);</div><div class="line">        <span class="keyword">var</span> showtext = <span class="built_in">document</span>.createTextNode(<span class="string">"最多3个字"</span>);</div><div class="line">        show.className = <span class="string">"alert"</span>;</div><div class="line">        show.appendChild(showtext);</div><div class="line">        <span class="keyword">this</span>.parentNode.appendChild(show);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">validateForm</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> x = <span class="keyword">this</span>.elements;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; x.length; i++) &#123;</div><div class="line">        <span class="keyword">if</span> (x[i].className.indexOf(<span class="string">'required'</span>) != <span class="number">-1</span> &amp;&amp; !x[i].value) &#123;</div><div class="line">            <span class="keyword">var</span> show = <span class="built_in">document</span>.createElement(<span class="string">"span"</span>);</div><div class="line">            <span class="keyword">var</span> showtext = <span class="built_in">document</span>.createTextNode(<span class="string">"请填写必填项"</span>);</div><div class="line">            show.className = <span class="string">"hint"</span>;</div><div class="line">            show.appendChild(showtext);</div><div class="line">            x[i].parentNode.appendChild(show);</div><div class="line">        &#125;</div><div class="line">        <span class="comment">//alert(isRequired(x[i]));</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">isRequired</span>(<span class="params">obj</span>)</span>&#123;</div><div class="line">    <span class="keyword">switch</span> (obj.type) &#123;</div><div class="line">        <span class="keyword">case</span> <span class="string">"text"</span>:</div><div class="line">        <span class="keyword">case</span> <span class="string">"password"</span>:</div><div class="line">        <span class="keyword">case</span> <span class="string">"textarea"</span>:</div><div class="line">        <span class="keyword">case</span> <span class="string">"select-one"</span>:</div><div class="line">            <span class="keyword">if</span> (obj.value) &#123;</div><div class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">        <span class="keyword">case</span> <span class="string">"radio"</span>:</div><div class="line">            <span class="keyword">var</span> radios = obj.form[obj.name];</div><div class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; radios.length; i++) &#123;</div><div class="line">                <span class="keyword">if</span> (radios[i].checked) &#123;</div><div class="line">                    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">            &#125;</div><div class="line">        <span class="keyword">case</span> <span class="string">"checkbox"</span>:</div><div class="line">            <span class="keyword">return</span> obj.checked;</div><div class="line">        <span class="keyword">case</span> <span class="string">"submit"</span>:</div><div class="line">        <span class="keyword">case</span> <span class="string">"reset"</span>:</div><div class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2015/09/20/08.ecma05/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2015/09/22/10.ecma07/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

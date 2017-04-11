@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            Double Dispatch模式及其在iOS开发中实践 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,Objective-C,iOS,设计模式,碰撞检测">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Double Dispatch模式及其在iOS开发中实践 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="Objective-C"> <meta property="og:article:tag" content="iOS"> <meta property="og:article:tag" content="设计模式"> <meta property="og:article:tag" content="碰撞检测"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">本文内容</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">引子</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">C++中的Double Dispatch实例</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">Java中的Double Dispatch实例</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">1 根据对象来选择行为问题</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">2 Double Dispatch Pattern</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">Objective-C中实现碰撞检测用到的Visitor模式</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Double Dispatch模式及其在iOS开发中实践
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>4月 13, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/Objective-C/">Objective-C</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/iOS/">iOS</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/碰撞检测/">碰撞检测</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/设计模式/">设计模式</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Double Dispatch模式及其在iOS开发中实践&url=http://yoursite.com//2014/04/12/2014-04-13-double-dispatchmo-shi-ji-qi-zai-ioskai-fa-zhong-shi-zhan/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Double Dispatch模式及其在iOS开发中实践&url=http://yoursite.com//2014/04/12/2014-04-13-double-dispatchmo-shi-ji-qi-zai-ioskai-fa-zhong-shi-zhan/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/04/12/2014-04-13-double-dispatchmo-shi-ji-qi-zai-ioskai-fa-zhong-shi-zhan/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/04/12/2014-04-13-double-dispatchmo-shi-ji-qi-zai-ioskai-fa-zhong-shi-zhan/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h2>本文内容</h2>
+<ul>
+<li>引子</li>
+<li>C++中的Double Dispatch实例</li>
+<li>Java中的Double Dispatch实例</li>
+<li>Objective-C中实现碰撞检测用到的Visitor模式</li>
+</ul>
+<p>&lt;!-- more--&gt;</p>
+<h2>引子</h2>
+<p>在一个太空大战游戏中，导弹可以撞向飞船，也可能撞向行星，所以在碰撞检测的时候就需要判断碰撞的结果。假设游戏有四种物体：飞船，陨石，行星，导弹，那么就产生了<code>4*3/2+4</code>种情形（一枚导弹撞上另一枚导弹）。这种排列组合计算出的结果会随着物体种类N的增多爆炸性增长，如果这个时候还用一堆if－else来检测碰撞，那真是<code>Naive</code>了。这时我们可以利用面向对象语言的多态性质来在程序运行时动态绑定，因为碰撞检测是一种“双向选择”，所以我们需要<code>double dispatch</code>（双分派），<code>Visitor</code>模式就是<code>double dispatch</code>的一种应用。<br>
+<img src="http://7ni3rk.com1.z0.glb.clouddn.com/14035338896.jpg?imageView2/2/w/800/q/75%7Cwatermark/2/text/eXVsaW5ndGlhbnhpYQ==/font/Y29taWMgc2FucyBtcw==/fontsize/500/fill/I0VGRUZFRg==/dissolve/100/gravity/SouthEast/dx/10/dy/10" alt="Visitor模式"></p>
+<p>DD模式适合于处理多个对象之间的相互作用。假如不用DD模式的话，那么每个对象跟别的对象发生关系时，就必须辛辛苦苦的进行if...else...枚举，因为它并不知道对方是何神圣。DD模式的引入解决了这个问题，其实说白了就是利用语言内置的虚函数机制来替你干活，把工作移交给编译器去做了。</p>
+<h2>C++中的Double Dispatch实例</h2>
+<p>本节内容摘自<a href="http://www.cnblogs.com/west-link/archive/2011/07/26/2116887.html?imageView2/2/w/800/q/75%7Cwatermark/2/text/eXVsaW5ndGlhbnhpYQ==/font/Y29taWMgc2FucyBtcw==/fontsize/500/fill/I0VGRUZFRg==/dissolve/100/gravity/SouthEast/dx/10/dy/10" target="_blank" rel="external">这里</a><br>
+我们先从字面上去理解它吧，直观地说，它指的是两次dispatch。这里的dispatch指的是什么呢？举个例子：</p>
+<p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> Event</div><div class="line">   &#123;</div><div class="line">       <span class="keyword">public</span>:</div><div class="line">           <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">PrintName</span><span class="params">()</span></span></div><div class="line">           &#123;</div><div class="line">                <span class="built_in">cout</span>&lt;&lt;<span class="string">"我是通用事件"</span>&lt;&lt;<span class="built_in">endl</span>;           </div><div class="line">           &#125;</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   <span class="keyword">class</span> KeyEvent:<span class="keyword">public</span> Event</div><div class="line">   &#123;</div><div class="line">      <span class="keyword">public</span>:</div><div class="line">           <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">PrintName</span><span class="params">()</span></span></div><div class="line">           &#123;</div><div class="line">                <span class="built_in">cout</span>&lt;&lt;<span class="string">"我是按键事件"</span>&lt;&lt;<span class="built_in">endl</span>;           </div><div class="line">           &#125;</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   <span class="keyword">class</span> ClickEvent:<span class="keyword">public</span> Event</div><div class="line">   &#123;</div><div class="line">       <span class="keyword">public</span>:</div><div class="line">           <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">PrintName</span><span class="params">()</span></span></div><div class="line">           &#123;</div><div class="line">                <span class="built_in">cout</span>&lt;&lt;<span class="string">"我是单击事件"</span>&lt;&lt;<span class="built_in">endl</span>;           </div><div class="line">           &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>多态性是动态的，被调用的方法由对象的真正类型确定，这个过程就被称之为dispatch。例如在C++中，每个对象都有一个虚函数表，当用基类的类型引用子类对象时，虚函数指针指向的是子类的虚函数表，调用的虚函数都是子类中的版本，所以下面代码输出的是：“我是按键事件”，这就算是一次dispatch的过程，即根据对象类型来动态确定调用哪个函数的过程。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Event* pEvent = new KeyEvent();</div><div class="line">pEvent-&gt;PrintName();</div></pre></td></tr></table></figure></p>
+<p>什么时候会用到两次dispatch呢? 继续往下看：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">class EventRecorder</div><div class="line">   &#123;</div><div class="line">       public:</div><div class="line">           virtual void RecordEvent(Event* event)</div><div class="line">           &#123;</div><div class="line">               cout&lt;&lt;&quot;使用EventRecorder记录通用事件&quot;&lt;&lt; endl;           </div><div class="line">           &#125;</div><div class="line">           </div><div class="line">           virtual void RecordEvent(KeyEvent* event)</div><div class="line">           &#123;</div><div class="line">               cout&lt;&lt;&quot;使用EventRecorder记录按键事件&quot;&lt;&lt; endl;           </div><div class="line">           &#125;</div><div class="line">           </div><div class="line">           virtual void RecordEvent(ClickEvent* event)</div><div class="line">           &#123;</div><div class="line">               cout&lt;&lt;&quot;使用EventRecorder记录单击事件&quot;&lt;&lt; endl;           </div><div class="line">           &#125;</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   class AdvanceEventRecorder:public EventRecorder</div><div class="line">   &#123;</div><div class="line">       public:</div><div class="line">           virtual void RecordEvent(Event* event)</div><div class="line">           &#123;</div><div class="line">               cout&lt;&lt;&quot;使用高级EventRecorder记录通用事件&quot;&lt;&lt; endl;           </div><div class="line">           &#125;</div><div class="line">           </div><div class="line">           virtual void RecordEvent(KeyEvent* event)</div><div class="line">           &#123;</div><div class="line">               cout&lt;&lt;&quot;使用高级EventRecorder记录按键事件&quot;&lt;&lt; endl;           </div><div class="line">           &#125;</div><div class="line">           </div><div class="line">           virtual void RecordEvent(ClickEvent* event)</div><div class="line">           &#123;</div><div class="line">               cout&lt;&lt;&quot;使用高级EventRecorder记录单击事件&quot;&lt;&lt; endl;           </div><div class="line">           &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure></p>
+<p>这两个类中分别包含三个重载函数，多态是动态的，而函数重载则是静态的，它在编译时期就确定下来了，所以，下面代码片段的运行结果并不是我们所期望的:</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">EventRecorder* pRecorder = new AdvanceEventRecorder();</div><div class="line">Event* pEvent = new KeyEvent();</div><div class="line">pRecorder-&gt;RecordEvent(pEvent);</div></pre></td></tr></table></figure></p>
+<p>输出内容为：使用高级EventRecorder记录通用事件<br>
+实际上，在这个场景中，我们期望调用的是：AdvanceEventRecorder::RecordEvent(KeyEvent* event)<br>
+下面我们使用Double Dispatch设计模式来达到上面的代码片段的目的，在所有Event对象中增加下面的函数：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">virtual void RecordEvent(EventRecorder* recorder)</div><div class="line">&#123;</div><div class="line">   recorder-&gt;RecordEvent(this);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下面的代码片段将输出：使用高级EventRecorder记录按键事件</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">EventRecorder* pRecorder = new AdvanceEventRecorder();</div><div class="line">  	Event* pEvent = new KeyEvent();</div><div class="line">  	pEvent-&gt;RecordEvent(pRecorder);</div></pre></td></tr></table></figure></p>
+<p>可以看出，第一次dispatch正确地找到了<code>KeyEvent</code>的<code>RecordEvent(EventRecorder* recorder)</code>，第二次dispatch找到了<code>AdvanceEventRecorder</code>的<code>RecordEvent(KeyEvent* event)</code>。
+Visitor模式就是对Double Dispatch的应用，另外，在碰撞检测算法中也会经常用到。</p>
+<h2>Java中的Double Dispatch实例</h2>
+<p>本节参考自<a href="http://www.blogjava.net/chaocai/archive/2009/02/19/255640.html" target="_blank" rel="external">这里</a>
+相对于C++中使用继承来说，Java提供的接口和函数重载让Double Dispatch模式更容易实现</p>
+<h3>1 根据对象来选择行为问题</h3>
+<p><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Event</span> </span>&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BlueEvent</span> <span class="keyword">implements</span> <span class="title">Event</span> </span>&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedEvent</span> <span class="keyword">implements</span> <span class="title">Event</span> </span>&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Handler</span> </span>&#123;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(Event event)</span></span>&#123;</div><div class="line">System.out.println(<span class="string">"It is event"</span>);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(RedEvent event)</span></span>&#123;</div><div class="line">System.out.println(<span class="string">"It is RedEvent"</span>);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handle</span><span class="params">(BlueEvent event)</span></span>&#123;</div><div class="line">System.out.println(<span class="string">"It is BlueEvent"</span>);</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">Event evt=<span class="keyword">new</span> BlueEvent();</div><div class="line"><span class="keyword">new</span> Handler().handle(evt);</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>你认为运行结果是什么呢？<br>
+结果：It is event<br>
+是不是有点出乎意料，不是It is BlueEvent，<strong>这是因为Overload并不支持在运行时根据参数的运行时类型来绑定方法</strong>，所以要执行哪个方法是在编译时就选定了的。</p>
+<h3>2 Double Dispatch Pattern</h3>
+<p>由于Java,C++及C#都具有上述局限，通常我们只能通过Switch或if结构来实现，当然这种实现方式既不优雅而且影响代码的可维护性。<br>
+通过以下的Double Dispatch Pattern便可以优雅的实现。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">public interface Event &#123;</div><div class="line">public void injectHandler(EventHandler v);</div><div class="line">&#125;</div><div class="line">public class BlueEvent implements Event &#123;</div><div class="line">public void injectHandler(EventHandler v) &#123;</div><div class="line">v.handle(this);</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">public class RedEvent implements Event &#123;</div><div class="line">public void injectHandler(EventHandler v) &#123;</div><div class="line">v.handle(this);</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">public class EventHandler &#123;</div><div class="line">public void handle(BlueEvent e)&#123;</div><div class="line">System.out.println(&quot;It is BlueEvent&quot;);</div><div class="line">&#125;</div><div class="line">public void handle(RedEvent e)&#123;</div><div class="line">System.out.println(&quot;It is RedEvent&quot;);</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">public class Main &#123;</div><div class="line">public static void main(String[] args) &#123;</div><div class="line">Event evt=new BlueEvent();</div><div class="line">evt.injectHandler(new EventHandler());</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>Objective-C中实现碰撞检测用到的Visitor模式</h2>
+<p>虽然OC不支持函数重载，但是我们可以老老实实的用方法名来区分类似<code>visitXXX</code>的访问方法，并利用OC其独有的SEL类型可以很好的在运行时判断该调用哪个方法</p>
+<p><img src="http://7ni3rk.com1.z0.glb.clouddn.com/140353389425.jpg?imageView2/2/w/800/q/75%7Cwatermark/2/text/eXVsaW5ndGlhbnhpYQ==/font/Y29taWMgc2FucyBtcw==/fontsize/500/fill/I0VGRUZFRg==/dissolve/100/gravity/SouthEast/dx/10/dy/10" alt=""></p>
+<p>感谢kouky提供的iOS上碰撞检测的<a href="https://github.com/kouky/iOS-SpriteKit-Pong" target="_blank" rel="external">Demo</a>，这里他用到了Visitor模式<br>
+由于判断物体类型是用一个32位掩码来标记，所以这里不可避免的要用到if语句，这不代表它不是动态绑定，因为if语句是在初始化方法<code>+ (id)contactVisitorWithBody:(SKPhysicsBody *)body forContact:(SKPhysicsContact *)contact</code>中其作用的，只是为了判断物体类型，而不是判断碰撞两者的组合类型<br>
+可以参考我写的例子<a href="https://github.com/yulingtianxia/MyFirstGame/tree/master/ColorAtom" target="_blank" rel="external">ColorAtom</a></p>
+<p>首先新建一个访问者基本类<code>ContactVisitor</code>，其本质为对SKPhysicsBody和SKPhysicsContact对象的封装，而SKPhysicsContact在本例中虽未用到（因为碰撞检测后啥也没干，只输出了碰撞双方name），但其保存着碰撞坐标等信息，也很重要。两次dispatch都是在访问者基本类实现的，而碰撞后具体操作则卸载了访问者具体类（如AtomNodeContactVisitor）</p>
+<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">//  ContactVisitor.h</span></div><div class="line"><span class="comment">//  ColorAtom</span></div><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">//  Created by 杨萧玉 on 14-4-13.</span></div><div class="line"><span class="comment">//  Copyright (c) 2014年 杨萧玉. All rights reserved.</span></div><div class="line"><span class="comment">//</span></div><div class="line"></div><div class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></div><div class="line"><span class="meta">#import <span class="meta-string">&lt;SpriteKit/SpriteKit.h&gt;</span></span></div><div class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ContactVisitor</span> : <span class="title">NSObject</span></span></div><div class="line"></div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>,<span class="keyword">readonly</span>, <span class="keyword">strong</span>) <span class="built_in">SKPhysicsBody</span> *body;</div><div class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">strong</span>) <span class="built_in">SKPhysicsContact</span> *contact;</div><div class="line"></div><div class="line">+ (<span class="keyword">id</span>)contactVisitorWithBody:(<span class="built_in">SKPhysicsBody</span> *)body forContact:(<span class="built_in">SKPhysicsContact</span> *)contact;</div><div class="line">- (<span class="keyword">void</span>)visit:(<span class="built_in">SKPhysicsBody</span> *)body;</div><div class="line"></div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure></p>
+<p>属性body即为访问者的SKPhysicsBody，而方法<code>visit:</code>的参数为被访问者的SKPhysicsBody<br>
+<code>contactVisitorWithBody:forContact:</code>方法的作用是根据掩码类型初始化对应类型的访问者具体类</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">//</div><div class="line">//  ContactVisitor.m</div><div class="line">//  ColorAtom</div><div class="line">//</div><div class="line">//  Created by 杨萧玉 on 14-4-13.</div><div class="line">//  Copyright (c) 2014年 杨萧玉. All rights reserved.</div><div class="line">//</div><div class="line"></div><div class="line">#import &quot;ContactVisitor.h&quot;</div><div class="line">#import &lt;objc/runtime.h&gt;</div><div class="line">#import &quot;NodeCategories.h&quot;</div><div class="line">#import &quot;AtomNodeContactVisitor.h&quot;</div><div class="line">#import &quot;PlayFieldSceneContactVisitor.h&quot;</div><div class="line">@implementation ContactVisitor</div><div class="line">+ (id)contactVisitorWithBody:(SKPhysicsBody *)body forContact:(SKPhysicsContact *)contact</div><div class="line">&#123;</div><div class="line">    //第一次dispatch，通过node类别返回对应的实例</div><div class="line">    if ((body.categoryBitMask&amp;AtomCategory)!=0) &#123;</div><div class="line">        return [[AtomNodeContactVisitor alloc] initWithBody:body forContact:contact];</div><div class="line">    &#125;</div><div class="line">    if ((body.categoryBitMask&amp;PlayFieldCategory)!=0) &#123;</div><div class="line">        return [[PlayFieldSceneContactVisitor alloc] initWithBody:body forContact:contact];</div><div class="line">    &#125;</div><div class="line">    else&#123;</div><div class="line">        return nil;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (id)initWithBody:(SKPhysicsBody *)body forContact:(SKPhysicsContact *)contact</div><div class="line">&#123;</div><div class="line">    self = [super init];</div><div class="line">    if (self) &#123;</div><div class="line">        _contact = contact;</div><div class="line">        _body = body;</div><div class="line">    &#125;</div><div class="line">    return self;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)visit:(SKPhysicsBody *)body</div><div class="line">&#123;</div><div class="line">    //第二次dispatch，通过构造方法名来执行对应方法</div><div class="line">    // 生成node的名字，比如&quot;AtomNode&quot;</div><div class="line">    NSString *bodyClassName = [NSString stringWithUTF8String:class_getName(body.node.class)];</div><div class="line">    </div><div class="line">    // 生成方法名，比如&quot;visitAtomBody&quot;</div><div class="line">    NSMutableString *contactSelectorString = [NSMutableString stringWithFormat:@&quot;visit&quot;];</div><div class="line">    [contactSelectorString appendString:bodyClassName];</div><div class="line">    [contactSelectorString appendString:@&quot;:&quot;];</div><div class="line">    </div><div class="line">    SEL selector = NSSelectorFromString(contactSelectorString);</div><div class="line">    //判断是否存在此方法</div><div class="line">    if ([self respondsToSelector:selector]) &#123;</div><div class="line">        [self performSelector:selector withObject:body];</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>以访问者具体类以<code>AtomNodeContactVisitor</code>类为例，它继承自访问者基本类ContactVisitor</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">//</div><div class="line">//  AtomNodeContactVisitor.h</div><div class="line">//  ColorAtom</div><div class="line">//</div><div class="line">//  Created by 杨萧玉 on 14-4-13.</div><div class="line">//  Copyright (c) 2014年 杨萧玉. All rights reserved.</div><div class="line">//</div><div class="line"></div><div class="line">#import &quot;ContactVisitor.h&quot;</div><div class="line"></div><div class="line">@interface AtomNodeContactVisitor : ContactVisitor</div><div class="line"></div><div class="line">/*Atom访问了Atom，同类碰撞*/</div><div class="line">-(void) visitAtomNode:(SKPhysicsBody*) anotherAtomBody;</div><div class="line">/*Atom访问了边界，也就是球撞墙上了*/</div><div class="line">-(void) visitPlayFieldScene:(SKPhysicsBody*) playfieldBody;</div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<p>在处理碰撞后的visitXXX方法中，我将碰撞双方的访问者和被访问者的关系输出</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">//</div><div class="line">//  AtomNodeContactVisitor.m</div><div class="line">//  ColorAtom</div><div class="line">//</div><div class="line">//  Created by 杨萧玉 on 14-4-13.</div><div class="line">//  Copyright (c) 2014年 杨萧玉. All rights reserved.</div><div class="line">//</div><div class="line"></div><div class="line">#import &quot;AtomNodeContactVisitor.h&quot;</div><div class="line">#import &quot;AtomNode.h&quot;</div><div class="line">#import &quot;PlayFieldScene.h&quot;</div><div class="line">@implementation AtomNodeContactVisitor</div><div class="line">-(void) visitAtomNode:(SKPhysicsBody*) anotherAtomBody</div><div class="line">&#123;</div><div class="line">    AtomNode *thisAtom = (AtomNode*)self.body.node;</div><div class="line">    AtomNode *anotherAtom = (AtomNode*)anotherAtomBody.node;</div><div class="line">    //处理碰撞后的结果</div><div class="line">    NSLog(@&quot;%@-&gt;%@&quot;,thisAtom.name,anotherAtom.name);</div><div class="line">&#125;</div><div class="line">-(void) visitPlayFieldScene:(SKPhysicsBody*) playfieldBody</div><div class="line">&#123;</div><div class="line">    AtomNode *atom = (AtomNode*)self.body.node;</div><div class="line">    PlayFieldScene *playfield = (PlayFieldScene*) playfieldBody.node;</div><div class="line">    NSLog(@&quot;%@-&gt;%@&quot;,atom.name,playfield.name);</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<p>下面建立被访问者类，其本质就是对SKPhysicsBody的封装，并接受Visitor的注入</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">//</div><div class="line">//  VisitablePhysicsBody.h</div><div class="line">//  ColorAtom</div><div class="line">//</div><div class="line">//  Created by 杨萧玉 on 14-4-13.</div><div class="line">//  Copyright (c) 2014年 杨萧玉. All rights reserved.</div><div class="line">//</div><div class="line"></div><div class="line">#import &lt;Foundation/Foundation.h&gt;</div><div class="line">#import &quot;ContactVisitor.h&quot;</div><div class="line">@interface VisitablePhysicsBody : NSObject</div><div class="line">@property (nonatomic, readonly, strong) SKPhysicsBody *body;</div><div class="line"></div><div class="line">- (id) initWithBody:(SKPhysicsBody *)body;</div><div class="line">- (void) acceptVisitor:(ContactVisitor *)visitor;</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<p>关键的一步：在<code>acceptVisitor:</code>方法中调用访问者的<code>visit:</code>方法</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">//</div><div class="line">//  VisitablePhysicsBody.m</div><div class="line">//  ColorAtom</div><div class="line">//</div><div class="line">//  Created by 杨萧玉 on 14-4-13.</div><div class="line">//  Copyright (c) 2014年 杨萧玉. All rights reserved.</div><div class="line">//</div><div class="line"></div><div class="line">#import &quot;VisitablePhysicsBody.h&quot;</div><div class="line"></div><div class="line">@implementation VisitablePhysicsBody</div><div class="line">- (id)initWithBody:(SKPhysicsBody *)body</div><div class="line">&#123;</div><div class="line">    self = [super init];</div><div class="line">    if (self) &#123;</div><div class="line">        _body = body;</div><div class="line">    &#125;</div><div class="line">    return self;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (void)acceptVisitor:(ContactVisitor *)visitor</div><div class="line">&#123;</div><div class="line">    [visitor visit:self.body];</div><div class="line">&#125;</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<p>可能有人会有疑问，<code>visit:</code>方法穿入的参数类型永远是<code>SKPhysicsBody</code>，这哪里是动态绑定啊，其实是由于本例的特殊性，碰撞检测时区分物体类型不是靠<code>SKPhysicsBody</code>子类化来区分和绑定，而是靠SKPhysicsBody类中的<code>categoryBitMask</code>属性来区分，这也就免不了需要在<code>ContactVisitor</code>初始化的时候通过if语句来判断具体初始化哪个子类<br>
+最后，在Scene实现SKPhysicsContactDelegate协议</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">#pragma mark SKPhysicsContactDelegate</div><div class="line">-(void)didBeginContact:(SKPhysicsContact *)contact</div><div class="line">&#123;</div><div class="line">    //A-&gt;B</div><div class="line">    ContactVisitor *visitorA = [ContactVisitor contactVisitorWithBody:contact.bodyA forContact:contact];</div><div class="line">    VisitablePhysicsBody *visitableBodyB = [[VisitablePhysicsBody alloc] initWithBody:contact.bodyB];</div><div class="line">    [visitableBodyB acceptVisitor:visitorA];</div><div class="line">    //B-&gt;A</div><div class="line">    ContactVisitor *visitorB = [ContactVisitor contactVisitorWithBody:contact.bodyB forContact:contact];</div><div class="line">    VisitablePhysicsBody *visitableBodyA = [[VisitablePhysicsBody alloc] initWithBody:contact.bodyA];</div><div class="line">    [visitableBodyA acceptVisitor:visitorB];</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>物理老师总说力的作用时相互的，所以我们需要两次访问：A访问B和B访问A，但是这样会调用两次visitXXX方法，原则上这两个逻辑上对称的方法我们只需要实现其中一个就可以，但必须得像上面代码一样，A-&gt;B和B-&gt;A缺一不可，因为碰撞的时候我们不知道bodyA和bodyB的类型，也就无法判断visitXXX方法是A-&gt;B时能调用还是B-&gt;A时能调用到<br>
+当然，你也可以两个visit方法都实现，但只对visitor的node做操作，或只对visitable的node操作，总之仁者见仁智者见智啦</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/04/10/2014-04-11-roslyn-its-got-electrolytes/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/04/13/file-io/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

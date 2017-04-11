@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            用Swift和SpriteKit开发iOS游戏 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,Swift,iOS,SpriteKit">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="用Swift和SpriteKit开发iOS游戏 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="Swift"> <meta property="og:article:tag" content="iOS"> <meta property="og:article:tag" content="SpriteKit"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">准备工作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">绘制基本界面</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">螺旋线的绘制</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">四种精灵的绘制</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">Swift中用访问者模式处理碰撞</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">界面数据显示</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">按钮的绘制和截图分享</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                用Swift和SpriteKit开发iOS游戏
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>7月 17, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/SpriteKit/">SpriteKit</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/Swift/">Swift</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/iOS/">iOS</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=用Swift和SpriteKit开发iOS游戏&url=http://yoursite.com//2014/07/16/2014-07-17-a-ios-game-developed-by-swift-and-spritekit/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=用Swift和SpriteKit开发iOS游戏&url=http://yoursite.com//2014/07/16/2014-07-17-a-ios-game-developed-by-swift-and-spritekit/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/07/16/2014-07-17-a-ios-game-developed-by-swift-and-spritekit/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/07/16/2014-07-17-a-ios-game-developed-by-swift-and-spritekit/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>之前用SpriteKit做过一个叫做<a href="http://coloratom.yulingtianxia.com" target="_blank" rel="external">ColorAtom</a>的小游戏，用了访问者模式处理碰撞检测，还用了SpriteKit中的粒子系统、连接体、力场和动画等，可以说是一个学习SpriteKit比较不错的Demo，随着Swift的火热，我也用Swift和SpriteKit写了一个更为简单的小游戏<a href="http://spiral.yulingtianxia.com" target="_blank" rel="external">Spiral</a></p>
+<p>&lt;!--more--&gt;
+附上Spiral的动图：</p>
+<p><img src="http://7ni3rk.com1.z0.glb.clouddn.com/140557437844.gif" alt=""></p>
+<p>游戏规则是：玩家是五角星小球，小球自动沿着陀螺线向外运动，当玩家点击屏幕时五角星小球会跳跃到内层螺旋，当五角星小球碰到红色旋风或滚动到螺旋线终点时游戏结束。玩家吃掉绿色旋风来得2分，吃到紫色三角得一分并获得保护罩，保护罩用来抵挡一次红色旋风。随着分数的增加游戏会升级，速度加快。游戏结束后可以截屏分享到社交网络，也可以选择重玩。</p>
+<p>以下是本文内容：</p>
+<ol>
+<li>准备工作</li>
+<li>绘制基本界面</li>
+<li>Swift中用访问者模式处理碰撞</li>
+<li>界面数据显示</li>
+<li>按钮的绘制和截图分享</li>
+</ol>
+<h2>准备工作</h2>
+<p>SpriteKit是苹果iOS7新推出的2D游戏引擎，这里不再过多介绍。我们新建工程的时候选取iOS中的Game，然后选择SpriteKit作为游戏引擎，语言选择Swift，Xcode6会为我们自动创建一个游戏场景<code>GameScene</code>，它包含<code>GameScene.swift</code>和<code>GameScene.sks</code>两个文件，<code>sks</code>文件可以让我们可视化拖拽游戏控件到场景上，然后再代码中加载<code>sks</code>文件来完成场景的初始化：</p>
+<p><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">extension SKNode &#123;</div><div class="line">    class func unarchiveFromFile(file : NSString) -&gt; SKNode? &#123;</div><div class="line">        </div><div class="line">        let path = NSBundle.mainBundle().pathForResource(file, ofType: "sks")</div><div class="line">        </div><div class="line">        var sceneData = NSData.dataWithContentsOfFile(path, options: .DataReadingMappedIfSafe, error: nil)</div><div class="line">        var archiver = NSKeyedUnarchiver(forReadingWithData: sceneData)</div><div class="line">        </div><div class="line">        archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")</div><div class="line">        let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as GameScene</div><div class="line">        archiver.finishDecoding()</div><div class="line">        return scene</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>但我比较喜欢纯写代码的方式来搭接面，因为<code>sks</code>文件作为游戏场景布局还不成熟，它是iOS8新加入的功能，以前在iOS7的时候<code>sks</code>文件只是作为粒子系统的可视化编辑文件。</p>
+<p>所以我们修改<code>GameViewController.swift</code>文件的<code>viewDidLoad()</code>函数，像以前那样直接用代码加载游戏场景：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">override func viewDidLoad() &#123;</div><div class="line">        super.viewDidLoad()</div><div class="line">        // Configure the view.</div><div class="line">        let skView = self.view as SKView</div><div class="line">        /* Sprite Kit applies additional optimizations to improve rendering performance */</div><div class="line">        skView.ignoresSiblingOrder = true</div><div class="line">        let scene = GameScene(size: skView.bounds.size)</div><div class="line">        /* Set the scale mode to scale to fit the window */</div><div class="line">        scene.scaleMode = .AspectFill</div><div class="line">        skView.presentScene(scene)</div><div class="line">        </div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p><code>GameScene</code>虽然是Xcode自动生成的，但是只是个空架子，我们需要把它生成的没用的代码删掉，比如初始化函数里内容为“HelloWorld”的<code>SKLabelNode</code>，还有<code>touchesBegan(touches: NSSet, withEvent event: UIEvent)</code>方法中绘制飞船的代码。把这些删光后，我们还需要有图片素材来绘制这四类精灵节点：<code>Player</code>（五角星），<code>Killer</code>（红色旋风），<code>Score</code>（绿色旋风）和<code>Shield</code>（紫色三角）。我是用Sketch来绘制这些矢量图形的，文件名为<code>spiral.sketch</code>，随同工程文件一同放到GitHub上了。当然你不需要手动导出图片到工程，直接下载工程文件就好了：</p>
+<p><a href="https://github.com/yulingtianxia/Spiral" target="_blank" rel="external">https://github.com/yulingtianxia/Spiral</a></p>
+<h2>绘制基本界面</h2>
+<p>这部分的工作主要是绘制出螺旋线作为地图，并让四种精灵节点动起来。</p>
+<h3>螺旋线的绘制</h3>
+<p><code>SKNode</code>有一个子类<code>SKShapeNode</code>，专门用于绘制线条的，我们新建一个<code>Map</code>类，继承<code>SKShapeNode</code>。下面我们需要生成一个<code>CGPath</code>来赋值给<code>Map</code>的<code>path</code>属性：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">import UIKit</div><div class="line">import SpriteKit</div><div class="line">class Map: SKShapeNode &#123;</div><div class="line">    let spacing:CGFloat = 35</div><div class="line">    var points:[CGPoint] = []</div><div class="line">    convenience init(origin:CGPoint,layer:CGFloat)&#123;</div><div class="line">        </div><div class="line">        var x:CGFloat = origin.x</div><div class="line">        var y:CGFloat = origin.y</div><div class="line">        var path = CGPathCreateMutable()</div><div class="line">        self.init()</div><div class="line">        CGPathMoveToPoint(path, nil, x, y)</div><div class="line">        points.append(CGPointMake(x, y))</div><div class="line">        for index in 1..&lt;layer&#123;</div><div class="line">            y-=spacing*(2*index-1)</div><div class="line">            CGPathAddLineToPoint(path, nil , x, y)</div><div class="line">            points.append(CGPointMake(x, y))</div><div class="line">            x-=spacing*(2*index-1)</div><div class="line">            CGPathAddLineToPoint(path, nil , x, y)</div><div class="line">            points.append(CGPointMake(x, y))</div><div class="line">            y+=spacing*2*index</div><div class="line">            CGPathAddLineToPoint(path, nil , x, y)</div><div class="line">            points.append(CGPointMake(x, y))</div><div class="line">            x+=spacing*2*index</div><div class="line">            CGPathAddLineToPoint(path, nil , x, y)</div><div class="line">            points.append(CGPointMake(x, y))</div><div class="line">        &#125;</div><div class="line">        self.path = path</div><div class="line">        self.glowWidth = 1</div><div class="line">        self.antialiased = true</div><div class="line">        CGPathGetCurrentPoint(path)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>算法很简单，就是顺时针计算点坐标然后画线，这里把每一步的坐标都存入了<code>points</code>数组里，是为了以后计算其他数据时方便。因为这部分算法不难而且不是我们的重点，这里不过多介绍了。</p>
+<h3>四种精灵的绘制</h3>
+<p>因为四种精灵都是沿着<code>Map</code>类的路径来顺时针运动，它们的动画绘制是相似的，所以我建立了一个<code>Shape</code>类作为基类来绘制动画，它继承于<code>SKSpriteKit</code>类，并拥有半径（<code>radius</code>）、移动速度（<code>moveSpeed</code>）和线段计数（<code>lineNum</code>）这三个属性。其中<code>lineNum</code>是用于标记精灵在螺旋线第几条线段上的，这样比较方便计算动画的参数。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">class Shape: SKSpriteNode &#123;</div><div class="line">    let radius:CGFloat = 10</div><div class="line">    var moveSpeed:CGFloat = 50</div><div class="line">    var lineNum = 0</div><div class="line">    init(name:String,imageName:String)&#123;</div><div class="line">        super.init(texture: SKTexture(imageNamed: imageName),color:SKColor.clearColor(), size: CGSizeMake(radius*2, radius*2))</div><div class="line">        self.physicsBody = SKPhysicsBody(circleOfRadius: radius)</div><div class="line">        self.physicsBody.usesPreciseCollisionDetection = true</div><div class="line">        self.physicsBody.collisionBitMask = 0</div><div class="line">        self.physicsBody.contactTestBitMask = playerCategory|killerCategory|scoreCategory</div><div class="line">        moveSpeed += CGFloat(Data.speedScale) * self.moveSpeed</div><div class="line">        self.name = name</div><div class="line">        self.physicsBody.angularDamping = 0</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>构造函数中设定了<code>Shape</code>类的一些物理参数，比如物理体的形状大小，碰撞检测掩码等。这里设定<code>usesPreciseCollisionDetection</code>为<code>true</code>是为了增加碰撞检测的精度，常用于体积小速度快的物体。<code>collisionBitMask</code>属性标记了需要模拟物理碰撞的类别，<code>contactTestBitMask</code>属性标记了需要检测到碰撞的类别。这里说的“类别”指的是物体的类别：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">let playerCategory:UInt32      =  0x1 &lt;&lt; 0;</div><div class="line">let killerCategory:UInt32      =  0x1 &lt;&lt; 1;</div><div class="line">let scoreCategory:UInt32       =  0x1 &lt;&lt; 2;</div><div class="line">let shieldCategory:UInt32      =  0x1 &lt;&lt; 3;</div></pre></td></tr></table></figure></p>
+<p>这种用位运算来判断和存储物体类别的方式很常用，上面这段代码写在了<code>NodeCategories.swift</code>文件中。</p>
+<p>为了描述<code>Shape</code>的速度随着游戏等级上升而增加，这里速度的计算公式含有<code>Data.speedScale</code>作为参数，关于<code>Data</code>“类”在后面会讲到。</p>
+<p>为了让精灵动起来，需要知道动画的移动目的地是什么。虽然<code>SKAction</code>有<code>followPath(path: CGPath?, speed: CGFloat)</code>方法，但是在这里并不实用，因为<code>Player</code>会经常改变路线，所以我写了一个<code>runInMap(map:Map)</code>方法让精灵每次只移动到路径上的下一个节点（之前<code>Map</code>类存储的<code>points</code>属性用到了吧！嘿嘿）</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">func runInMap(map:Map)&#123;</div><div class="line">        let distance = calDistanceInMap(map)</div><div class="line">        let duration = distance/moveSpeed</div><div class="line">        let rotate = SKAction.rotateByAngle(distance/10, duration: duration)</div><div class="line">        let move = SKAction.moveTo(map.points[lineNum+1], duration: duration)</div><div class="line">        let group = SKAction.group([rotate,move])</div><div class="line">        self.runAction(group, completion: &#123;</div><div class="line">            self.lineNum++</div><div class="line">            if self.lineNum==map.points.count-1 &#123;</div><div class="line">                if self is Player&#123;</div><div class="line">                    Data.gameOver = true</div><div class="line">                &#125;</div><div class="line">                if self is Killer&#123;</div><div class="line">                    self.removeFromParent()</div><div class="line">                &#125;</div><div class="line">                if self is Score&#123;</div><div class="line">                    self.removeFromParent()</div><div class="line">                &#125;</div><div class="line">                if self is Shield&#123;</div><div class="line">                    self.removeFromParent()</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            else &#123;</div><div class="line">                self.runInMap(map)</div><div class="line">            &#125;</div><div class="line">            &#125;)</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>上面的代码先是调用<code>calDistanceInMap(map:Map)-&gt;CGFloat</code>方法计算精灵距离下一个节点的距离（也就是需要移动的距离），然后计算精灵需要旋转动画时间和移动动画时间，最后将两个动画作为一个<code>group</code>来运行，在动画运行结束后判断精灵是否运行到了最后一个节点，也就是螺旋线的终点：如果到终点了则移除精灵，否则开始递归调用方法，来开始下一段动画（奔向下一个节点）。</p>
+<p>计算距离的<code>calDistanceInMap(map:Map)-&gt;CGFloat</code>方法代码如下：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">func calDistanceInMap(map:Map)-&gt;CGFloat&#123;</div><div class="line">        if self.lineNum==map.points.count &#123;</div><div class="line">            return 0</div><div class="line">        &#125;</div><div class="line">        switch lineNum%4&#123;</div><div class="line">        case 0:</div><div class="line">            return position.y-map.points[lineNum+1].y</div><div class="line">        case 1:</div><div class="line">            return position.x-map.points[lineNum+1].x</div><div class="line">        case 2:</div><div class="line">            return map.points[lineNum+1].y-position.y</div><div class="line">        case 3:</div><div class="line">            return map.points[lineNum+1].x-position.x</div><div class="line">        default:</div><div class="line">            return 0</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>到此为止<code>Shape</code>类完成了，<code>Killer</code>、<code>Score</code>和<code>Shield</code>类比较简单，继承<code>Shape</code>类并设置自身纹理和类别即可：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">class Killer: Shape &#123;</div><div class="line">    convenience init() &#123;</div><div class="line">        self.init(name:&quot;Killer&quot;,imageName:&quot;killer&quot;)</div><div class="line">        self.physicsBody.categoryBitMask = killerCategory</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">class Score: Shape &#123;</div><div class="line">    convenience init() &#123;</div><div class="line">        self.init(name:&quot;Score&quot;,imageName:&quot;score&quot;)</div><div class="line">        self.physicsBody.categoryBitMask = scoreCategory</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">class Shield: Shape &#123;</div><div class="line">    convenience init() &#123;</div><div class="line">        self.init(name:&quot;Shield&quot;,imageName:&quot;shield&quot;)</div><div class="line">        self.physicsBody.categoryBitMask = shieldCategory</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>而<code>Player</code>因为有护盾状态并可以在螺旋线上跳跃到内层，所以稍微复杂些：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">class Player: Shape &#123;</div><div class="line">    var jump = false</div><div class="line">    var shield:Bool = false &#123;</div><div class="line">    willSet&#123;</div><div class="line">        if newValue&#123;</div><div class="line">            self.texture = SKTexture(imageNamed: &quot;player0&quot;)</div><div class="line">        &#125;</div><div class="line">        else&#123;</div><div class="line">            self.texture = SKTexture(imageNamed: &quot;player&quot;)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    &#125;</div><div class="line">    convenience init() &#123;</div><div class="line">        self.init(name:&quot;Player&quot;,imageName:&quot;player&quot;)</div><div class="line">        self.physicsBody.categoryBitMask = playerCategory</div><div class="line">        self.moveSpeed = 70</div><div class="line">        self.lineNum = 3</div><div class="line">    &#125;</div><div class="line">    func restart(map:Map) &#123;</div><div class="line">        self.alpha = 1</div><div class="line">        self.removeAllActions()</div><div class="line">        self.lineNum = 3</div><div class="line">        self.moveSpeed = 70</div><div class="line">        self.jump = false</div><div class="line">        self.shield = false</div><div class="line">        self.position = map.points[self.lineNum]</div><div class="line">        self.runInMap(map)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>Player</code>类的初始位置是螺旋线第四个节点，而且移动速度要略快于其他三种精灵，所以在这里设置为70（<code>Shape</code>默认速度50）。<code>jump</code>和<code>shield</code>是用来标记<code>Player</code>当前状态的属性，其中<code>shield</code>属性还定义了属性监察器，这是Swift中存储属性具有的响应机制，类似于<code>KVO</code>。在<code>shield</code>状态改变时也同时改变<code>Player</code>的纹理。<strong>需要注意的是构造器中对属性的改变并不会调用属性检查器，在<code>willSet</code>和<code>didSet</code>中改变自身属性也不会调用属性检查器，因为那样会造成死循环。</strong></p>
+<p><code>restart(map:Map)</code>方法用于在游戏重新开始时重置<code>Player</code>的相关数据。</p>
+<h2>Swift中用访问者模式处理碰撞</h2>
+<p>访问者模式是双分派（Double Dispatch）模式的一种实现，关于双分派模式的详细解释，参考我的另一篇文章：<a href="http://yulingtianxia.com/blog/2014/04/13/double-dispatchmo-shi-ji-qi-zai-ioskai-fa-zhong-shi-zhan/" target="_blank" rel="external">Double Dispatch模式及其在iOS开发中实践</a>，里面包含了C++，Java和Objective-C的实现，这次我们用Swift实现访问者模式。</p>
+<p>因为SpriteKit中物理碰撞检测到的都是<code>SKPhysicsBody</code>，所以我们的被访问者需要包含一个<code>SKPhysicsBody</code>对象：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class VisitablePhysicsBody&#123;</div><div class="line">    let body:SKPhysicsBody</div><div class="line">    init(body:SKPhysicsBody)&#123;</div><div class="line">        self.body = body</div><div class="line">    &#125;</div><div class="line">    func acceptVisitor(visitor:ContactVisitor)&#123;</div><div class="line">        visitor.visitBody(body)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>acceptVisitor</code>方法传入的是一个<code>ContactVisitor</code>类，它是访问者的基类（也相当于接口），访问者的<code>visitBody(body:SKPhysicsBody)</code>方法会根据传入的<code>body</code>实例来推断出被访问者的真实类别，然后调用对应的方法来处理碰撞：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">func visitBody(body:SKPhysicsBody)&#123;</div><div class="line">        //第二次dispatch，通过构造方法名来执行对应方法</div><div class="line">        // 生成方法名，比如&quot;visitPlayer&quot;</div><div class="line">        var contactSelectorString = &quot;visit&quot; + body.node.name + &quot;:&quot;</div><div class="line">        let selector = NSSelectorFromString(contactSelectorString)</div><div class="line">        if self.respondsToSelector(selector)&#123;</div><div class="line">            dispatch_after(0, dispatch_get_main_queue(), &#123;</div><div class="line">                NSThread.detachNewThreadSelector(selector, toTarget:self, withObject: body)</div><div class="line">                &#125;)</div><div class="line">        &#125;</div><div class="line">        </div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>Swift废弃了<code>performSelector</code>方法，所以这里耍了个小聪明来将消息传给具体的访问者。有关Swift中替代<code>performSelector</code>的方案，参见<a href="http://www.cnblogs.com/yangzhou1030/p/3830592.html" target="_blank" rel="external">这里</a></p>
+<p>下面让<code>GameScene</code>实现<code>SKPhysicsContactDelegate</code>协议：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">func didBeginContact(contact:SKPhysicsContact)&#123;</div><div class="line">        //A-&gt;B</div><div class="line">        let visitorA = ContactVisitor.contactVisitorWithBody(contact.bodyA, forContact: contact)</div><div class="line">        let visitableBodyB = VisitablePhysicsBody(body: contact.bodyB)</div><div class="line">        visitableBodyB.acceptVisitor(visitorA)</div><div class="line">        //B-&gt;A</div><div class="line">        let visitorB = ContactVisitor.contactVisitorWithBody(contact.bodyB, forContact: contact)</div><div class="line">        let visitableBodyA = VisitablePhysicsBody(body: contact.bodyA)</div><div class="line">        visitableBodyA.acceptVisitor(visitorB)</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>跟Objective-C中实现访问者模式类似，也是通过<code>ContactVisitor</code>类的工厂方法返回一个对应的子类实例来作为访问者，然后实例化一个被访问者，被访问者接受访问者的访问。A访问B和B访问A在大多数场合是相同的，但是你不知道谁是A谁是B，所以需要两种情况都调用。下面是<code>ContactVisitor</code>类的工厂方法和构造器：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">class ContactVisitor:NSObject&#123;</div><div class="line">    let body:SKPhysicsBody!</div><div class="line">    let contact:SKPhysicsContact!</div><div class="line">    class func contactVisitorWithBody(body:SKPhysicsBody,forContact contact:SKPhysicsContact)-&gt;ContactVisitor!&#123;</div><div class="line">        //第一次dispatch，通过node类别返回对应的实例</div><div class="line">        if 0 != body.categoryBitMask&amp;playerCategory &#123;</div><div class="line">            return PlayerContactVisitor(body: body, forContact: contact)</div><div class="line">        &#125;</div><div class="line">        if 0 != body.categoryBitMask&amp;killerCategory &#123;</div><div class="line">            return KillerContactVisitor(body: body, forContact: contact)</div><div class="line">        &#125;</div><div class="line">        if 0 != body.categoryBitMask&amp;scoreCategory &#123;</div><div class="line">            return ScoreContactVisitor(body: body, forContact: contact)</div><div class="line">        &#125;</div><div class="line">        if 0 != body.categoryBitMask&amp;shieldCategory &#123;</div><div class="line">            return ShieldContactVisitor(body: body, forContact: contact)</div><div class="line">        &#125;</div><div class="line">        return nil</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    init(body:SKPhysicsBody, forContact contact:SKPhysicsContact)&#123;</div><div class="line">        self.body = body</div><div class="line">        self.contact = contact</div><div class="line">        super.init()</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>PS：上面的代码省略了已经提到过的<code>visitBody(body:SKPhysicsBody)</code>方法</p>
+<p>因为这个游戏逻辑比较简单，所有碰撞后的逻辑都写到了<code>PlayerContactVisitor</code>类里：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">func visitKiller(body:SKPhysicsBody)&#123;</div><div class="line">        let thisNode = self.body.node as Player</div><div class="line">        let otherNode = body.node</div><div class="line">//        println(thisNode.name+&quot;-&gt;&quot;+otherNode.name)</div><div class="line">        if thisNode.shield &#123;</div><div class="line">            otherNode.removeFromParent()</div><div class="line">            thisNode.shield = false</div><div class="line">        &#125;</div><div class="line">        else &#123;</div><div class="line">            Data.gameOver = true</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    func visitScore(body:SKPhysicsBody)&#123;</div><div class="line">        let thisNode = self.body.node</div><div class="line">        let otherNode = body.node</div><div class="line">//        println(thisNode.name+&quot;-&gt;&quot;+otherNode.name)</div><div class="line">        otherNode.removeFromParent()</div><div class="line">        Data.score += 2</div><div class="line">    &#125;</div><div class="line">    func visitShield(body:SKPhysicsBody)&#123;</div><div class="line">        let thisNode = self.body.node as Player</div><div class="line">        let otherNode = body.node</div><div class="line">        otherNode.removeFromParent()</div><div class="line">        thisNode.shield = true</div><div class="line">        Data.score++</div><div class="line">        //        println(thisNode.name+&quot;-&gt;&quot;+otherNode.name)</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>上面的方法都是“visit+类名”格式的，处理的是<code>Player</code>碰撞到其他三种精灵的逻辑。而其他三种精灵之间的碰撞不需要处理，所以<code>KillerContactVisitor</code>、<code>ScoreContactVisitor</code>和<code>ShieldContactVisitor</code>这三个<code>ContactVisitor</code>的子类很空旷，这里不再赘述。</p>
+<p>我们设置<code>Player</code>碰撞到<code>Killer</code>游戏结束，碰撞到<code>Score</code>加两分，碰撞到<code>Shield</code>加一分并获得护甲（shield属性设为true）。可以看到这里大量用到了<code>Data</code>“类“”，它其实是一个存储并管理全局数据的结构体，它里面存储了一些静态的成员属性，也可看做非线程安全的单例。</p>
+<h2>界面数据显示</h2>
+<p>这部分很简单，主要是将<code>Data</code>结构体中存储的分数和等级等数据通过<code>SKLabelNode</code>显示在界面上，只不过我封装了一个<code>Display</code>类来将所有的<code>SKLabelNode</code>统一管理，并让其实现我定义的<code>DisplayData</code>协议来让<code>Data</code>中的数据变化驱动界面更新：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">protocol DisplayData&#123;</div><div class="line">    func updateData()</div><div class="line">    func levelUp()</div><div class="line">    func gameOver()</div><div class="line">    func restart()</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下面是Data结构体代码，大量使用了存储属性的监察器来响应数据变化：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line">struct Data&#123;</div><div class="line">    static var display:DisplayData?</div><div class="line">    static var updateScore:Int = 5</div><div class="line">    static var score:Int = 0&#123;</div><div class="line">    willSet&#123;</div><div class="line">        if newValue&gt;=updateScore&#123;</div><div class="line">            updateScore+=5 * ++level</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    didSet&#123;</div><div class="line">        display?.updateData()</div><div class="line">    &#125;</div><div class="line">    &#125;</div><div class="line">    static var highScore:Int = 0</div><div class="line">    static var gameOver:Bool = false &#123;</div><div class="line">    willSet&#123;</div><div class="line">        if newValue &#123;</div><div class="line">            let standardDefaults = NSUserDefaults.standardUserDefaults()</div><div class="line">            Data.highScore = standardDefaults.integerForKey(&quot;highscore&quot;)</div><div class="line">            if Data.highScore &lt; Data.score &#123;</div><div class="line">                Data.highScore = Data.score</div><div class="line">                standardDefaults.setInteger(Data.score, forKey: &quot;highscore&quot;)</div><div class="line">                standardDefaults.synchronize()</div><div class="line">            &#125;</div><div class="line">            display?.gameOver()</div><div class="line">        &#125;</div><div class="line">        else &#123;</div><div class="line">            display?.restart()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    didSet&#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    &#125;</div><div class="line">    static var level:Int = 1&#123;</div><div class="line">    willSet&#123;</div><div class="line">        speedScale = Float(newValue)*0.1</div><div class="line">        if newValue != 1&#123;</div><div class="line">            display?.levelUp()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    didSet&#123;</div><div class="line">        display?.updateData()</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    &#125;</div><div class="line">    static var speedScale:Float = 0&#123;</div><div class="line">    willSet&#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    didSet&#123;</div><div class="line">        </div><div class="line">    &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    static func restart()&#123;</div><div class="line">        Data.updateScore = 5</div><div class="line">        Data.score = 0</div><div class="line">        Data.level = 1</div><div class="line">        Data.speedScale = 0</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里不得不提到一个更新界面时遇到的一个坑，当我想通过名字遍历<code>GameScene</code>子节点的时候，一般会用到<code>enumerateChildNodesWithName(name: String?, usingBlock: ((SKNode!, UnsafePointer&lt;ObjCBool&gt;) -&gt; Void)?)</code>方法，但是这个方法在Xcode6Beta3更新后经常会抛异常强退，这让我很费解，恰巧遇到此问题的不只是我一个人，所以还是老老实实的自己写循环遍历加判断吧。</p>
+<h2>按钮的绘制和截图分享</h2>
+<p>参考我的另外两篇文章：<a href="http://yulingtianxia.com/blog/2014/04/27/zai-you-xi-de-skscenezhong-tian-jia-button/" target="_blank" rel="external">在游戏的SKScene中添加Button</a>和<a href="http://yulingtianxia.com/blog/2014/04/22/spritekitjie-ping-bing-fen-xiang-zhi-she-jiao-wang-luo/" target="_blank" rel="external">SpriteKit截屏并分享至社交网络</a></p>
+<p>在本工程中只有<code>ShareButton</code>和<code>ReplayButton</code>两个按钮，Swift版本的代码很简洁，而我通过<code>Social.Framework</code>中的<code>UIActivityViewController</code>来分享得分，这部分代码写在了<code>ShareButton.swift</code>中：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">let scene = self.scene as GameScene</div><div class="line">let image = scene.imageFromNode(scene)</div><div class="line">let text = &quot;我在Spiral游戏中得了\(Data.score)分，快来追逐我的步伐吧！&quot;</div><div class="line">let activityItems = [image,text]</div><div class="line">let activityController = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)</div><div class="line">(scene.view.nextResponder() as UIViewController).presentViewController(activityController, animated: true, completion: nil)</div></pre></td></tr></table></figure></p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/07/16/2014-07-16-how-to-debug-anything-with-visual-studio-and-jetbrains-dotpeek-v1-2/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/07/28/2014-07-29-reactivecocoa/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

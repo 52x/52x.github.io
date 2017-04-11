@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            JavaScript 读书心得之八：CSS 修改（CSS DOM） | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,JavaScript">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="JavaScript 读书心得之八：CSS 修改（CSS DOM） | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="JavaScript"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">CSS 读写</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">内联样式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">非内联样式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">CSS 模块的侦测</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">改变 class 和 id</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">向文档写入 CSS</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">改变整个样式表</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">隐藏或显示元素</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">动画</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">元素的尺寸和位置</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">clientWidth、clientHeight 属性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">offsetWidth、offsetHeight 属性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">scrollWidth、scrollHeight 属性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.4.</span> <span class="post-toc-text">三者之间的关系</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.4.1.</span> <span class="post-toc-text">定义</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.4.2.</span> <span class="post-toc-text">公式</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.5.</span> <span class="post-toc-text">offsetLeft、offsetTop 属性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.6.</span> <span class="post-toc-text">offsetParent 属性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.7.</span> <span class="post-toc-text">scrollLeft、scrollTop 属性</span></a></li></ol></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                JavaScript 读书心得之八：CSS 修改（CSS DOM）
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>9月 24, 2015</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/JavaScript/">JavaScript</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=JavaScript 读书心得之八：CSS 修改（CSS DOM）&url=http://yoursite.com//2015/09/23/11.ecma08/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=JavaScript 读书心得之八：CSS 修改（CSS DOM）&url=http://yoursite.com//2015/09/23/11.ecma08/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2015/09/23/11.ecma08/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2015/09/23/11.ecma08/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>修改 CSS 有四种方法：</p>
+<ol>
+<li>修改元素的 style 属性</li>
+<li>改变元素的 class 或 id</li>
+<li>向文档中写入新的 CSS</li>
+<li>改变整个文档的样式表
+一般规则：③在特殊的可访问性场合使用，④很少用到；推荐使用②，因为这个符合表现和行为分离的原则，而①在某些情况下有用：隐藏或显示元素、动画</li>
+</ol>
+<h2>CSS 读写</h2>
+<h3>内联样式</h3>
+<ul>
+<li>当需要读取内联样式和修改样式时使用 style 属性</li>
+<li>style 对象对每个内联的 CSS 声明都有一个对应的属性，但是它不能读取外部样式表的 CSS 属性，所以 style 属性更适合设置样式，而不是读取它们</li>
+<li>style 属性和 CSS 属性对应的规则是把 CSS 属性名移除破折号 “-”，然后相邻首字母大写，也就是 Camel 驼峰命名法。如 <code>font-size=&gt;style.fontSize</code>、<code>border-left-width=&gt;style.borderLeftWidth</code></li>
+</ul>
+<blockquote>
+<p>注：对于 float 属性，在 IE8- 中使用 styleFloat，在其他浏览器中使用 cssFloat
+注：设置复合属性时使用 cssText 属性，如 <code>elem.style.cssText = &quot;font-weight:bold; color:red;&quot;;</code>
+注：修改 style 的属性为数值（除 0 以外）时，必须加上单位，如 “px”、“em”</p>
+</blockquote>
+<h3>非内联样式</h3>
+<p>当需要读取非内联样式时：</p>
+<ol>
+<li>IE 使用 <code>currentStyle</code> 属性，它可以读取应用在元素上的实际样式，另外它是只读的</li>
+<li>IE9+、现代浏览器使用 <code>window.getComputedStyle()</code> 方法</li>
+</ol>
+<blockquote>
+<p>注：在读取尺寸值时，总是返回 px 值，尽管原来的样式可能是 1em
+注：另外返回 color 值时使用 rgb(255,255,255) 这样的语法
+注：当样式采用简写方式（如 <code>border:1px solid #F00</code>）时，不同浏览器的返回数值会有差异
+如：Firefox 无法读取 border-width 的值，只能读取 border-left-width 的值</p>
+</blockquote>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 读取元素 CSS 样式 by John Resig</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getStyle</span>(<span class="params">elem, name</span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span> (elem.style[name]) &#123;</div><div class="line">        <span class="keyword">return</span> elem.style[name];</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (elem.currentStyle) &#123;</div><div class="line">        <span class="keyword">return</span> elem.currentStyle[name];</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">document</span>.defaultView &amp;&amp; <span class="built_in">document</span>.defaultView.getComputedStyle) &#123;</div><div class="line">        name = name.replace(<span class="regexp">/([A-Z])/g</span>, <span class="string">'-$1'</span>);</div><div class="line">        name = name.toLowerCase();</div><div class="line">        <span class="keyword">var</span> s = <span class="built_in">document</span>.defaultView.getComputedStyle(elem, <span class="string">''</span>);</div><div class="line">        <span class="keyword">return</span> s &amp;&amp; s.getPropertyValue(name);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">testStyle</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> elem = <span class="built_in">document</span>.getElementById(<span class="string">"testdiv"</span>);</div><div class="line">    <span class="keyword">var</span> scolor = getStyle(elem, <span class="string">"color"</span>);</div><div class="line">    <span class="keyword">var</span> sbwidth = getStyle(elem, <span class="string">"borderLeftWidth"</span>);</div><div class="line">    <span class="keyword">var</span> sfont = getStyle(elem, <span class="string">"fontSize"</span>);</div><div class="line">    <span class="keyword">var</span> smargin = getStyle(elem, <span class="string">"marginTop"</span>);</div><div class="line">    <span class="keyword">var</span> swidth = getStyle(elem, <span class="string">"width"</span>);</div><div class="line">    <span class="built_in">console</span>.log(scolor+<span class="string">"："</span>+sbwidth+<span class="string">"："</span>+sfont+<span class="string">"："</span>+smargin+<span class="string">"："</span>+swidth);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>CSS 模块的侦测</h3>
+<p>CSS 的规格发展太快，新的模块层出不穷。不同浏览器的不同版本，对 CSS 模块的支持情况都不一样。有时候，需要知道当前浏览器是否支持某个模块，这就叫做 “CSS 模块的侦测”。
+一个比较普遍适用的方法是，判断某个 DOM 元素的 style 对象的某个属性值是否为字符串。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typeof</span> element.style.transform === <span class="string">'string'</span>;</div></pre></td></tr></table></figure></p>
+<h2>改变 class 和 id</h2>
+<p>通过改变元素的 class 或 id，浏览器会自动更新元素的样式，JavaScript 使用 className 来读取 class 属性</p>
+<blockquote>
+<p>注：由于 id 具有唯一性，而且还可能作为脚本的钩子，所以不建议改变它
+注：因为元素通常已经拥有 classs 属性了，所以一般是给元素添加或移除一个 class 值，而不是直接重新设置 class 值</p>
+</blockquote>
+<p>辅助移除 class 函数
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">removeClass</span>(<span class="params">elem, sClass</span>) </span>&#123;</div><div class="line">    elem.className = elem.className.replace(sClass, <span class="string">""</span>);</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">testClass</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> elem = <span class="built_in">document</span>.getElementById(<span class="string">"testdiv"</span>).getElementsByTagName(<span class="string">"p"</span>);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>,obj; obj=elem[i++];) &#123;</div><div class="line">        obj.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">            <span class="keyword">if</span> (superClass(<span class="keyword">this</span>, <span class="string">"has"</span>, <span class="string">"error"</span>)) &#123;</div><div class="line">                superClass(<span class="keyword">this</span>,<span class="string">"remove"</span>,<span class="string">"error"</span>);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                superClass(<span class="keyword">this</span>,<span class="string">"add"</span>,<span class="string">"error"</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>向文档写入 CSS</h2>
+<ul>
+<li>
+<p>这个方法比较特别，应该只用来增强页面的可访问性：当 JavaScript 可用时，定义样式（通常是隐藏页面元素）；如果 JavaScript 不可用或对象检测失败，不应用该样式
+注：这种解决方案可能会影响某些可用性，但是从技术上说，对于高级的、可执行脚本的界面来说，这是最正确的隐藏元素的处理方法
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.write(<span class="string">"&lt;style&gt;.show&#123;color:#F00&#125;&lt;/style&gt;"</span>);</div><div class="line"><span class="built_in">document</span>.write(<span class="string">"&lt;link rel='stylesheet' href='style.css'&gt;"</span>);</div></pre></td></tr></table></figure></p>
+</li>
+<li>
+<p>使用这个方法时，尽快应用特定的样式很重要。因为如果等待 load 事件的话，用户会看到页面闪烁或跳动（由于某些可见的元素在 onload 后隐藏或者显示）；另外在页面加载完后，执行 <code>document.write()</code>，浏览器会默认移除当前文档内容，并写入新的内容，从而破坏掉页面。所以要把 <code>document.write()</code> 放在 JavaScript 文件的顶端，并在任何函数之外</p>
+</li>
+<li>
+<p>正确地使用这个方法，它就是很有用的可访问性工具，否则会引发一系列问题。在使用 <code>document.write()</code> 添加样式之前，需要整体考虑，并在禁用 JavaScript 的情况下测试页面</p>
+</li>
+</ul>
+<h2>改变整个样式表</h2>
+<p>只有 Windows 平台下的 IE 和 Firefox 支持改变样式表，所以这个方法也遇到了兼容性问题；另外除了某些特定情况（比如目前博客网站流行的允许用户自定义样式表），改变页面的整个样式表也没有什么意义</p>
+<p>原理：文档包含一系列样式表文件，样式表包含一系列规则，规则包含一系列样式声明，声明包含属性和对应值</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeStyle</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">// 支持样式表编辑的首要条件是支持 document.styleSheets 节点列表，列表的索引数字按样式表文件在文档中出现的顺序排列</span></div><div class="line">    <span class="keyword">var</span> sheets = <span class="built_in">document</span>.styleSheets;</div><div class="line">    <span class="keyword">if</span> (!sheets || !sheets.length) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 查找链接地址是 style.css 的对应样式表对象</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; sheets.length; i++) &#123;</div><div class="line">        <span class="keyword">if</span> (!sheets[i].href) &#123;</div><div class="line">            <span class="keyword">continue</span>;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">var</span> ssName = sheets[i].href.substring(sheets[i].href.lastIndexOf(<span class="string">'/'</span>)+<span class="number">1</span>);</div><div class="line">        <span class="keyword">if</span> (ssName == <span class="string">'style.css'</span>) &#123;</div><div class="line">            <span class="keyword">var</span> currentSheet = sheets[i];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 或者直接设置文档的第一个样式表为样式表对象</span></div><div class="line">    <span class="keyword">var</span> currentSheet = sheets[<span class="number">0</span>];</div><div class="line"></div><div class="line">    <span class="comment">// 读取样式表的所有规则，Firefox 使用 W3C 标准的 cssRules[]，IE 使用微软标准的 rules[]，其他现代浏览器都支持；它们除了名字不同外几乎没有差别</span></div><div class="line">    <span class="keyword">var</span> sheetRules = currentSheet.cssRules || currentSheet.rules;</div><div class="line">    <span class="keyword">if</span> (!sheetRules) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 每个规则都有 selectorText 属性，以字符串类型保存着规则的选择符，注：IE/Safari 返回大写字符，现代浏览器返回小写字符</span></div><div class="line">    <span class="keyword">var</span> sText = sheetRules[<span class="number">2</span>].selectorText;</div><div class="line">    <span class="comment">// 每个规则都有 style 属性，这个和元素的 style 属性类似</span></div><div class="line">    <span class="keyword">var</span> sStyle = sheetRules[<span class="number">2</span>].style.font;</div><div class="line">    <span class="built_in">console</span>.log(sText+<span class="string">" 的 font 样式是 "</span>+sStyle);</div><div class="line"></div><div class="line">    <span class="comment">// 读取样式表的完整文本要用 cssText 属性，但是全文的（cssText1）只有 IE 支持，单个规则的（cssText2）则只有 IE9+、现代浏览器支持，单个规则并不包含选择符的（cssText3）所有浏览器都支持</span></div><div class="line">    <span class="comment">// 对于简写方式的样式，Firefox 返回实际值，IE/Opera 返回拆分成单个条目后的值</span></div><div class="line">    <span class="keyword">var</span> cssText1 = currentSheet.cssText;</div><div class="line">    <span class="keyword">if</span> (currentSheet.cssRules) &#123;</div><div class="line">        <span class="keyword">var</span> cssText2 = currentSheet.cssRules[<span class="number">0</span>].cssText;</div><div class="line">        <span class="keyword">var</span> cssText3 = currentSheet.cssRules[<span class="number">0</span>].style.cssText;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (currentSheet.rules) &#123;</div><div class="line">        <span class="keyword">var</span> cssText2 = currentSheet.rules[<span class="number">0</span>].cssText;</div><div class="line">        <span class="keyword">var</span> cssText3 = currentSheet.rules[<span class="number">0</span>].style.cssText;</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"IE 支持的 "</span>+cssText1);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"现代浏览器支持的 "</span>+cssText2);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"都支持的 "</span>+cssText3);</div><div class="line"></div><div class="line">    <span class="comment">// 添加和移除规则，Firefox 使用 W3C 标准的 insertRule() 和 deleteRule() 方法，IE 使用微软标准的 addRule() 和 removeRule() 方法</span></div><div class="line">    <span class="comment">// 通用添加和移除样式表规则函数</span></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">addCSS</span>(<span class="params">obj, selector, declaration, index</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (obj.insertRule) &#123;</div><div class="line">            obj.insertRule(selector+<span class="string">"&#123;"</span>+declaration+<span class="string">"&#125;"</span>,index);</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj.addRule) &#123;</div><div class="line">            obj.addRule(selector,declaration,index);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">removeCSS</span>(<span class="params">obj, index</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (obj.deleteRule) &#123;</div><div class="line">            obj.deleteRule(index);</div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj.removeRule) &#123;</div><div class="line">            obj.removeRule(index);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    addCSS(currentSheet,<span class="string">"a"</span>,<span class="string">"color:#F00;font-weight:bold;"</span>,<span class="number">10</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>隐藏或显示元素</h2>
+<ul>
+<li>使用 style 属性设置内联样式，这样可以通过 <code>style.display</code> 来读取当前元素的 display 值</li>
+<li>使用 JavaScript 设置关键的 <code>display:none</code>，而不是在 CSS 里面，这样当用户禁用脚本时，所有内容还是显示的，并可以访问</li>
+<li>页面加载完后建立标题和关联内容之间的关系</li>
+</ul>
+<p>下面的函数遍历文档的 h3，并把其后面的内容放入一个新创建的 div 隐藏起来，然后添加切换显示的脚本
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">initToggle</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> header = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"h3"</span>);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; header.length; i++) &#123;</div><div class="line">        <span class="keyword">var</span> nDiv = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</div><div class="line">        nDiv.className = <span class="string">"toggle"</span>;</div><div class="line">        <span class="comment">//nDiv.style.display = "none";</span></div><div class="line">        insertAfter(nDiv,header[i]);</div><div class="line">        <span class="keyword">while</span> (nDiv.nextSibling != header[i+<span class="number">1</span>]) &#123;</div><div class="line">            nDiv.appendChild(nDiv.nextSibling);</div><div class="line">        &#125;</div><div class="line">        superClass(header[i],<span class="string">"add"</span>,<span class="string">"clickable"</span>);</div><div class="line">        header[i].relatedCont = nDiv;</div><div class="line">        header[i].onclick = toggleCont;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">toggleCont</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> currentValue = <span class="keyword">this</span>.relatedCont.style.display;</div><div class="line">    <span class="keyword">var</span> newValue = (currentValue == <span class="string">"none"</span>) ? <span class="string">""</span> : <span class="string">"none"</span>;</div><div class="line">    <span class="keyword">this</span>.relatedCont.style.display = newValue;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>动画</h2>
+<p>动画就是反复改变元素的某一样式，这也是一个改变 style 属性优于改变 class 属性的场合</p>
+<p>动画通常涉及到两个函数 setTimeout()、setInterval()，而二者选用其一的原则是：前者适合有确定起点和终点的动画，后者适合在不确定的时间内（如等待用户行为）持续进行的动画</p>
+<blockquote>
+<p>注：现在更推荐使用 CSS3 中的 transition、animation 属性来实现</p>
+</blockquote>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">initMotion</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> obj = <span class="built_in">document</span>.getElementById(<span class="string">"linkList"</span>);</div><div class="line">    <span class="keyword">if</span> (!obj) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> show = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</div><div class="line">    show.id = <span class="string">"slideShow"</span>;</div><div class="line">    show.innerHTML = <span class="string">"&lt;img src='images/topics.gif' id='linkPic'&gt;"</span>;</div><div class="line">    insertAfter(show,obj);</div><div class="line">    <span class="keyword">var</span> link = obj.getElementsByTagName(<span class="string">"a"</span>);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; link.length; i++) &#123;</div><div class="line">        link[i].newId = i;</div><div class="line">        link[i].onmouseover = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">            motion(<span class="string">"linkPic"</span>,<span class="number">-100</span>*(<span class="keyword">this</span>.newId+<span class="number">1</span>),<span class="number">0</span>,<span class="number">10</span>);</div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// 通用移动元素位置函数 by Jeremy Keith</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">motion</span>(<span class="params">objId, posX, posY, interval</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> k = <span class="number">0.1</span>;</div><div class="line">    <span class="keyword">var</span> obj = <span class="built_in">document</span>.getElementById(objId);</div><div class="line">    <span class="keyword">if</span> (!obj) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (obj.movement) &#123;</div><div class="line">        clearTimeout(obj.movement);</div><div class="line">    &#125;</div><div class="line">    obj.style.left = obj.style.left || <span class="string">"0px"</span>;</div><div class="line">    obj.style.top = obj.style.top || <span class="string">"0px"</span>;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> nowX = <span class="built_in">parseInt</span>(obj.style.left);</div><div class="line">    <span class="keyword">var</span> nowY = <span class="built_in">parseInt</span>(obj.style.top);</div><div class="line">    <span class="keyword">if</span> (nowX == posX &amp;&amp; nowY == posY) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (nowX &lt; posX) &#123;</div><div class="line">        nowX += <span class="built_in">Math</span>.ceil((posX-nowX)*k);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (nowX &gt; posX) &#123;</div><div class="line">        nowX -= <span class="built_in">Math</span>.ceil((nowX-posX)*k);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (nowY &lt; posY) &#123;</div><div class="line">        nowY += <span class="built_in">Math</span>.ceil((posY-nowY)*k);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (nowY &gt; posY) &#123;</div><div class="line">        nowY -= <span class="built_in">Math</span>.ceil((nowY-posY)*k);</div><div class="line">    &#125;</div><div class="line">    obj.style.left = nowX+<span class="string">"px"</span>;</div><div class="line">    obj.style.top = nowY+<span class="string">"px"</span>;</div><div class="line">    <span class="comment">// 闭包的应用</span></div><div class="line">    obj.movement = setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        motion(objId, posX, posY, interval);</div><div class="line">    &#125;, interval);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>元素的尺寸和位置</h2>
+<h3>clientWidth、clientHeight 属性</h3>
+<p>元素的可视尺寸（相当于 CSS 中的 content+padding 再减去 scrollbar），不包括边框 border 和滚动条 scrollbar。</p>
+<blockquote>
+<p>IE6 中该尺寸包括滚动条 scrollbar。
+若 CSS 中设置 box-sizing:content-box 时，设置的 width/height 就等于 content 的尺寸。
+若 CSS 中没有指定元素的高度和宽度 (即自适应)，则 IE6 中显示 0，而其他浏览器则显示实际值。</p>
+</blockquote>
+<p>为了读取文档视口的尺寸，需要查询 clientWidth/Height 时的兼容性方案：
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> windowWidth = <span class="built_in">document</span>.documentElement.clientWidth || <span class="built_in">document</span>.body.clientWidth;</div><div class="line"><span class="keyword">var</span> windowHeight = <span class="built_in">document</span>.documentElement.clientHeight || <span class="built_in">document</span>.body.clientHeight;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p><code>document.documentElement.clientWidth/clientHeight</code>，基本上与 <code>window.innerWidth/innerHeight</code> 同义。只有一个区别，前者不将滚动条计算在内，而后者包括了滚动条的高度和宽度。</p>
+</blockquote>
+<h3>offsetWidth、offsetHeight 属性</h3>
+<p>元素的布局尺寸，包括边框和滚动条。我们在浏览器中看到的元素物理尺寸就是这个。</p>
+<blockquote>
+<p>若 CSS 中设置 box-sizing:border-box 时，设置的 width/height 就等于 offsetWidth/offsetHeight。</p>
+</blockquote>
+<h3>scrollWidth、scrollHeight 属性</h3>
+<p>元素的实际尺寸；如果该属性大于 clientWidth/Height，就会出现滚动条。</p>
+<h3>三者之间的关系</h3>
+<h4>定义</h4>
+<pre><code>屏幕尺寸 screen.width/height
+窗口尺寸 window.outerWidth/outerHeight
+
+视口宽度 window.innerWidth
+视口高度 window.innerHeight
+// 注：由于 IE11 的滚动条自动隐藏（尺寸为 0），所以它的视口尺寸和可视尺寸是相等的
+
+可视宽度 clientWidth  = 视口宽度 - 滚动条
+可视高度 clientHeight = 视口高度 - 滚动条
+// 定义明确，与视口尺寸关联
+
+布局宽度 offsetWidth
+布局高度 offsetHeight
+// 不同浏览器、不同标签下差异较大，见下文公式辨析
+
+实际宽度 scrollWidth  = 内容宽度
+实际高度 scrollHeight = 内容高度
+// 定义明确，与内容尺寸关联（除了两个例外情况）
+
+// 注：以上对 PC端有效，对移动端而言
+    screen.width = window.outerWidth = (document.documentElement.clientWidth = window.innerWidth) / scale
+    screen.height = window.outerHeight = (document.documentElement.clientHeight = window.innerHeight) / scale
+    // scale 是视口的缩放比，取决于 &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, maximum-scale=1&quot;&gt; 中的设置值
+    // scale 取值范围最大为 1，最小为 .25。
+</code></pre>
+<h4>公式</h4>
+<pre><code>对 &lt;html&gt; 标签（document.documentElement）来说：
+// 宽度
+    // 布局宽度 = 可视宽度 IE8+、Chrome、Firefox
+    // 布局宽度 = 视口宽度 IE6
+// 高度
+    // 布局高度 = 内容高度 Chrome、Firefox
+    // 布局高度 = 可视高度 IE8+
+    // 布局高度 = 视口高度 IE6
+    // 实际高度 = Math.max(内容高度, 可视高度) Firefox 唯一例外
+
+对 &lt;body&gt; 标签（document.body）来说：
+// 宽度
+    // 布局宽度 = 可视宽度 IE8+、Chrome、Firefox
+    // 视口宽度 = 布局宽度 = 实际宽度 = 内容宽度 IE6
+// 高度
+    // 可视高度 = 布局高度 = 实际高度 = 内容高度
+    // 实际高度 = Math.max(内容高度, 视口高度 - 滚动条) Chrome 唯一例外
+</code></pre>
+<blockquote>
+<p>注：由于 &lt;html&gt; 和 &lt;body&gt; 有了 margin、padding、border 的话，Firefox 和 IE 会产生很多不兼容问题，所以 &lt;html&gt;、&lt;body&gt; 一般都重置为 0</p>
+</blockquote>
+<h3>offsetLeft、offsetTop 属性</h3>
+<p>元素相对参考点的偏移量</p>
+<h3>offsetParent 属性</h3>
+<p>指向参考点，即当前 HTML 元素的最靠近的、并且 CSS 的 position 属性不等于 static 的祖先元素。IE6 则是查找拥有 “layout” 的祖先元素。</p>
+<ul>
+<li>最终 offsetParent（即最终参考点），一般指向 &lt;body&gt; 标签；另外由于 &lt;html&gt; 和 &lt;body&gt; 标签没有 offsetParent，所以它们也没有 offsetLeft/Top</li>
+<li>position:relative 和 absolute 的元素，IE6 按正常原则查找 offsetParent，但其最终的 offsetParent 会跳过 &lt;body&gt; 标签，直接指向 &lt;html&gt; 标签</li>
+<li>position:fixed 的元素，IE6 浏览器按正常原则查找，其他浏览器的 offsetParent 为 null。</li>
+<li>display:none 的元素，IE6 浏览器按正常原则查找，IE8 浏览器的 offsetParent 为 &lt;body&gt; 标签，其他浏览器为 null。</li>
+</ul>
+<h3>scrollLeft、scrollTop 属性</h3>
+<p>页面的滚动偏移量</p>
+<blockquote>
+<p>只有在有滚动条的元素或页面中才有值
+对 IE6+、Firefox、Opera 来说，<code>document.documentElement</code> 有此属性；对 Safari、Chrome 来说，则 <code>document.body</code> 有此属性</p>
+</blockquote>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 读取元素坐标（相对于页面） by John Resig</span></div><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">pageX</span>(<span class="params">elem</span>)</span>&#123;</div><div class="line">     <span class="keyword">return</span> elem.offsetParent ? (elem.offsetLeft + pageX(elem.offsetParent)) : elem.offsetLeft;</div><div class="line"> &#125;</div><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">pageY</span>(<span class="params">elem</span>)</span>&#123;</div><div class="line">     <span class="keyword">return</span> elem.offsetParent ? (elem.offsetTop + pageY(elem.offsetParent)) : elem.offsetTop;</div><div class="line"> &#125;</div><div class="line"> <span class="comment">// 注：现代浏览器有个原生方法 getBoundingClientRect()，可以直接获取元素相对于视口的 left、top、right、bottom、width、height（最后两项 IE8- 不支持）</span></div><div class="line"></div><div class="line"> <span class="comment">// 读取元素坐标（相对于父元素） by John Resig</span></div><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">parentX</span>(<span class="params">elem</span>)</span>&#123;</div><div class="line">     <span class="keyword">return</span> elem.parentNode == elem.offsetParent ? elem.offsetLeft : pageX(elem) - pageX(elem.parentNode);</div><div class="line"> &#125;</div><div class="line"> <span class="function"><span class="keyword">function</span> <span class="title">parentY</span>(<span class="params">elem</span>)</span>&#123;</div><div class="line">     <span class="keyword">return</span> elem.parentNode == elem.offsetParent ? elem.offsetTop : pageY(elem) - pageY(elem.parentNode);</div><div class="line"> &#125;</div></pre></td></tr></table></figure></p>
+<p>// 下面这个函数显示了 不同浏览器和不同设备 在读取页面元素的各种尺寸上的差异
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 读取页面及视口尺寸</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getPageSize</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> xScroll, yScroll;</div><div class="line">    <span class="keyword">if</span> (<span class="built_in">document</span>.body.scrollHeight &gt; <span class="built_in">document</span>.body.offsetHeight) &#123;</div><div class="line">        xScroll = <span class="built_in">document</span>.body.scrollWidth;</div><div class="line">        yScroll = <span class="built_in">document</span>.body.scrollHeight;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        xScroll = <span class="built_in">document</span>.body.offsetWidth;</div><div class="line">        yScroll = <span class="built_in">document</span>.body.offsetHeight;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> windowWidth, windowHeight;</div><div class="line">    <span class="keyword">if</span> (self.innerHeight) &#123;</div><div class="line">        windowWidth = self.innerWidth;</div><div class="line">        windowHeight = self.innerHeight;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">document</span>.documentElement &amp;&amp; <span class="built_in">document</span>.documentElement.clientHeight) &#123;</div><div class="line">        windowWidth = <span class="built_in">document</span>.documentElement.clientWidth;</div><div class="line">        windowHeight = <span class="built_in">document</span>.documentElement.clientHeight;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">document</span>.body) &#123;</div><div class="line">        windowWidth = <span class="built_in">document</span>.body.clientWidth;</div><div class="line">        windowHeight = <span class="built_in">document</span>.body.clientHeight;</div><div class="line">    &#125;</div><div class="line">    pageWidth = xScroll &lt; windowWidth ? windowWidth : xScroll;</div><div class="line">    pageHeight = yScroll &lt; windowHeight ? windowHeight : yScroll;</div><div class="line">    <span class="keyword">return</span> [pageWidth, pageHeight, windowWidth, windowHeight];</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">elemDimension</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> w = <span class="built_in">window</span>.screen.width;</div><div class="line">    <span class="keyword">var</span> h = <span class="built_in">window</span>.screen.height;</div><div class="line">    <span class="keyword">var</span> aw = <span class="built_in">window</span>.screen.availWidth;</div><div class="line">    <span class="keyword">var</span> ah = <span class="built_in">window</span>.screen.availHeight;</div><div class="line">    <span class="keyword">var</span> ow = <span class="built_in">window</span>.outerWidth;</div><div class="line">    <span class="keyword">var</span> oh = <span class="built_in">window</span>.outerHeight;</div><div class="line">    <span class="keyword">var</span> iw = <span class="built_in">window</span>.innerWidth;</div><div class="line">    <span class="keyword">var</span> ih = <span class="built_in">window</span>.innerHeight;</div><div class="line">    <span class="keyword">var</span> dpr = <span class="built_in">window</span>.devicePixelRatio;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> str = <span class="string">""</span>;</div><div class="line">    str += <span class="string">"屏幕宽度 Window.screen.width = "</span>+w;</div><div class="line">    str += <span class="string">"&lt;br&gt; 屏幕高度 Window.screen.height = "</span>+h;</div><div class="line">    str += <span class="string">"&lt;br&gt; 屏幕有效宽度 Window.screen.availWidth = "</span>+aw;</div><div class="line">    str += <span class="string">"&lt;br&gt; 屏幕有效高度 Window.screen.availHeight = "</span>+ah;</div><div class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.outerWidth) &#123;</div><div class="line">        str += <span class="string">"&lt;br&gt; 窗口宽度 Window.outerWidth = "</span>+ow;</div><div class="line">        str += <span class="string">"&lt;br&gt; 窗口高度 Window.outerHeight = "</span>+oh;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.innerWidth) &#123;</div><div class="line">        str += <span class="string">"&lt;br&gt; 视口宽度 Window.innerWidth = "</span>+iw;</div><div class="line">        str += <span class="string">"&lt;br&gt; 视口高度 Window.innerHeight = "</span>+ih;</div><div class="line">    &#125;</div><div class="line">    str += <span class="string">"&lt;br&gt; 设备像素比 Window.devicePixelRatio = "</span>+dpr;</div><div class="line">    str += <span class="string">"\n&lt;br&gt; 页面宽度 = "</span>+getPageSize()[<span class="number">0</span>];</div><div class="line">    str += <span class="string">"\n&lt;br&gt; 页面高度 = "</span>+getPageSize()[<span class="number">1</span>];</div><div class="line">    str += <span class="string">"\n&lt;br&gt; 可视宽度 = "</span>+getPageSize()[<span class="number">2</span>];</div><div class="line">    str += <span class="string">"\n&lt;br&gt; 可视高度 = "</span>+getPageSize()[<span class="number">3</span>];</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (<span class="built_in">document</span>.documentElement) &#123;</div><div class="line">        str += <span class="string">"&lt;br&gt;&lt;br&gt; 可视宽度 document.documentElement.clientWidth = "</span>+<span class="built_in">document</span>.documentElement.clientWidth;</div><div class="line">        str += <span class="string">"&lt;br&gt; 可视高度 document.documentElement.clientHeight = "</span>+<span class="built_in">document</span>.documentElement.clientHeight;</div><div class="line">        str += <span class="string">"&lt;br&gt; 布局宽度 document.documentElement.offsetWidth = "</span>+<span class="built_in">document</span>.documentElement.offsetWidth;</div><div class="line">        str += <span class="string">"&lt;br&gt; 布局高度 document.documentElement.offsetHeight = "</span>+<span class="built_in">document</span>.documentElement.offsetHeight;</div><div class="line">        str += <span class="string">"&lt;br&gt; 实际宽度 document.documentElement.scrollWidth = "</span>+<span class="built_in">document</span>.documentElement.scrollWidth;</div><div class="line">        str += <span class="string">"&lt;br&gt; 实际高度 document.documentElement.scrollHeight = "</span>+<span class="built_in">document</span>.documentElement.scrollHeight;</div><div class="line">        str += <span class="string">"&lt;br&gt; 水平滚动 document.documentElement.scrollLeft = "</span>+<span class="built_in">document</span>.documentElement.scrollLeft;</div><div class="line">        str += <span class="string">"&lt;br&gt; 垂直滚动 document.documentElement.scrollTop = "</span>+<span class="built_in">document</span>.documentElement.scrollTop;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (<span class="built_in">document</span>.body) &#123;</div><div class="line">        str += <span class="string">"&lt;br&gt;&lt;br&gt; 可视宽度 document.body.clientWidth = "</span>+<span class="built_in">document</span>.body.clientWidth;</div><div class="line">        str += <span class="string">"&lt;br&gt; 可视高度 document.body.clientHeight = "</span>+<span class="built_in">document</span>.body.clientHeight;</div><div class="line">        str += <span class="string">"&lt;br&gt; 布局宽度 document.body.offsetWidth = "</span>+<span class="built_in">document</span>.body.offsetWidth;</div><div class="line">        str += <span class="string">"&lt;br&gt; 布局高度 document.body.offsetHeight = "</span>+<span class="built_in">document</span>.body.offsetHeight;</div><div class="line">        str += <span class="string">"&lt;br&gt; 实际宽度 document.body.scrollWidth = "</span>+<span class="built_in">document</span>.body.scrollWidth;</div><div class="line">        str += <span class="string">"&lt;br&gt; 实际高度 document.body.scrollHeight = "</span>+<span class="built_in">document</span>.body.scrollHeight;</div><div class="line">        str += <span class="string">"&lt;br&gt;&lt;br&gt;CSS 宽度 document.body.style.width = "</span>+getStyle(<span class="built_in">document</span>.body,<span class="string">"width"</span>);</div><div class="line">        str += <span class="string">"&lt;br&gt;CSS 高度 document.body.style.height = "</span>+getStyle(<span class="built_in">document</span>.body,<span class="string">"height"</span>);</div><div class="line">        str += <span class="string">"&lt;br&gt; 水平滚动 document.body.scrollLeft = "</span>+<span class="built_in">document</span>.body.scrollLeft;</div><div class="line">        str += <span class="string">"&lt;br&gt; 垂直滚动 document.body.scrollTop = "</span>+<span class="built_in">document</span>.body.scrollTop;</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">document</span>.body.innerHTML = str;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2015/09/23/Codage-3-data-table-way-1/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2015/09/24/Codage-5-install-jdk8-on-ubuntu/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

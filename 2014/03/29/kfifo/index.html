@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            linux内核环形队列kfifo | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="linux内核环形队列kfifo | Hexo">
+    <meta property="og:description" content="null">
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">kfifo概述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">kfifo 内存分配和初始化工作</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">__kfifo_put和__kfifo_get，巧妙的入队和出队操作，无锁并发</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">kfifo_put 和 kfifo_get</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">其他函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">参考</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                linux内核环形队列kfifo
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>3月 29, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=linux内核环形队列kfifo&url=http://yoursite.com//2014/03/29/kfifo/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=linux内核环形队列kfifo&url=http://yoursite.com//2014/03/29/kfifo/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/03/29/kfifo/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/03/29/kfifo/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>Linux kernel 里面从来就不缺少简洁，优雅和高效的代码，只是我们缺少发现和品味的眼光。在Linux kernel里面，简洁并不表示代码使用神出鬼没的超然技巧，相反，它使用的不过是大家非常熟悉的基础数据结构，但是kernel开发者能从基础的数据结构中，提炼出优美的特性。</p>
+<p><code>kfifo</code>就是这样的一类优美代码，它十分简洁，绝无多余的一行代码，却非常高效。
+关于kfifo信息如下：
+&lt;span style=&quot;color:blue;&quot;&gt;
+本文分析的原代码版本：2.6.25
+kfifo的定义文件：kernel/kfifo.c
+kfifo的头文件：include/linux/kfifo.h
+&lt;/span&gt;
+&lt;!--more--&gt;</p>
+<h2>kfifo概述</h2>
+<p><code>kfifo</code>是内核里面的一个First In First Out数据结构，它采用环形循环队列的数据结构来实现；它提供一个无边界的字节流服务，最重要的一点是，它使用并行无锁编程技术，即当它用于只有一个入队线程和一个出队线程的场情时，两个线程可以并发操作，而不需要任何加锁行为，就可以保证<code>kfifo</code>的线程安全。</p>
+<p><code>kfifo</code>代码既然肩负着这么多特性，那我们先一瞥它的代码：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> kfifo &#123;</div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">char</span> *buffer;  <span class="comment">/* the buffer holding the data */</span></div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> size;      <span class="comment">/* the size of the allocated buffer */</span></div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> in;        <span class="comment">/* data is added at offset (in % size) */</span></div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> out;       <span class="comment">/* data is extracted from off. (out % size) */</span></div><div class="line">        <span class="keyword">spinlock_t</span> *lock;       <span class="comment">/* protects concurrent modifications */</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>这是<code>kfifo</code>的数据结构，<code>kfifo</code>主要提供了两个操作，<code>__kfifo_put</code>(入队操作)和<code>__kfifo_get</code>(出队操作)。 它的各个数据成员如下：
+<code>buffer</code> 用于存放数据的缓存
+<code>size</code>   buffer空间的大小，在初化时，将它向上扩展成2的幂
+<code>lock</code>   如果使用不能保证任何时间最多只有一个读线程和写线程，需要使用该lock实施同步。
+<code>in</code>,<code>out</code>和<code>buffer</code>一起构成一个循环队列。 <code>in</code>指向<code>buffer</code>中队头，而且<code>out</code>指向<code>buffer</code>中的队尾，它的结构如示图如下：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">+--------------------------------------------------------------+</div><div class="line">|           |&lt;----------data----------&gt;|                       |</div><div class="line">+--------------------------------------------------------------+</div><div class="line">            ^                          ^</div><div class="line">            |                          |</div><div class="line">            in                         out</div></pre></td></tr></table></figure></p>
+<p>当然，内核开发者使用了一种更好的技术处理了<code>in</code>,<code>out</code>和<code>buffer</code>的关系，我们将在下面进行详细的分析。</p>
+<h2>kfifo 内存分配和初始化工作</h2>
+<p><strong>kfifo_alloc</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * kfifo_alloc - allocates a new FIFO and its internal buffer</div><div class="line"> * @size: the size of the internal buffer to be allocated.</div><div class="line"> * @gfp_mask: get_free_pages mask, passed to kmalloc()</div><div class="line"> * @lock: the lock to be used to protect the fifo buffer</div><div class="line"> *</div><div class="line"> * The size will be rounded-up to a power of 2.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">struct</span> kfifo *<span class="title">kfifo_alloc</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">int</span> size, <span class="keyword">gfp_t</span> gfp_mask, <span class="keyword">spinlock_t</span> *lock)</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">char</span> *buffer;</div><div class="line">        <span class="keyword">struct</span> kfifo *ret;</div><div class="line"></div><div class="line">        <span class="comment">/*</span></div><div class="line">         * round up to the next power of 2, since our 'let the indices</div><div class="line">         * wrap' tachnique works only in this case.</div><div class="line">         */</div><div class="line">        <span class="keyword">if</span> (size &amp; (size - <span class="number">1</span>)) &#123;  <span class="comment">/* size must be a power of 2 */</span></div><div class="line">                BUG_ON(size &gt; <span class="number">0x80000000</span>);</div><div class="line">                size = roundup_pow_of_two(size);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        buffer = kmalloc(size, gfp_mask);</div><div class="line">        <span class="keyword">if</span> (!buffer)</div><div class="line">                <span class="keyword">return</span> ERR_PTR(-ENOMEM);</div><div class="line"></div><div class="line">        ret = kfifo_init(buffer, size, gfp_mask, lock);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (IS_ERR(ret))</div><div class="line">                kfree(buffer);</div><div class="line"></div><div class="line">        <span class="keyword">return</span> ret;</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL(kfifo_alloc);</div></pre></td></tr></table></figure></p>
+<p>这里值得一提的是，<code>kfifo-&gt;size</code>的值总是在调用者传进来的<code>size</code>参数的基础上向2的幂扩展，这是内核一贯的做法。这样的好处不言而喻 —— 对<code>kfifo-&gt;size</code> &lt;span style=&quot;color:red;&quot;&gt;取模&lt;/span&gt;运算可以转化为&lt;span style=&quot;color:red;&quot;&gt;与&lt;/span&gt;运算，如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kfifo-&gt;in % kfifo-&gt;size</div></pre></td></tr></table></figure></p>
+<p>可以转化为
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kfifo-&gt;in &amp; (kfifo-&gt;size – <span class="number">1</span>)</div></pre></td></tr></table></figure></p>
+<p>在<code>kfifo_alloc</code>函数中，使用<code>size &amp; (size – 1)</code>来判断<code>size</code>是否为 2 的幂，如果条件为真，则表示<code>size</code>不是 2 的幂，然后调用<code>roundup_pow_of_two</code>将之向上扩展为 2 的幂。 这些都是很常用的技巧，只不过大家没有将它们结合起来使用而已，下面要分析的 <code>__kfifo_put</code>和<code>__kfifo_get</code>则是将<code>kfifo-&gt;size</code>的特点发挥到了极致。</p>
+<p><strong>kfifo_init</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * kfifo_init - allocates a new FIFO using a preallocated buffer</div><div class="line"> * @buffer: the preallocated buffer to be used.</div><div class="line"> * @size: the size of the internal buffer, this have to be a power of 2.</div><div class="line"> * @gfp_mask: get_free_pages mask, passed to kmalloc()</div><div class="line"> * @lock: the lock to be used to protect the fifo buffer</div><div class="line"> *</div><div class="line"> * Do NOT pass the kfifo to kfifo_free() after use! Simply free the</div><div class="line"> * &amp;struct kfifo with kfree().</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">struct</span> kfifo *<span class="title">kfifo_init</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *buffer, <span class="keyword">unsigned</span> <span class="keyword">int</span> size,</span></span></div><div class="line">                         <span class="keyword">gfp_t</span> gfp_mask, <span class="keyword">spinlock_t</span> *lock)</div><div class="line">&#123;</div><div class="line">        <span class="keyword">struct</span> kfifo *fifo;</div><div class="line"></div><div class="line">        <span class="comment">/* size must be a power of 2 */</span></div><div class="line">        BUG_ON(!is_power_of_2(size));</div><div class="line"></div><div class="line">        fifo = kmalloc(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> kfifo), gfp_mask);</div><div class="line">        <span class="keyword">if</span> (!fifo)</div><div class="line">                <span class="keyword">return</span> ERR_PTR(-ENOMEM);</div><div class="line"></div><div class="line">        fifo-&gt;buffer = buffer;</div><div class="line">        fifo-&gt;size = size;</div><div class="line">        fifo-&gt;in = fifo-&gt;out = <span class="number">0</span>;</div><div class="line">        fifo-&gt;lock = lock;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> fifo;</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL(kfifo_init);</div></pre></td></tr></table></figure></p>
+<p><strong>kfifo_free</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * kfifo_free - frees the FIFO</div><div class="line"> * @fifo: the fifo to be freed.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">kfifo_free</span><span class="params">(<span class="keyword">struct</span> kfifo *fifo)</span></span></div><div class="line">&#123;</div><div class="line">        kfree(fifo-&gt;buffer);</div><div class="line">        kfree(fifo);</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL(kfifo_free);</div></pre></td></tr></table></figure></p>
+<h2><code>__kfifo_put</code>和<code>__kfifo_get</code>，巧妙的入队和出队操作，无锁并发</h2>
+<p><code>__kfifo_put</code>是入队操作，它先将数据放入<code>buffer</code>里面，最后才修改<code>in</code>参数；<code>__kfifo_get</code>是出队操作，它先将数据从<code>buffer</code>中移走，最后才修改<code>out</code>。你会发现<code>in</code>和<code>out</code>两者各司其职。计算机科学家已经证明，当只有一个读经程和一个写线程并发操作时，不需要任何额外的锁，就可以确保是线程安全的，也即<code>kfifo</code>使用了无锁编程技术，以提高kernel的并发。</p>
+<p><strong>__kfifo_put</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * __kfifo_put - puts some data into the FIFO, no locking version</div><div class="line"> * @fifo: the fifo to be used.</div><div class="line"> * @buffer: the data to be added.</div><div class="line"> * @len: the length of the data to be added.</div><div class="line"> *</div><div class="line"> * This function copies at most @len bytes from the @buffer into</div><div class="line"> * the FIFO depending on the free space, and returns the number of</div><div class="line"> * bytes copied.</div><div class="line"> *</div><div class="line"> * Note that with only one concurrent reader and one concurrent</div><div class="line"> * writer, you don't need extra locking to use these functions.</div><div class="line"> */</div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> __kfifo_put(<span class="keyword">struct</span> kfifo *fifo,</div><div class="line">                         <span class="keyword">unsigned</span> <span class="keyword">char</span> *buffer, <span class="keyword">unsigned</span> <span class="keyword">int</span> len)</div><div class="line">&#123;</div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> l;</div><div class="line"></div><div class="line">        len = min(len, fifo-&gt;size - fifo-&gt;in + fifo-&gt;out);</div><div class="line"></div><div class="line">        <span class="comment">/*</span></div><div class="line">         * Ensure that we sample the fifo-&gt;out index -before- we</div><div class="line">         * start putting bytes into the kfifo.</div><div class="line">         */</div><div class="line"></div><div class="line">        smp_mb();</div><div class="line"></div><div class="line">        <span class="comment">/* first put the data starting from fifo-&gt;in to buffer end */</span></div><div class="line">        l = min(len, fifo-&gt;size - (fifo-&gt;in &amp; (fifo-&gt;size - <span class="number">1</span>)));</div><div class="line">        <span class="built_in">memcpy</span>(fifo-&gt;buffer + (fifo-&gt;in &amp; (fifo-&gt;size - <span class="number">1</span>)), buffer, l);</div><div class="line"></div><div class="line">        <span class="comment">/* then put the rest (if any) at the beginning of the buffer */</span></div><div class="line">        <span class="built_in">memcpy</span>(fifo-&gt;buffer, buffer + l, len - l);</div><div class="line"></div><div class="line">        <span class="comment">/*</span></div><div class="line">         * Ensure that we add the bytes to the kfifo -before-</div><div class="line">         * we update the fifo-&gt;in index.</div><div class="line">         */</div><div class="line"></div><div class="line">        smp_wmb();</div><div class="line"></div><div class="line">        fifo-&gt;in += len;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> len;</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL(__kfifo_put);</div></pre></td></tr></table></figure></p>
+<p><strong>__kfifo_get</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * __kfifo_get - gets some data from the FIFO, no locking version</div><div class="line"> * @fifo: the fifo to be used.</div><div class="line"> * @buffer: where the data must be copied.</div><div class="line"> * @len: the size of the destination buffer.</div><div class="line"> *</div><div class="line"> * This function copies at most @len bytes from the FIFO into the</div><div class="line"> * @buffer and returns the number of copied bytes.</div><div class="line"> *</div><div class="line"> * Note that with only one concurrent reader and one concurrent</div><div class="line"> * writer, you don't need extra locking to use these functions.</div><div class="line"> */</div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> __kfifo_get(<span class="keyword">struct</span> kfifo *fifo,</div><div class="line">                         <span class="keyword">unsigned</span> <span class="keyword">char</span> *buffer, <span class="keyword">unsigned</span> <span class="keyword">int</span> len)</div><div class="line">&#123;</div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> l;</div><div class="line"></div><div class="line">        len = min(len, fifo-&gt;in - fifo-&gt;out);</div><div class="line"></div><div class="line">        <span class="comment">/*</span></div><div class="line">         * Ensure that we sample the fifo-&gt;in index -before- we</div><div class="line">         * start removing bytes from the kfifo.</div><div class="line">         */</div><div class="line"></div><div class="line">        smp_rmb();</div><div class="line"></div><div class="line">        <span class="comment">/* first get the data from fifo-&gt;out until the end of the buffer */</span></div><div class="line">        l = min(len, fifo-&gt;size - (fifo-&gt;out &amp; (fifo-&gt;size - <span class="number">1</span>)));</div><div class="line">        <span class="built_in">memcpy</span>(buffer, fifo-&gt;buffer + (fifo-&gt;out &amp; (fifo-&gt;size - <span class="number">1</span>)), l);</div><div class="line"></div><div class="line">        <span class="comment">/* then get the rest (if any) from the beginning of the buffer */</span></div><div class="line">        <span class="built_in">memcpy</span>(buffer + l, fifo-&gt;buffer, len - l);</div><div class="line"></div><div class="line">        <span class="comment">/*</span></div><div class="line">         * Ensure that we remove the bytes from the kfifo -before-</div><div class="line">         * we update the fifo-&gt;out index.</div><div class="line">         */</div><div class="line"></div><div class="line">        smp_mb();</div><div class="line"></div><div class="line">        fifo-&gt;out += len;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> len;</div><div class="line">&#125;</div><div class="line">EXPORT_SYMBOL(__kfifo_get);</div></pre></td></tr></table></figure></p>
+<p><code>kfifo</code>每次入队或出队，<code>kfifo-&gt;in</code>或<code>kfifo-&gt;out</code>只是简单地<code>kfifo-&gt;in</code> (or)<code>kfifo-&gt;out</code> <code>+= len</code>，并没有对<code>kfifo-&gt;size</code>进行取模运算。因此<code>kfifo-&gt;in</code>和<code>kfifo-&gt;out</code>总是一直增大，直到<code>unsigned in</code> 最大值时，回绕到 0 这一起始端。但始终满足 <code>kfifo-&gt;out &lt; kfifo-&gt;in</code>，除非<code>kfifo-&gt;in</code> 回绕到了 0 的那一端，即使如此，代码中计算长度的性质仍然是保持的。</p>
+<p>我们先用简单的例子来形象说明这些性质吧：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">+----------------------------------------+</div><div class="line">|                         |&lt;---data---&gt;| |</div><div class="line">+----------------------------------------+</div><div class="line">                          ^            ^</div><div class="line">                          |            |</div><div class="line">                          out          in</div></pre></td></tr></table></figure></p>
+<p>上图的<code>out</code>和<code>in</code>为<code>kfifo-&gt;buffer</code>的出队数据和入队数据的游标，方框为<code>buffer</code> 的内存区域。当有数据入队时，那么<code>in</code>的值可能超过<code>kfifo-&gt;size</code>的值，那么我们使用另一个虚拟的方框来表示<code>in</code>变化后，在<code>buffer</code>内对<code>kfifo-&gt;size</code> 取模的值。如下图所示：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"> 真实的buffer内存                             虚拟的buffer内存，方便查看in对kfifo-&gt;size取模后在buffer的下标</div><div class="line">+----------------------------------------+ +------------------------------------+</div><div class="line">|                          |&lt;---data-----| |---------&gt;|                         |</div><div class="line">+----------------------------------------+ +------------------------------------+</div><div class="line">                           ^                          ^</div><div class="line">                           |                          |</div><div class="line">                           out                        in</div></pre></td></tr></table></figure></p>
+<p>当用户调用<code>__kfifo_put</code>函数，入队的数据使<code>kfifo-&gt;in</code> 游标发生如上图所示的变化时，要分两次拷贝内存数据。</p>
+<p>因为入队数据，一部存放在<code>kfifo-&gt;buffer</code>的尾部，另一部分存放在<code>kfifo-&gt;buffer</code> 的头部。计算公式非常简单：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">l = kfifo-&gt;size – kfifo-&gt;in &amp; (kfifo-&gt;size – <span class="number">1</span>)</div></pre></td></tr></table></figure></p>
+<p>表示<code>in</code>下标到<code>buffer</code>末尾，还有多少空间。</p>
+<p>如果<code>len</code>表示需要拷贝的长度的话，那么<code>len - l</code>则表示有多少字节需要拷贝到<code>buffer</code>开始之处。</p>
+<p>这样，我们读<code>__kfifo_put</code>代码就很容易了。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">len = min(len, fifo-&gt;size - fifo-&gt;in + fifo-&gt;out);</div></pre></td></tr></table></figure></p>
+<p><code>fifo-&gt;in – fifo-&gt;out</code>表示队列里面已使用的空间大小，<code>fifo-&gt;size - (fifo-&gt;in – fifo-&gt;out)</code>表示队列未使用的空间，</p>
+<p>因此<code>len = min(…)</code>，取两者之小，表示实际要拷贝的字节数。</p>
+<p>拷贝<code>len</code>个字符数，<code>fifo-&gt;in</code>到<code>buffer</code>末尾所剩的空间是多少，这里面计算：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* first put the data starting from fifo-&gt;in to buffer end */</span></div><div class="line">l = min(len, fifo-&gt;size - (fifo-&gt;in &amp; (fifo-&gt;size - <span class="number">1</span>)));</div><div class="line"><span class="built_in">memcpy</span>(fifo-&gt;buffer + (fifo-&gt;in &amp; (fifo-&gt;size - <span class="number">1</span>)), buffer, l);</div><div class="line"></div><div class="line"><span class="comment">/* then put the rest (if any) at the beginning of the buffer */</span></div><div class="line"><span class="built_in">memcpy</span>(fifo-&gt;buffer, buffer + l, len - l);</div></pre></td></tr></table></figure></p>
+<p><code>l</code>表示<code>len</code>或<code>fifo-&gt;in</code>到<code>buffer</code>末尾所剩的空间大小的最小值，因为需要拷贝<code>l</code>字节到 <code>fifo-&gt;buffer + (fifo-&gt;in &amp; (fifo-&gt;size - 1))</code>的位置上；那么剩下要拷贝到<code>buffer</code>开始之处的长度为<code>len – l</code>，当然，此值可能会为0，为 0 时，memcpy函数不进行任何拷贝。</p>
+<p>所有的拷贝完成后（可能是一次，也可能是两次 memcpy)，<code>fifo-&gt;in</code> 直接 <code>+= len</code>，不需要取模运算。</p>
+<p>写到这里，细心的读者会发现，如果<code>fifo-&gt;in</code>超过了<code>unsigned int</code>的最大值时，而回绕到 0 这一端，上述的计算公式还正确吗？ 答案是肯定的。</p>
+<p>因为<code>fifo-&gt;size</code>的大小是 2 的幂，而<code>unsigned int</code>空间的大小是 <code>2^32</code>，后者刚好是前者的倍数。如果从上述两个图的方式来描述，则表示<code>unsigned int</code>空间的数轴上刚好可以划成一定数量个 <code>kfifo-&gt;size</code>大小方框，没有长度多余。这样，<code>fifo-&gt;in</code> (or) <code>fifo-&gt;out</code>对<code>fifo-&gt;size</code>取模后，刚好落后对应的位置上。</p>
+<p>现在假设往<code>kfifo</code>加入数据后，使用<code>fifo-&gt;in &lt; fifo-&gt;out</code>关系，如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">+----------------------------------------+     +------------------------------------+</div><div class="line">|&lt;---data---|                            | ……  |                        |&lt;---data---|</div><div class="line">+----------------------------------------+     +------------------------------------+</div><div class="line">|----------------------------------------------------------------------------------&gt;|</div><div class="line"><span class="number">0</span>                                                                                   <span class="number">0xffffffff</span></div><div class="line">                                               ^                        ^</div><div class="line">                                               |                        |</div><div class="line">                                               in                       out</div></pre></td></tr></table></figure></p>
+<p>假设<code>kfifo</code>中数据的长度为<code>ldata</code>，那么<code>fifo-&gt;in</code>和<code>fifo-&gt;out</code>有这样的关系：<code>fifo-&gt;in = fifo-&gt;out + ldata</code>，并且<code>fifo-&gt;in &lt; fifo-&gt;out</code>。这说明<code>fifo-&gt;in</code>回绕到0这一端了，尽管如此，<code>fifo-&gt;in</code>和<code>fifo-&gt;out</code>的差距还是保持的，没有变化。即<code>fifo-&gt;in – fifo-&gt;out</code>仍然是<code>ldata</code>, 那么此时的可用空间是<code>fifo-&gt;size – ldata = fifo-&gt;size - (fifo-&gt;in – fifo-&gt;out) = fifo-&gt;size – fifo-&gt;in + fifo-&gt;out</code>。</p>
+<p>因此无论<code>fifo-&gt;in</code>和<code>fifo-&gt;out</code>谁大谁小，计算<code>fifo</code>剩余空间大小的公式<code>fifo-&gt;size – fifo-&gt;in + fifo-&gt;out</code>都正确，故可以保证<code>__kfifo_put</code>函数里面的长度计算均是正确的。</p>
+<p><code>__kfifo_get</code>函数使用<code>fifo-&gt;in – fifo-&gt;out</code>来计算<code>fifo</code> 内数据的空间长度，然后拷贝需要出队的数据。是否需要两次拷贝，其中原理和方法都和<code>__kfifo_put</code>是一样的。</p>
+<h2>kfifo_put 和 kfifo_get</h2>
+<p><code>kfifo_put</code>和<code>kfifo_get</code>在调用<code>__kfifo_put</code>和<code>__kfifo_get</code>过程都进行加锁，防止并发。</p>
+<p><strong>kfifo_put</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * kfifo_put - puts some data into the FIFO</div><div class="line"> * @fifo: the fifo to be used.</div><div class="line"> * @buffer: the data to be added.</div><div class="line"> * @len: the length of the data to be added.</div><div class="line"> *</div><div class="line"> * This function copies at most @len bytes from the @buffer into</div><div class="line"> * the FIFO depending on the free space, and returns the number of</div><div class="line"> * bytes copied.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">kfifo_put</span><span class="params">(<span class="keyword">struct</span> kfifo *fifo,</span></span></div><div class="line">                                     <span class="keyword">unsigned</span> <span class="keyword">char</span> *buffer, <span class="keyword">unsigned</span> <span class="keyword">int</span> len)</div><div class="line">&#123;</div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">long</span> flags;</div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> ret;</div><div class="line"></div><div class="line">        spin_lock_irqsave(fifo-&gt;lock, flags);</div><div class="line"></div><div class="line">        ret = __kfifo_put(fifo, buffer, len);</div><div class="line"></div><div class="line">        spin_unlock_irqrestore(fifo-&gt;lock, flags);</div><div class="line"></div><div class="line">        <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>kfifo_get</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * kfifo_get - gets some data from the FIFO</div><div class="line"> * @fifo: the fifo to be used.</div><div class="line"> * @buffer: where the data must be copied.</div><div class="line"> * @len: the size of the destination buffer.</div><div class="line"> *</div><div class="line"> * This function copies at most @len bytes from the FIFO into the</div><div class="line"> * @buffer and returns the number of copied bytes.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">kfifo_get</span><span class="params">(<span class="keyword">struct</span> kfifo *fifo,</span></span></div><div class="line">                                     <span class="keyword">unsigned</span> <span class="keyword">char</span> *buffer, <span class="keyword">unsigned</span> <span class="keyword">int</span> len)</div><div class="line">&#123;</div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">long</span> flags;</div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> ret;</div><div class="line"></div><div class="line">        spin_lock_irqsave(fifo-&gt;lock, flags);</div><div class="line"></div><div class="line">        ret = __kfifo_get(fifo, buffer, len);</div><div class="line"></div><div class="line">        <span class="comment">/*</span></div><div class="line">         * optimization: if the FIFO is empty, set the indices to 0</div><div class="line">         * so we don't wrap the next time</div><div class="line">         */</div><div class="line">        <span class="keyword">if</span> (fifo-&gt;in == fifo-&gt;out)</div><div class="line">                fifo-&gt;in = fifo-&gt;out = <span class="number">0</span>;</div><div class="line"></div><div class="line">        spin_unlock_irqrestore(fifo-&gt;lock, flags);</div><div class="line"></div><div class="line">        <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>其他函数</h2>
+<p><strong>kfifo_reset</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * __kfifo_reset - removes the entire FIFO contents, no locking version</div><div class="line"> * @fifo: the fifo to be emptied.</div><div class="line"> */</div><div class="line"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> __kfifo_reset(<span class="keyword">struct</span> kfifo *fifo)</div><div class="line">&#123;</div><div class="line">        fifo-&gt;in = fifo-&gt;out = <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * kfifo_reset - removes the entire FIFO contents</div><div class="line"> * @fifo: the fifo to be emptied.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">kfifo_reset</span><span class="params">(<span class="keyword">struct</span> kfifo *fifo)</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">long</span> flags;</div><div class="line"></div><div class="line">        spin_lock_irqsave(fifo-&gt;lock, flags);</div><div class="line"></div><div class="line">        __kfifo_reset(fifo);</div><div class="line"></div><div class="line">        spin_unlock_irqrestore(fifo-&gt;lock, flags);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>kfifo_len</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * __kfifo_len - returns the number of bytes available in the FIFO, no locking version</div><div class="line"> * @fifo: the fifo to be used.</div><div class="line"> */</div><div class="line"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> __kfifo_len(<span class="keyword">struct</span> kfifo *fifo)</div><div class="line">&#123;</div><div class="line">        <span class="keyword">return</span> fifo-&gt;in - fifo-&gt;out;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * kfifo_len - returns the number of bytes available in the FIFO</div><div class="line"> * @fifo: the fifo to be used.</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">kfifo_len</span><span class="params">(<span class="keyword">struct</span> kfifo *fifo)</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">long</span> flags;</div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> ret;</div><div class="line"></div><div class="line">        spin_lock_irqsave(fifo-&gt;lock, flags);</div><div class="line"></div><div class="line">        ret = __kfifo_len(fifo);</div><div class="line"></div><div class="line">        spin_unlock_irqrestore(fifo-&gt;lock, flags);</div><div class="line"></div><div class="line">        <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>参考</h2>
+<p><a href="http://blog.csdn.net/linyt/article/details/5764312" target="_blank" rel="external">巧夺天工的kfifo</a>
+<a href="http://www.cnblogs.com/Anker/p/3481373.html" target="_blank" rel="external">linux内核数据结构之kfifo</a>
+<a href="http://www.cnblogs.com/wang_yb/archive/2013/04/16/3023892.html" target="_blank" rel="external">《Linux内核设计与实现》读书笔记（六）- 内核数据结构</a></p>
+<p>&lt;span style=&quot;color:red;&quot;&gt;2014.03.31 更新&lt;/span&gt;
+新的内核版本中，kfifo 接口已经改写，新的 kfifo 接口请查阅最新的内核源码。
+相关的接口修改历史可查阅以下链接：
+<a href="http://lwn.net/Articles/345015/" target="_blank" rel="external">http://lwn.net/Articles/345015/</a>
+<a href="http://lwn.net/Articles/347619/" target="_blank" rel="external">http://lwn.net/Articles/347619/</a></p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/03/17/2014-03-17-how-nancy-made-net-web-development-fun/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/04/02/objc_dig_arc_dealloc/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

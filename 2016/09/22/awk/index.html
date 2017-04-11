@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            awk 手册 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,awk">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="awk 手册 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="awk"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">有关本手册</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">awk概述</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">为什么使用awk</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">如何取得awk</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">awk如何工作</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">名词定义</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">如何执行awk</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">awk 程序的主要结构:</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Pattern 是什么 ?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">Actions 是什么?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">awk 如何处理 Pattern { Actions } ?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">awk 如何处理{ Actions } 的语法? (缺少Pattern部分)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">awk 的字段变量</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">读入数据行时, awk如何更新(update)这些内建的字段变量?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.8.</span> <span class="post-toc-text">awk的内建变量(Built-in Variables)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.9.</span> <span class="post-toc-text">awk的工作流程</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.10.</span> <span class="post-toc-text">打印文件中指定的字段数据并加以计算</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">选择符合指定条件的记录</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">awk 中数组</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">awk中数组的特性</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.1.1.</span> <span class="post-toc-text">使用一个数组Number[]</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.1.2.</span> <span class="post-toc-text">如何取出数组中储存的信息</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">awk 程序中使用 Shell 命令</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">awk 程序的应用实例</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">重定向输出到文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">awk 中如何利用系统资源</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">执行 awk 程序的几种方式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.4.</span> <span class="post-toc-text">改变 awk 切割字段的方式 & 自定义函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.5.</span> <span class="post-toc-text">使用 getline 来读取数据</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">8.</span> <span class="post-toc-text">处理多行的数据</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">9.</span> <span class="post-toc-text">如何读取命令行上的参数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">10.</span> <span class="post-toc-text">编写可与用户交互的 awk 程序</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">11.</span> <span class="post-toc-text">使用 awk 编写递归程序</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">12.</span> <span class="post-toc-text">附录 A ── Pattern</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">12.1.</span> <span class="post-toc-text">BEGIN</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">12.2.</span> <span class="post-toc-text">END</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">12.3.</span> <span class="post-toc-text">关系表达式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">12.4.</span> <span class="post-toc-text">正则表达式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">12.5.</span> <span class="post-toc-text">混合 Pattern</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">12.6.</span> <span class="post-toc-text">Pattern1, Pattern2</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">13.</span> <span class="post-toc-text">附录 B ── Actions</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">13.1.</span> <span class="post-toc-text">流程控制指令</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">13.2.</span> <span class="post-toc-text">awk 中的 I/O 指令</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">13.3.</span> <span class="post-toc-text">awk 释放所占用的记忆体的指令</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">13.4.</span> <span class="post-toc-text">awk 中的数学运算符(Arithmetic Operators)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">13.5.</span> <span class="post-toc-text">awk 中的赋值运算符(Assignment Operators)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">13.6.</span> <span class="post-toc-text">awk 中的条件运算符(Conditional  Operator)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">13.7.</span> <span class="post-toc-text">awk 中的逻辑运算符(Logical Operators)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">13.8.</span> <span class="post-toc-text">awk 中的关系运算符(Relational Operators)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">13.9.</span> <span class="post-toc-text">awk 中其它的运算符</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">13.10.</span> <span class="post-toc-text">awk 中各运算符的运算级</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">14.</span> <span class="post-toc-text">附录C ── awk 的內建函数(Built-in Functions)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">14.1.</span> <span class="post-toc-text">字串函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">14.2.</span> <span class="post-toc-text">数学函数</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">15.</span> <span class="post-toc-text">附录D ── awk 的內建变量 Built-in Variables</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">16.</span> <span class="post-toc-text">附录E ── 正则表达式(Regular Expression) 简介</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">16.1.</span> <span class="post-toc-text">为什么要使用正则表达式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">16.2.</span> <span class="post-toc-text">什么是正则表达式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">16.3.</span> <span class="post-toc-text">组成正则表达式的元素</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">16.4.</span> <span class="post-toc-text">match是什么?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">16.5.</span> <span class="post-toc-text">awk 中提供二个关系运算符(Relational Operator,见注一) ~ !~</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">16.6.</span> <span class="post-toc-text">应用 Regular Expression 解题的简例</span></a></li></ol></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                awk 手册
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>9月 22, 2016</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/awk/">awk</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=awk 手册&url=http://yoursite.com//2016/09/22/awk/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=awk 手册&url=http://yoursite.com//2016/09/22/awk/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2016/09/22/awk/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2016/09/22/awk/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <blockquote>
+<p>简体中文版由bones7456 (http://li2z.cn)整理.<br>
+原文:应该是 <a href="http://phi.sinica.edu.tw/aspac/reports/94/94011/" target="_blank" rel="external">http://phi.sinica.edu.tw/aspac/reports/94/94011/</a> 但是原文很乱.<br>
+说明:之前也是对awk几乎一无所知,无意中看到这篇文章,网上一搜,居然没有像样的简体中文版.有的也是不怎么完整,或者错误一大堆的.于是就顺手整理了下这篇文章.通过整理这篇文章,自己也渐渐掌握了awk的种种用法.<br>
+原文可能比较老,有些目前已经不适用的命令有所改动,文中所有命令均在ubuntu7.04下调试通过,用的awk是mawk.<br>
+由于本人能力有限,错误和不妥之处在所难免,欢迎多多指正.</p>
+</blockquote>
+<p>&lt;!--more--&gt;</p>
+<h2>前言</h2>
+<h3>有关本手册</h3>
+<p>这是一本awk学习指引, 其重点着重于:</p>
+<ol>
+<li>awk 适于解决哪些问题?</li>
+<li>awk 常见的解题模式为何?</li>
+</ol>
+<p>为使读者快速掌握awk解题的模式及特性, 本手册系由一些较具代表性的范例及其题解所构成; 各范例由浅入深, 彼此间相互连贯, 范例中并对所使用的awk语法及指令辅以必要的说明. 有关awk的指令, 函数, ... 等条列式的说明则收录于附录中, 以利读者往后撰写程序时查阅. 如此编排, 可让读者在短时间内顺畅地学会使用awk来解决问题. 建议读者循着范例上机实习, 以加深学习效果.<br>
+读者宜先具备下列背景:<br>
+[a.] UNIX 环境下的简单操作及基本概念.<br>
+例如: 文件编辑, 文件复制及管道, 输入/输出重定向等概念<br>
+[b.] C 语言的基本语法及流程控制指令.<br>
+(awk 指令并不多, 且其中之大部分与C语言中之用法一致, 本手册中对该类指令之语法及特性不再加以繁冗的说明, 读者若欲深究,可自行翻阅相关的 C 语言书籍)</p>
+<h2>awk概述</h2>
+<h3>为什么使用awk</h3>
+<p>awk 是一种程序语言. 它具有一般程序语言常见的功能.<br>
+因awk语言具有某些特点, 如: 使用直译器(Interpreter)不需先行编译; 变量无类型之分(Typeless), 可使用文字当数组的下标(Associative Array)...等特色. 因此, 使用awk撰写程序比起使用其它语言更简洁便利且节省时间. awk还具有一些内建功能, 使得awk擅于处理具数据行(Record), 字段(Field)型态的资料; 此外, awk内建有pipe的功能, 可将处理中的数据传送给外部的Shell命令加以处理, 再将Shell命令处理后的数据传回awk程序, 这个特点也使得awk程序很容易使用系统资源.<br>
+由于awk具有上述特色, 在问题处理的过程中, 可轻易使用awk来撰写一些小工具; 这些小工具并非用来解决整个大问题,它们只扮演解决个别问题过程的某些角色, 可藉由Shell所提供的pipe将数据按需要传送给不同的小工具进行处理, 以解决整个大问题. 这种解题方式, 使得这些小工具可因不同需求而被重复组合及重用(reuse); 也可藉此方式来先行测试大程序原型的可行性与正确性, 将来若需要较高的执行速度时再用C语言来改写.这是awk最常被应用之处. 若能常常如此处理问题, 读者可以以更高的角度来思考抽象的问题, 而不会被拘泥于细节的部份.<br>
+本手册为awk入门的学习指引, 其内容将先强调如何撰写awk程序,未列入进一步解题方式的应用实例, 这部分将留待UNIX进阶手册中再行讨论.</p>
+<h3>如何取得awk</h3>
+<p>一般的UNIX操作系统, 本身即附有awk. 不同的UNIX操作系统所附的awk其版本亦不尽相同. 若读者所使用的系统上未附有awk,可透过 anonymous ftp 到下列地方取得:<br>
+phi.sinica.edu.tw:/pub/gnu<br>
+ftp.edu.tw:/UNIX/gnu<br>
+prep.ai.mit.edu:/pub/gnu</p>
+<h3>awk如何工作</h3>
+<p>为便于解释awk程序架构, 及有关术语(terminology), 先以一个员工薪资档(emp.dat ), 来加以介绍.
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">A125 Jenny 100 210</div><div class="line">A341 Dan 110 215</div><div class="line">P158 Max 130 209</div><div class="line">P148 John 125 220</div><div class="line">A123 Linda 95 210</div></pre></td></tr></table></figure></p>
+<p>文件中各字段依次为员工ID, 姓名, 薪资率, 及实际工时. ID中的第一码为部门识别码. &quot;A&quot;,&quot;P&quot; 分别表示&quot;组装&quot;及&quot;包装&quot;部门.<br>
+本小节着重于说明awk程序的主要架构及工作原理, 并对一些重要的名词辅以必要的解释. 由这部分内容, 读者可体会出awk语言的主要精神及awk与其它语程序言的差异处. 为便于说明, 以条列方式说明于后.</p>
+<h3>名词定义</h3>
+<p><strong>数据行</strong>: awk从数据文件上读取数据的基本单位.以上列文件emp.dat为例, awk读入的<br>
+第一笔数据行是 &quot;A125 Jenny 100 210&quot;<br>
+第二笔数据行是 &quot;A341 Dan 110 215&quot;<br>
+一般而言, 一个数据行就相当于数据文件上的一行资料. (参考 : 附录 B 内建变量&quot;RS&quot;)</p>
+<p><strong>字段(Field)</strong>: 为数据行上被分隔开的子字符串.<br>
+以数据行&quot;A125 Jenny 100 210&quot;为例,<br>
+第一栏 第二栏 第三栏 第四栏 &quot;A125&quot; &quot;Jenny&quot; 100 210<br>
+一般是以空格符来分隔相邻的字段. (参考 : 附录 D 内建变量&quot;FS&quot;)</p>
+<h2>如何执行awk</h2>
+<p>于UNIX的命令行上键入诸如下列格式的指令: ( &quot;<code>$</code>&quot; 表Shell命令行上的提示符号)
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="string">'awk程序'</span> 数据文件文件名</div></pre></td></tr></table></figure></p>
+<p>则awk会先编译该程序, 然后执行该程序来处理所指定的数据文件.<br>
+(上列方式系直接把程序写在UNIX的命令行上)</p>
+<h3>awk 程序的主要结构:</h3>
+<p>awk程序中主要语法是<code>Pattern { Actions }</code>, 故常见之awk程序其型态如下:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Pattern1 &#123; Actions1 &#125;</div><div class="line">Pattern2 &#123; Actions2 &#125;</div><div class="line">......</div><div class="line">Pattern3 &#123; Actions3 &#125;</div></pre></td></tr></table></figure></p>
+<h3>Pattern 是什么 ?</h3>
+<p>awk可接受许多不同型态的Pattern. 一般常使用&quot;关系表达式&quot;(Relational expression)来当成Pattern.<br>
+例如:<br>
+<code>x &gt; 34</code> 是一个Pattern, 判断变量 <code>x</code> 与 <code>34</code> 是否存在大于的关系.<br>
+<code>x == y</code> 是一个Pattern, 判断变量 <code>x</code> 与变量 <code>y</code> 是否存在等于的关系.<br>
+上式中<code>x &gt;34</code>,<code>x == y</code>便是典型的Pattern.</p>
+<p>awk 提供 C 语言中常见的关系运算符(Relational Operators) 如
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;, &lt;, &gt;=, &lt;=, ==, !=</div></pre></td></tr></table></figure></p>
+<p>此外, awk 还提供 <code>~</code> (match) 及 <code>!~</code> (not match) 二个关系运算符(注一).<br>
+其用法与涵义如下:<br>
+若 A 为一字符串, B 为一正则表达式(Regular Expression)<br>
+<code>A ~ B</code> 判断字符串 A 中是否 <em>包含</em> 能匹配(match) B 表达式的子字符串.<br>
+<code>A !~ B</code> 判断字符串 A 中是否 <em>不包含</em> 能匹配(match) B 表达式的子字符串.<br>
+例如 :<br>
+<code>&quot;banana&quot; ~ /an/</code> 整个是一个Pattern.<br>
+因为&quot;<code>banana</code>&quot;中含有可以匹配 <code>/an/</code> 的子字符串, 故此关系式成立(true),整个Pattern的值也是true.</p>
+<p>相关细节请参考 附录 A Patterns, 附录 E Regular Expression</p>
+<p>(注一:) 有少数awk论著, 把 <code>~,</code> <code>!~</code> 当成另一类的 Operator, 并不视为一种 Relational Operator. 本手册中将这两个运算符当成一种 Relational Operator.</p>
+<h3>Actions 是什么?</h3>
+<p>Actions 是由许多awk指令构成. 而awk的指令与 C 语言中的指令十分类似.<br>
+例如:<br>
+awk的I/O指令: <code>print, printf( ), getline...</code><br>
+awk的流程控制指令: <code>if(...){..} else{..}, while(...){...}...</code></p>
+<p>(请参考 附录 B --- &quot;Actions&quot; )</p>
+<h3>awk 如何处理 Pattern { Actions } ?</h3>
+<p>awk 会先判断(Evaluate) 该 Pattern 的值, 若 Pattern 判断后的值为 true (或不为0的数字,或不是空的字符串), 则 awk 将执行该 Pattern 所对应的 Actions. 反之, 若 Pattern 之值不为 true, 则awk将不执行该 Pattern 所对应的 Actions.</p>
+<p>例如 : 若awk程序中有下列两指令
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">50 &gt; 23 &#123;<span class="built_in">print</span> <span class="string">"Hello! The word!!"</span> &#125;</div><div class="line"><span class="string">"banana"</span> ~ /123/ &#123; <span class="built_in">print</span> <span class="string">"Good morning !"</span> &#125;</div></pre></td></tr></table></figure></p>
+<p>awk会先判断<code>50 &gt;23</code>是否成立. 因为该式成立, 所以awk将印出&quot;<code>Hello! The word!!</code>&quot;. 而另一 Pattern 为<code>&quot;banana&quot; ~/123/</code>, 因为<code>&quot;banana&quot;</code>内未含有任何子字符串可<code>match /123/</code>, 该 Pattern 之值为false, 故awk将不会印出 &quot;<code>Good morning !</code>&quot;</p>
+<h3>awk 如何处理{ Actions } 的语法? (缺少Pattern部分)</h3>
+<p>有时语法<code>Pattern { Actions }</code>中, <code>Pattern</code> 部分被省略, 只剩 <code>{Actions}</code>. 这种情形表示 &quot;无条件执行这个Actions&quot;.</p>
+<h3>awk 的字段变量</h3>
+<p>awk 所内建的字段变量及其涵意如下 :</p>
+<table>
+<thead>
+<tr>
+<th>字段变量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$0</code></td>
+<td>一字符串, 其内容为目前 awk 所读入的数据行.</td>
+</tr>
+<tr>
+<td><code>$1</code></td>
+<td><code>$0</code> 上第一个字段的数据.</td>
+</tr>
+<tr>
+<td><code>$2</code></td>
+<td><code>$0</code> 上第二个字段的数据.</td>
+</tr>
+<tr>
+<td>...</td>
+<td>其余类推</td>
+</tr>
+</tbody>
+</table>
+<h3>读入数据行时, awk如何更新(update)这些内建的字段变量?</h3>
+<p>当 awk 从数据文件中读取一个数据行时, awk 会使用内建变量<code>$0</code>予以记录.每当<code>$0</code>被改动时 (例如 : 读入新的数据行或自行变更<code>$0</code>, ...) awk 会立刻重新分析 <code>$0</code> 的字段情况, 并将 <code>$0</code> 上各字段的数据用 <code>$1</code>, <code>$2</code>, ... 予以记录.</p>
+<h3>awk的内建变量(Built-in Variables)</h3>
+<p>awk 提供了许多内建变量, 使用者于程序中可使用这些变量来取得相关信息. 常见的内建变量有:</p>
+<table>
+<thead>
+<tr>
+<th>内建变量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NF (Number of Fields)</td>
+<td>为一整数, 其值表<code>$0</code>上所存在的字段数目.</td>
+</tr>
+<tr>
+<td>NR (Number of Records)</td>
+<td>为一整数, 其值表awk已读入的数据行数目.</td>
+</tr>
+<tr>
+<td>FILENAME</td>
+<td>awk 正在处理的数据文件文件名.</td>
+</tr>
+</tbody>
+</table>
+<p>例如: awk 从资料文件 emp.dat 中读入第一笔数据行<br>
+&quot;<code>A125 Jenny 100 210</code>&quot; 之后, 程序中:<br>
+<code>$0</code> 之值将是 &quot;A125 Jenny 100 210&quot;<br>
+<code>$1</code> 之值为 &quot;A125&quot;<br>
+<code>$2</code> 之值为 &quot;Jenny&quot;<br>
+<code>$3</code> 之值为 100<br>
+<code>$4</code> 之值为 210<br>
+<code>$NF</code> 之值为 4<br>
+<code>$NR</code> 之值为 1<br>
+<code>$FILENAME</code> 之值为 &quot;emp.dat&quot;</p>
+<h3>awk的工作流程</h3>
+<p>执行awk时, 它会反复进行下列四步骤.</p>
+<ul>
+<li>自动从指定的数据文件中读取一个数据行.</li>
+<li>自动更新(Update)相关的内建变量之值. 如:<code>NF</code>,<code>NR</code>, <code>$0</code> ...</li>
+<li>依次执行程序中所有的<code>Pattern { Actions }</code>指令.</li>
+<li>当执行完程序中所有<code>Pattern { Actions }</code>时, 若数据文件中还有未读取的数据, 则反复执行步骤1到步骤4.</li>
+</ul>
+<p>awk会自动重复进行上述4个步骤, 使用者不须于程序中编写这个循环 (Loop).</p>
+<h3>打印文件中指定的字段数据并加以计算</h3>
+<p>awk 处理数据时, 它会自动从数据文件中一次读取一笔记录, 并会将该数据切分成一个个的字段; 程序中可使用<code>$1</code>, <code>$2</code>, ... 直接取得各个字段的内容. 这个特色让使用者易于用 awk 编写 reformatter 来改变量据格式.</p>
+<p>范例: 以文件 emp.dat 为例, 计算每人应发工资并打印报表.<br>
+分析: awk 会自行一次读入一列数据, 故程序中仅需告诉 awk 如何处理所读入的数据行.<br>
+执行如下命令: (<code>$</code>表UNIX命令行上的提示符)
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="string">'&#123; print $2, $3 * $4 &#125;'</span> emp.dat</div></pre></td></tr></table></figure></p>
+<p>执行结果如下:<br>
+屏幕出现:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Jenny 21000</div><div class="line">Dan 23650</div><div class="line">Max 27170</div><div class="line">John 27500</div><div class="line">Linda 19950</div></pre></td></tr></table></figure></p>
+<p>说明:<br>
+UNIX命令行上, 执行awk的语法为:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="string">'awk程序'</span> 欲处理的资料文件文件名</div></pre></td></tr></table></figure></p>
+<p>本范例中的程序部分为<code>{print $2, $3 * $4}</code>. 把程序置于命令行时, 程序之前后须以<code>'</code>括住. <code>emp.dat</code>为指定给该程序处理的数据文件文件名.</p>
+<p>本程序中使用:<code>Pattern { Actions }</code>语法.<br>
+Pattern 部分被省略, 表无任何限制条件. 故 awk 读入每笔数据行后都将无条件执行这个 Actions.<br>
+<code>print</code>为awk所提供的输出指令, 会将数据输出到stdout(屏幕).<br>
+<code>print</code>的参数间彼此以&quot;<code>,</code>&quot; (逗号) 隔开, 印出数据时彼此间会以空白隔开. (参考 附录 D 内建变量OFS)</p>
+<p>将上述的程序部分储存于文件 <code>pay1.awk</code> 中. 执行命令时再指定awk程序文件之文件名. 这是执行awk的另一种方式, 特别适用于程序较大的情况, 其语法如下:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="_">-f</span> awk程序文件名 数据文件文件名</div></pre></td></tr></table></figure></p>
+<p>故执行下列两命令,将产生同样的结果.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="_">-f</span> pay1.awk emp.dat</div><div class="line">$ awk <span class="string">'&#123; print $2, $3 * $4 &#125;'</span> emp.dat</div></pre></td></tr></table></figure></p>
+<p>读者可使用&quot;<code>-f</code>&quot;参数, 让awk主程序使用“其它仅含 awk 函数的文件中的函数”<br>
+其语法如下:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="_">-f</span> awk主程序文件名 <span class="_">-f</span> awk函数文件名 数据文件文件名</div></pre></td></tr></table></figure></p>
+<p>(有关 awk 中函数的声明与使用于 7.4 中说明)</p>
+<p>awk中也提供与 C 语言中类似用法的 <code>printf()</code> 函数. 使用该函数可进一步控制数据的输出格式.</p>
+<p>编辑另一个awk程序如下, 并取名为 <code>pay2.awk</code>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123; <span class="built_in">printf</span>(<span class="string">"%6s Work hours: %3d Pay: %5d\n"</span>, <span class="variable">$2</span>,<span class="variable">$3</span>, <span class="variable">$3</span>* <span class="variable">$4</span>) &#125;</div></pre></td></tr></table></figure></p>
+<p>执行下列命令
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="_">-f</span> pay2.awk emp.dat</div></pre></td></tr></table></figure></p>
+<p>执行结果屏幕出现:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Jenny Work hours: 100 Pay: 21000</div><div class="line">   Dan Work hours: 110 Pay: 23650</div><div class="line">   Max Work hours: 130 Pay: 27170</div><div class="line">  John Work hours: 125 Pay: 27500</div><div class="line"> Linda Work hours:  95 Pay: 19950</div></pre></td></tr></table></figure></p>
+<h2>选择符合指定条件的记录</h2>
+<p><code>Pattern { Action }</code>为awk中最主要的语法. 若某Pattern之值为真则执行它后方的 Action. awk中常使用 &quot;关系表达式&quot;(Relational Expression) 来当成 Pattern.</p>
+<p>awk 中除了<code>&gt;, &lt;, ==, !=</code>, ... 等关系运算符( Relational Operators )外, 另外提供<code>~</code>(match),<code>!~</code>(Not Match)二个关系运算符. 利用这两个运算符, 可判断某字符串是否包含能匹配所指定正则表达式的子字符串. 由于这些特性, 很容易使用awk来编写需要字符串比对, 判断的程序.</p>
+<p>范例: 承上例,<br>
+组装部门员工调薪5%,(组装部门员工之ID以&quot;A&quot;开头)<br>
+所有员工最后之薪资率若仍低于100, 则以100计.<br>
+编写awk程序打印新的员工薪资率报表.</p>
+<p>分析: 这个程序须先判断所读入的数据行是否合于指定条件, 再进行某些动作. awk 中<code>Pattern { Actions }</code>的语法已涵盖这种&quot;<code>if ( 条件) { 动作}</code>&quot;的架构. 编写如下之程序, 并取名<code>adjust1.awk</code>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$1</span> ~ /^A.*/ &#123; <span class="variable">$3</span> *= 1.05 &#125; <span class="variable">$3</span>&lt;100 &#123; <span class="variable">$3</span> = 100 &#125;</div><div class="line">&#123; <span class="built_in">printf</span>(<span class="string">"%s %8s %d\n"</span>, <span class="variable">$1</span>, <span class="variable">$2</span>, <span class="variable">$3</span>)&#125;</div></pre></td></tr></table></figure></p>
+<p>执行下列命令 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$awk</span> <span class="_">-f</span> adjust1.awk emp.dat</div></pre></td></tr></table></figure></p>
+<p>结果如下 : 屏幕出现 :
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">A125    Jenny 105</div><div class="line">A341      Dan 115</div><div class="line">P158      Max 130</div><div class="line">P148     John 125</div><div class="line">A123    Linda 100</div></pre></td></tr></table></figure></p>
+<p>说明:
+awk的工作程序是: 从数据文件中每次读入一个数据行, 依序执行完程序中所有的<code>Pattern{ Action }</code>指令:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$1</span>~/^A.*/ &#123; <span class="variable">$3</span> *= 1.05 &#125;</div><div class="line"><span class="variable">$3</span> &lt; 100 &#123; <span class="variable">$3</span> = 100 &#125;</div><div class="line">&#123;<span class="built_in">printf</span>(<span class="string">"%s %8s %d\n"</span>,<span class="variable">$1</span>,<span class="variable">$2</span>,<span class="variable">$3</span>)&#125;</div></pre></td></tr></table></figure></p>
+<p>再从数据文件中读进下一笔记录继续进行处理.<br>
+第一个<code>Pattern { Action }</code>是:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$1</span> ~ /^A.*/ &#123; <span class="variable">$3</span> *= 1.05 &#125;</div></pre></td></tr></table></figure></p>
+<p><code>$1 ~ /^A.*/</code> 是一个Pattern, 用来判断该笔数据行的第一栏是否包含以&quot;A&quot;开头的子字符串. 其中 <code>/^A.*/</code> 是一个Regular Expression, 用以表示任何以&quot;A&quot;开头的字符串. (有关 Regular Expression 之用法 参考 附录 E).<br>
+Actions 部分为 <code>$3 *= 1.05</code><br>
+<code>$3 *= 1.05</code>与<code>$3 = $3 * 1.05</code> 意义相同. 运算子&quot;<code>*=</code>&quot;之用法则与 C 语言中一样. 此后与 C 语言中用法相同的运算子或语法将不予赘述.</p>
+<p>第二个 <code>Pattern { Actions }</code> 是:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$3</span> &lt;100 &#123; <span class="variable">$3</span> = 100 &#125;</div></pre></td></tr></table></figure></p>
+<p>若第三栏的数据内容(表薪资率)小于100, 则调整为100.</p>
+<p>第三个<code>Pattern { Actions }</code>是:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="built_in">printf</span>(<span class="string">"%s %8s %d\n"</span>,<span class="variable">$1</span>, <span class="variable">$2</span>, <span class="variable">$3</span> )&#125;</div></pre></td></tr></table></figure></p>
+<p>省略了Pattern(无条件执行Actions), 故所有数据行调整后的数据都将被印出.</p>
+<h2>awk 中数组</h2>
+<p>awk程序中允许使用字符串当做数组的下标(index). 利用这个特色十分有助于资料统计工作.(使用字符串当下标的数组称为Associative Array)</p>
+<p>首先建立一个数据文件, 并取名为 <code>reg.dat</code>. 此为一学生注册的资料文件; 第一栏为学生姓名, 其后为该生所修课程.
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Mary O.S. Arch. Discrete</div><div class="line">Steve D.S. Algorithm Arch.</div><div class="line">Wang Discrete Graphics O.S.</div><div class="line">Lisa Graphics A.I.</div><div class="line">Lily Discrete Algorithm</div></pre></td></tr></table></figure></p>
+<h3>awk中数组的特性</h3>
+<p>使用字符串当数组的下标(index)，使用数组前不须宣告数组名及其大小.</p>
+<p>例如: 希望用数组来记录 <code>reg.dat</code> 中各门课程的修课人数. 这情况,有二项信息必须储存:<br>
+(a) 课程名称, 如: &quot;O.S.&quot;, &quot;Arch.&quot; ... ,共有哪些课程事先并不明确.<br>
+(b)各课程的修课人数. 如: 有几个人修&quot;O.S.&quot;<br>
+在awk中只要用一个数组就可同时记录上列信息. 其方法如下:</p>
+<h4>使用一个数组Number[]</h4>
+<p>以课程名称当<code>Number[]</code>的下标，以<code>Number[]</code>中不同下标所对映的元素代表修课人数.<br>
+例如:<br>
+有2个学生修&quot;O.S.&quot;, 则以<code>Number[&quot;O.S.&quot;] = 2</code>表之.<br>
+若修&quot;O.S.&quot;的人数增加一人, 则<code>Number[&quot;O.S.&quot;] = Number[&quot;O.S.&quot;] + 1</code> 或 <code>Number[&quot;O.S.&quot;]++</code> .</p>
+<h4>如何取出数组中储存的信息</h4>
+<p>以 C 语言为例, 声明 <code>int Arr[100];</code> 之后, 若想得知 <code>Arr[]</code> 中所储存的数据, 只须用一个循环, 如 :
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">100</span>; i++) <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, Arr[i]);</div></pre></td></tr></table></figure></p>
+<p>即可. 上式中:<br>
+数组 <code>Arr[]</code> 的下标: <code>0, 1, 2,..., 99</code><br>
+数组 <code>Arr[]</code> 中各下标所对应的值: <code>Arr[0], Arr[1],...Arr[99]</code><br>
+但 awk 中使用数组并不须事先宣告. 以刚才使用的 <code>Number[]</code> 而言, 程序执行前, 并不知将来有哪些课程名称可能被当成 <code>Number[]</code> 的下标.</p>
+<p>awk 提供了一个指令, 藉由该指令awk会自动找寻数组中使用过的所有下标. 以 <code>Number[]</code> 为例, awk将会找到&quot;O.S.&quot;, &quot;Arch.&quot;, ...<br>
+使用该指令时, 须指定所要找寻的数组, 及一个变量. awk会使用该的变量来记录从数组中找到的每一个下标. 例如
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(course <span class="keyword">in</span> Number)&#123;....&#125;</div></pre></td></tr></table></figure></p>
+<p>指定用 <code>course</code> 来记录 awk 从<code>Number[]</code> 中所找到的下标. awk每找到一个下标时, 就用<code>course</code>记录该下标之值且执行<code>{....}</code>中之指令. 藉由这个方式便可取出数组中储存的信息. (详见下例)<br>
+范例: 统计各科修课人数,并印出结果.<br>
+建立如下程序,并取名为<code>course.awk</code>:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&#123; <span class="keyword">for</span>( i=2; i &lt;= NF; i++) Number[<span class="variable">$i</span>]++ &#125;</div><div class="line">END&#123;<span class="keyword">for</span>(course <span class="keyword">in</span> Number) <span class="built_in">printf</span>(<span class="string">"%10s %d\n"</span>, course, Number[course] )&#125;</div></pre></td></tr></table></figure></p>
+<p>执行下列命令 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$awk</span> <span class="_">-f</span> course.awk reg.dat</div></pre></td></tr></table></figure></p>
+<p>执行结果如下 :
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Graphics 2</div><div class="line">      O.S. 2</div><div class="line">  Discrete 3</div><div class="line">      A.I. 1</div><div class="line">      D.S. 1</div><div class="line">     Arch. 2</div><div class="line"> Algorithm 2</div></pre></td></tr></table></figure></p>
+<p>说明:<br>
+这程序包含二个<code>Pattern { Actions }</code>指令.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&#123; <span class="keyword">for</span>( i=2; i &lt;= NF; i++) Number[<span class="variable">$i</span>]++ &#125;</div><div class="line">END&#123;<span class="keyword">for</span>(course <span class="keyword">in</span> Number) <span class="built_in">printf</span>(<span class="string">"%10s %d\n"</span>, course, Number[course] )&#125;</div></pre></td></tr></table></figure></p>
+<p>第一个<code>Pattern { Actions }</code>指令中省略了Pattern 部分. 故随着每笔数据行的读入其<code>Actions</code>部分将逐次无条件被执行.<br>
+以awk读入第一笔资料&quot;Mary O.S. Arch. Discrete&quot;为例, 因为该笔数据<code>NF = 4</code>(有4个字段), 故该 Action 的<code>for Loop</code>中<code>i = 2,3,4</code>.<br>
+<code>i $i</code> 最初 <code>Number[$i] Number[$i]++</code> 之后<br>
+<code>i=2</code>时 <code>$i=&quot;O.S.&quot; Number[&quot;O.S.&quot;]</code> 的值从默认的0,变成了1;<br>
+<code>i=3</code>时 <code>$i=&quot;Arch.&quot; Number[&quot;Arch.&quot;]</code> 的值从默认的0,变成了1;<br>
+同理,<code>i=4</code>时 <code>$i=&quot;Discrete&quot; Number[&quot;Discrete&quot;]</code> 的值从默认的0,变成了1;</p>
+<p>第二个<code>Pattern { Actions }</code>指令中 <code>END</code> 为awk之保留字, 为 Pattern 的一种.<br>
+<code>END</code> 成立(其值为true)的条件是: &quot;awk处理完所有数据, 即将离开程序时.&quot;<br>
+平常读入数据行时,<code>END</code>并不成立, 故其后的Actions并不被执行;<br>
+唯有当awk读完所有数据时, 该Actions才会被执行(注意, 不管数据行有多少笔,<code>END</code>仅在最后才成立, 故该Actions仅被执行一次.)</p>
+<p><code>BEGIN</code> 与 <code>END</code> 有点类似, 是awk中另一个保留的Pattern.<br>
+唯一不同的是: &quot;以<code>BEGIN</code>为<code>Pattern</code>的<code>Actions</code>于程序一开始执行时, 被执行一次.&quot;</p>
+<p><code>NF</code>为awk的内建变量, 用以表示awk正处理的数据行中, 所包含的字段个数.</p>
+<p>awk程序中若含有以<code>$</code>开头的自定变量, 都将以如下方式解释:<br>
+以<code>i= 2</code>为例, <code>$i = $2</code> 表第二个字段数据. (实际上,<code>$</code> 在 awk 中为一运算符(Operator), 用以取得字段数据.)</p>
+<h2>awk 程序中使用 Shell 命令</h2>
+<p>awk程序中允许呼叫Shell指令. 并提供管道解决awk与系统间数据传递的问题. 所以awk很容易使用系统资源. 读者可利用这个特点来编写某些适用的系统工具.</p>
+<p>范例: 写一个awk程序来打印出线上人数.<br>
+将下列程序建文件, 命名为 <code>count.awk</code>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">BEGIN &#123;</div><div class="line">    <span class="keyword">while</span> ( <span class="string">"who"</span> | getline ) n++</div><div class="line">    <span class="built_in">print</span> n</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>并执行下列命令 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">awk <span class="_">-f</span> count.awk</div></pre></td></tr></table></figure></p>
+<p>执行结果将会印出目前在线人数</p>
+<p>说明:<br>
+awk 程序并不一定要处理数据文件. 以本例而言, 仅输入程序文件<code>count.awk</code>, 未输入任何数据文件.</p>
+<p><code>BEGIN</code> 和 <code>END</code> 同为awk中的一种 Pattern. 以 <code>BEGIN</code>为 Pattern 的 Actions, 只有在awk开始执行程序,尚未开启任何输入文件前, 被执行一次.(注意: 只被执行一次)</p>
+<p><code>|</code> 为 awk 中表示管道的符号. awk 把<code>|</code>之前的字符串<code>&quot;who&quot;</code>当成Shell上的命令, 并将该命令送往Shell执行, 执行的结果(原先应于屏幕印出者)则藉由pipe送进awk程序中.</p>
+<p><code>getline</code>为awk所提供的输入指令. 其语法如下:</p>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>由何处读取数据</th>
+<th>数据读入后置于</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getline var <code>&lt;</code> file</td>
+<td>所指定的file</td>
+<td>变量 <code>var</code>(<code>var</code>省略时,表示置于<code>$0</code>)</td>
+</tr>
+<tr>
+<td>getline var</td>
+<td><code>pipe</code> 变量</td>
+<td>变量 <code>var</code>(<code>var</code>省略时,表示置于<code>$0</code>)</td>
+</tr>
+<tr>
+<td>getline var</td>
+<td>见 注一</td>
+<td>变量 var(<code>var</code>省略时,表示置于<code>$0</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>注一: 当 Pattern 为 <code>BEGIN</code> 或 <code>END</code>时, <code>getline</code> 将从<code>stdin</code> 读取数据, 否则从awk正处理的数据文件上读取数据.</p>
+<p><code>getline</code> 一次读取一行数据, 若读取成功则<code>return 1</code>, 若读取失败则<code>return -1</code>, 若遇到文件结束(<code>EOF</code>), 则<code>return 0</code>;</p>
+<p>本程序使用 <code>getline</code> 所 <code>return</code> 的数据来做为 <code>while</code> 判断循环停止的条件, 某些awk版本较旧,并不容许使用者改变 <code>$0</code> 之值. 这种版的 awk 执行本程序时会产生<code>Error</code>, 读者可于 <code>getline</code> 之后置上一个变量 (如此, <code>getline</code> 读进来的数据便不会被置于 <code>$0</code> ), 或直接改用gawk便可解决.</p>
+<h2>awk 程序的应用实例</h2>
+<p>本节将示范一个统计上班到达时间及迟到次数的程序.</p>
+<p>这程序每日被执行时将读入二个文件:</p>
+<ol>
+<li>员工当日到班时间的数据文件 (如下列之<code>arr.dat</code>)</li>
+<li>存放员工当月迟到累计次数的文件.</li>
+</ol>
+<p>当程序执行执完毕后将更新第二个文件的数据(迟到次数), 并打印当日的报表.这程序将分成下列数小节逐步完成, 其大纲如下:</p>
+<p>[1] 在到班资料文件 arr.dat 之前增加一行抬头<br>
+&quot;<code>ID Number Arrvial Time</code>&quot;, 并产生报表输出到文件<code>today_rpt1</code>中.</p>
+<p><strong>思考: 在awk中如何将数据输出到文件</strong></p>
+<p>[2] 将 <code>today_rpt1</code> 上的数据按员工代号排序, 并加注执行当日日期; 产生文件 <code>today_rpt2</code></p>
+<p><strong>思考 awk中如何运用系统资源及awk中Pipe之特性</strong></p>
+<p>[3] 将awk程序包含在一个shell script文件中</p>
+<p>[4] 于 <code>today_rpt2</code> 每日报表上, 迟到者之前加上&quot;*&quot;, 并加注当日平均到班时间;产生文件 <code>today_rpt3</code></p>
+<p>[5] 从文件中读取当月迟到次数, 并根据当日出勤状况更新迟到累计数.</p>
+<p><strong>思考 使用者在awk中如何读取文件数据</strong></p>
+<p>某公司其员工到勤时间档如下, 取名为 <code>arr.dat</code>. 文件中第一栏为员工代号, 第二栏为到达时间. 本范例中, 将使用该文件为数据文件.
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">1034 7:26</div><div class="line">1025 7:27</div><div class="line">1101 7:32</div><div class="line">1006 7:45</div><div class="line">1012 7:46</div><div class="line">1028 7:49</div><div class="line">1051 7:51</div><div class="line">1029 7:57</div><div class="line">1042 7:59</div><div class="line">1008 8:01</div><div class="line">1052 8:05</div><div class="line">1005 8:12</div></pre></td></tr></table></figure></p>
+<h3>重定向输出到文件</h3>
+<p>awk中并未提供如 C 语言中之 <code>fopen()</code> 指令, 也未有 <code>fprintf()</code> 文件输出这样的指令. 但awk中任何输出函数之后皆可借助使用与UNIX中类似的 I/O 重定向符, 将输出的数据重定向到指定的文件; 其符号仍为 <code>&gt;</code> (输出到一个新产生的文件) 或 <code>&gt;&gt;</code> (添加输出的数据到文件末尾).</p>
+<p>[例:] 在到班数据文件 <code>arr.dat</code> 之前增加一行抬头如下:<br>
+<code>&quot;ID Number Arrival Time&quot;</code>, 并产生报表输出到文件 <code>today_rpt1</code> 中</p>
+<p>建立如下文件并取名为reformat1.awk
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">BEGIN &#123; <span class="built_in">print</span> <span class="string">" ID Number Arrival Time"</span> &gt; <span class="string">"today_rpt1"</span></div><div class="line">    <span class="built_in">print</span> <span class="string">"==========================="</span> &gt; <span class="string">"today_rpt1"</span></div><div class="line">&#125;</div><div class="line">&#123; <span class="built_in">printf</span>(<span class="string">" %s %s\n"</span>, <span class="variable">$1</span>,<span class="variable">$2</span> ) &gt; <span class="string">"today_rpt1"</span> &#125;</div></pre></td></tr></table></figure></p>
+<p>执行:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$awk</span> <span class="_">-f</span> reformat1.awk arr.dat</div></pre></td></tr></table></figure></p>
+<p>执行后将产生文件 today_rpt1, 其内容如下 :
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">ID Number Arrival Time</div><div class="line">============================</div><div class="line">1034 7:26</div><div class="line">1025 7:27</div><div class="line">1101 7:32</div><div class="line">1006 7:45</div><div class="line">1012 7:46</div><div class="line">1028 7:49</div><div class="line">1051 7:51</div><div class="line">1029 7:57</div><div class="line">1042 7:59</div><div class="line">1008 8:01</div><div class="line">1052 8:05</div><div class="line">1005 8:12</div></pre></td></tr></table></figure></p>
+<p>[说明:]<br>
+awk程序中, 文件名称 <code>today_rpt1</code> 的前后须以<code>&quot;</code>(双引号)括住, 表示 <code>today_rpt1</code> 为一字符串常量. 若未以<code>&quot;</code>括住, 则 <code>today_rpt1</code> 将被awk解释为一个变量名称.</p>
+<p>在awk中任何变量使用之前, 并不须事先声明. 其初始值为空字符串(Null string) 或 0.因此程序中若未以<code>&quot;</code>将 <code>today_rpt1</code> 括住, 则 <code>today_rpt1</code> 将是一变量, 其值将是空字符串, 这会在执行时造成错误(Unix 无法帮您开启一个以空字符串为文件名的文件).</p>
+<p>因此在编辑awk程序时, 须格外留心. 因为若敲错变量名称, awk在编译程序时会认为是一新的变量, 并不会察觉. 因此往往会造成运行时错误.</p>
+<p><code>BEGIN</code> 为awk的保留字, 是 Pattern 的一种.<br>
+以 <code>BEGIN</code> 为 Pattern 的 Actions 于awk程序刚被执行尚未读取数据文件时被执行一次, 此后便不再被执行.</p>
+<p>读者或许觉得本程序中的I/O重定向符号应使用&quot;<code>&gt;&gt;</code>&quot;(append)而非&quot;<code>&gt;</code>&quot;.</p>
+<p>本程序中若使用&quot;<code>&gt;</code>&quot; 将数据重导到<code>today_rpt1</code>, awk 第一次执行该指令时会产生一个新档<code>today_rpt1</code>, 其后再执行该指令时则把数据追加到<code>today_rpt1</code>文件末, 并非每执行一次就重开一个新文件.</p>
+<p>若采用&quot;<code>&gt;&gt;</code>&quot;其差异仅在第一次执行该指令时, 若已存在<code>today_rpt1</code>则 awk 将直接把数据append在原文件之末尾. 这一点, 与UNIX中的用法不同.</p>
+<h3>awk 中如何利用系统资源</h3>
+<p>awk程序中很容易使用系统资源. 这包括在程序中途调用 Shell 命令来处理程序中的部分数据; 或在调用 Shell 命令后将其产生的结果交回 awk 程序(不需将结果暂存于某个文件). 这一过程是借助 awk 所提供的管道 (虽然有些类似 Unix 中的管道, 但特性有些不同),及一个从 awk 中呼叫 Unix 的 Shell 命令的语法来达成的.</p>
+<p>[例:] 承上题, 将数据按员工ID排序后再输出到文件 today_rpt2 , 并于表头附加执行时的日期.</p>
+<p>[分析:]<br>
+awk 提供与 UNIX 用法近似的 pipe, 其记号亦为&quot;<code>|</code>&quot;. 其用法及含意如下:<br>
+awk程序中可接受下列两种语法:<br>
+[a.语法] awk output 指令 | &quot;Shell 接受的命令&quot;<br>
+(如: <code>print $1,$2 | &quot;sort -k 1&quot;</code>)<br>
+[b.语法] &quot;Shell 接受的命令&quot; | awk input 指令<br>
+(如: <code>&quot;ls&quot; | getline</code>)<br>
+注: awk input 指令只有 <code>getline</code> 一个.<br>
+awk output 指令有<code>print</code>, <code>printf()</code> 二个.</p>
+<p>在 a 语法中, awk所输出的数据将转送往 Shell , 由 Shell 的命令进行处理.以上例而言, <code>print</code> 所输出的数据将经由 Shell 命令<code>&quot;sort -k 1&quot;</code>排序后再送往屏幕(stdout).</p>
+<p>上列awk程序中, &quot;<code>print$1, $2</code>&quot; 可能反复执行很多次, 其输出的结果将先暂存于 pipe 中,等到该程序结束时, 才会一并进行<code>&quot;sort -k 1&quot;</code>.</p>
+<p>须注意二点: 不论<code>print $1, $2</code>被执行几次,<code>&quot;sort -k 1&quot;</code>的执行时间是&quot;awk程序结束时&quot;,<code>&quot;sort -k 1&quot;</code>的执行次数是&quot;一次&quot;.</p>
+<p>在 b 语法中, awk将先调用 Shell 命令. 其执行结果将通过 pipe 送入awk程序,以上例而言, awk 先让 Shell 执行 <code>&quot;ls&quot;</code>, Shell 执行后将结果存于 pipe, awk指令<code>getline</code>再从 pipe 中读取数据.</p>
+<p>使用本语法时应留心: 以上例而言,awk &quot;立刻&quot;调用 Shell 来执行<code>&quot;ls&quot;</code>, 执行次数是一次.</p>
+<p><code>getline</code> 则可能执行多次 (若pipe中存在多行数据).</p>
+<p>除上列 a, b 二中语法外, awk程序中其它地方如出现像<code>&quot;date&quot;</code>, <code>&quot;cls&quot;</code>, <code>&quot;ls&quot;</code>... 这样的字符串, awk只把它当成一般字符串处理.</p>
+<p>建立如下文件并取名为 <code>reformat2.awk</code>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 程序 reformat2.awk</span></div><div class="line"><span class="comment"># 这程序用以练习awk中的pipe</span></div><div class="line">BEGIN &#123;</div><div class="line">    <span class="string">"date"</span> | getline <span class="comment"># Shell 执行 "date". getline 取得结果并以$0记录</span></div><div class="line">    <span class="built_in">print</span> <span class="string">" Today is "</span> , <span class="variable">$2</span>, <span class="variable">$3</span> &gt; <span class="string">"today_rpt2"</span></div><div class="line">    <span class="built_in">print</span> <span class="string">"========================="</span> &gt; <span class="string">"today_rpt2"</span></div><div class="line">    <span class="built_in">print</span> <span class="string">" ID Number Arrival Time"</span> &gt; <span class="string">"today_rpt2"</span></div><div class="line">    close( <span class="string">"today_rpt2"</span> )</div><div class="line">&#125;</div><div class="line"></div><div class="line">&#123;<span class="built_in">printf</span>( <span class="string">"%s %s\n"</span>, <span class="variable">$1</span> ,<span class="variable">$2</span> ) | <span class="string">"sort -k 1 &gt;&gt;today_rpt2"</span>&#125;</div></pre></td></tr></table></figure></p>
+<p>执行如下命令:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">awk <span class="_">-f</span> reformat2.awk arr.dat</div></pre></td></tr></table></figure></p>
+<p>执行后, 系统会自动将 sort 后的数据追加(Append; 因为使用 &quot;<code>&gt;&gt;</code>&quot;) 到文件<code>today_rpt2</code>末端. <code>today_rpt2</code> 内容如下 :
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Today is  09月 21日</div><div class="line">=========================</div><div class="line"> ID Number Arrival Time</div><div class="line">1005 8:12</div><div class="line">1006 7:45</div><div class="line">1008 8:01</div><div class="line">1012 7:46</div><div class="line">1025 7:27</div><div class="line">1028 7:49</div><div class="line">1029 7:57</div><div class="line">1034 7:26</div><div class="line">1042 7:59</div><div class="line">1051 7:51</div><div class="line">1052 8:05</div><div class="line">1101 7:32</div></pre></td></tr></table></figure></p>
+<p>[说明:]<br>
+awk程序由三个主要部分构成:<br>
+[i.] <code>Pattern { Action}</code>指令<br>
+[ii.] 函数主体. 例如:<code>function double( x ){ return 2*x }</code> (参考第11节 Recursive Program )<br>
+[iii.] Comment (以<code>#</code>开头识别之)</p>
+<p>awk 的输入指令<code>getline</code>, 每次读取一列数据. 若<code>getline</code>之后未接任何变量, 则所读入之资料将以<code>$0</code>记录, 否则以所指定的变量储存之.</p>
+<p>[以本例而言]:<br>
+执行 <code>&quot;date&quot; | getline</code> 后, <code>$0</code> 之值为 &quot;2007年 09月 21日 星期五 14:28:02 CST&quot;,当 <code>$0</code> 之值被更新时, awk将自动更新相关的内建变量, 如: <code>$1</code>,<code>$2</code>,..,<code>NF</code>.故 <code>$2</code> 之值将为&quot;09月&quot;, <code>$3</code>之值将为&quot;21日&quot;.</p>
+<p>(有少数旧版的awk不允许即使用者自行更新(update)<code>$0</code>的值,或者更新<code>$0</code>时,它不会自动更新 <code>$1</code>,<code>$2</code>,..<code>NF</code>. 这情况下, 可改用<code>gawk</code>或<code>nawk</code>. 否则使用者也可自行以awk字符串函数<code>split()</code>来分隔<code>$0</code>上的数据)</p>
+<p>本程序中 <code>printf()</code> 指令会被执行12次( 因为有<code>arr.dat</code>中有12行数据), 但读者不用担心数据被重复<code>sort</code>了12次. 当awk结束该程序时才会 <code>close</code> 这个 pipe , 此时才将这12行数据一次送往系统,并呼叫<code>&quot;sort -k 1 &gt;&gt; today_rpt2&quot;</code>处理之.</p>
+<p>awk提供另一个调用Shell命令的方法, 即使用awk函数<code>system(&quot;shell command&quot;)</code><br>
+例如:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ awk &apos;</div><div class="line">BEGIN&#123;</div><div class="line">system(&quot;date &gt; date.dat&quot;)</div><div class="line">getline &lt; &quot;date.dat&quot;</div><div class="line">print &quot;Today is &quot;, $2, $3</div><div class="line">&#125;</div><div class="line">&apos;</div></pre></td></tr></table></figure></p>
+<p>但使用<code>system(&quot;shell command&quot;)</code>时, awk无法直接将执行中的部分数据输出给Shell 命令. 且 Shell 命令执行的结果也无法直接输入到awk中.</p>
+<h3>执行 awk 程序的几种方式</h3>
+<p>本小节中描述如何将awk程序直接写在 shell script 之中. 此后使用者执行 awk 程序时, 就不需要每次都键入&quot;<code>awk -f program datafile</code>&quot;.</p>
+<p>script 中还可包含其它 Shell 命令, 如此更可增加执行过程的自动化.</p>
+<p>建立一个简单的 awk程序 mydump.awk, 如下:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&#123; <span class="built_in">print</span> &#125;</div></pre></td></tr></table></figure></p>
+<p>这个程序执行时会把数据文件的内容 <code>print</code> 到屏幕上( 与cat功用类似 ).</p>
+<p><code>print</code> 之后未接任何参数时, 表示 &quot;<code>print $0</code>&quot;.</p>
+<p>若欲执行该awk程序, 来印出文件 <code>today_rpt1</code> 及 <code>today_rpt2</code> 的内容时, 必须于 UNIX 的命令行上执行下列命令:<br>
+方式一 <code>awk -f mydump.awk today_rpt1 today_rpt2</code><br>
+方式二 <code>awk '{ print }' today_rpt1 today_rpt2</code><br>
+第二种方式系将awk 程序直接写在 Shell 的命令行上, 这种方式仅适合较短的awk程序.<br>
+方式三 建立如下之 shell script, 并取名为<code>mydisplay</code>,
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"></div><div class="line"><span class="comment"># 注意以下的 awk 与 ' 之间须有空白隔开</span></div><div class="line">awk <span class="string">'</span></div><div class="line">&#123;print&#125;</div><div class="line">' $*</div><div class="line"><span class="comment"># 注意以上的 ' 与 $* 之间须有空白隔开</span></div></pre></td></tr></table></figure></p>
+<p>执行 <code>mydisplay</code> 之前, 须先将它改成可执行的文件(此步骤往后不再赘述). 请执行如下命令:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ chmod +x mydisplay</div></pre></td></tr></table></figure></p>
+<p>往后使用者就可直接把 <code>mydisplay</code> 当成指令, 来display任何文件.<br>
+例如 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./mydisplay today_rpt1 today_rpt2</div></pre></td></tr></table></figure></p>
+<p>[说明:]<br>
+在script文件 <code>mydisplay</code> 中, 指令&quot;<code>awk</code>&quot;与第一个<code>'</code> 之间须有空格(Shell中并无&quot; <code>awk'</code> &quot;指令).<br>
+第一个 <code>'</code> 用以通知 Shell 其后为awk程序.<br>
+第二个<code>'</code> 则表示 awk 程序结束.<br>
+故awk程序中一律以<code>&quot;</code>括住字符串或字符, 而不使用<code>'</code>, 以免Shell混淆.<br>
+<code>$*</code> 为 shell script中的用法, 它可用来代表命令行上&quot;<code>mydisplay</code>之后的所有参数&quot;.<br>
+例如执行 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ mydisplay today_rpt1 today_rpt2</div></pre></td></tr></table></figure></p>
+<p>事实上 Shell 已先把该指令转换成:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'</span></div><div class="line">&#123; print&#125;</div><div class="line">' today_rpt1 today_rpt2</div></pre></td></tr></table></figure></p>
+<p>本例中, <code>$*</code> 用以代表 <code>&quot;today_rpt1 today_rpt2&quot;</code>. 在Shell的语法中, 可用<code>$1</code> 代表第一个参数, <code>$2</code>代表第二个参数. 当不确定命令行上的参数个数时, 可使用 <code>$*</code> 表之.</p>
+<p>awk命令行上可同时指定多个数据文件.<br>
+以<code>awk -f dump.awk today_rpt1 today_rpt2hf</code>为例, awk会先处理<code>today_rpt1</code>, 再处理 <code>today_rpt2</code>. 此时若文件无法打开, 将造成错误.<br>
+例如: 不存在文件&quot;<code>file_no_exist</code>&quot;, 则执行 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="_">-f</span> dump.awk file_no_exit</div></pre></td></tr></table></figure></p>
+<p>将产生运行时错误(无法打开文件).</p>
+<p>但某些awk程序 &quot;仅&quot; 包含以 <code>BEGIN</code> 为Pattern的指令. 执行这种awk程序时, awk并不须开启任何数据文件.此时命令行上若指定一个不存在的数据文件,并不会产生 &quot;无法打开文件&quot;的错误.(事实上awk并未打开该文件)<br>
+例如执行:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="string">'BEGIN &#123;print "Hello,World!!"&#125; '</span> file_no_exist</div></pre></td></tr></table></figure></p>
+<p>该程序中仅包含以 <code>BEGIN</code> 为 Pattern 的 <code>Pattern {actions}</code>, awk 执行时并不会开启任何数据文件; 所以不会因不存在文件<code>file_no_exit</code>而产生 &quot;无法打开文件&quot;的错误.</p>
+<p>awk会将 Shell 命令行上awk程序(或 -f 程序文件名)之后的所有字符串, 视为将输入awk进行处理的数据文件文件名.</p>
+<p>若执行awk的命令行上 &quot;未指定任何数据文件文件名&quot;, 则将<code>stdin</code>视为输入之数据来源, 直到输入<code>end of file( Ctrl-D )</code>为止.</p>
+<p>读者可以用下列程序自行测试, 执行如下命令 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="_">-f</span> mydump.awk  <span class="comment">#(未接任何数据文件文件名)</span></div></pre></td></tr></table></figure></p>
+<p>或
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./mydisplay  <span class="comment">#(未接任何数据文件文件名)</span></div></pre></td></tr></table></figure></p>
+<p>将会发现: 此后键入的任何数据将逐行复印一份于屏幕上. 这情况不是机器当机 ! 是因为awk程序正处于执行中. 它正按程序指示, 将读取数据并重新dump一次; 只因执行时未指定数据文件文件名, 故awk 便以stdin(键盘上的输入)为数据来源. 读者可利用这个特点, 设计可与awk即时聊天的程序.</p>
+<h3>改变 awk 切割字段的方式 &amp; 自定义函数</h3>
+<p>awk不仅能自动分割字段, 也允许使用者改变其字段切割方式以适应各种格式之需要. 使用者也可自定义函数, 若有需要可将该函数单独写成一个文件,以供其它awk程序调用.</p>
+<p>[范例:] 承接 6.2 的例子, 若八点为上班时间, 请加注&quot;<code>*</code>&quot;于迟到记录之前, 并计算平均上班时间.<br>
+[分析:]<br>
+因八点整到达者,不为迟到, 故仅以到达的小时数做判断是不够的; 仍应参考到达时的分钟数. 若 &quot;将到达时间转换成以分钟为单位&quot;, 不仅易于判断是否迟到, 同时也易于计算到达平均时间.<br>
+到达时间(<code>$2</code>)的格式为<code>dd:dd</code>或<code>d:dd</code>; 数字当中含有一个&quot;<code>:</code>&quot;. 但文本数字交杂的数据awk无法直接做数学运算. (注: awk中字符串&quot;<code>26</code>&quot;与数字<code>26</code>, 并无差异, 可直接做字符串或数学运算, 这是awk重要特色之一. 但awk对文本数字交杂的字符串无法正确进行数学运算).</p>
+<p>解决之方法:<br>
+[方法一]<br>
+对到达时间(<code>$2</code>)<code>d:dd</code>或<code>dd:dd</code>进行字符串运算,分别取出到达的小时数及分钟数.<br>
+首先判断到达小时数为一位或两位字符,再调用函数分别截取分钟数及小时数.<br>
+此解法需使用下列awk字符串函数:<br>
+<code>length( 字符串 )</code>:返回该字符串的长度.<br>
+<code>substr( 字符串,起始位置,长度)</code>:返回从起始位置起, 指定长度之子字符串. 若未指定长度, 则返回从起始位置到字符串末尾的子字符串.<br>
+所以:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">小时数 = substr( $2, 1, length($2) - 3 )</div><div class="line">分钟数 = substr( $2, length($2) - 2 )</div></pre></td></tr></table></figure></p>
+<p>[方法二]<br>
+改变输入列字段的切割方式, 使awk切割字段后分别将小时数及分钟数隔开于二个不同的字段.<br>
+字段分隔字符<code>FS</code> (field seperator) 是awk的内建变量,其默认值是<code>空白</code>及<code>tab</code>. awk每次切割字段时都会先参考<code>FS</code>的内容. 若把&quot;<code>:</code>&quot;也当成分隔字符, 则awk 便能自动把小时数及分钟数分隔成不同的字段.故令<code>FS = &quot;[ \t:]+&quot;</code> (注: <code>[ \t:]+</code> 为一Regular Expression )<br>
+Regular Expression 中使用中括号<code>[ ... ]</code>表示一个字符集合,用以表示任意一个位于两中括号间的字符.故可用&quot;<code>[ \t:]</code>&quot;表示 一个<code>空白</code>, <code>tab</code> 或 &quot;<code>:</code>&quot;。<br>
+Regular Expression中使用&quot;<code>+</code>&quot;形容其前方的字符可出现一次或一次以上.<br>
+故&quot;<code>[ \t:]+</code>&quot;表示由一个或多个 <code>空白</code>, <code>tab</code> 或 <code>:</code> 所组成的字符串.<br>
+设定<code>FS =&quot;[ \t:]+&quot;</code>后, 数据行如:<code>&quot;1034 7:26&quot;</code>将被分割成3个字段</p>
+<p>第一栏 第二栏 第三栏
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$1</span> <span class="variable">$2</span> <span class="variable">$3</span></div><div class="line">1034 7 26</div></pre></td></tr></table></figure></p>
+<p>明显地, awk程序中使用方法二比方法一更简洁方便. 本例子中采用方法二,也借此示范改变字段切割方式的用途.</p>
+<p>编写awk程序<code>reformat3</code>, 如下:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"></div><div class="line">awk <span class="string">'</span></div><div class="line">BEGIN &#123;</div><div class="line">    FS= "[ \t:]+" #改变字段切割的方式</div><div class="line">    "date" | getline # Shell 执行 "date". getline 取得结果以$0记录</div><div class="line">    print " Today is " ,$2, $3 &gt; "today_rpt3"</div><div class="line">    print "========================="&gt;"today_rpt3"</div><div class="line">    print " ID Number Arrival Time" &gt; "today_rpt3"</div><div class="line">    close( "today_rpt3" )</div><div class="line">&#125;</div><div class="line"></div><div class="line">&#123;</div><div class="line">    #已更改字段切割方式, $2表到达小时数, $3表分钟数</div><div class="line">    arrival = HM_to_M($2, $3)</div><div class="line">    printf(" %s %s:%s %s\n", $1, $2, $3, arrival &gt; 480 ? "*": " " ) | "sort -k 1 &gt;&gt; today_rpt3"</div><div class="line">    total += arrival</div><div class="line">&#125;</div><div class="line"></div><div class="line">END &#123;</div><div class="line">    close("today_rpt3")</div><div class="line">    close("sort -k 1 &gt;&gt; today_rpt3")</div><div class="line">    printf(" Average arrival time : %d:%d\n",total/NR/60, (total/NR)%60 ) &gt;&gt; "today_rpt3"</div><div class="line">&#125;</div><div class="line"></div><div class="line">function HM_to_M( hour, min )&#123;</div><div class="line">    return hour*60 + min</div><div class="line">&#125;</div><div class="line">' $*</div></pre></td></tr></table></figure></p>
+<p>并执行如下指令 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./reformat3 arr.dat</div></pre></td></tr></table></figure></p>
+<p>执行后,文件 today_rpt3 的内容如下:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"> Today is  09月 21日</div><div class="line">=========================</div><div class="line"> ID Number Arrival Time</div><div class="line"> 1005 8:12 *</div><div class="line"> 1006 7:45</div><div class="line"> 1008 8:01 *</div><div class="line"> 1012 7:46</div><div class="line"> 1025 7:27</div><div class="line"> 1028 7:49</div><div class="line"> 1029 7:57</div><div class="line"> 1034 7:26</div><div class="line"> 1042 7:59</div><div class="line"> 1051 7:51</div><div class="line"> 1052 8:05 *</div><div class="line"> 1101 7:32</div><div class="line"> Average arrival time : 7:49</div></pre></td></tr></table></figure></p>
+<p>[说明:]<br>
+awk 中亦允许使用者自定函数. 函数定义方式请参考本程序, <code>function</code> 为 awk 的保留字.<br>
+<code>HM_to_M()</code>这函数负责将所传入之小时及分钟数转换成以分钟为单位. 使用者自定函数时, 还有许多细节须留心, 如data scope,.. ( 请参考 第十节 Recursive Program)<br>
+awk中亦提供与 C 语言中相同的 Conditional Operator. 上式<code>printf()</code>中使用<code>arrival &gt;480 ? &quot;*&quot; : &quot; &quot;</code>即为一例若 <code>arrival</code> 大于 <code>480</code> 则<code>return &quot;*&quot;</code>, 否则<code>return &quot; &quot;</code>.<br>
+<code>%</code>为awk的运算符(operator), 其作用与 C 语言中之<code>%</code>相同(取余数).<br>
+<code>NR</code>(Number of Record) 为awk的内建变量. 表示awk执行该程序后所读入的记录笔数.</p>
+<p>awk 中提供的<code>close()</code>指令, 语法如下(有二种) :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">close( filename )</div><div class="line">close( 置于pipe之前的<span class="built_in">command</span> )</div></pre></td></tr></table></figure></p>
+<p>为何本程序使用了两个<code>close()</code>指令:<br>
+指令 <code>close(&quot;sort -k 1 &gt;&gt; today_rpt3&quot;)</code>, 其意思为 close 程序中置于<code>&quot;sort -k 1 &gt;&gt; today_rpt3&quot;</code>之前的 Pipe, 并立刻调用 Shell 来执行<code>&quot;sort -k 1 &gt;&gt; today_rpt3&quot;</code>. (若未执行这指令, awk必须于结束该程序时才会进行上述动作; 则这12笔sort后的数据将被 append 到文件 <code>today_rpt3</code> 中 &quot;<code>Average arrival time : ...</code>&quot; 的后方)<br>
+因为 Shell 排序后的数据也要写到 <code>today_rpt3</code>, 所以awk必须先关闭使用中的<code>today_rpt3</code> 以使 Shell 正确将排序后的数据追加到<code>today_rpt3</code>否则2个不同的 process 同时打开一个文件进行输出将会产生不可预期的结果.<br>
+读者应留心上述两点,才可正确控制数据输出到文件中的顺序.
+指令<code>close(&quot;sort -k 1 &gt;&gt; today_rpt3&quot;)</code>中字符串<code>&quot;sort -k 1 &gt;&gt; today_rpt3&quot;</code> 必须与 pipe <code>|</code> 后方的 Shell Command 名称一字不差, 否则awk将视为二个不同的 pipe.<br>
+读者可于<code>BEGIN{}</code>中先令变量 <code>Sys_call = &quot;sort -k 1 &gt;&gt; today_rpt3&quot;</code>,
+程序中再一律以 <code>Sys_call</code> 代替该字符串.</p>
+<h3>使用 getline 来读取数据</h3>
+<p>[范例:] 承上题,从文件中读取当月迟到次数, 并根据当日出勤状况更新迟到累计数.(按不同的月份累计于不同的文件)<br>
+[分析:]<br>
+程序中自动抓取系统日期的月份名称, 连接上&quot;<code>late.dat</code>&quot;, 形成累计迟到次数的文件名称(如: 09月late.dat,...), 并以变量<code>late_file</code>记录该文件名.<br>
+累计迟到次数的文件中的数据格式为: 员工代号(ID) 迟到次数<br>
+例如, 执行本程序前文件 09月late.dat 的内容为:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">1012 0</div><div class="line">1006 1</div><div class="line">1052 2</div><div class="line">1034 0</div><div class="line">1005 0</div><div class="line">1029 2</div><div class="line">1042 0</div><div class="line">1051 0</div><div class="line">1008 0</div><div class="line">1101 0</div><div class="line">1025 1</div><div class="line">1028 0</div></pre></td></tr></table></figure></p>
+<p>编写程序 reformat4 如下:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"></div><div class="line">awk <span class="string">'</span></div><div class="line">BEGIN &#123;</div><div class="line">    Sys_Sort = "sort -k 1 &gt;&gt; today_rpt4"</div><div class="line">    Result = "today_rpt4"</div><div class="line">    # 改变字段切割的方式</div><div class="line">    FS = "[ \t:]+"</div><div class="line">    # 令 Shell执行"date"; getline 读取结果,并以$0记录</div><div class="line">    "date" | getline</div><div class="line">    print " Today is " , $2, $3 &gt;Result</div><div class="line">    print "=========================" &gt; Result</div><div class="line">    print " ID Number Arrival Time" &gt; Result</div><div class="line">    close( Result )</div><div class="line">    # 从文件按中读取迟到数据, 并用数组cnt[ ]记录. 数组cnt[ ]中以</div><div class="line">    # 员工代号为下标, 所对应的值为该员工之迟到次数.</div><div class="line">    late_file = $2"late.dat"</div><div class="line">    while( getline &lt; late_file &gt;0 ) cnt[$1] = $2</div><div class="line">    close( late_file )</div><div class="line">&#125;</div><div class="line"></div><div class="line">&#123;</div><div class="line">    # 已更改字段切割方式, $2表小时数,$3表分钟数</div><div class="line">    arrival = HM_to_M($2, $3)</div><div class="line">    if( arrival &gt; 480 )&#123;</div><div class="line">    mark = "*" # 若当天迟到,应再增加其迟到次数, 且令mark 为"*".</div><div class="line">    cnt[$1]++ &#125;</div><div class="line">    else mark = " "</div><div class="line"></div><div class="line">    # message 用以显示该员工的迟到累计数, 若未曾迟到message为空字符串</div><div class="line">    message = cnt[$1] ? cnt[$1] " times" : ""</div><div class="line">    printf("%s %2d:%2d %5s %s\n", $1, $2, $3, mark, message ) | Sys_Sort</div><div class="line">    total += arrival</div><div class="line">&#125;</div><div class="line"></div><div class="line">END &#123;</div><div class="line">    close( Result )</div><div class="line">    close( Sys_Sort )</div><div class="line">    printf(" Average arrival time : %d:%d\n", total/NR/60, (total/NR)%60 ) &gt;&gt; Result</div><div class="line">    #将数组cnt[ ]中新的迟到数据写回文件中</div><div class="line">    for( any in cnt )</div><div class="line">    print any, cnt[any] &gt; late_file</div><div class="line">&#125;</div><div class="line"></div><div class="line">function HM_to_M( hour, min )&#123;</div><div class="line">    return hour*60 + min</div><div class="line">&#125;</div><div class="line">' $*</div></pre></td></tr></table></figure></p>
+<p>执行后, today_rpt4 之内容如下 :
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"> Today is  09月 21日</div><div class="line">=========================</div><div class="line"> ID Number Arrival Time</div><div class="line">1005  8:12     * 1 times</div><div class="line">1006  7:45       1 times</div><div class="line">1008  8: 1     * 1 times</div><div class="line">1012  7:46</div><div class="line">1025  7:27       1 times</div><div class="line">1028  7:49</div><div class="line">1029  7:57       2 times</div><div class="line">1034  7:26</div><div class="line">1042  7:59</div><div class="line">1051  7:51</div><div class="line">1052  8: 5     * 3 times</div><div class="line">1101  7:32</div><div class="line"> Average arrival time : 7:49</div></pre></td></tr></table></figure></p>
+<p>09月late.dat 文件被修改为如下:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">1005 1</div><div class="line">1012 0</div><div class="line">1006 1</div><div class="line">1008 1</div><div class="line">1101 0</div><div class="line">1025 1</div><div class="line">1034 0</div><div class="line">1042 0</div><div class="line">1028 0</div><div class="line">1029 2</div><div class="line">1051 0</div><div class="line">1052 3</div></pre></td></tr></table></figure></p>
+<p>说明:<br>
+<code>late_file</code>是一变量, 用以记录迟到次数的文件的文件名.<br>
+<code>late_file</code>之值由两部分构成, 前半部是当月月份名称(由调用&quot;date&quot;取得)后半部固定为&quot;late.dat&quot; 如: 09月late.dat.<br>
+指令<code>getline &lt; late_file</code>表示从<code>late_file</code>所代表的文件中读取一笔记录, 并存放于<code>$0</code>.<br>
+若使用者可自行把数据放入<code>$0</code>, awk会自动对这新置入 <code>$0</code> 的数据进行字段分割. 之后程序中可用<code>$1</code>, <code>$2</code>,..来表示该笔资料的第一栏,第二栏,..,<br>
+(注: 有少数awk版本不容许使用者自行将数据置于<code>$0</code>, 遇此情况可改用gawk或nawk)<br>
+执行<code>getline</code>指令时, 若成功读取记录,它会返回<code>1</code>. 若遇到文件结束, 它返回<code>0</code>; 无法打开文件则返回<code>-1</code>.<br>
+利用<code>while( getline &lt; filename &gt;0 ) {....}</code>可读入文件中的每一笔数据并予处理. 这是awk中用户自行读取数据文件的一个重要模式.<br>
+数组 <code>cnt[]</code> 以员工ID. 当下标(index), 其对应值表示其迟到的次数.<br>
+执行结束后, 利用<code>for(Variable in array ){...}</code>的语法
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>( any <span class="keyword">in</span> cnt ) <span class="built_in">print</span> any, cnt[any] &gt; late_file</div></pre></td></tr></table></figure></p>
+<p>将更新过的迟到数据重新写回记录迟到次数的文件. 该语法在前面曾有说明.</p>
+<h2>处理多行的数据</h2>
+<p>awk 每次从数据文件中只读取一数据进行处理.<br>
+awk是依照其内建变量 <code>RS</code> (Record Separator) 的定义将文件中的数据分隔成一行一行的Record. <code>RS</code> 的默认值是&quot;<code>\n</code>&quot; (换行符号), 故平常awk中一行数据就是一笔 Record. 但有些文件中一笔Record涵盖了多行数据, 这种情况下不能再以&quot;<code>\n</code>&quot;来分隔Records. 最常使用的方法是相邻的Records之间改以一个<code>空白行</code>来隔开. 在awk程序中, 令<code>RS = &quot;&quot;</code>(空字符串)后, awk把会空白行当成来文件中Record的分隔符. 显然awk对<code>RS = &quot;&quot;</code>另有解释方式,简略描述如下, 当<code>RS = &quot;&quot;</code> 时:数个并邻的空白行, awk仅视成一个单一的Record Saparator. (awk不会于两个紧并的空白行之间读取一笔空的Record)<br>
+awk会略过(skip)文件头或文件尾的空白行. 故不会因为这样的空白行,造成awk多读入了二笔空的数据.</p>
+<p>请观察下例,首先建立一个数据文件<code>week.rpt</code>如下:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">张长弓</div><div class="line">GNUPLOT 入门</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">吴国强</div><div class="line">Latex 简介</div><div class="line">VAST-2 使用手册</div><div class="line">mathematic 入门</div><div class="line"></div><div class="line">李小华</div><div class="line">awk Tutorial Guide</div><div class="line">Regular Expression</div></pre></td></tr></table></figure></p>
+<p>该文件的开头有数行空白行, 各笔Record之间使用一个或数个空白行隔开. 读者请细心观察,当<code>RS = &quot;&quot;</code> 时, awk读取该数据文件之方式.</p>
+<p>编辑一个awk程序文件 make_report如下:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"></div><div class="line">awk <span class="string">'</span></div><div class="line">BEGIN &#123;</div><div class="line">    FS = "\n"</div><div class="line">    RS = ""</div><div class="line">    split( "一. 二. 三. 四. 五. 六. 七. 八. 九.", C_Number, " " )</div><div class="line">&#125;</div><div class="line"></div><div class="line">&#123;</div><div class="line">    printf("\n%s 报告人 : %s \n",C_Number[NR],$1)</div><div class="line">    for( i=2; i &lt;= NF; i++) printf(" %d. %s\n", i-1, $i)</div><div class="line">&#125; ' $*</div></pre></td></tr></table></figure></p>
+<p>执行
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ make_report week.rpt</div></pre></td></tr></table></figure></p>
+<p>屏幕产生结果如下:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line">一. 报告人 : 张长弓</div><div class="line"> 1. GNUPLOT 入门</div><div class="line"></div><div class="line">二. 报告人 : 吴国强</div><div class="line"> 1. Latex 简介</div><div class="line"> 2. VAST-2 使用手册</div><div class="line"> 3. mathematic 入门</div><div class="line"></div><div class="line">三. 报告人 : 李小华</div><div class="line"> 1. awk Tutorial Guide</div><div class="line"> 2. Regular Expression</div></pre></td></tr></table></figure></p>
+<p>[说明:]<br>
+本程序同时也改变字段分隔字符(<code>FS = &quot;\n&quot;</code>), 如此一笔数据中的每一行都是一个<code>field</code>. 例如: awk读入的第一笔 Record 为
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">张长弓</div><div class="line">GNUPLOT 入门</div></pre></td></tr></table></figure></p>
+<p>其中<code>$1</code>指的是&quot;<code>张长弓</code>&quot;, <code>$2</code>指的是&quot;<code>GNUPLOT 入门</code>&quot;<br>
+上式中的<code>C_Number[]</code>是一个数组(array), 用以记录中文数字. 例如: <code>C_Number[1] = &quot;一.&quot;</code>,<code>C_Number[2] = &quot;二.&quot;</code>这过程使用awk字符串函数 <code>split()</code> 来把中文数字放进数组<code>C_Number[]</code>中.<br>
+函数<code>split( )</code>用法如下:<br>
+<code>split( 原字符串, 数组名, 分隔字符(field separator) )</code> : awk将依所指定的分隔字符(field separator)分隔原字符串成一个个的字段(field), 并以指定的数组记录各个被分隔的字段</p>
+<h2>如何读取命令行上的参数</h2>
+<p>大部分的应用程序都允许使用者在命令之后增加一些选择性的参数.执行awk时这些参数大部分用于指定数据文件文件名, 有时希望在程序中能从命令行上得到一些其它用途的数据. 本小节中将叙述如何在awk程序中取用这些参数.</p>
+<p>建立文件如下, 命名为<code>see_arg</code>:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"></div><div class="line">awk <span class="string">'</span></div><div class="line">BEGIN &#123;</div><div class="line">    for( i=0; i&lt;ARGC ; i++)</div><div class="line">        print ARGV[i] # 依次印出awk所记录的参数</div><div class="line">&#125;</div><div class="line">' $*</div></pre></td></tr></table></figure></p>
+<p>执行如下命令 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./see_arg first-arg second-arg</div></pre></td></tr></table></figure></p>
+<p>结果屏幕出现 :
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">awk</div><div class="line">first-arg</div><div class="line">second-arg</div></pre></td></tr></table></figure></p>
+<p>[说明:]<br>
+<code>ARGC</code>,<code>ARGV[]</code> 为awk所提供的内建变量.<br>
+<code>ARGC</code>: 为一整数. 代表命令行上, 除了选项<code>-v</code>,<code>-f</code> 及其对应的参数之外所有参数的数目.<br>
+<code>ARGV[]</code>: 为一字符串数组.<code>ARGV[0]</code>,<code>ARGV[1]</code>,...<code>ARGV[ARGC-1]</code>.<br>
+分别代表命令行上相对应的参数.<br>
+例如, 当命令行为 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk -vx=36 <span class="_">-f</span> program1 data1 data2</div></pre></td></tr></table></figure></p>
+<p>或
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="string">'&#123; print $1 ,$2 &#125;'</span> data1 data2</div></pre></td></tr></table></figure></p>
+<p>其<code>ARGC</code> 之值为 3<br>
+<code>ARGV[0]</code> 之值为 &quot;awk&quot;<br>
+<code>ARGV[1]</code>之值为 &quot;data1&quot;<br>
+<code>ARGV[2]</code> 之值为 &quot;data2&quot;</p>
+<p>命令行上的&quot;<code>-f program1</code>&quot;, &quot;<code>-vx=36</code>&quot;, 或程序部分<code>'{ print $1, $2}'</code>都不会列入 <code>ARGC</code> 及 <code>ARGV[]</code>中.<br>
+awk 利用<code>ARGC</code> 来判断应开启的数据文件个数.<br>
+但使用者可强行改变<code>ARGC</code>; 当 <code>ARGC</code> 之值被使用者设为 <code>1</code> 时; awk将被蒙骗,误以为命令行上并无数据文件文件名, 故不会以 <code>ARGV[1]</code>,<code>ARGV[2]</code>,..为文件名来打开文件读取数据; 但在程序中仍可通过<code>ARGV[1]</code>,<code>ARGV[2]</code>,..来取得命令行上的数据.</p>
+<p>某一程序 test1.awk 如下 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">BEGIN&#123;</div><div class="line">    number = ARGC <span class="comment">#先用number 记住实际的参数个数.</span></div><div class="line">    ARGC = 2 <span class="comment"># 自行更改 ARGC=2, awk将以为只有一个资料文件</span></div><div class="line">    <span class="comment"># 仍可藉由ARGV[ ]取得命令行上的资料.</span></div><div class="line">    <span class="keyword">for</span>( i=2; i&lt;number; i++) data[i] = ARGV[i]</div><div class="line">&#125;</div><div class="line">........</div></pre></td></tr></table></figure></p>
+<p>于命令行上键入
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk -f test1.awk data_file apple orange</div></pre></td></tr></table></figure></p>
+<p>执行时 awk 会打开数据文件 <code>data_file</code> 以进行处理. 但不会打开以<code>apple</code>,<code>orange</code>为档名的文件(因为<code>ARGC</code>被改成<code>2</code>). 但仍可通过<code>ARGV[2]</code>,<code>ARGV[3]</code>取得命令行上的参数 <code>apple</code>,<code>orange</code></p>
+<p>也可以用下列命令来达成上例的效果.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$awk</span> <span class="_">-f</span> <span class="built_in">test</span>2.awk -v data[2]=<span class="string">"apple"</span> -v data[3]=<span class="string">"orange"</span> data_file</div></pre></td></tr></table></figure></p>
+<h2>编写可与用户交互的 awk 程序</h2>
+<p>执行awk程序时, awk会自动从文件中读取数据来进行处理, 直到文件结束.只要将awk读取数据的来源改成键盘输入,便可设计与awk 交互的程序了.</p>
+<p>本节将提供一个该类程序的范例.<br>
+[范例:] 本节将编写一个英语生字测验的程序, 它将印出中文字意,再由使用者回答其英语生字.</p>
+<p>首先编辑一个数据挡 test.dat (内容不限,格式如下)
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">apple 苹果</div><div class="line">orange 柳橙</div><div class="line">banana 香蕉</div><div class="line">pear 梨子</div><div class="line">starfruit 杨桃</div><div class="line">bellfruit 莲雾</div><div class="line">kiwi 奇异果</div><div class="line">pineapple 菠萝</div><div class="line">watermelon 西瓜</div></pre></td></tr></table></figure></p>
+<p>编辑awk程序&quot;c2e&quot;如下:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"></div><div class="line">awk <span class="string">'</span></div><div class="line">BEGIN &#123;</div><div class="line">    while( getline &lt; ARGV[1] ) &#123; #由指定的文件中读取测验数据</div><div class="line">        English[++n] = $1 # 最后, n 将表示题目之题数</div><div class="line">        Chinese[n] = $2</div><div class="line">    &#125;</div><div class="line">    ARGV[1] = "-" # "-"表示由stdin(键盘输入)</div><div class="line">    srand() # 以系统时间为随机数启始的种子</div><div class="line">    question() #产生考题</div><div class="line">&#125;</div><div class="line"></div><div class="line">&#123;# awk自动读入由键盘上输入的数据(使用者回答的答案)</div><div class="line">    if($1 != English[ind] )</div><div class="line">        print "Try again!"</div><div class="line">    else&#123;</div><div class="line">        print "\nYou are right !! Press Enter to Continue --- "</div><div class="line">        getline</div><div class="line">        question()#产生考题</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">function question()&#123;</div><div class="line">    ind = int(rand()* n) + 1 #以随机数选取考题</div><div class="line">    system("clear")</div><div class="line">    print " Press \"ctrl-d\" to exit"</div><div class="line">    printf("\n%s ", Chinese[ind] " 的英文生字是: ")</div><div class="line">&#125;</div><div class="line">' $*</div></pre></td></tr></table></figure></p>
+<p>执行时键入如下指令 :
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$./c2e test.dat</div></pre></td></tr></table></figure></p>
+<p>屏幕将产生如下的画面:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Press &quot;ctrl-d &quot; to exit</div><div class="line">莲雾 的英文生字是:</div></pre></td></tr></table></figure></p>
+<p>若输入 <code>bellfruit</code><br>
+程序将产生
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">You are right !! Press Enter to Continue ---</div></pre></td></tr></table></figure></p>
+<p>[说明:]<br>
+参数 <code>test.dat</code> (<code>ARGV[1]</code>) 表示储存考题的数据文件文件名. awk 由该文件上取得考题资料后, 将 <code>ARGV[1]</code> 改成&quot;<code>-</code>&quot;.<br>
+&quot;<code>-</code>&quot;表示由<code>stdin</code>(键盘输入) 数据. 键盘输入数据的结束符号<code>(End of file)</code>是<code>ctrl-d</code>. 当 awk 读到 <code>ctrl-d</code> 时就停止由<code>stdin</code>读取数据.</p>
+<p>awk的数学函数中提供两个与随机数有关的函数.<br>
+<code>srand()</code>: 以当前的系统时间作为随机数的种子<br>
+<code>rand()</code>: 返回介于 0与1之间的(近似)随机数值.</p>
+<h2>使用 awk 编写递归程序</h2>
+<p>awk 中除了函数的参数列(Argument List)上的参数(Arguments)外,所有变量不管于何处出现,全被视为全局变量. 其生命持续至程序结束 --- 该变量不论在function外或 function内皆可使用,只要变量名称相同所使用的就是同一个变量,直到程序结束.</p>
+<p>因递归函数内部的变量, 会因它调用子函数(本身)而重复使用,故编写该类函数时, 应特别留心.</p>
+<p>[例如:] 执行
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'</span></div><div class="line">BEGIN &#123;</div><div class="line">    x = 35</div><div class="line">    y = 45</div><div class="line">    test_variable( x )</div><div class="line">    printf("Return to main : arg1= %d, x= %d, y= %d, z= %d\n", arg1, x, y, z)</div><div class="line">&#125;</div><div class="line"></div><div class="line">function test_variable( arg1 )</div><div class="line">&#123;</div><div class="line">    arg1++ # arg1 为参数列上的参数, 是local variable. 离开此函数后将消失.</div><div class="line">    y ++ # 会改变主式中的变量 y</div><div class="line">    z = 55 # z 为该函数中新使用的变量, 主程序中变量 z 仍可被使用.</div><div class="line">    printf("Inside the function: arg1=%d,x=%d, y=%d, z=%d\n", arg1, x, y, z)</div><div class="line">&#125;'</div></pre></td></tr></table></figure></p>
+<p>结果屏幕印出
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Inside the function: arg1=36,x=35, y=46, z=55</div><div class="line">Return to main : arg1= 0, x= 35, y= 46, z= 55</div></pre></td></tr></table></figure></p>
+<p>由上可知:<br>
+函数内可任意使用主程序中的任何变量.函数内所启用的任何变量(除参数外), 于该函数之外依然可以使用.此特性优劣参半, 最大的坏处是式中的变量不易被保护, 特别是递归调用本身, 执行子函数时会破坏父函数内的变量.</p>
+<p>一个变通的方法是: 在函数的参数列中虚列一些参数. 函数执行中使用这些虚列的参数来记录不想被破坏的数据,如此执行子函数时就不会破坏到这些数据. 此外 awk 并不会检查调用函数时所传递的参数个数是否一致.</p>
+<p>例如，定义递归函数如下:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> demo( arg1 ) &#123; <span class="comment"># 最常见的错误例子</span></div><div class="line">    ........</div><div class="line">    <span class="keyword">for</span>(i=1; i&lt; 20 ; i++)&#123;</div><div class="line">        demo(x)</div><div class="line">        <span class="comment"># 又呼叫本身. 因为 i 是 global variable, 故执行完该子函数后</span></div><div class="line">        <span class="comment"># 原函数中的 i 已经被坏, 故本函数无法正确执行.</span></div><div class="line">        .......</div><div class="line">    &#125;</div><div class="line">    ..........</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可将上列函数中的<code>i</code>虚列在该函数的参数列上, 如此<code>i</code>便是一个局部变量, 不会因执行子函数而被破坏.</p>
+<p>将上列函数修改如下:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">function</span> demo( arg1, i )</div><div class="line">&#123;</div><div class="line">    ......</div><div class="line">    <span class="keyword">for</span>(i=1; i&lt; 20; i++)</div><div class="line">    &#123;</div><div class="line">        demo(x)<span class="comment">#awk不会检查呼叫函数时, 所传递的参数个数是否一致</span></div><div class="line">        .....</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>$0</code>, <code>$1</code>,.., <code>NF</code>, <code>NR</code>,..也都是 global variable, 读者于递归函数中若有使用这些内建变量, 也应另外设立一些局部变量来保存,以免被破坏.</p>
+<p>[范例:]以下是一个常见的递归调用范例. 它要求使用者输入一串元素(各元素间用空白隔开) 然后印出这些元素所有可能的排列.</p>
+<p>编辑如下的awk式, 取名为 <code>permu</code>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"></div><div class="line">awk <span class="string">'</span></div><div class="line">BEGIN &#123;</div><div class="line">    print "请输入排列的元素,各元素间请用空白隔开"</div><div class="line">    getline</div><div class="line">    permutation($0, "")</div><div class="line">    printf("\n共 %d 种排列方式\n", counter)</div><div class="line">&#125;</div><div class="line"></div><div class="line">function permutation( main_lst, buffer,     new_main_lst, nf, i, j )</div><div class="line">&#123;</div><div class="line">    $0 = main_lst # 把main_lst指定给$0之后awk将自动进行字段分割.</div><div class="line">    nf = NF # 故可用 NF 表示 main_lst 上存在的元素个数.</div><div class="line">    # BASE CASE : 当main_lst只有一个元素时.</div><div class="line">    if( nf == 1)&#123;</div><div class="line">        print buffer main_lst #buffer的内容再加上main_lst就是完成一次排列的结果</div><div class="line">        counter++</div><div class="line">        return</div><div class="line">    &#125;</div><div class="line">    # General Case : 每次从 main_lst 中取出一个元素放到buffer中</div><div class="line">    # 再用 main_lst 中剩下的元素 (new_main_lst) 往下进行排列</div><div class="line">    else for( i=1; i&lt;=nf ;i++)</div><div class="line">    &#123;</div><div class="line">        $0 = main_lst # $0为全局变量已被破坏, 故重新把main_lst赋给$0,令awk再做一次字段分割</div><div class="line">        new_main_lst = ""</div><div class="line">        for(j=1; j&lt;=nf; j++) # 连接 new_main_lst</div><div class="line">            if( j != i ) new_main_lst = new_main_lst " " $j</div><div class="line">        permutation( new_main_lst, buffer " " $i )</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">' $*</div></pre></td></tr></table></figure></p>
+<p>执行
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./permu</div></pre></td></tr></table></figure></p>
+<p>屏幕上出现
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">请输入排列的元素,各元素间请用空白隔开</div></pre></td></tr></table></figure></p>
+<p>若输入 <code>1 2 3</code> 回车,结果印出
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"> 1 2 3</div><div class="line"> 1 3 2</div><div class="line"> 2 1 3</div><div class="line"> 2 3 1</div><div class="line"> 3 1 2</div><div class="line"> 3 2 1</div><div class="line"></div><div class="line">共 6 种排列方式</div></pre></td></tr></table></figure></p>
+<p>[说明:]<br>
+有些较旧版的awk,并不容许使用者指定<code>$0</code>之值. 此时可改用gawk, 或 nawk.否则也可自行使用<code>split()</code>函数来分割<code>main_lst</code>.<br>
+为避免执行子函数时破坏<code>new_main_lst, nf, i, j</code>故把这些变量也列于参数列上. 如此,<code>new_main_lst, nf, i, j</code> 将被当成局部变量,而不会受到子函数中同名的变量影响. 读者声明函数时,参数列上不妨将这些 &quot;虚列的参数&quot; 与真正用于传递信息的参数间以较长的空白隔开, 以便于区别.<br>
+awk 中欲将字符串<code>concatenation</code>(连接)时, 直接将两字符串并置即可(Implicit Operator).</p>
+<p>例如 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'</span></div><div class="line">BEGIN&#123;</div><div class="line">    A = "This "</div><div class="line">    B = "is a "</div><div class="line">    C = A B "key." # 变量A与B之间应留空白,否则"AB"将代表另一新变量.</div><div class="line">    print C</div><div class="line">&#125; '</div></pre></td></tr></table></figure></p>
+<p>结果将印出
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">This is a key.</div></pre></td></tr></table></figure></p>
+<p>awk使用者所编写的函数可再重用, 并不需要每个awk式中都重新编写.<br>
+将函数部分单独编写于一文件中, 当需要用到该函数时再以下列方式include进来.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="_">-f</span> 函数文件名 <span class="_">-f</span> awk主程序文件名 数据文件文件名</div></pre></td></tr></table></figure></p>
+<h2>附录 A ── Pattern</h2>
+<p>awk 通过判断 Pattern 之值来决定是否执行其后所对应的Actions.这里列出几种常见的Pattern:</p>
+<h3>BEGIN</h3>
+<p><code>BEGIN</code> 为 awk 的保留字, 是一种特殊的 Pattern.<br>
+<code>BEGIN</code> 成立(其值为true)的时机是: &quot;awk 程序一开始执行, 尚未读取任何数据之前.&quot; 所以在<code>BEGIN { Actions }</code>语法中, 其 Actions 部份仅于程序一开始执行时被执行一次. 当 awk 从数据文件读入数据行后, BEGIN 便不再成立, 故不论有多少数据行, 该 Actions 部份仅被执行一次.</p>
+<p>一般常把 &quot;与数据文件内容无关&quot; 与 &quot;只需执行ㄧ次&quot; 的部分置于该Actions(以 <code>BEGIN</code> 为 Pattern)中.</p>
+<p>例如:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">BEGIN &#123;</div><div class="line">    FS = <span class="string">"[ \t:]"</span> <span class="comment"># 于程序一开始时, 改变awk切割字段的方式</span></div><div class="line">    RS = <span class="string">""</span> <span class="comment"># 于程序一开始时, 改变awk分隔数据行的方式</span></div><div class="line">    count = 100 <span class="comment"># 设定变量 count 的起始值</span></div><div class="line">    <span class="built_in">print</span> <span class="string">" This is a title line "</span> <span class="comment"># 印出一行 title</span></div><div class="line">&#125;</div><div class="line">....... <span class="comment"># 其它 Pattern &#123; Actions &#125; .....</span></div></pre></td></tr></table></figure></p>
+<p>有些awk程序甚至&quot;不需要读入任何数据行&quot;. 遇到这情况可把整个程序置于以 <code>BEGIN</code> 为 Pattern 的 Actions 中.</p>
+<p>例如 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">BEGIN &#123; <span class="built_in">print</span> <span class="string">" Hello ! the Word ! "</span> &#125;</div></pre></td></tr></table></figure></p>
+<p>注意: 执行该类仅含<code>BEGIN { Actions }</code>的程序时, awk 并不会开启任何数据文件进行处理.</p>
+<h3>END</h3>
+<p><code>END</code> 为 awk 的保留字, 是另一种特殊的 Pattern.<br>
+<code>END</code> 成立(其值为true)的时机与 <code>BEGIN</code> 恰好相反, 为:&quot;awk 处理完所有数据, 即将离开程序时&quot;平常读入数据行时, END并不成立, 故其对应的 Actions 并不被执行; 唯有当awk读完所有数据时, 该 Actions 才会被执行</p>
+<p>注意 : 不管数据行有多少笔, 该 Actions 仅被执行一次.</p>
+<h3>关系表达式</h3>
+<p>使用像 &quot;A 关系运算符 B&quot; 的表达式当成 Pattern.<br>
+当 A 与 B 存在所指定的关系(Relation)时, 该 Pattern 就算成立(true).</p>
+<p>例如 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">length(<span class="variable">$0</span>) &lt;= 80 &#123; <span class="built_in">print</span> <span class="variable">$0</span> &#125;</div></pre></td></tr></table></figure></p>
+<p>上式中<code>length($0)&lt;= 80</code>是一个 Pattern, 当<code>$0</code>(数据行)之长度小于等于80时该 Pattern 之值为true, 将执行其后的 Action (打印该数据行).</p>
+<p>awk 中提供下列 关系运算符(Relation Operator)</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>含意</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&gt;</td>
+<td>大于</td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>小于</td>
+</tr>
+<tr>
+<td>&gt;=</td>
+<td>大于或等于</td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td>小于或等于</td>
+</tr>
+<tr>
+<td>==</td>
+<td>等于</td>
+</tr>
+<tr>
+<td>!=</td>
+<td>不等于</td>
+</tr>
+<tr>
+<td>~</td>
+<td>match</td>
+</tr>
+<tr>
+<td>!~</td>
+<td>not match</td>
+</tr>
+</tbody>
+</table>
+<p>上列关系运算符除<code>~</code>(match)与<code>!~</code>(not match)外与 C 语言中之含意一致.</p>
+<p><code>~</code>(match) 与<code>!~</code>(match) 在 awk 之含意简述如下:<br>
+若 A 为一字符串, B 为一正则表达式.<br>
+<code>A ~B</code> 判断 字符串A 中是否 包含 能匹配(match)B式样的子字符串.<br>
+<code>A !~B</code> 判断 字符串A 中是否 未包含 能匹配(match)B式样的子字符串.</p>
+<p>例如 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">`<span class="variable">$0</span> ~ /program[0-9]+\.c/ &#123; <span class="built_in">print</span> <span class="variable">$0</span> &#125;`</div></pre></td></tr></table></figure></p>
+<p><code>$0 ~ /program[0-9]+\.c/</code> 整个是一个 Pattern, 用来判断<code>$0</code>(数据行)中是否含有可 match <code>/program[0-9]+\.c/</code> 的子字符串, 若<code>$0</code>中含有该类字符串, 则执行 <code>print</code> (打印该行数据).</p>
+<p>Pattern 中被用来比对的字符串为 <code>$0</code> 时(如本例), 可仅以正则表达式部分表示整个Pattern.</p>
+<p>故本例的 Pattern 部分<code>$0 ~/program[0-9]+\.c/</code>可仅用<code>/program[0-9]+\.c/</code>表之(有关匹配及正则表达式请参考 附录 E )</p>
+<h3>正则表达式</h3>
+<p>直接使用正则表达式当成 Pattern; 此为 <code>$0 ~ 正则表达式</code> 的简写.<br>
+该 Pattern 用以判断<code>$0</code>(数据行) 中是否含有匹配该正则表达式的子字符串; 若含有该成立(true) 则执行其对应的 Actions.</p>
+<p>例如 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">`/^[0-9]*$/ &#123; <span class="built_in">print</span> <span class="string">"This line is a integer !"</span> &#125;`</div></pre></td></tr></table></figure></p>
+<p>与<code>$0 ~/^[0-9]*$/ { print &quot;This line is a integer !&quot; }</code> 相同</p>
+<h3>混合 Pattern</h3>
+<p>之前所介绍的各种 Patterns, 其计算后结果为一逻辑值(True or False).awk 中逻辑值彼此间可通过<code>&amp;&amp;</code>(and), <code>||</code>(or),  <code>!</code>(not) 结合成一个新的逻辑值.故不同 Patterns 彼此可通过上述结合符号来结合成一个新的 Pattern. 如此可进行复杂的条件判断.</p>
+<p>例 如 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">FNR &gt;= 23 &amp;&amp; FNR &lt;= 28 &#123; <span class="built_in">print</span> <span class="string">"     "</span> <span class="variable">$0</span> &#125;</div></pre></td></tr></table></figure></p>
+<p>上式利用<code>&amp;&amp;</code>(and) 将两个 Pattern 求值的结果合并成一个逻辑值.<br>
+该式将数据文件中 第23行 到 28行 向右移5格(先输出5个空白字符)后输出.<br>
+(<code>FNR</code>为awk的内建变量, 请参考 附录 D )</p>
+<h3>Pattern1, Pattern2</h3>
+<p>遇到这种 Pattern, awk 会帮您设立一个 switch(或flag).<br>
+当awk读入的数据行使得 Pattern1 成立时, awk 会打开(turn on)这 switch.<br>
+当awk读入的数据行使得 Pattern2 成立时, awk 会关上(turn off)这个 switch.</p>
+<p>该 Pattern 成立的条件是:<br>
+当这个 switch 被打开(turn on)时 (包括 Pattern1, 或 Pattern2 成立的情况)</p>
+<p>例 如 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">FNR &gt;= 23 &amp;&amp; FNR &lt;= 28 &#123; <span class="built_in">print</span> <span class="string">"     "</span> <span class="variable">$0</span> &#125;</div></pre></td></tr></table></figure></p>
+<p>可改写为
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">FNR == 23 , FNR == 28 &#123; <span class="built_in">print</span> <span class="string">"     "</span> <span class="variable">$0</span> &#125;</div></pre></td></tr></table></figure></p>
+<p>说明:<br>
+当 <code>FNR &gt;= 23</code> 时, awk 就 turn on 这个 switch; 因为随着数据行的读入, awk不停的累加<code>FNR</code>. 当<code>FNR = 28</code>时,<code>Pattern2 (FNR == 28)</code> 便成立, 这时 awk 会关上这个 switch.<br>
+当 switch 打开的期间, awk 会执行 <code>print &quot; &quot; $0</code><br>
+( FNR 为awk的内建变量, 请参考 附录 D )</p>
+<h2>附录 B ── Actions</h2>
+<p>Actions 是由下列指令(statement)所组成:</p>
+<ul>
+<li>表达式 (function calls, assignments..)</li>
+<li>print 表达式列表</li>
+<li>printf(格式化字符串, 表达式列表)</li>
+<li>if( 表达式 ) 语句 [else 语句]</li>
+<li>while( 表达式 ) 语句</li>
+<li>do 语句 while( 表达式 )</li>
+<li>for( 表达式; 表达式; 表达式 ) 语句</li>
+<li>for( variable in array ) 语句</li>
+<li>delete</li>
+<li>break</li>
+<li>continue</li>
+<li>next</li>
+<li>exit [表达式]</li>
+<li>语句</li>
+</ul>
+<p>awk 中大部分指令与 C 语言中的用法一致, 此处仅介绍较为常用或容易混淆的指令的用法.</p>
+<h3>流程控制指令</h3>
+<p><strong>if 指令</strong></p>
+<p>语法
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (表达式) 语句1 [<span class="keyword">else</span> 语句2 ]</div></pre></td></tr></table></figure></p>
+<p>范例:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>( <span class="variable">$1</span> &gt; 25 )</div><div class="line">    <span class="built_in">print</span> <span class="string">"The 1st field is larger than 25"</span></div><div class="line"><span class="keyword">else</span></div><div class="line">    <span class="built_in">print</span> <span class="string">"The 1st field is not larger than 25"</span></div></pre></td></tr></table></figure></p>
+<p>(a) 与 C 语言中相同, 若 表达式 计算(evaluate)后之值不为 0 或空字符串, 则执行 语句1; 否则执行 语句2.<br>
+(b) 进行逻辑判断的表达式所返回的值有两种, 若最后的逻辑值为<code>true</code>, 则返回1, 否则返回0.<br>
+(c) 语法中<code>else 语句2</code>以 [ ] 前后括住表示该部分可视需要而予加入或省略.</p>
+<p><strong>while 指令</strong></p>
+<p>语法:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span>( 表达式 ) 语句</div></pre></td></tr></table></figure></p>
+<p>范例:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span>(match(buffer,/[0-9]+\.c/)) &#123;</div><div class="line">    <span class="built_in">print</span> <span class="string">"Find :"</span> substr( buffer,RSTART, RLENGTH)</div><div class="line">    buff = substr( buffer, RSTART + RLENGTH)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上列范例找出 <code>buffer</code> 中所有能匹配 <code>/[0-9]+.c/</code>(数字之后接上 &quot;<code>.c</code>&quot;的所有子字符串).</p>
+<p>范例中 <code>while</code> 以函数 <code>match()</code> 所返回的值做为判断条件. 若 <code>buffer</code> 中还含有匹配指定条件的子字符串(match成功), 则 <code>match()</code> 函数返回<code>1</code>, <code>while</code> 将持续进行其后的语句.</p>
+<p><strong>do-while 指令</strong></p>
+<p>语法:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">do</span> 语句 <span class="keyword">while</span>(表达式)</div></pre></td></tr></table></figure></p>
+<p>范例 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">do</span>&#123;</div><div class="line">    <span class="built_in">print</span> <span class="string">"Enter y or n ! "</span></div><div class="line">    getline data</div><div class="line">&#125; <span class="keyword">while</span>( data !~ /^[YyNn]$/)</div></pre></td></tr></table></figure></p>
+<p>(a) 上例要求用户从键盘上输入一个字符, 若该字符不是Y, y, N, 或 n则会不停执行该循环, 直到读取正确字符为止.<br>
+(b) <code>do-while</code> 指令与 <code>while</code> 指令最大的差异是: <code>do-while</code> 指令会先执行<code>statement</code>而后再判断是否应继续执行. 所以, 无论如何其 <code>statement</code> 部分至少会执行一次.</p>
+<p><strong>for Statement 指令(一)</strong></p>
+<p>语法:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(variable <span class="keyword">in</span>  array ) statement</div></pre></td></tr></table></figure></p>
+<p>范例: 执行下列命令
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'</span></div><div class="line">    BEGIN&#123;</div><div class="line">        X[1]= 50; X[2]= 60; X["last"]= 70</div><div class="line">        for( any in X )</div><div class="line">            printf("X[%s] = %d\n", any, X[any] )</div><div class="line">&#125;'</div></pre></td></tr></table></figure></p>
+<p>结果输出 :
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">X[last] = 70</div><div class="line">X[1] = 50</div><div class="line">X[2] = 60</div></pre></td></tr></table></figure></p>
+<p>(a) 这个 <code>for</code> 指令, 专用以查找数组中所有的下标值, 并依次使用所指定的变量予以记录. 以本例而言, 变量 any 将逐次代表 &quot;last&quot;, 1 及2 .<br>
+(b) 以这个 <code>for</code> 指令, 所查找出的下标之值彼此间并无任何次续关系.<br>
+(c) 第5节中有该指令的使用范例, 及解说.</p>
+<p><strong>for Statement 指令(二)</strong></p>
+<p>语法 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(expression1; expression2; expression3) statement</div></pre></td></tr></table></figure></p>
+<p>范例 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(ｉ=1; i&lt; =10; i++)  sum = sum + i</div></pre></td></tr></table></figure></p>
+<p>说明:<br>
+(a) 上列范例用以计算 1 加到 10 的总和.<br>
+(b) <code>expression1</code> 常用于设定该 for 循环的起始条件, 如上例中的 <code>i=1</code><br>
+<code>expression2</code> 用于设定该循环的停止条件, 如上例中的 <code>i &lt;= 10</code><br>
+<code>expression3</code> 常用于改变 counter 之值, 如上例中的 <code>i++</code></p>
+<p><strong>break 指令</strong></p>
+<p><code>break</code> 指令用以强迫中断(跳离) <code>for</code>, <code>while</code>, <code>do-while</code> 等循环.</p>
+<p>范例 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span>(  getline &lt; <span class="string">"datafile"</span> &gt; 0 )</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span>( <span class="variable">$1</span> == 0 )</div><div class="line">        <span class="built_in">break</span></div><div class="line">    <span class="keyword">else</span></div><div class="line">        <span class="built_in">print</span> <span class="variable">$2</span> / <span class="variable">$1</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上例中, awk 不断地从文件 <code>datafile</code> 中读取资料, 当<code>$1</code>等于0时,就停止该执行循环.</p>
+<p><strong>continue 指令</strong></p>
+<p>循环中的 <code>statement</code> 进行到一半时, 执行 <code>continue</code> 指令来略过循环中尚未执行的<code>statement</code>.</p>
+<p>范例 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>( index <span class="keyword">in</span> X_array)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span>( index !~ /[0-9]+/ )  <span class="built_in">continue</span></div><div class="line">    <span class="built_in">print</span> <span class="string">"There is a digital index"</span>, index</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上例中若 <code>index</code> 不为数字则执行<code>continue</code>, 故将略过(不执行)其后的指令.</p>
+<p>需留心 <code>continue</code> 与 <code>break</code> 的差异 : 执行 <code>continue</code> 只是掠过其后未执行的<code>statement</code>, 但并未跳离开该循环.</p>
+<p><strong>next 指令</strong></p>
+<p>执行 <code>next</code> 指令时, awk 将掠过位于该指令(next)之后的所有指令(包括其后的所有<code>Pattern { Actions }</code>), 接著读取下一笔数据行,继续从第一个 <code>Pattern {Actions}</code> 执行起.</p>
+<p>范例:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/^[ \t]*$/  &#123;  <span class="built_in">print</span> <span class="string">"This is a blank line! Do nothing here !"</span></div><div class="line">    next</div><div class="line">&#125;</div><div class="line"><span class="variable">$2</span> != 0 &#123; <span class="built_in">print</span> <span class="variable">$1</span>, <span class="variable">$1</span>/<span class="variable">$2</span> &#125;</div></pre></td></tr></table></figure></p>
+<p>上例中, 当 awk 读入的数据行为空白行时( match <code>/^[ \]*$/</code> ),除打印消息外只执行<code>next</code>, 故 awk 将略过其后的指令, 继续读取下一笔资料, 从头(第一个 <code>Pattern { Actions }</code>)执行起.</p>
+<p><strong>exit 指令</strong></p>
+<p>执行 <code>exit</code> 指令时, awk将立刻跳离(停止执行)该awk程序.</p>
+<h3>awk 中的 I/O 指令</h3>
+<p><strong>printf 指令</strong></p>
+<p>该指令与 C 语言中的用法相同, 可借由该指令控制资料输出时的格式.</p>
+<p>语法:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">printf</span>(<span class="string">"format"</span>, item1, item2,.. )</div></pre></td></tr></table></figure></p>
+<p>范例:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">id = <span class="string">"BE-2647"</span>;  ave = 89</div><div class="line"><span class="built_in">printf</span>(<span class="string">"ID# : %s   Ave Score : %d\n"</span>, id, ave)</div></pre></td></tr></table></figure></p>
+<p>(a) 结果印出:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ID# : BE-2647   Ave Score : 89</div></pre></td></tr></table></figure></p>
+<p>(b) <code>format</code> 部分是由 一般的字串(String Constant) 及 格式控制字符(Formatcontrol letter, 其前会加上一个%字符)所构成. 以上式为例&quot;<code>ID# :</code>&quot; 及 &quot;<code>Ave Score :</code>&quot;为一般字串.<code>%s</code> 及 <code>%d</code> 为格式控制字符.<br>
+(c) 打印时, 一般字串将被原封不动地打印出来. 遇到格式控制字符时,则依序把<code>format</code>后方之 <code>item</code> 转换成所指定的格式后进行打印.<br>
+(d) 有关的细节, 读者可从介绍 C 语言的书籍上得到较完整的介绍.</p>
+<p>(e) <code>print</code>及<code>printf</code>两个指令, 其后可使用 <code>&gt;</code>或<code>&gt;&gt;</code>将输出到 <code>stdout</code> 的数据重定向到其它文件, 7.1 节中有完整的</p>
+<p><strong>print 指令</strong></p>
+<p>范例:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">id = <span class="string">"BE-267"</span>;  ave = 89</div><div class="line"><span class="built_in">print</span> <span class="string">"ID# :"</span>, id, <span class="string">"Ave Score :"</span>ave</div></pre></td></tr></table></figure></p>
+<p>(a) 结果印出:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ID# : BE-267 Ave Score :89</div></pre></td></tr></table></figure></p>
+<p>(b) <code>print</code> 之后可接上字串常数(Constant String)或变量. 它们彼此间可用&quot;,&quot; 隔开.<br>
+(c) 上式中, 字串 &quot;ID# :&quot; 与变量 id 之间使用&quot;<code>,</code>&quot;隔开, 打印时两者之间会以自动<code>OFS</code>(请参考 附录D 內建变量<code>OFS</code>) 隔开. <code>OFS</code> 之值一般內定为 &quot;一个空格&quot;<br>
+(d) 上式中, 字串&quot;<code>Ave Score :</code>&quot;与变量<code>ave</code>之间并未以&quot;<code>,</code>&quot;隔开, awk会将这两者先当成字串concate在一起(变成&quot;<code>Ave Score :89</code>&quot;)后,再予打印</p>
+<p><strong>getline 指令</strong></p>
+<p>语法</p>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>由何处读取数据</th>
+<th>数据读入后置于</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getline var <code>&lt;</code> file</td>
+<td>所指定的 file</td>
+<td>变量 var(var省略时,表示置于<code>$0</code>)</td>
+</tr>
+<tr>
+<td>getline var</td>
+<td>pipe 变量</td>
+<td>变量 var(var省略时,表示置于<code>$0</code>)</td>
+</tr>
+<tr>
+<td>getline var</td>
+<td>见 注一</td>
+<td>变量 var(var省略时,表示置于<code>$0</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><code>getline</code> 一次读取一行资料, 若读取成功则<code>return 1</code>,若读取失败则<code>return -1</code>, 若遇到文件结束(EOF), 则return 0</p>
+<p><strong>close  指令</strong></p>
+<p>该指令用以关闭一个打开的文件, 或 pipe (见下例)</p>
+<p>范例:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">BEGIN &#123;  <span class="built_in">print</span> <span class="string">"ID #   Salary"</span> &gt; <span class="string">"data.rpt"</span> &#125;</div><div class="line">&#123;  <span class="built_in">print</span> <span class="variable">$1</span> , <span class="variable">$2</span> * <span class="variable">$3</span>  | <span class="string">"sort -k 1 &gt; data.rpt"</span> &#125;</div><div class="line">END&#123;  close( <span class="string">"data.rpt"</span> )</div><div class="line">    close( <span class="string">"sort -k 1 &gt; data.rpt"</span> )</div><div class="line">    <span class="built_in">print</span> <span class="string">" There are"</span>, NR, <span class="string">"records processed."</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>说明:<br>
+(a) 上例中, 一开始执行<code>print &quot;ID # Salary&quot; &gt; &quot;data.rpt&quot;</code>指令来输出一行抬头. 它使用 I/O Redirection (<code>&gt;</code>)将数据转输出到<code>data.rpt</code>, 故此时文件 <code>data.rpt</code> 是处於 Open 状态.<br>
+(b) 指令<code>print $1, $2 * $3</code> 不停的将输出的资料送往 pipe(<code>|</code>), awk在程序将结束时才会呼叫 shell 使用指令<code>&quot;sort -k 1 &gt; data.rpt&quot;</code> 来处理 pipe 中的数据; 并未立即执行, 这点与 Unix 中pipe的用法不尽相同.<br>
+(c) 最后希望於文件 <code>data.rpt</code> 的末尾处加上一行 &quot;There are.....&quot;.但此时, Shell尚未执行<code>&quot;sort -k 1 &gt; data.rpt&quot;</code> 故各数据行排序后的 ID 及 Salary 等数据尚未写入<code>data.rpt</code>. 所以得命令 awk 提前先通知 Shell 执行命令<code>&quot;sort -k 1 &gt; data.rpt&quot;</code> 来处理 pipe 中的资料. awk中这个动作称为 close pipe. 是由执行<code>close ( &quot;shell command&quot; )</code>来完成. 需留心 <code>close( )</code>指令中的 shell command 需与&quot;<code>|</code>&quot;后方的 shell command 完全相同(一字不差), 较佳的方法是先以该字串定义一个简短的变量, 程序中再以此变量代替该shell command<br>
+(d) 为什么执行 <code>close(&quot;data.rpt&quot;)</code> ?  因为 <code>sort</code> 完后的资料也将写到<code>data.rpt</code>,而该文件正为awk所打开使用(write)中, 故awk程式中应先关闭<code>data.rpt</code>. 以免造成因二个 processes 同时打开一个文件进行输出(write)所产生的错误.</p>
+<p><strong>system 指令</strong></p>
+<p>该指令用以执行Shell上的 command.</p>
+<p>范例:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">DataFile = <span class="string">"invent.rpt"</span></div><div class="line">system( <span class="string">"rm "</span> DataFile )</div></pre></td></tr></table></figure></p>
+<p>说明:<br>
+(a) <code>system(&quot;字符串&quot;)</code>指令接受一个字符串当成Shell的命令. 上例中, 使用一个字串常数&quot;<code>rm</code>&quot; 连接(concate)一个变量 <code>DataFile</code> 形成要求 Shell 执行的命令.Shell 实际执行的命令为 &quot;<code>rm invent.rpt</code>&quot;.</p>
+<p><strong>&quot;<code>|</code>&quot; pipe指令</strong></p>
+<p>&quot;<code>|</code>&quot; 配合 awk 输出指令, 可把 output 到 stdout 的资料继续转送给Shell 上的某一命令当成input的资料.</p>
+<p>&quot;<code>|</code>&quot;  配合 awk <code>getline</code> 指令, 可呼叫 Shell 执行某一命令, 再以 awk 的 <code>getline</code> 指令将该命令的所产生的资料读进 awk 程序中.</p>
+<p>范例:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&#123; <span class="built_in">print</span> <span class="variable">$1</span>, <span class="variable">$2</span> * <span class="variable">$3</span>  | <span class="string">"sort -k 1 &gt; result"</span> &#125;</div><div class="line"><span class="string">"date"</span> |  getline  Date_data</div></pre></td></tr></table></figure></p>
+<p>读者请参考7.2 节,其中有完整的范例说明.</p>
+<h3>awk 释放所占用的记忆体的指令</h3>
+<p>awk 程式中常使用数组(Array)来记忆大量数据, <code>delete</code> 指令便是用来释放数组中的元素所占用的内存空间.</p>
+<p>范例:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>( any <span class="keyword">in</span> X_arr )</div><div class="line">    delete X_arr[any]</div></pre></td></tr></table></figure></p>
+<p>读者请留心, <code>delete</code> 指令一次只能释放数组中的一个元素.</p>
+<h3>awk 中的数学运算符(Arithmetic Operators)</h3>
+<p>+(加), -(減), *(乘), /(除), %(求余数), ^(指数) 与 C 语言中用法相同</p>
+<h3>awk 中的赋值运算符(Assignment Operators)</h3>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">=, +=, -=, *= , /=, %=, ^=</div></pre></td></tr></table></figure></p>
+<p><code>x += 5</code> 的意思为<code>x = x + 5</code>, 其余类推.</p>
+<h3>awk 中的条件运算符(Conditional  Operator)</h3>
+<p>语法:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">判断条件 ? value1 : value2</div></pre></td></tr></table></figure></p>
+<p>若 判断条件 成立(true) 则返回 value1, 否则返回 value2.</p>
+<h3>awk 中的逻辑运算符(Logical Operators)</h3>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&amp;&amp;( and ), ||(or), !(not)</div></pre></td></tr></table></figure></p>
+<p>Extended Regular Expression 中使用 &quot;<code>|</code>&quot; 表示 or 请勿混淆.</p>
+<h3>awk 中的关系运算符(Relational Operators)</h3>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;, &gt;=, &lt;, &lt; =, ==, !=, ~, !~</div></pre></td></tr></table></figure></p>
+<h3>awk 中其它的运算符</h3>
+<p>+(正号), -(负号),  ++(Increment Operator), --(Decrement Operator)</p>
+<h3>awk 中各运算符的运算级</h3>
+<p>按优先高低排列:</p>
+<table>
+<thead>
+<tr>
+<th>运算符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$</code></td>
+<td>(栏位运算元, 例如: <code>i=3</code>; <code>$i</code>表示第3栏)</td>
+</tr>
+<tr>
+<td>^</td>
+<td>(指数运算)</td>
+</tr>
+<tr>
+<td>+, -, !</td>
+<td>(正,负号,及逻辑上的 not)</td>
+</tr>
+<tr>
+<td>*, /, %</td>
+<td>(乘,除,余数)</td>
+</tr>
+<tr>
+<td>+, -</td>
+<td>(加,減)</td>
+</tr>
+<tr>
+<td>&gt;, &gt;=, <code>&lt;</code>, <code>&lt;=</code>, ==, !=</td>
+<td>(关系运算符)</td>
+</tr>
+<tr>
+<td>~, !~</td>
+<td>(match, not match)</td>
+</tr>
+<tr>
+<td>&amp;&amp;</td>
+<td>(逻辑上的 and)</td>
+</tr>
+<tr>
+<td>||</td>
+<td>(逻辑上的 or )</td>
+</tr>
+<tr>
+<td>?:</td>
+<td>(条件运算符)</td>
+</tr>
+<tr>
+<td>=, +=, -=, *=, /=, %=, ^=</td>
+<td>(赋值运算符)</td>
+</tr>
+</tbody>
+</table>
+<h2>附录C ── awk 的內建函数(Built-in Functions)</h2>
+<h3>字串函数</h3>
+<p><strong>index(原字串, 找寻的子字串)</strong></p>
+<p>若原字串中含有欲找寻的子字串,则返回该子字串在原字串中第一次出现的位置,若未曾出现该子字串则返回<code>0</code>.</p>
+<p>例如执行:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk  <span class="string">'BEGIN&#123; print index("8-12-94","-") &#125;'</span></div></pre></td></tr></table></figure></p>
+<p>结果印出
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">2</div></pre></td></tr></table></figure></p>
+<p><strong>length(字串): 返回该字串的长度.</strong></p>
+<p>例如执行:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk  <span class="string">'BEGIN &#123; print length("John") &#125;'</span></div></pre></td></tr></table></figure></p>
+<p>结果印出
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">4</div></pre></td></tr></table></figure></p>
+<p><strong>match(原字串, 用以找寻比对的正则表达式)</strong></p>
+<p>awk会在原字串中找寻合乎正则表达式的子字串. 若合乎条件的子字串有多个, 则以原字串中最左方的子字串为准.</p>
+<p>awk找到该字串后会依此字串为依据进行下列动作:<br>
+设定awk內建变量<code>RSTART</code>,<code>RLENGTH</code>:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> RSTART =  合条件的子字串在原字串中的位置.</div><div class="line">        =  0 ; 若未找到合条件的子字串.</div><div class="line"></div><div class="line">RLENGTH = 合条件的子字串长度.</div><div class="line">        = -1 ; 若未找到合条件的子字串.</div></pre></td></tr></table></figure></p>
+<p>返回 <code>RSTART</code> 之值.</p>
+<p>例如执行 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">' BEGIN &#123;</span></div><div class="line">    match( "banana", /(an)+/ )</div><div class="line">    print RSTART, RLENGTH</div><div class="line">&#125; '</div></pre></td></tr></table></figure></p>
+<p>执行结果输出
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">2 4</div></pre></td></tr></table></figure></p>
+<p><strong>split(原字串, 数组名称, 分隔字符)</strong></p>
+<p>awk将依所指定的分隔字符(field separator)来分隔原字串成一个个的栏位(field),并以指定的数组记录各个被分隔的栏位.</p>
+<p>例如:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ArgLst = &quot;5P12p89&quot;</div><div class="line">split(ArgLst, Arr, /[Pp]/)</div></pre></td></tr></table></figure></p>
+<p>执行后: Arr[1]=5,  Arr[2]=12,  Arr[3]=89</p>
+<p><strong>sprintf(格式字符串, 项1, 项2, ...)</strong></p>
+<p>该函数的用法与 awk 或 C 的输出函数<code>printf()</code>相同. 所不同的是<code>sprintf()</code>会将要求印出的结果当成一个字串返回. 一般最常使用<code>sprintf()</code>来改变资料格式. 如: x 为一数值资料, 若欲将其变成一个含二位小数的资料,可执行如下指令:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">x = 28</div><div class="line">x = sprintf(<span class="string">"%.2f"</span>,x)</div></pre></td></tr></table></figure></p>
+<p>执行后 <code>x = &quot;28.00&quot;</code></p>
+<p><strong>sub(比对用的正则表达式, 将替換的新字串, 原字串)</strong></p>
+<p><code>sub()</code>将原字串中第一个(最左边)合乎所指定的正则表达式的子字串改以新字串取代.<br>
+第二个参数&quot;将替換的新字串&quot;中可用&quot;<code>&amp;&quot;</code>来代表&quot;合於条件的子字串&quot;</p>
+<p>承上例,执行下列指令:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">A = <span class="string">"a6b12anan212.45an6a"</span></div><div class="line">sub( /(an)+[0-9]*/, <span class="string">"[&amp;]"</span>, A)</div><div class="line"><span class="built_in">print</span> A</div></pre></td></tr></table></figure></p>
+<p>结果输出
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ab12[anan212].45an6a</div></pre></td></tr></table></figure></p>
+<p><code>sub()</code>不仅可执行替换(replacement)的功用,当第二个参数为空字串(&quot;&quot;)时,<code>sub()</code>所执行的是&quot;去除指定字串&quot;的功用.</p>
+<p>通过<code>sub()</code>与<code>match()</code>的搭配使用,可逐次取出原字串中合乎指定条件的所有子字串.</p>
+<p>例如执行下列程式:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'</span></div><div class="line">BEGIN &#123;</div><div class="line">    data = "p12-P34 P56-p61"</div><div class="line">    while( match( data ,/[0-9]+/) &gt; 0) &#123;</div><div class="line">        print substr(data, RSTART, RLENGTH )</div><div class="line">        sub(/[0-9]+/,"",data)</div><div class="line">    &#125;</div><div class="line">&#125;'</div></pre></td></tr></table></figure></p>
+<p>结果输出 :
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">12</div><div class="line">34</div><div class="line">56</div><div class="line">61</div></pre></td></tr></table></figure></p>
+<p><code>sub()</code>中第三个参数(原字串)若未指定,则其预设值为<code>$0</code>.<br>
+可用 <code>sub(/[9-0]+/,&quot;digital&quot;)</code> 表示<code>sub(/[0-9]+/,&quot;digital&quot;,$0 )</code></p>
+<p><strong>gsub(比对用的正则表达式, 将替換的新字串, 原字串)</strong></p>
+<p>这个函数与<code>sub()</code>一样,同样是进行字串取代的函数. 唯一不同点是</p>
+<ul>
+<li>gsub()会取代所有合条件的子字串.</li>
+<li>gsub()会返回被取代的子字串个数.</li>
+</ul>
+<p>请参考<code>sub()</code>.</p>
+<p><strong>substr(字串, 起始位置 [,长度])</strong></p>
+<p>返回从起始位置起,指定长度的子字串. 若未指定长度,则返回起始位置到字串末尾的子字串.</p>
+<p>执行下例
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="string">'BEGIN &#123; print substr("User:Wei-Lin Liu", 6)&#125;'</span></div></pre></td></tr></table></figure></p>
+<p>结果印出
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Wei-Lin Liu</div></pre></td></tr></table></figure></p>
+<h3>数学函数</h3>
+<p><strong>int(x): 返回x的整数部分(去掉小数).</strong></p>
+<p>例如 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">int(7.8) 将返回 7</div><div class="line">int(-7.8) 将返回 -7</div></pre></td></tr></table></figure></p>
+<p><strong>sqrt(x): 返回x的平方根.</strong></p>
+<p>例如 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sqrt(9) 将返回 3</div></pre></td></tr></table></figure></p>
+<p>若 x 为负数,则执行<code>sqrt(x)</code>时将造成 Run Time Error [译者注: 我这里没有发生错误,返回的是&quot;nan&quot;]</p>
+<p><strong>exp(x): 将返回e的x次方.</strong></p>
+<p>例如 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">exp(1) 将返回 2.71828</div></pre></td></tr></table></figure></p>
+<p><strong>log(x): 将返回x以e为底的对数值.</strong></p>
+<p>例如 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">log</span>(exp(1))  将返回 1</div></pre></td></tr></table></figure></p>
+<p>若<code>x&lt; 0</code> ,则执行<code>sqrt(x)</code>时将造成 Run Time Error. [译者注: 我这里也没有发生错误,返回的是&quot;nan&quot;]</p>
+<p><strong>sin(x): x 须以弧度为单位, sin(x)将返回x的sin函数值.</strong></p>
+<p><strong>cos(x): x 须以弧度为单位, cos(x)将返回x的cos函数值</strong></p>
+<p><strong>atan2(y,x): 返回 y/x 的tan反函数之值, 返回值系以弧度为单位.</strong></p>
+<p><strong>rand(): 返回介于0与1之间的(近似)随机数值; 0 &lt; rand() &lt;1.</strong></p>
+<p>除非使用者自行指定<code>rand()</code>函数起始的种子, 否则每次执行awk程式时, <code>rand()</code>函数都将使用同一个內定的种子,来产生随机数.</p>
+<p><strong>srand([x]): 指定以<code>x</code>为<code>rand( )</code>函数起始的种子.</strong></p>
+<p>若省略了<code>x</code>,则awk会以执行时的日期与时间为<code>rand()</code>函数起始的种子.</p>
+<h2>附录D ── awk 的內建变量 Built-in Variables</h2>
+<p>因內建变量的个数不多, 此处按其相关性分类说明, 并未按其字母顺序排列.</p>
+<p><strong>ARGC</strong></p>
+<p>ARGC表示命令行上除了选项<code>-F</code>, <code>-v</code>, <code>-f</code> 及其所对应的参数之外的所有参数的个数.若将&quot;awk程式&quot;直接写於命令列上, 则 <code>ARGC</code> 亦不将该&quot;程式部分&quot;列入计算.</p>
+<p><strong>ARGV</strong></p>
+<p>ARGV数组用以记录命令列上的参数.</p>
+<p>例: 执行下列命令
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk  -F\t -v a=8 <span class="_">-f</span> prg.awk  file1.dat file2.dat</div></pre></td></tr></table></figure></p>
+<p>或
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk  -F\t -v a=8 <span class="string">'&#123; print $1 * a &#125;'</span> file1.dat file2.dat</div></pre></td></tr></table></figure></p>
+<p>执行上列任一程式后
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ARGC    =  3</div><div class="line">ARGV[0] = &quot;awk&quot;</div><div class="line">ARGV[1] = &quot;file1.dat&quot;</div><div class="line">ARGV[2] = &quot;file2.dat&quot;</div></pre></td></tr></table></figure></p>
+<p>读者请留心: 当 <code>ARGC = 3</code> 时, 命令列上仅指定了 2 个文件.</p>
+<p>注:</p>
+<p><code>-F\t</code> 表示以 <code>tab</code> 为栏位分隔字符 <code>FS</code>(field seporator).</p>
+<p><code>-v a=8</code> 是用以初始化程序中的变量<code>a</code>.</p>
+<p><strong>FILENAME</strong></p>
+<p>FILENAME用以表示目前正在处理的文件档名.</p>
+<p><strong>FS</strong></p>
+<p>栏位分隔字符.</p>
+<p><strong>$0</strong></p>
+<p>表示目前awk所读入的数据行.</p>
+<p><strong>$1,$2..</strong></p>
+<p>分別表示所读入的数据行之第一栏, 第二栏,..</p>
+<p>说明:<br>
+当awk读入一笔数据行 <code>&quot;A123 8:15&quot;</code> 时,会先以<code>$0</code>记录.<br>
+故 <code>$0 = &quot;A123 8:15&quot;</code></p>
+<p>若程序中进一步使用了<code>$1</code>, <code>$2</code>.. 或 <code>NF</code> 等內建变量时, awk 才会自动分割<code>$0</code>.<br>
+以便取得栏位相关的资料. 切割后各个栏位的资料会分別以<code>$1</code>, <code>$2</code>, <code>$3</code>...予以记录.</p>
+<p>awk內定(default)的 栏位分隔字符(<code>FS</code>) 为 空白字符(空格及tab).</p>
+<p>以本例而言, 读者若未改变<code>FS</code>, 则分割后:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">第一栏($1)=&quot;A123&quot;`,  第二栏($2)=&quot;8:15&quot;`.</div></pre></td></tr></table></figure></p>
+<p>使用者可用正则表达式自行定义<code>FS</code>. awk每次需要分割数据行时, 会参考目前FS的值.</p>
+<p>例如:<br>
+令<code>FS = &quot;[ :]+&quot;</code> 表示任何由 <code>空白&quot; &quot;</code> 或 <code>冒号&quot;:&quot;</code> 所组成的字串都可当成分隔字符, 则分割后:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">第一栏($1) = &quot;A123&quot;, 第二栏($2) = &quot;8&quot;, 第三栏($3) = &quot;15&quot;</div></pre></td></tr></table></figure></p>
+<p><strong>NR</strong></p>
+<p>NR 表从 awk 开始执行该程序后所读取的数据行数.</p>
+<p><strong>FNR</strong></p>
+<p><code>FNR</code> 与 <code>NR</code> 功用类似. 不同的是awk每打开一个新的文件, <code>FNR</code> 便从 0 重新累计</p>
+<p><strong>NF</strong></p>
+<p>NF表目前的数据行所被切分的栏位数.</p>
+<p>awk 每读入一笔资料后, 在程序中可以 <code>NF</code> 来得知该行数据包含的栏位个数.在下一笔资料被读入之前, <code>NF</code> 并不会改变. 但使用者若自行使用<code>$0</code>来记录数据,例如: 使用 <code>getline</code>, 此时 <code>NF</code> 将代表新的 <code>$0</code> 上所记载的资料的栏位个数.</p>
+<p><strong>OFS</strong></p>
+<p><code>OFS</code>输出时的栏位分隔字符. 预设值 <code>&quot; &quot;(一个空白)</code>, 详见下面说明.</p>
+<p><strong>ORS</strong></p>
+<p><code>ORS</code>输出时数据行的分隔字符. 预设值 <code>&quot;\n&quot;(跳行)</code>, 见下面说明.</p>
+<p><strong>OFMT</strong></p>
+<p><code>OFMT</code>数值资料的输出格式. 预设值&quot;<code>%.6g</code>&quot;(若须要时最多印出6位小数)</p>
+<p>当使用 <code>print</code> 指令一次印出多项资料时,<br>
+例如: <code>print $1, $2</code><br>
+输出时, awk会自动在 <code>$1</code> 与 <code>$2</code> 之间补上一个 <code>OFS</code> 之值</p>
+<p>每次使用 <code>print</code> 输出后, awk 会自动补上 <code>ORS</code> 之值.</p>
+<p>使用 <code>print</code> 输出数值数据时, awk 将采用 <code>OFMT</code> 之值为输出格式.<br>
+例如 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ awk <span class="string">'BEGIN &#123; print 2/3,1; OFS=":"; OFMT="%.2g"; print 2/3,1 &#125;'</span></div></pre></td></tr></table></figure></p>
+<p>输出:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">0.666667 1</div><div class="line">0.67:1</div></pre></td></tr></table></figure></p>
+<p>程序中通过改变<code>OFS</code>和<code>OFMT</code>的值, 改变了指令 <code>print</code> 的输出格式.</p>
+<p><strong>RS</strong></p>
+<p><code>RS</code> (Record Separator): awk从文件上读取资料时, 将根据 <code>RS</code> 的定义把资料切割成许多Records,而awk一次仅读入一个Record,以进行处理.</p>
+<p><code>RS</code> 的预设值是 &quot;<code>\n</code>&quot;. 所以一般 awk 一次仅读入一行资料.</p>
+<p>有时一个Record含括了几行资料(Multi-line Record). 这情況下不能再以&quot;<code>\n</code>&quot;来分隔相邻的Records, 可改用 <code>空白行</code> 来分隔.<br>
+在awk程式中,令 <code>RS = &quot;&quot;</code> 表示以 <code>空白行</code> 来分隔相邻的Records.</p>
+<p><strong>RSTART</strong></p>
+<p><code>RSTART</code>与使用字串函数<code>match()</code>有关的变量,详见下面说明.</p>
+<p><strong>RLENGTH</strong></p>
+<p><code>RLENGTH</code>与使用字串函数<code>match()</code>有关之变量.</p>
+<p>当使用者使用 <code>match(...)</code> 函数后, awk会将 <code>match(...)</code> 执行的结果以<code>RSTART</code>, <code>RLENGTH</code> 记录.<br>
+请参考 附录 C awk的內建函数 match().</p>
+<p><strong>SUBSEP</strong></p>
+<p><code>SUBSEP</code>(Subscript Separator)数组下标的分隔字符,<br>
+预设值为&quot;<code>\034</code>&quot;实际上, awk中的 数组 只接受 <code>字串</code> 当它的下标,如: <code>Arr[&quot;John&quot;]</code>.</p>
+<p>但使用者在 awk 中仍可使用 <code>数字</code> 当阵列的下标, 甚至可使用多维的数组<code>(Multi-dimenisional Array)</code>如: <code>Arr[2,79]</code></p>
+<p>事实上, awk 在接受<code>Arr[2,79]</code> 之前, 就已先把其下标转换成字串<code>&quot;2\03479&quot;</code>, 之后便以<code>Arr[&quot;2\03479&quot;]</code>代替<code>Arr[2,79]</code>.</p>
+<p>可参考下例 :
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'BEGIN &#123;</span></div><div class="line">    Arr[2,79] = 78</div><div class="line">    print  Arr[2,79]</div><div class="line">    print  Arr[ 2 , 79 ]</div><div class="line">    print  Arr["2\03479"]</div><div class="line">    idx = 2 SUBSEP 79</div><div class="line">    print Arr[idx]</div><div class="line">&#125;</div><div class="line">' $*</div></pre></td></tr></table></figure></p>
+<p>执行结果输出:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">78</div><div class="line">78</div><div class="line">78</div><div class="line">78</div></pre></td></tr></table></figure></p>
+<h2>附录E ── 正则表达式(Regular Expression) 简介</h2>
+<h3>为什么要使用正则表达式</h3>
+<p>UNIX 中提供了许多 指令 和 tools, 它们具有在文件中 查找(Search)字串或替换(Replace)字串 的功能. 像 grep, vi , sed, awk,...</p>
+<p>不论是查找字串或替换字串, 都得先告诉这些指令所要查找(被替换)的字串为何.若未能预先明确知道所要查找(被替换)的字串为何, 只知该字串存在的范围或特征时,例如:<br>
+(一) 找寻 <code>&quot;T0.c&quot;</code>,<code>&quot;T1.c&quot;</code>,<code>&quot;T2.c&quot;</code>....<code>&quot;T9.c&quot;</code> 当中的任一字串.<br>
+(二) 找寻至少存在一个 &quot;A&quot; 的任意字串.<br>
+这情況下, 如何告知执行查找字串的指令所要查找的字串为何.<br>
+例 (一) 中, 要查找任一在 &quot;<code>T</code>&quot; 与 &quot;<code>.c</code>&quot; 之间存在一个阿拉伯数字的字串;当然您可以列举的方式, 一一把所要找寻的字串告诉执行命令的指令. 但例 (二) 中合乎该条件的字串有无限种可能, 势必无法一一列举.此时,便需要另一种字串表示的方法(协定).</p>
+<h3>什么是正则表达式</h3>
+<p>正则表达式(以下简称 Regexp)是一种字串表达的方式. 可用以指定具有某特征的所有字串.<br>
+注: 为区別于一般字串, 本附录中代表 Regexp 的字串之前皆加 &quot;Regexp&quot;. awk 程式中常以<code>/..../</code>括住 <code>Regexp</code>; 以区別于一般字串.</p>
+<h3>组成正则表达式的元素</h3>
+<p>普通字符 除了<code>. * [ ] + ? ( ) \ ^ $</code>外之所有字符.</p>
+<p>由普通字符所组成的Regexp其意义与原字串字面意义相同.<br>
+例如: Regexp &quot;<code>the</code>&quot; 与一般字串的 &quot;<code>the</code>&quot; 代表相同的意义.</p>
+<p><code>.</code> (Meta character): 用以代表任意一字符.</p>
+<p>须留心 UNIX Shell 中使用&quot;<code>*</code>&quot;表示 Wild card, 可用以代表任意长度的字串.而 Regexp 中使用 &quot;<code>.</code>&quot; 来代表一个任意字符.(注意: 并非任意长度的字串)Regexp 中 &quot;<code>*</code>&quot; 另有其它涵意, 并不代表任意长度的字串.</p>
+<p><code>^</code> 表示该字串必须出现于行首.</p>
+<p><code>$</code> 表示该字串必须出现于行末.</p>
+<p>例如:<br>
+Regexp <code>/^The/</code> 用以表示所有出现于行首的字串 &quot;<code>The</code>&quot;.
+Regexp <code>/The$/</code> 用以表示所有出现于行末字串 &quot;<code>The</code>&quot;.</p>
+<p><code>\</code> 将特殊字符还原成字面意义的字符(Escape character)</p>
+<p>Regexp 中特殊字符将被解释成特定的意义. 若要表示特殊字符的字面(literal meaning)意义时,在特殊字符之前加上&quot;<code>\</code>&quot;即可.</p>
+<p>例如:<br>
+使用Regexp来表示字串 &quot;a.out&quot;时, 不可写成 <code>/a.out/</code>.</p>
+<p>因为&quot;<code>.</code>&quot;是特殊字符, 表任一字符. 可符合 Regexp <code>/a.out/</code> 的字串将不只 &quot;<code>a.out</code>&quot; 一个; 字串 &quot;<code>a2out</code>&quot;, &quot;<code>a3out</code>&quot;, &quot;<code>aaout</code>&quot; ...都符合 Regexp <code>/a.out/</code> 正确的用法为: <code>/a\.out/</code></p>
+<p><code>[...]</code>字符集合, 用以表示两中括号间所有的字符当中的任一个.</p>
+<p>例如:<br>
+Regexp <code>/[Tt]/</code> 可用以表示字符 &quot;<code>T</code>&quot; 或 &quot;<code>t</code>&quot;. 故 Regexp <code>/[Tt]he/</code> 表示字串 &quot;<code>The</code>&quot; 或 &quot;<code>the</code>&quot;.</p>
+<p>字符集合 <code>[...]</code> 內不可随意留空白.</p>
+<p>例如: Regexp <code>/[ Tt ]/</code> 其中括号內有空白字符, 除表示&quot;<code>T</code>&quot;, &quot;<code>t</code>&quot; 中任一个字符, 也可代表一个 <code>&quot; &quot;(空白字符)</code></p>
+<p><code>-</code> 字符集合中可使用 &quot;<code>-</code>&quot; 来指定字符的区间, 其用法如下:<br>
+Regexp <code>/[0-9]/</code> 等价于 <code>/[0123456789]/</code> 用以表示任意一个阿拉伯数字.<br>
+同理 Regexp <code>/[A-Z]/</code> 用以表示任意一个大写英文字母.</p>
+<p>但应留心:<br>
+Regexp <code>/[0-9a-z]/</code> 并不等于 <code>/[0-9][a-z]/</code>; 前者表示一个字符, 后者表示二个字符.<br>
+Regexp <code>/[-9]/</code> 或 <code>/[9-]/</code> 只代表字符 &quot;<code>9</code>&quot;或 &quot;<code>-</code>&quot;.</p>
+<p><code>[^...]</code> 使用<code>[^..]</code>产生字符集合的补集(complement set).</p>
+<p>其用法如下:<br>
+例如: 要指定 &quot;<code>T</code>&quot; 或 &quot;<code>t</code>&quot; 之外的任一个字符, 可用 <code>/[^Tt]/</code> 表之.
+同理 Regexp <code>/[^a-zA-Z]/</code> 表示英文字母之外的任一个字符.</p>
+<p>须留心 &quot;<code>^</code>&quot; 的位置: &quot;<code>^</code>&quot; 必须紧接於&quot;<code>[</code>&quot;之后, 才代表字符集合的补集<br>
+例如:Regexp <code>/[0-9\^]/</code> 只是用以表示一个阿拉伯数字或字符&quot;<code>^</code>&quot;.</p>
+<p><code>*</code> 形容字符重复次数的特殊字符.</p>
+<p>&quot;<code>*</code>&quot; 形容它前方之字符可出现 1 次或多次, 或不出现(0次).</p>
+<p>例如:<br>
+Regexp <code>/T[0-9]*\.c/</code> 中 <code>*</code> 形容其前 <code>[0-9]</code> (一个阿拉伯数字)出现的次数可为 0 次或 多次. 故Regexp <code>/T[0-9]*\.c/</code> 可用以表示&quot;<code>T.c</code>&quot;, &quot;<code>T0.c</code>&quot;, &quot;<code>T1.c</code>&quot;...&quot;<code>T19.c</code>&quot;</p>
+<p><code>+</code> 形容其前的字符出现一次或一次以上.</p>
+<p>例如:<br>
+Regexp <code>/[0-9]+/</code> 用以表示一位或一位以上的数字.</p>
+<p><code>?</code> 形容其前的字符可出现一次或不出现.</p>
+<p>例如:<br>
+Regexp <code>/[+-]?[0-9]+/</code> 表示数字(一位以上)之前可出现正负号或不出现正负号.</p>
+<p><code>(...)</code> 用以括住一群字符,且将之视成一个group(见下面说明)</p>
+<p>例如:<br>
+Regexp <code>/12+/</code> 表示字串 &quot;<code>12</code>&quot;, &quot;<code>122</code>&quot;, &quot;<code>1222</code>&quot;, &quot;<code>12222</code>&quot;,...<br>
+Regexp <code>/(12)+/</code> 表示字串 &quot;<code>12</code>&quot;, &quot;<code>1212</code>&quot;, &quot;<code>121212</code>&quot;, &quot;<code>12121212</code>&quot;....<br>
+上式中 <code>12</code> 以<code>( )</code>括住, 故 &quot;<code>+</code>&quot; 所形容的是<code>12</code>, 重复出现的也是<code>12</code>.</p>
+<p><code>|</code> 表示逻辑上的&quot;<code>或</code>&quot;(or)</p>
+<p>例如:<br>
+Regexp <code>/Oranges?|apples?|water/</code> 可用以表示:  字串 &quot;<code>Orange</code>&quot;, &quot;<code>Oranges</code>&quot; 或 &quot;<code>apple</code>&quot;, &quot;<code>apples</code>&quot;  或 &quot;<code>water</code>&quot;</p>
+<h3>match是什么?</h3>
+<p>讨论 Regexp 时, 经常遇到 &quot;某字串匹配( match )某 Regexp&quot;的字眼. 其意思为: &quot;这个 Regexp 可被解释成该字串&quot;.</p>
+<p>[例如]:<br>
+字串 &quot;<code>the</code>&quot; 匹配(match) Regexp <code>/[Tt]he/</code>.<br>
+因为 Regexp <code>/[Tt]he/</code> 可解释成字串 &quot;<code>the</code>&quot; 或 &quot;<code>The</code>&quot;, 故字串 &quot;<code>the</code>&quot; 或 &quot;<code>The</code>&quot; 都匹配(match) Regexp <code>/[Th]he/</code>.</p>
+<h3>awk 中提供二个关系运算符(Relational Operator,见注一) <code>~</code> <code>!~</code></h3>
+<p>它们也称之为 match, not match. 但函义与一般常称的 match 略有不同.</p>
+<p>其定义如下:<br>
+A  表一字串, B 表一 Regular Expression<br>
+只要 A 字串中存在有子字串可 match (一般定义的 match) Regexp  B , 则 <code>A ~ B</code> 就算成立, 其值为 true, 反之则为 false.</p>
+<p><code>!~</code> 的定义与<code>~</code>恰好相反.</p>
+<p>例如:<br>
+&quot;<code>another</code>&quot; 中含有子字串 &quot;<code>the</code>&quot; 可 match Regexp <code>/[Tt]he/</code> , 所以<br>
+<code>&quot;another&quot; ~ /[Tt]he/</code> 之值为 <code>true</code>.</p>
+<p>[注一]: 有些论著不把这两个运算符( <code>~</code>, <code>!~</code>)与 Relational Operators 归为一类.</p>
+<h3>应用 Regular Expression 解题的简例</h3>
+<p>下面列出一些应用 Regular Expression 的简例, 部分范例中会更改<code>$0</code>之值, 若您使用的 awk 不允许用户更改<code>$0</code>时, 请改用 gawk.</p>
+<p>例1:<br>
+将文件中所有的字串 &quot;Regular Expression&quot; 或 &quot;Regular expression&quot; 换成 &quot;Regexp&quot;
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'</span></div><div class="line">&#123; gsub(/Regular[ \t]+[Ee]xpression/, "Regexp")</div><div class="line">    print</div><div class="line">&#125;</div><div class="line">' $*</div></pre></td></tr></table></figure></p>
+<p>例2:<br>
+去除文件中的空白行(或仅含空白字符或tab的行)
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'$0 !~ /^[ \t]*$/ &#123; print &#125;'</span> $*</div></pre></td></tr></table></figure></p>
+<p>例3:<br>
+在文件中具有 <code>ddd-dddd</code> (电话号码型态,<code>d</code>表<code>digital</code>)的字串前加上&quot;<code>TEL:</code>&quot;
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'</span></div><div class="line">&#123; gsub(/[0-9][0-9][0-9]-[0-9][0-9][0-9][0-9]/, "TEL: &amp;")</div><div class="line">    print</div><div class="line">&#125;</div><div class="line">' $*</div></pre></td></tr></table></figure></p>
+<p>例4:<br>
+从文件的 Fullname 中分离出 路径 与 档名
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'</span></div><div class="line">BEGIN&#123;</div><div class="line">    Fullname = "/usr/local/bin/xdvi"</div><div class="line">    match(Fullname, /.*\//)</div><div class="line">    path = substr(Fullname, 1, RLENGTH-1)</div><div class="line">    name = substr(Fullname, RLENGTH+1)</div><div class="line">    print "path :", path, "  name :", name</div><div class="line">&#125;</div><div class="line">' $*</div></pre></td></tr></table></figure></p>
+<p>结果印出
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">path : /usr/local/bin   name : xdvi</div></pre></td></tr></table></figure></p>
+<p>例5:<br>
+将某一数值改以现金表示法表示(整数部分每三位加一撇,且含二位小数)
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'</span></div><div class="line">BEGIN &#123;</div><div class="line">    Number = 123456789</div><div class="line">    Number = sprintf("$%.2f",Number)</div><div class="line">    while(match(Number, /[0-9][0-9][0-9][0-9]/))</div><div class="line">        sub(/[0-9][0-9][0-9][.,]/, ",&amp;", Number)</div><div class="line">    print Number</div><div class="line">&#125;</div><div class="line">' $*</div></pre></td></tr></table></figure></p>
+<p>结果输出
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$123,456,789.00</div></pre></td></tr></table></figure></p>
+<p>例6:<br>
+把文件中所有具&quot;<code>program数字.f</code>&quot;形态的字串改为&quot;<code>[Ref: program数字.c]</code>&quot;
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">awk <span class="string">'</span></div><div class="line">&#123;</div><div class="line">    while(match($0, /program[0-9]+\.f/)) &#123;</div><div class="line">        Replace = "[Ref: "substr($0, RSTART, RLENGTH-2)".c]"</div><div class="line">        sub( /program[0-9]+\.f/, Replace)</div><div class="line">    &#125;</div><div class="line">    print</div><div class="line">&#125;</div><div class="line">' $*</div></pre></td></tr></table></figure></p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2016/09/19/caipai-fm/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2016/09/23/fix_bugs_with_legacy/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

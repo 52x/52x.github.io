@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            Fetch 请求的本地缓存 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,JavaScript,翻译,优化,缓存">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Fetch 请求的本地缓存 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="JavaScript"> <meta property="og:article:tag" content="翻译"> <meta property="og:article:tag" content="优化"> <meta property="og:article:tag" content="缓存"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">Fetch API</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">原始替代版本</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">第一次的简单实现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">真实返回命中缓存的第二次实现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">考虑失效时间的第三次实现</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">未来更好、更理想、更酷的实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">处理二进制响应</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">使用哈希键值缓存</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">结语</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Fetch 请求的本地缓存
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>8月 27, 2016</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/JavaScript/">JavaScript</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/优化/">优化</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/缓存/">缓存</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/翻译/">翻译</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Fetch 请求的本地缓存&url=http://yoursite.com//2016/08/27/cache-fetched-ajax-requests/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Fetch 请求的本地缓存&url=http://yoursite.com//2016/08/27/cache-fetched-ajax-requests/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2016/08/27/cache-fetched-ajax-requests/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2016/08/27/cache-fetched-ajax-requests/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p><strong>本文展示了如何使用实现 fetch 请求的本地缓存</strong>，遇到重复请求时，将会从 sessionStorage 中读取数据。这样做的好处是，无需为每个需要缓存的资源编写自定义代码。</p>
+<p>如果你想在 JavaScript 盛会中露露脸，秀秀如何玩转 Promise、最前沿的 API 和 localStorage，那就接着往下看吧。</p>
+<h2>Fetch API</h2>
+<p>此时此刻，你对 <a href="https://www.sitepoint.com/introduction-to-the-fetch-api/" target="_blank" rel="external">fetch</a> 可能已经很熟悉了。它是浏览器提供的用以替代旧版的<code>XMLHttpRequest</code>的原生 API。</p>
+<p>&lt;iframe src=&quot;/caniuse/embed.html?feat=fetch&amp;periods=future_1,current,past_1,past_2&quot; frameborder=&quot;0&quot; width=&quot;100%&quot; height=&quot;510px&quot;&gt;&lt;/iframe&gt;</p>
+<p>并非所有浏览器都完美支持 fetch，但你可以使用 <a href="https://github.com/github/fetch" target="_blank" rel="external">GitHub 上的 fetch polyfill</a>（如果没事做，可以看看 <a href="https://fetch.spec.whatwg.org/" target="_blank" rel="external">Fetch 标准</a>）。</p>
+<h2>原始替代版本</h2>
+<p>做个假设，我们准确了解需要下载的那个资源，并且只想下载一次。可以使用全局变量作为缓存，像下面这样：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> origin = <span class="literal">null</span></div><div class="line">fetch(<span class="string">'https://httpbin.org/get'</span>)</div><div class="line">  .then(<span class="function"><span class="params">r</span> =&gt;</span> r.json())</div><div class="line">  .then(<span class="function"><span class="params">information</span> =&gt;</span> &#123;</div><div class="line">    origin = information.origin  <span class="comment">// your client's IP</span></div><div class="line">  &#125;)</div><div class="line"></div><div class="line"><span class="comment">// 需要延时以确保 fetch 完成</span></div><div class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'Your origin is '</span> + origin)</div><div class="line">&#125;, <span class="number">3000</span>)</div></pre></td></tr></table></figure></p>
+<p><a href="http://codepen.io/SitePoint/pen/QEPEpB?editors=0010#0" target="_blank" rel="external">On CodePen</a></p>
+<p>上面使用了全局变量来保存缓存的数据。马上可以发现问题，一旦刷新页面或者跳转到其他页面，缓存的数据就消失了。</p>
+<p>在剖析这个办法的短板之前，先将解决方案升级下。</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">fetch(<span class="string">'https://httpbin.org/get'</span>)</div><div class="line">  .then(<span class="function"><span class="params">r</span> =&gt;</span> r.json())</div><div class="line">  .then(<span class="function"><span class="params">info</span> =&gt;</span> &#123;</div><div class="line">    sessionStorage.setItem(<span class="string">'information'</span>, <span class="built_in">JSON</span>.stringify(info))</div><div class="line">  &#125;)</div><div class="line"></div><div class="line"><span class="comment">// 需要延时以确保 fetch 完成</span></div><div class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="keyword">let</span> info = <span class="built_in">JSON</span>.parse(sessionStorage.getItem(<span class="string">'information'</span>))</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'Your origin is '</span> + info.origin)</div><div class="line">&#125;, <span class="number">3000</span>)</div></pre></td></tr></table></figure></p>
+<p><a href="http://codepen.io/SitePoint/pen/zBXBwg?editors=0010#0" target="_blank" rel="external">On CodePen</a></p>
+<p>第一个问题是，<code>fetch</code> 是基于 Promise 的，意味着我们无法准确知晓 fetch 何时完成，因此在 fetch 完成之前，我们不能依赖它的执行。</p>
+<p>第二个问题是，该解决方案详细指定了 URL 和缓存的内容（本例中的 <code>information</code>）。我们需要一个基于 URL 的通用解决方案。</p>
+<h2>第一次的简单实现</h2>
+<p>在 <code>fetch</code>外面再包装一层，同样也返回 Promise。调用该方法时，我们并不关心结果是来源于网络还是本地缓存。</p>
+<p>之前你可能是这样做的：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">fetch(<span class="string">'https://httpbin.org/get'</span>)</div><div class="line">  .then(<span class="function"><span class="params">r</span> =&gt;</span> r.json())</div><div class="line">  .then(<span class="function"><span class="params">issues</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Your origin is '</span> + info.origin)</div><div class="line">  &#125;)</div></pre></td></tr></table></figure></p>
+<p><a href="http://codepen.io/SitePoint/pen/pbBbwQ?editors=0011" target="_blank" rel="external">On CodePen</a></p>
+<p>现在加上一层包装，重复的网络请求可以通过本地缓存进行优化。我们将这个包装过的方法简单称作 <code>cachedFetch</code>，代码如下：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cachedFetch(<span class="string">'https://httpbin.org/get'</span>)</div><div class="line">  .then(<span class="function"><span class="params">r</span> =&gt;</span> r.json())</div><div class="line">  .then(<span class="function"><span class="params">info</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Your origin is '</span> + info.origin)</div><div class="line">  &#125;)</div></pre></td></tr></table></figure></p>
+<p>该方法首次运行的时候，需要发出网络请求，并将结果缓存下来。第二次请求时，则会直接从本地存储中取出数据。</p>
+<p>首先试试简单地将 <code>fetch</code> 包装下：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> cachedFetch = <span class="function">(<span class="params">url, options</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> fetch(url, options)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><a href="http://codepen.io/SitePoint/pen/kXmXwm?editors=0010#0" target="_blank" rel="external">On CodePen</a></p>
+<p>这当然能工作，不过没什么用。接下来，来实现获取数据的<strong>存储</strong>。</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> cachedFetch = <span class="function">(<span class="params">url, options</span>) =&gt;</span> &#123;</div><div class="line">  <span class="comment">// 将 URL 作为 sessionStorage 的 key</span></div><div class="line">  <span class="keyword">let</span> cacheKey = url</div><div class="line">  <span class="keyword">return</span> fetch(url, options).then(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</div><div class="line">    <span class="comment">// 仅在结果为 JSON 或其他非二进制数据情况下缓存结果</span></div><div class="line">    <span class="keyword">let</span> ct = response.headers.get(<span class="string">'Content-Type'</span>)</div><div class="line">    <span class="keyword">if</span> (ct &amp;&amp; (ct.match(<span class="regexp">/application\/json/i</span>) || ct.match(<span class="regexp">/text\//i</span>))) &#123;</div><div class="line">      <span class="comment">// 当然，除了 .text()，也有 .json() 方法</span></div><div class="line">      <span class="comment">// 不过结果最终还是会以字符串形式存在 sessionStorage 中</span></div><div class="line">      <span class="comment">// 如果不克隆 response，在其返回时就会被使用</span></div><div class="line">      <span class="comment">// 这里用这种方式，保持非入侵性</span></div><div class="line">      response.clone().text().then(<span class="function"><span class="params">content</span> =&gt;</span> &#123;</div><div class="line">        sessionStorage.setItem(cacheKey, content)</div><div class="line">      &#125;)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> response</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><a href="http://codepen.io/SitePoint/pen/yJAJok?editors=0012" target="_blank" rel="external">On CodePen</a></p>
+<p>上面发生了不少事。</p>
+<p><code>fetch</code> 所返回的首个 Promise 实际上还是径直发出了 GET 请求。注意如果有 CORS（Cross-Origin Resource Sharing，跨域资源共享）的问题，<code>.text()</code>、<code>.json()</code> 、<code>.blob()</code> 这些方法不会工作。</p>
+<p>最有意思的点在于，我们需要<em>克隆</em>首个 Promise 返回的 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Response/clone" target="_blank" rel="external">Response</a> 对象。如果不这样做，我们就介入过多，当该 Promise 的最终使用者调用如 <code>.json()</code> 这些方法时，会得到如下错误：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">TypeError: Body has already been consumed.</div></pre></td></tr></table></figure></p>
+<p>另外需要注意的一点是，需要注意响应类型：我们只存储状态码为 <code>200</code> <em>且</em>内容类型为 <code>application/json</code> 或 <code>text/*</code>的响应。因为 <code>sessionStorage</code> 只能存储文本数据。</p>
+<p>下面是使用示例：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">cachedFetch(<span class="string">'https://httpbin.org/get'</span>)</div><div class="line">  .then(<span class="function"><span class="params">r</span> =&gt;</span> r.json())</div><div class="line">  .then(<span class="function"><span class="params">info</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Your origin is '</span> + info.origin)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">cachedFetch(<span class="string">'https://httpbin.org/html'</span>)</div><div class="line">  .then(<span class="function"><span class="params">r</span> =&gt;</span> r.text())</div><div class="line">  .then(<span class="function"><span class="params">document</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Document has '</span> + <span class="built_in">document</span>.match(<span class="regexp">/&lt;p&gt;/</span>).length + <span class="string">' paragraphs'</span>)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line">cachedFetch(<span class="string">'https://httpbin.org/image/png'</span>)</div><div class="line">  .then(<span class="function"><span class="params">r</span> =&gt;</span> r.blob())</div><div class="line">  .then(<span class="function"><span class="params">image</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Image is '</span> + image.size + <span class="string">' bytes'</span>)</div><div class="line">  &#125;)</div></pre></td></tr></table></figure></p>
+<p>让人喜欢的是，这个解决方案到目前为止可以正常工作，也不会干扰 JSON <em>与</em> HTML 请求。当数据为图片的时候，它也不会试图将其存在 <code>sessionStorage</code> 中。</p>
+<h2>真实返回命中缓存的第二次实现</h2>
+<p>我们的第一次实现，仅仅只关心响应结果的<strong>存储</strong>。当你第二次调用 <code>cachedFetch</code> 时，并未试着从 <code>sessionStorage</code> 中<em>检索</em>任何内容。我们要做的，首先是返回一个 Promise，它需要返回一个 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Response/Response" target="_blank" rel="external">Response 对象</a>。</p>
+<p>先看下最基本的实现：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> cachedFetch = <span class="function">(<span class="params">url, options</span>) =&gt;</span> &#123;</div><div class="line">  <span class="comment">// 将 URL 作为 sessionStorage 的 key</span></div><div class="line">  <span class="keyword">let</span> cacheKey = url</div><div class="line"></div><div class="line">  <span class="comment">// 命中缓存的新代码开始</span></div><div class="line">  <span class="keyword">let</span> cached = sessionStorage.getItem(cacheKey)</div><div class="line">  <span class="keyword">if</span> (cached !== <span class="literal">null</span>) &#123;</div><div class="line">    <span class="comment">// it was in sessionStorage! Yay!</span></div><div class="line">    <span class="keyword">let</span> response = <span class="keyword">new</span> Response(<span class="keyword">new</span> Blob([cached]))</div><div class="line">    <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(response)</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 命中缓存的新代码结束</span></div><div class="line"></div><div class="line">  <span class="keyword">return</span> fetch(url, options).then(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</div><div class="line">    <span class="comment">// 仅在结果为 JSON 或其他非二进制数据情况下缓存结果</span></div><div class="line">    <span class="keyword">if</span> (response.status === <span class="number">200</span>) &#123;</div><div class="line">      <span class="keyword">let</span> ct = response.headers.get(<span class="string">'Content-Type'</span>)</div><div class="line">      <span class="keyword">if</span> (ct &amp;&amp; (ct.match(<span class="regexp">/application\/json/i</span>) || ct.match(<span class="regexp">/text\//i</span>))) &#123;</div><div class="line">        <span class="comment">// 当然，除了 .text()，也有 .json() 方法</span></div><div class="line">        <span class="comment">// 不过结果最终还是会以字符串形式存在 sessionStorage 中</span></div><div class="line">        <span class="comment">// 如果不克隆 response，在其返回时就会被使用</span></div><div class="line">        <span class="comment">// 这里用这种方式，保持非入侵性</span></div><div class="line">        response.clone().text().then(<span class="function"><span class="params">content</span> =&gt;</span> &#123;</div><div class="line">          sessionStorage.setItem(cacheKey, content)</div><div class="line">        &#125;)</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> response</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><a href="http://codepen.io/SitePoint/pen/qNwNPb?editors=0012" target="_blank" rel="external">On CodePen</a></p>
+<p>这已经可以工作了！</p>
+<p>打开 <a href="http://codepen.io/SitePoint/pen/qNwNPb?editors=0012" target="_blank" rel="external">CodePen</a> 查看上面代码的实际效果，记得开启浏览器开发者工具中的  Network tab。多点几次 “Run” 按钮（CodePen 的右上角），可以发现，只有图片被反复请求。</p>
+<p>本解决方案的好处是避免了“意面式回调”（callback spaghetti）。<code>sessionStorage.getItem</code> 的调用是同步的（也就是阻塞的），所以在 Promise 或者回调中无需应对“它在本地存储中是否存在？”这种问题。只要有内容，就返回缓存结果。否则就按正常逻辑执行。</p>
+<h2>考虑失效时间的第三次实现</h2>
+<p>到目前为止我们一直在使用 <code>sessionStorage</code>，它有点像 <code>localStorage</code>，除了在<strong>打开新页面</strong>时会被清除这一点。这意味着我们在使用一种“自然形式”，内容不会缓存很久。如果要使用 <code>localStorage</code> 来缓存内容，那就算远程内容改变了，浏览器还是会“永远”卡在本地内容。这太糟糕了。</p>
+<p>更好的解决办法是提供<em>用户</em>控制。（这里的用户指的是使用 <code>cachedFetch</code> 函数的 Web 开发者。）就像 Memcached 或 Redis 这些服务端存储一样，我们可以指定缓存的使用期。</p>
+<p>例如在 Python (with Flask) 中：</p>
+<p><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; from werkzeug.contrib.cache import MemcachedCache</div><div class="line">&gt;&gt;&gt; cache = MemcachedCache([<span class="string">'127.0.0.1:11211'</span>])</div><div class="line">&gt;&gt;&gt; cache.set(<span class="string">'key'</span>, <span class="string">'value'</span>, 10)</div><div class="line">True</div><div class="line">&gt;&gt;&gt; cache.get(<span class="string">'key'</span>)</div><div class="line"><span class="string">'value'</span></div><div class="line">&gt;&gt;&gt; <span class="comment"># waiting 10 seconds</span></div><div class="line">...</div><div class="line">&gt;&gt;&gt; cache.get(<span class="string">'key'</span>)</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure></p>
+<p>对此，目前 <code>sessionStorage</code> 和 <code>localStorage</code> 都没有内建的功能实现，所以需要自己手动来实现。通过对比存储与缓存命中时的时间戳，可以达成目的。</p>
+<p>在此之前，先看看大概应该长什么样子：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 使用默认过期时间，如 5 min</span></div><div class="line">cachedFetch(<span class="string">'https://httpbin.org/get'</span>)</div><div class="line">  .then(<span class="function"><span class="params">r</span> =&gt;</span> r.json())</div><div class="line">  .then(<span class="function"><span class="params">info</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Your origin is '</span> + info.origin)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line"><span class="comment">// 传递以秒为单位的数值</span></div><div class="line">cachedFetch(<span class="string">'https://httpbin.org/get'</span>, <span class="number">2</span> * <span class="number">60</span>)  <span class="comment">// 2 min</span></div><div class="line">  .then(<span class="function"><span class="params">r</span> =&gt;</span> r.json())</div><div class="line">  .then(<span class="function"><span class="params">info</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Your origin is '</span> + info.origin)</div><div class="line">  &#125;)</div><div class="line"></div><div class="line"><span class="comment">// 和  fetch 选项放在一起，使用自定义的名字</span></div><div class="line"><span class="keyword">let</span> init = &#123;</div><div class="line">  <span class="attr">mode</span>: <span class="string">'same-origin'</span>,</div><div class="line">  <span class="attr">seconds</span>: <span class="number">3</span> * <span class="number">60</span> <span class="comment">// 3 min</span></div><div class="line">&#125;</div><div class="line">cachedFetch(<span class="string">'https://httpbin.org/get'</span>, init)</div><div class="line">  .then(<span class="function"><span class="params">r</span> =&gt;</span> r.json())</div><div class="line">  .then(<span class="function"><span class="params">info</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Your origin is '</span> + info.origin)</div><div class="line">  &#125;)</div></pre></td></tr></table></figure></p>
+<p>最重要的来了，每次保存响应数据的时候，<em>也</em>需要记录<em>何时</em>存储的。现在我们也可以切换到 <code>localStorage</code> 上了。代码会保证我们不会命中过期的缓存，在 <code>localStorage</code> 中内容原本是持久化的。</p>
+<p>下面是最终的解决方案：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> cachedFetch = <span class="function">(<span class="params">url, options</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">let</span> expiry = <span class="number">5</span> * <span class="number">60</span> <span class="comment">// 默认 5 min</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> options === <span class="string">'number'</span>) &#123;</div><div class="line">    expiry = options</div><div class="line">    options = <span class="literal">undefined</span></div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> options === <span class="string">'object'</span>) &#123;</div><div class="line">    <span class="comment">// 但愿你别设置为 0</span></div><div class="line">    expiry = options.seconds || expiry</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// 将 URL 作为 localStorage 的 key</span></div><div class="line">  <span class="keyword">let</span> cacheKey = url</div><div class="line">  <span class="keyword">let</span> cached = localStorage.getItem(cacheKey)</div><div class="line">  <span class="keyword">let</span> whenCached = localStorage.getItem(cacheKey + <span class="string">':ts'</span>)</div><div class="line">  <span class="keyword">if</span> (cached !== <span class="literal">null</span> &amp;&amp; whenCached !== <span class="literal">null</span>) &#123;</div><div class="line">    <span class="comment">// 耶！ 它在 localStorage 中</span></div><div class="line">    <span class="comment">// 尽管 'whenCached' 是字符串</span></div><div class="line">    <span class="comment">// 但减号运算符会将其转换为数字</span></div><div class="line">    <span class="keyword">let</span> age = (<span class="built_in">Date</span>.now() - whenCached) / <span class="number">1000</span></div><div class="line">    <span class="keyword">if</span> (age &lt; expiry) &#123;</div><div class="line">      <span class="keyword">let</span> response = <span class="keyword">new</span> Response(<span class="keyword">new</span> Blob([cached]))</div><div class="line">      <span class="keyword">return</span> <span class="built_in">Promise</span>.resolve(response)</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="comment">// 清除旧值</span></div><div class="line">      localStorage.removeItem(cacheKey)</div><div class="line">      localStorage.removeItem(cacheKey + <span class="string">':ts'</span>)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> fetch(url, options).then(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</div><div class="line">    <span class="comment">// 仅在结果为 JSON 或其他非二进制数据情况下缓存结果</span></div><div class="line">    <span class="keyword">if</span> (response.status === <span class="number">200</span>) &#123;</div><div class="line">      <span class="keyword">let</span> ct = response.headers.get(<span class="string">'Content-Type'</span>)</div><div class="line">      <span class="keyword">if</span> (ct &amp;&amp; (ct.match(<span class="regexp">/application\/json/i</span>) || ct.match(<span class="regexp">/text\//i</span>))) &#123;</div><div class="line">        <span class="comment">// 当然，除了 .text()，也有 .json() 方法</span></div><div class="line">        <span class="comment">// 不过结果最终还是会以字符串形式存在 sessionStorage 中</span></div><div class="line">        <span class="comment">// 如果不克隆 response，在其返回时就会被使用</span></div><div class="line">        <span class="comment">// 这里用这种方式，保持非入侵性</span></div><div class="line">        response.clone().text().then(<span class="function"><span class="params">content</span> =&gt;</span> &#123;</div><div class="line">          localStorage.setItem(cacheKey, content)</div><div class="line">          localStorage.setItem(cacheKey+<span class="string">':ts'</span>, <span class="built_in">Date</span>.now())</div><div class="line">        &#125;)</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> response</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><a href="http://codepen.io/SitePoint/pen/KrYrXA?editors=0012" target="_blank" rel="external">On CodePen</a></p>
+<h2>未来更好、更理想、更酷的实现</h2>
+<p>我们在避免过度变动 Web API，最棒的是 <code>localStorage</code> 可比依赖网络快得多了。看看这篇文章对 <code>localStorage</code> 和 XHR 的比较： <a href="https://www.peterbe.com/plog/localforage-vs.-xhr" target="_blank" rel="external">localForage vs. XHR</a>。它还衡量了其他内容，但得出基本结论，<code>localStorage</code> 确实很快，磁盘缓存热身（disk-cache warm-ups，？不知如何翻译，请读者赐教）也很少出现。</p>
+<p>接下来，我们还能怎样改进方案呢？</p>
+<h3>处理二进制响应</h3>
+<p>我们的实现没有考虑缓存非文本的内容，如图片等等，但这并非不可能。需要一些更多的代码。特别的，我们可能想存储更多关于 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Blob" target="_blank" rel="external">Blob</a> 的信息。从根本上说，所有响应都是 Blob。对文本和 JSON 来说，它只是字符串数组，<code>type</code> 和 <code>size</code> 并不真正那么重要，因为从字符串本身就能识别出来。对二进制内容而言，需要将它们转换为 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer" target="_blank" rel="external">ArrayBuffer</a>。</p>
+<p>关注更多内容，请看 <a href="http://codepen.io/SitePoint/pen/XKQKZv?editors=1010#0" target="_blank" rel="external">CodePen</a> 上支持图片的实现。</p>
+<h3>使用哈希键值缓存</h3>
+<p>另外一点潜在的优化点是对用作 key 的每个 URL 进行哈希处理，使其变得更小，以空间换取速度（trade space for speed）。在上面的例子中，我们使用了很多非常短小整洁的 URL（如 <code>https://httpbin.org/get</code>），但如果你使用了大量的带有很多查询字符串的长 URL，这样做就很有意义了。</p>
+<p>办法之一是使用<a href="http://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/" target="_blank" rel="external">这个不错的算法</a>，以其安全快速而知名：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> hashstr = <span class="function"><span class="params">s</span> =&gt;</span> &#123;</div><div class="line">  <span class="keyword">let</span> hash = <span class="number">0</span>;</div><div class="line">  <span class="keyword">if</span> (s.length == <span class="number">0</span>) <span class="keyword">return</span> hash;</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; s.length; i++) &#123;</div><div class="line">    <span class="keyword">let</span> char = s.charCodeAt(i);</div><div class="line">    hash = ((hash&lt;&lt;<span class="number">5</span>)-hash)+char;</div><div class="line">    hash = hash &amp; hash; <span class="comment">// Convert to 32bit integer</span></div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> hash;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果觉得这个不错，看下 <a href="http://codepen.io/SitePoint/pen/LkvkON?editors=0012" target="_blank" rel="external">CodePen</a>。在控制台上可以看到类似 <code>557027443</code> 这样的 key 值。</p>
+<h2>结语</h2>
+<p>现在我们拥有了一个可以使用在 web app 中的工作方案了，我们使用 Web API，并且知晓响应结果会很好地为用户缓存下来。</p>
+<p>最后一件事大概是这个扩展置于本文之外，将其作为一个真实、具体的项目，加上测试和 <code>README</code>，并发布到 npm 上 —— 换个时间再做吧！</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2016/08/27/commonly-makefile/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2016/08/28/The-sort-algorithm-of-bubble-sort/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

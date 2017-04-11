@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            (机器学习) 深度学习与神经网络笔记-提升训练的方法 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,Math,Machine Learning,Deep Learning">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="(机器学习) 深度学习与神经网络笔记-提升训练的方法 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="Math"> <meta property="og:article:tag" content="Machine Learning"> <meta property="og:article:tag" content="Deep Learning"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">Improving the way neural networks learn</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">The cross-entropy cost function</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.1.</span> <span class="post-toc-text">The problem of learning slowdown</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.2.</span> <span class="post-toc-text">Introducing the cross-entropy cost function</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Softmax</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">The softmax function</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">Using softmax and log-likelihood cost</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">Overfitting and regularization</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.3.1.</span> <span class="post-toc-text">L2 Regularization</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.3.2.</span> <span class="post-toc-text">L1 Regularization</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.3.3.</span> <span class="post-toc-text">Dropout</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">Weight initialization</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">Hyper-tuning</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.6.</span> <span class="post-toc-text">Other techniques</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.6.1.</span> <span class="post-toc-text">Momentum-based gradient descent</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.6.2.</span> <span class="post-toc-text">Activation functions</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.6.2.1.</span> <span class="post-toc-text">tanh</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.6.2.2.</span> <span class="post-toc-text">ReLU</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.7.</span> <span class="post-toc-text">Code with regularization</span></a></li></ol></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                (机器学习) 深度学习与神经网络笔记-提升训练的方法
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>3月 12, 2017</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/Deep-Learning/">Deep Learning</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/Machine-Learning/">Machine Learning</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/Math/">Math</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=(机器学习) 深度学习与神经网络笔记-提升训练的方法&url=http://yoursite.com//2017/03/12/note_nndl_improve_neural_networks/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=(机器学习) 深度学习与神经网络笔记-提升训练的方法&url=http://yoursite.com//2017/03/12/note_nndl_improve_neural_networks/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2017/03/12/note_nndl_improve_neural_networks/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2017/03/12/note_nndl_improve_neural_networks/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h1>Improving the way neural networks learn</h1>
+<blockquote>
+<p>http://neuralnetworksanddeeplearning.com/chap3.html</p>
+</blockquote>
+<h2>The cross-entropy cost function</h2>
+<h3>The problem of learning slowdown</h3>
+<p>Using quadratic cost function, the learning could be very slow. Consider a simple example where there's only 1 neuron.</p>
+<p><img src="http://neuralnetworksanddeeplearning.com/images/tikz28.png" alt=""></p>
+<p>The quadratic cost function is given by</p>
+<p>$$C = \frac{(y-a)^2}{2}$$</p>
+<p>where a is the neuron's output. Using chain rule we get</p>
+<p>$$\frac{\partial C}{\partial w} = (a-y) \sigma'(z)x$$</p>
+<p>$$\frac{\partial C}{\partial b} = (a-y) \sigma'(z)$$</p>
+<p>When the output $a$ is close to 0 or 1, $\sigma'(z)$ becomes very small, and this usually makes the gradients small. That's the origin of the learning slowdown.</p>
+<p>&lt;!--more--&gt;</p>
+<h3>Introducing the cross-entropy cost function</h3>
+<p>Consider a neuron with several input variables</p>
+<p><img src="http://neuralnetworksanddeeplearning.com/images/tikz29.png" alt=""></p>
+<p>We define the cross-entropy cost function by</p>
+<p>$$C = - \frac{1}{n} \sum_x [y \ln a^L + (1-y) \ln (1-a^L)]$$</p>
+<blockquote>
+<p>In a network with N outputs with one-hot style, the cost function would be</p>
+</blockquote>
+<blockquote>
+<p>$$C = - \frac{1}{n} \sum_{xj} [y_j \ln a_j^L + (1 - y_j) \ln (1 - a_j^L)]$$</p>
+</blockquote>
+<p>With cross-entroy cost, we deduce the partial derivatives below</p>
+<p>$$\frac{\partial C}{\partial a^L} = -\frac{1}{n} \sum_x (\frac{y}{a^L} - \frac{1-y}{1-a^L})$$</p>
+<p>$$\frac{\partial a^L}{\partial w_j} = \sigma'(z) x_j$$</p>
+<p>$$\frac{\partial C}{\partial w_j} = \frac{1}{n} \sum_x \frac{a^L - y}{a^L (1 - a^L)} \sigma'(z) x_j$$</p>
+<p>$$\frac{\partial C}{\partial b} = \frac{1}{n} \sum_x \frac{a^L - y}{a^L (1 - a^L)} \sigma'(z)$$</p>
+<p>Using equation $\sigma'(z) = \sigma(z) (1 - \sigma(z)) = a^L(1 - a^L)$ we get</p>
+<p>$$\frac{\partial C}{\partial w_j} = \frac{1}{n}\sum_x(a^L - y)x_j$$</p>
+<p>$$\frac{\partial C}{\partial b} = \frac{1}{n}\sum_x(a^L - y)$$</p>
+<p>It tells us that the rate at which the weight learns is controlled by the error of in the output. Thus the learning slowdown could be avoided.</p>
+<h2>Softmax</h2>
+<h3>The softmax function</h3>
+<p>Softmax is an alternative approach to the problem of learning slowdown. The idea is to define a new type of output layer. Instead apply sigmoid function to get the output, we apply <em>softmax function</em>. The activation of the <em>j</em>th output neuron is</p>
+<p>$$a_j^L = \frac{e^{z_j^L}}{\sum_k e^{z_k^L}}$$</p>
+<p>The output fromt he softmax layer sum up to 1 thus can be thought of as a probability distribution.</p>
+<h3>Using softmax and log-likelihood cost</h3>
+<p>The log-likelihood cost</p>
+<p>$$C \equiv - \sum_j I(y_j=1) \ln a_j^L$$</p>
+<p>With the cost function above, we can deduce the partial derivatives</p>
+<p>$$\frac{\partial C}{\partial a_i^L} = - \frac{I(y_i=1)}{a_i^L}$$</p>
+<p>$$\frac{\partial a_i^L}{\partial z_k} = \frac{I(i=k)e^{z_k} \sum - e^{z_k} e^{z_i}}{\sum^2} = I(i=k)a_i^L - a_k^L a_i^L$$</p>
+<p>$$\frac{\partial C}{\partial z_k} = I(y_i=1)a_k^L - I(i = k)I(y_i = 1)$$</p>
+<p>We only need the <em>i</em>th output where $y_i = 1$ to get derivative of each $k$, so we pick the $i$ so that $y_i = 1$, thus</p>
+<p>$$\frac{\partial C}{\partial z_k} = a_k^L - I(y_k = 1) = a_k^L - y_k$$</p>
+<p>$$\frac{\partial C}{\partial w_{jk}} = (a_k^L - y_k) a_j^{L-1}$$</p>
+<p>$$\frac{\partial C}{\partial b_k} = a_k^L - y_k$$</p>
+<p>These equations are the same as the analogous expressions obtained in the analysis of cross-entropy.</p>
+<blockquote>
+<p>Given this similarity, should you use a sigmoid output layer and cross-entropy, or a softmax output layer and log-likelihood? In fact, in many situations both approaches work well.</p>
+</blockquote>
+<h2>Overfitting and regularization</h2>
+<h3>L2 Regularization</h3>
+<p>The idea of L2 regularization is to add an extra term controlling the magnitude of weights</p>
+<p>$$C = C_0 + \frac{\lambda}{2n} \sum_w w^2 = - \frac{1}{n} \sum_{xj} [y_j \ln a_j^L + (1 - y_j) \ln (1 - a_j^L)] + \frac{\lambda}{2n} \sum_w w^2$$</p>
+<p>where $C_0$ is the original cross-entropy loss. The partial derivatives become</p>
+<p>$$\frac{\partial C}{\partial w} = \frac{\partial C_0}{\partial w} + \frac{\lambda}{n} w$$</p>
+<p>$$\frac{\partial C}{\partial b} = \frac{\partial C_0}{\partial b}$$</p>
+<p>So the gradient descent will be</p>
+<p>$$b \rightarrow b - \eta \frac{\partial C_0}{\partial b}$$</p>
+<p>$$w \rightarrow (1 - \frac{\eta \lambda}{n} w) - \eta \frac{\partial C_0}{\partial w}$$</p>
+<p>where weight $w$ get rescaled, which is referred to as <em>weight decay</em>.</p>
+<blockquote>
+<p>Why regularization works. Small weights means that the behavior of the network won't change too much if we change a few random inputs.  That makes it difficult for a regularized network to learn the effects of local noise in the data. In a nutshell, regularized networks are constrained to build relatively simple models based on patterns seen often in the training data, and are resistant to learning peculiarities of the noise in the training data.</p>
+</blockquote>
+<h3>L1 Regularization</h3>
+<p>$$C = C_0 + \frac{\lambda}{n} \sum_w \vert w \vert$$</p>
+<p>The partial derivative on weight is</p>
+<p>$$\frac{\partial C}{\partial w} = \frac{\partial C_0}{\partial w} + \frac{\lambda}{n} sgn(w)$$</p>
+<p>The update rule in SGD on weight is</p>
+<p>$$w \rightarrow (1 - \frac{\eta \lambda}{n} sgn(w)) - \eta \frac{\partial C_0}{\partial w}$$</p>
+<p>L2 decay is proportional to $w$, while in L1 the weights shrink by a constant amount toward 0. When weights are small, L1 regularization shrinks more the L2, while when weights are big, the shrink is smaller the L2.</p>
+<p>The net result is that L1 regularization tends to concentrate the weight of the network in a relatively small number of high-importance connections, while the other weights are driven toward zero.</p>
+<h3>Dropout</h3>
+<p>We start by randomly (and temporarily) deleting half the hidden neurons in the network, while leaving the input and output neurons untouched. We forward-propagate the input $x$ through the modified network, and then backpropagate the result, also through the modified network. After doing this over a mini-batch of examples, we update the appropriate weights and biases. We then repeat the process, first restoring the dropout neurons, then choosing a new random subset of hidden neurons to delete, estimating the gradient for a different mini-batch, and updating the weights and biases in the network.</p>
+<p><img src="http://neuralnetworksanddeeplearning.com/images/tikz31.png" alt=""></p>
+<p>Support the proportion of dropout is $p$, because we always use $1-p$ of the weights to learn. To compensate for that, we multiply the weights by $1-p$ after learning is complete.</p>
+<p>The idea behind dropout is ensembling.</p>
+<h2>Weight initialization</h2>
+<p>Consider a single hidden neuron, who has $n_{in}$ input neurons from the previous layer</p>
+<p><img src="http://neuralnetworksanddeeplearning.com/images/tikz32.png" alt=""></p>
+<p>when we initialize the weights with $N(0,1)$ Gaussian distribution. The score of the hidden neuron $z = \sum_j w_j x_j + b$ turns out to have very big variance. In particular, it's quitely likely that $\vert z \vert$ will be pretty large. If that's the case then the output $\sigma(z)$ from the hidden neuron will be very close to either 1 or 0. That means our hidden neuron will have saturated. And when that happens, as we know, making small changes in the weights will make only absolutely miniscule changes in the activation of our hidden neuron.</p>
+<p>To prevent learning slowdown, we initialize the weights with $N(0, 1/\sqrt n_{in})$ so the score $z$ has standard deviation of 1. Empirically the learning speed will be increased substantially</p>
+<p><img src="http://neuralnetworksanddeeplearning.com/images/weight_initialization_30.png" alt=""></p>
+<h2>Hyper-tuning</h2>
+<p>Broad strategy</p>
+<ul>
+<li>Start training a simple network on smaller validation set, the idea is to get feedback quickly</li>
+<li>When we increase the complexity of the network, the parameters need to be tuned again</li>
+<li>Use early stopping to determine the number of training epochs</li>
+<li>Use bigger learning rate and then switch to smaller learning rate to converge better</li>
+<li>Start with no regularization, and add a smaller $\lambda$, and increase by factors of 10</li>
+<li>Batch size is a relatively independent parameter</li>
+</ul>
+<h2>Other techniques</h2>
+<h3>Momentum-based gradient descent</h3>
+<p>We introduce velocity variables $v = v_1, v_2, ...$, one for each corresponding $w_j$ variable. Then replace the gradient descent update rule $w \rightarrow w - \eta \nabla C$ by</p>
+<p>$$v \rightarrow v' = \mu v - \eta \nabla C$$</p>
+<p>$$w \rightarrow w' = w + v'$$</p>
+<p>With momentum, the update is a modified gradient with shrinked previous gradient. That means that if the gradient is in (roughly) the same direction through several rounds of learning.</p>
+<p>The <em>momentum co-efficient</em> $\mu$ controls the friction. In practice, the momentum technique is commonly used, and often speeds up learning.</p>
+<h3>Activation functions</h3>
+<h4>tanh</h4>
+<p><em>tanh</em> neuron is a rescaled version of the sigmoid function</p>
+<p>$$tanh(z) \equiv \frac{e^z - e^{-z}}{e^z + e^{-z}}$$</p>
+<p>$$\sigma(z) = \frac{1 + tanh(z/2)}{2}$$</p>
+<p>tanh and sigmoid has the same shape but the output range is (-1, 1) instead of (0, 1).</p>
+<p>Indeed, for many tasks the tanh is found empirically to provide only a small or no improvement in performance over sigmoid neurons.</p>
+<h4>ReLU</h4>
+<p>The <em>rectified linear unit</em></p>
+<p>$$max(0, w \cdot x + b)$$</p>
+<p>ReLU has been proved better in image recognition problem. However, as with tanh neurons, we do not yet have a really deep understanding of when, exactly, rectified linear units are preferable, nor why. In a nutshell, the choice of activation function is rather empirical than theoretical.</p>
+<blockquote>
+<p>Sigmoid and tanh suffer from learning slowdown when the weighted input is closed to 0 or 1. By contrast, increasing the weighted input to a rectified linear unit will never cause it to saturate, and so there is no corresponding learning slowdown. On the other hand, when the weighted input to a rectified linear unit is negative, the gradient vanishes, and so the neuron stops learning entirely.</p>
+</blockquote>
+<h2>Code with regularization</h2>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div><div class="line">305</div><div class="line">306</div><div class="line">307</div><div class="line">308</div><div class="line">309</div><div class="line">310</div><div class="line">311</div><div class="line">312</div><div class="line">313</div><div class="line">314</div><div class="line">315</div><div class="line">316</div><div class="line">317</div><div class="line">318</div><div class="line">319</div><div class="line">320</div><div class="line">321</div><div class="line">322</div><div class="line">323</div><div class="line">324</div><div class="line">325</div><div class="line">326</div><div class="line">327</div><div class="line">328</div><div class="line">329</div><div class="line">330</div><div class="line">331</div><div class="line">332</div></pre></td><td class="code"><pre><div class="line"><span class="string">"""network2.py</span></div><div class="line">~~~~~~~~~~~~~~</div><div class="line"></div><div class="line">An improved version of network.py, implementing the stochastic</div><div class="line">gradient descent learning algorithm for a feedforward neural network.</div><div class="line">Improvements include the addition of the cross-entropy cost function,</div><div class="line">regularization, and better initialization of network weights.  Note</div><div class="line">that I have focused on making the code simple, easily readable, and</div><div class="line">easily modifiable.  It is not optimized, and omits many desirable</div><div class="line">features.</div><div class="line"></div><div class="line">"""</div><div class="line"></div><div class="line"><span class="comment">#### Libraries</span></div><div class="line"><span class="comment"># Standard library</span></div><div class="line"><span class="keyword">import</span> json</div><div class="line"><span class="keyword">import</span> random</div><div class="line"><span class="keyword">import</span> sys</div><div class="line"></div><div class="line"><span class="comment"># Third-party libraries</span></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">#### Define the quadratic and cross-entropy cost functions</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">QuadraticCost</span><span class="params">(object)</span>:</span></div><div class="line"></div><div class="line"><span class="meta">    @staticmethod</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fn</span><span class="params">(a, y)</span>:</span></div><div class="line">        <span class="string">"""Return the cost associated with an output ``a`` and desired output</span></div><div class="line">        ``y``.</div><div class="line"></div><div class="line">        """</div><div class="line">        <span class="keyword">return</span> <span class="number">0.5</span>*np.linalg.norm(a-y)**<span class="number">2</span></div><div class="line"></div><div class="line"><span class="meta">    @staticmethod</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delta</span><span class="params">(z, a, y)</span>:</span></div><div class="line">        <span class="string">"""Return the error delta from the output layer."""</span></div><div class="line">        <span class="keyword">return</span> (a-y) * sigmoid_prime(z)</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">CrossEntropyCost</span><span class="params">(object)</span>:</span></div><div class="line"></div><div class="line"><span class="meta">    @staticmethod</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fn</span><span class="params">(a, y)</span>:</span></div><div class="line">        <span class="string">"""Return the cost associated with an output ``a`` and desired output</span></div><div class="line">        ``y``.  Note that np.nan_to_num is used to ensure numerical</div><div class="line">        stability.  In particular, if both ``a`` and ``y`` have a 1.0</div><div class="line">        in the same slot, then the expression (1-y)*np.log(1-a)</div><div class="line">        returns nan.  The np.nan_to_num ensures that that is converted</div><div class="line">        to the correct value (0.0).</div><div class="line"></div><div class="line">        """</div><div class="line">        <span class="keyword">return</span> np.sum(np.nan_to_num(-y*np.log(a)-(<span class="number">1</span>-y)*np.log(<span class="number">1</span>-a)))</div><div class="line"></div><div class="line"><span class="meta">    @staticmethod</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delta</span><span class="params">(z, a, y)</span>:</span></div><div class="line">        <span class="string">"""Return the error delta from the output layer.  Note that the</span></div><div class="line">        parameter ``z`` is not used by the method.  It is included in</div><div class="line">        the method's parameters in order to make the interface</div><div class="line">        consistent with the delta method for other cost classes.</div><div class="line"></div><div class="line">        """</div><div class="line">        <span class="keyword">return</span> (a-y)</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">#### Main Network class</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Network</span><span class="params">(object)</span>:</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, sizes, cost=CrossEntropyCost)</span>:</span></div><div class="line">        <span class="string">"""The list ``sizes`` contains the number of neurons in the respective</span></div><div class="line">        layers of the network.  For example, if the list was [2, 3, 1]</div><div class="line">        then it would be a three-layer network, with the first layer</div><div class="line">        containing 2 neurons, the second layer 3 neurons, and the</div><div class="line">        third layer 1 neuron.  The biases and weights for the network</div><div class="line">        are initialized randomly, using</div><div class="line">        ``self.default_weight_initializer`` (see docstring for that</div><div class="line">        method).</div><div class="line"></div><div class="line">        """</div><div class="line">        self.num_layers = len(sizes)</div><div class="line">        self.sizes = sizes</div><div class="line">        self.default_weight_initializer()</div><div class="line">        self.cost=cost</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">default_weight_initializer</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""Initialize each weight using a Gaussian distribution with mean 0</span></div><div class="line">        and standard deviation 1 over the square root of the number of</div><div class="line">        weights connecting to the same neuron.  Initialize the biases</div><div class="line">        using a Gaussian distribution with mean 0 and standard</div><div class="line">        deviation 1.</div><div class="line"></div><div class="line">        Note that the first layer is assumed to be an input layer, and</div><div class="line">        by convention we won't set any biases for those neurons, since</div><div class="line">        biases are only ever used in computing the outputs from later</div><div class="line">        layers.</div><div class="line"></div><div class="line">        """</div><div class="line">        self.biases = [np.random.randn(y, <span class="number">1</span>) <span class="keyword">for</span> y <span class="keyword">in</span> self.sizes[<span class="number">1</span>:]]</div><div class="line">        self.weights = [np.random.randn(y, x)/np.sqrt(x)</div><div class="line">                        <span class="keyword">for</span> x, y <span class="keyword">in</span> zip(self.sizes[:<span class="number">-1</span>], self.sizes[<span class="number">1</span>:])]</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">large_weight_initializer</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="string">"""Initialize the weights using a Gaussian distribution with mean 0</span></div><div class="line">        and standard deviation 1.  Initialize the biases using a</div><div class="line">        Gaussian distribution with mean 0 and standard deviation 1.</div><div class="line"></div><div class="line">        Note that the first layer is assumed to be an input layer, and</div><div class="line">        by convention we won't set any biases for those neurons, since</div><div class="line">        biases are only ever used in computing the outputs from later</div><div class="line">        layers.</div><div class="line"></div><div class="line">        This weight and bias initializer uses the same approach as in</div><div class="line">        Chapter 1, and is included for purposes of comparison.  It</div><div class="line">        will usually be better to use the default weight initializer</div><div class="line">        instead.</div><div class="line"></div><div class="line">        """</div><div class="line">        self.biases = [np.random.randn(y, <span class="number">1</span>) <span class="keyword">for</span> y <span class="keyword">in</span> self.sizes[<span class="number">1</span>:]]</div><div class="line">        self.weights = [np.random.randn(y, x)</div><div class="line">                        <span class="keyword">for</span> x, y <span class="keyword">in</span> zip(self.sizes[:<span class="number">-1</span>], self.sizes[<span class="number">1</span>:])]</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">feedforward</span><span class="params">(self, a)</span>:</span></div><div class="line">        <span class="string">"""Return the output of the network if ``a`` is input."""</span></div><div class="line">        <span class="keyword">for</span> b, w <span class="keyword">in</span> zip(self.biases, self.weights):</div><div class="line">            a = sigmoid(np.dot(w, a)+b)</div><div class="line">        <span class="keyword">return</span> a</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">SGD</span><span class="params">(self, training_data, epochs, mini_batch_size, eta,</span></span></div><div class="line">            lmbda = <span class="number">0.0</span>,</div><div class="line">            evaluation_data=None,</div><div class="line">            monitor_evaluation_cost=False,</div><div class="line">            monitor_evaluation_accuracy=False,</div><div class="line">            monitor_training_cost=False,</div><div class="line">            monitor_training_accuracy=False):</div><div class="line">        <span class="string">"""Train the neural network using mini-batch stochastic gradient</span></div><div class="line">        descent.  The ``training_data`` is a list of tuples ``(x, y)``</div><div class="line">        representing the training inputs and the desired outputs.  The</div><div class="line">        other non-optional parameters are self-explanatory, as is the</div><div class="line">        regularization parameter ``lmbda``.  The method also accepts</div><div class="line">        ``evaluation_data``, usually either the validation or test</div><div class="line">        data.  We can monitor the cost and accuracy on either the</div><div class="line">        evaluation data or the training data, by setting the</div><div class="line">        appropriate flags.  The method returns a tuple containing four</div><div class="line">        lists: the (per-epoch) costs on the evaluation data, the</div><div class="line">        accuracies on the evaluation data, the costs on the training</div><div class="line">        data, and the accuracies on the training data.  All values are</div><div class="line">        evaluated at the end of each training epoch.  So, for example,</div><div class="line">        if we train for 30 epochs, then the first element of the tuple</div><div class="line">        will be a 30-element list containing the cost on the</div><div class="line">        evaluation data at the end of each epoch. Note that the lists</div><div class="line">        are empty if the corresponding flag is not set.</div><div class="line"></div><div class="line">        """</div><div class="line">        <span class="keyword">if</span> evaluation_data: n_data = len(evaluation_data)</div><div class="line">        n = len(training_data)</div><div class="line">        evaluation_cost, evaluation_accuracy = [], []</div><div class="line">        training_cost, training_accuracy = [], []</div><div class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> xrange(epochs):</div><div class="line">            random.shuffle(training_data)</div><div class="line">            mini_batches = [</div><div class="line">                training_data[k:k+mini_batch_size]</div><div class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> xrange(<span class="number">0</span>, n, mini_batch_size)]</div><div class="line">            <span class="keyword">for</span> mini_batch <span class="keyword">in</span> mini_batches:</div><div class="line">                self.update_mini_batch(</div><div class="line">                    mini_batch, eta, lmbda, len(training_data))</div><div class="line">            <span class="keyword">print</span> <span class="string">"Epoch %s training complete"</span> % j</div><div class="line">            <span class="keyword">if</span> monitor_training_cost:</div><div class="line">                cost = self.total_cost(training_data, lmbda)</div><div class="line">                training_cost.append(cost)</div><div class="line">                <span class="keyword">print</span> <span class="string">"Cost on training data: &#123;&#125;"</span>.format(cost)</div><div class="line">            <span class="keyword">if</span> monitor_training_accuracy:</div><div class="line">                accuracy = self.accuracy(training_data, convert=<span class="keyword">True</span>)</div><div class="line">                training_accuracy.append(accuracy)</div><div class="line">                <span class="keyword">print</span> <span class="string">"Accuracy on training data: &#123;&#125; / &#123;&#125;"</span>.format(</div><div class="line">                    accuracy, n)</div><div class="line">            <span class="keyword">if</span> monitor_evaluation_cost:</div><div class="line">                cost = self.total_cost(evaluation_data, lmbda, convert=<span class="keyword">True</span>)</div><div class="line">                evaluation_cost.append(cost)</div><div class="line">                <span class="keyword">print</span> <span class="string">"Cost on evaluation data: &#123;&#125;"</span>.format(cost)</div><div class="line">            <span class="keyword">if</span> monitor_evaluation_accuracy:</div><div class="line">                accuracy = self.accuracy(evaluation_data)</div><div class="line">                evaluation_accuracy.append(accuracy)</div><div class="line">                <span class="keyword">print</span> <span class="string">"Accuracy on evaluation data: &#123;&#125; / &#123;&#125;"</span>.format(</div><div class="line">                    self.accuracy(evaluation_data), n_data)</div><div class="line">            <span class="keyword">print</span></div><div class="line">        <span class="keyword">return</span> evaluation_cost, evaluation_accuracy, \</div><div class="line">            training_cost, training_accuracy</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">update_mini_batch</span><span class="params">(self, mini_batch, eta, lmbda, n)</span>:</span></div><div class="line">        <span class="string">"""Update the network's weights and biases by applying gradient</span></div><div class="line">        descent using backpropagation to a single mini batch.  The</div><div class="line">        ``mini_batch`` is a list of tuples ``(x, y)``, ``eta`` is the</div><div class="line">        learning rate, ``lmbda`` is the regularization parameter, and</div><div class="line">        ``n`` is the total size of the training data set.</div><div class="line"></div><div class="line">        """</div><div class="line">        nabla_b = [np.zeros(b.shape) <span class="keyword">for</span> b <span class="keyword">in</span> self.biases]</div><div class="line">        nabla_w = [np.zeros(w.shape) <span class="keyword">for</span> w <span class="keyword">in</span> self.weights]</div><div class="line">        <span class="keyword">for</span> x, y <span class="keyword">in</span> mini_batch:</div><div class="line">            delta_nabla_b, delta_nabla_w = self.backprop(x, y)</div><div class="line">            nabla_b = [nb+dnb <span class="keyword">for</span> nb, dnb <span class="keyword">in</span> zip(nabla_b, delta_nabla_b)]</div><div class="line">            nabla_w = [nw+dnw <span class="keyword">for</span> nw, dnw <span class="keyword">in</span> zip(nabla_w, delta_nabla_w)]</div><div class="line">        self.weights = [(<span class="number">1</span>-eta*(lmbda/n))*w-(eta/len(mini_batch))*nw</div><div class="line">                        <span class="keyword">for</span> w, nw <span class="keyword">in</span> zip(self.weights, nabla_w)]</div><div class="line">        self.biases = [b-(eta/len(mini_batch))*nb</div><div class="line">                       <span class="keyword">for</span> b, nb <span class="keyword">in</span> zip(self.biases, nabla_b)]</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">backprop</span><span class="params">(self, x, y)</span>:</span></div><div class="line">        <span class="string">"""Return a tuple ``(nabla_b, nabla_w)`` representing the</span></div><div class="line">        gradient for the cost function C_x.  ``nabla_b`` and</div><div class="line">        ``nabla_w`` are layer-by-layer lists of numpy arrays, similar</div><div class="line">        to ``self.biases`` and ``self.weights``."""</div><div class="line">        nabla_b = [np.zeros(b.shape) <span class="keyword">for</span> b <span class="keyword">in</span> self.biases]</div><div class="line">        nabla_w = [np.zeros(w.shape) <span class="keyword">for</span> w <span class="keyword">in</span> self.weights]</div><div class="line">        <span class="comment"># feedforward</span></div><div class="line">        activation = x</div><div class="line">        activations = [x] <span class="comment"># list to store all the activations, layer by layer</span></div><div class="line">        zs = [] <span class="comment"># list to store all the z vectors, layer by layer</span></div><div class="line">        <span class="keyword">for</span> b, w <span class="keyword">in</span> zip(self.biases, self.weights):</div><div class="line">            z = np.dot(w, activation)+b</div><div class="line">            zs.append(z)</div><div class="line">            activation = sigmoid(z)</div><div class="line">            activations.append(activation)</div><div class="line">        <span class="comment"># backward pass</span></div><div class="line">        delta = (self.cost).delta(zs[<span class="number">-1</span>], activations[<span class="number">-1</span>], y)</div><div class="line">        nabla_b[<span class="number">-1</span>] = delta</div><div class="line">        nabla_w[<span class="number">-1</span>] = np.dot(delta, activations[<span class="number">-2</span>].transpose())</div><div class="line">        <span class="comment"># Note that the variable l in the loop below is used a little</span></div><div class="line">        <span class="comment"># differently to the notation in Chapter 2 of the book.  Here,</span></div><div class="line">        <span class="comment"># l = 1 means the last layer of neurons, l = 2 is the</span></div><div class="line">        <span class="comment"># second-last layer, and so on.  It's a renumbering of the</span></div><div class="line">        <span class="comment"># scheme in the book, used here to take advantage of the fact</span></div><div class="line">        <span class="comment"># that Python can use negative indices in lists.</span></div><div class="line">        <span class="keyword">for</span> l <span class="keyword">in</span> xrange(<span class="number">2</span>, self.num_layers):</div><div class="line">            z = zs[-l]</div><div class="line">            sp = sigmoid_prime(z)</div><div class="line">            delta = np.dot(self.weights[-l+<span class="number">1</span>].transpose(), delta) * sp</div><div class="line">            nabla_b[-l] = delta</div><div class="line">            nabla_w[-l] = np.dot(delta, activations[-l<span class="number">-1</span>].transpose())</div><div class="line">        <span class="keyword">return</span> (nabla_b, nabla_w)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">accuracy</span><span class="params">(self, data, convert=False)</span>:</span></div><div class="line">        <span class="string">"""Return the number of inputs in ``data`` for which the neural</span></div><div class="line">        network outputs the correct result. The neural network's</div><div class="line">        output is assumed to be the index of whichever neuron in the</div><div class="line">        final layer has the highest activation.</div><div class="line"></div><div class="line">        The flag ``convert`` should be set to False if the data set is</div><div class="line">        validation or test data (the usual case), and to True if the</div><div class="line">        data set is the training data. The need for this flag arises</div><div class="line">        due to differences in the way the results ``y`` are</div><div class="line">        represented in the different data sets.  In particular, it</div><div class="line">        flags whether we need to convert between the different</div><div class="line">        representations.  It may seem strange to use different</div><div class="line">        representations for the different data sets.  Why not use the</div><div class="line">        same representation for all three data sets?  It's done for</div><div class="line">        efficiency reasons -- the program usually evaluates the cost</div><div class="line">        on the training data and the accuracy on other data sets.</div><div class="line">        These are different types of computations, and using different</div><div class="line">        representations speeds things up.  More details on the</div><div class="line">        representations can be found in</div><div class="line">        mnist_loader.load_data_wrapper.</div><div class="line"></div><div class="line">        """</div><div class="line">        <span class="keyword">if</span> convert:</div><div class="line">            results = [(np.argmax(self.feedforward(x)), np.argmax(y))</div><div class="line">                       <span class="keyword">for</span> (x, y) <span class="keyword">in</span> data]</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            results = [(np.argmax(self.feedforward(x)), y)</div><div class="line">                        <span class="keyword">for</span> (x, y) <span class="keyword">in</span> data]</div><div class="line">        <span class="keyword">return</span> sum(int(x == y) <span class="keyword">for</span> (x, y) <span class="keyword">in</span> results)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">total_cost</span><span class="params">(self, data, lmbda, convert=False)</span>:</span></div><div class="line">        <span class="string">"""Return the total cost for the data set ``data``.  The flag</span></div><div class="line">        ``convert`` should be set to False if the data set is the</div><div class="line">        training data (the usual case), and to True if the data set is</div><div class="line">        the validation or test data.  See comments on the similar (but</div><div class="line">        reversed) convention for the ``accuracy`` method, above.</div><div class="line">        """</div><div class="line">        cost = <span class="number">0.0</span></div><div class="line">        <span class="keyword">for</span> x, y <span class="keyword">in</span> data:</div><div class="line">            a = self.feedforward(x)</div><div class="line">            <span class="keyword">if</span> convert: y = vectorized_result(y)</div><div class="line">            cost += self.cost.fn(a, y)/len(data)</div><div class="line">        cost += <span class="number">0.5</span>*(lmbda/len(data))*sum(</div><div class="line">            np.linalg.norm(w)**<span class="number">2</span> <span class="keyword">for</span> w <span class="keyword">in</span> self.weights)</div><div class="line">        <span class="keyword">return</span> cost</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, filename)</span>:</span></div><div class="line">        <span class="string">"""Save the neural network to the file ``filename``."""</span></div><div class="line">        data = &#123;<span class="string">"sizes"</span>: self.sizes,</div><div class="line">                <span class="string">"weights"</span>: [w.tolist() <span class="keyword">for</span> w <span class="keyword">in</span> self.weights],</div><div class="line">                <span class="string">"biases"</span>: [b.tolist() <span class="keyword">for</span> b <span class="keyword">in</span> self.biases],</div><div class="line">                <span class="string">"cost"</span>: str(self.cost.__name__)&#125;</div><div class="line">        f = open(filename, <span class="string">"w"</span>)</div><div class="line">        json.dump(data, f)</div><div class="line">        f.close()</div><div class="line"></div><div class="line"><span class="comment">#### Loading a Network</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">load</span><span class="params">(filename)</span>:</span></div><div class="line">    <span class="string">"""Load a neural network from the file ``filename``.  Returns an</span></div><div class="line">    instance of Network.</div><div class="line"></div><div class="line">    """</div><div class="line">    f = open(filename, <span class="string">"r"</span>)</div><div class="line">    data = json.load(f)</div><div class="line">    f.close()</div><div class="line">    cost = getattr(sys.modules[__name__], data[<span class="string">"cost"</span>])</div><div class="line">    net = Network(data[<span class="string">"sizes"</span>], cost=cost)</div><div class="line">    net.weights = [np.array(w) <span class="keyword">for</span> w <span class="keyword">in</span> data[<span class="string">"weights"</span>]]</div><div class="line">    net.biases = [np.array(b) <span class="keyword">for</span> b <span class="keyword">in</span> data[<span class="string">"biases"</span>]]</div><div class="line">    <span class="keyword">return</span> net</div><div class="line"></div><div class="line"><span class="comment">#### Miscellaneous functions</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">vectorized_result</span><span class="params">(j)</span>:</span></div><div class="line">    <span class="string">"""Return a 10-dimensional unit vector with a 1.0 in the j'th position</span></div><div class="line">    and zeroes elsewhere.  This is used to convert a digit (0...9)</div><div class="line">    into a corresponding desired output from the neural network.</div><div class="line"></div><div class="line">    """</div><div class="line">    e = np.zeros((<span class="number">10</span>, <span class="number">1</span>))</div><div class="line">    e[j] = <span class="number">1.0</span></div><div class="line">    <span class="keyword">return</span> e</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid</span><span class="params">(z)</span>:</span></div><div class="line">    <span class="string">"""The sigmoid function."""</span></div><div class="line">    <span class="keyword">return</span> <span class="number">1.0</span>/(<span class="number">1.0</span>+np.exp(-z))</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">sigmoid_prime</span><span class="params">(z)</span>:</span></div><div class="line">    <span class="string">"""Derivative of the sigmoid function."""</span></div><div class="line">    <span class="keyword">return</span> sigmoid(z)*(<span class="number">1</span>-sigmoid(z))</div></pre></td></tr></table></figure></p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2017/03/12/note_nndl_deep_learning/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2017/03/12/33.display/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

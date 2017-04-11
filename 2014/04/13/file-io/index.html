@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            文件 I/O | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,APUE">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="文件 I/O | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="APUE"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">概要</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">文件I/O</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">I/O函数</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                文件 I/O
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>4月 13, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/APUE/">APUE</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=文件 I/O&url=http://yoursite.com//2014/04/13/file-io/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=文件 I/O&url=http://yoursite.com//2014/04/13/file-io/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/04/13/file-io/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/04/13/file-io/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>原文参考：<a href="http://www.cnblogs.com/CoreyGao/archive/2013/04/21/3031414.html" target="_blank" rel="external">APUE读书笔记 之 文件I/O</a>
+文章中的英文图片都引用自：<a href="http://infohost.nmt.edu/~eweiss/222_book/222_book/0201433079/toc.html" target="_blank" rel="external">http://infohost.nmt.edu/~eweiss/222_book/222_book/0201433079/toc.html</a><br>
+中文图片为（CoreyGao）原创，用Xmind所画。
+&lt;!--more--&gt;</p>
+<h2>概要</h2>
+<p>UNIX下“一切皆文件”，UNIX下的I/O即对文件的操作。<br>
+APUE将基本I/O相关内容分为 不带缓冲的I/O，文件和目录，标准I/O库 和 系统数据文件和信息。<br>
+不带缓冲的I/O和标准I/O库 描述了最基本的I/O。 文件和目录，数据系统文件和信息 描述了UNIX基本的文件系统和权限控制。</p>
+<h2>文件I/O</h2>
+<p>文件I/O都是不带缓冲的I/O。不带缓冲的I/O是指在用户空间不缓冲的I/O操作，每一个<code>read</code>和<code>write</code>都调用内核中的一个系统调用。UNIX系统中的大多数文件I/O只需用到5个函数：<code>open</code>、<code>read</code>、<code>write</code>、<code>lseek</code>以及<code>close</code>。</p>
+<p><strong>文件I/O部分可以概括为两个图：</strong></p>
+<p>图1 是文件I/O的常用函数总结。文件I/O函数的核心是文件描述符。</p>
+<p>对于内核而言，所有打开的文件都通过文件描述符引用。文件描述符是一个非负整数。当打开一个现有文件或创建一个新文件时，内核向进程返回一个文件描述符。当读或写一个文件时，使用<code>open</code>或<code>create</code>返回的文件描述符标识该文件，将其作为参数传送给<code>read</code>或<code>write</code>。UNIX惯例：<code>0</code>是标准输入，<code>1</code>是标准输出，<code>2</code>是标准出错输出。POSIX标准中，幻数<code>0</code>、<code>1</code>、<code>2</code>替换成符号常量<code>STDIN_FILENO</code>、<code>STDOUT_FILENO</code> 和 <code>STDERR_FILENO</code>，这些常量定义在头文件&lt;unistd.h&gt;中。</p>
+<p></p>
+<p>图2 是内核用于所有I/O的数据结构。</p>
+<p><code>fd flags</code> 只有一种：<code>fd_cloexec</code>（用于执行<code>exec</code>后是否保持该<code>fd</code>)<br>
+<code>fd</code>是进程独享的，<code>file table</code>和<code>v-node table</code>都是进程间共享的。<code>dup</code>之后的俩<code>fd</code>共享<code>file table</code>，但是不复制<code>fd flags</code>。</p>
+<p></p>
+<p>内核使用三种数据结构表示打开的文件，它们之间的关系决定了在文件共享方面一个进程对另一个进程可能产生的影响。<br>
+（1）每个进程在进程表中都有一个记录项，记录项中包含有一张打开文件描述符表，可将其视为一个矢量，每个描述符占用一项。与每个描述符相关联的是：</p>
+<ol>
+<li>文件描述符标志（close_on_exec）</li>
+<li>指向一个文件表项的指针</li>
+</ol>
+<p>（2）内核为所有打开文件维持一张文件表。每个文件表项包含：</p>
+<ol>
+<li>文件状态标志（读、写、添写、同步和非阻塞等）</li>
+<li>当前文件偏移量</li>
+<li>指向该文件 <code>v</code> 节点表项的指针</li>
+</ol>
+<p>（3）每个打开文件（或设备）都有一个 <code>v</code> 节点（<code>v-node</code>）结构。<code>v</code> 节点包含了文件类型和对此文件进行各种操作的函数的指针。对于大多数文件，<code>v</code> 节点还包含了该文件的 <code>i</code> 节点（<code>i-node</code>，索引节点）。这些信息是在打开文件时从磁盘上读入内存的，所以关于文件的信息都是快速可供使用的。例如， <code>i</code> 节点包含了文件的所有者、文件长度、文件所在的设备、指向文件实际数据块在磁盘上所在位置的指针等。（注：linux没有使用 <code>v</code> 节点，而是使用了通用 <code>i</code> 节点结构，虽然两种实现有所不同，但在概念上，<code>v</code> 节点与 <code>i</code> 节点是一样的。两者都是指向文件系统特有的 <code>i</code> 节点结构。）</p>
+<p>如果两个独立进程各自打开了同一个文件，则有图2-1中所示的安排。我们假定第一个进程在文件描述符<code>3</code>上打开该文件，而另一个进程在文件描述符<code>4</code>上打开该文件。打开该文件的每个进程都得到一个文件表项，但对一个给定的文件只有一个 <code>v</code> 节点表项。&lt;span style=&quot;color:red;&quot;&gt;每个进程都有自己的文件表项的一个理由是：这种安排使每个进程都有它自己的对该文件的当前偏移量。&lt;/span&gt;</p>
+<p></p>
+<h2>I/O函数</h2>
+<p><strong>open</strong>函数：打开或创建一个文件。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">int</span> oflag, ... <span class="comment">/* mode_t mode */</span> )</span></span>;</div><div class="line"></div><div class="line">    Returns: file descriptor <span class="keyword">if</span> OK, <span class="number">-1</span> on error</div></pre></td></tr></table></figure></p>
+<p>第三个参数写为 <code>...</code> ，ISO C 用这种方法表明余下参数的数量及其类型根据具体的调用会有所不同。对于<code>open</code>函数而言，仅当创建新文件时才使用第三个参数。在函数原型中将此参数放置在注释中。<br>
+<code>pathname</code>表示要打开或创建文件的名字，<code>oflag</code>参数可用来说明此函数的多个选项。用下列一个或多个常量进行“或”运算构成<code>oflag</code>参数（这些常量定义在&lt;fcntl.h&gt;头文件中）：</p>
+<table>
+<thead>
+<tr>
+<th>oflag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>O_RDONLY</td>
+<td>只读打开</td>
+</tr>
+<tr>
+<td>O_WRONLY</td>
+<td>只写打开</td>
+</tr>
+<tr>
+<td>O_RDWR</td>
+<td>读、写打开</td>
+</tr>
+</tbody>
+</table>
+<p>在这三个常量中必须指定一个且只能指定一个。下列常量则是可选的：</p>
+<table>
+<thead>
+<tr>
+<th>oflag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>O_APPEND</td>
+<td>每次写时都追加到文件的尾端。</td>
+</tr>
+<tr>
+<td>O_CREAT</td>
+<td>若此文件不存在，则创建它。使用此选项时，需要第三个参数<code>mode</code>，用其指定该新文件的访问权限</td>
+</tr>
+<tr>
+<td>O_EXCL</td>
+<td>如果同时指定了<code>O_CREAT</code>，而文件已经存在，则会出错。用此可以测试一个文件是否存在，如果不存在，则创建此文件，这使测试和创建两者成为一个原子操作。</td>
+</tr>
+<tr>
+<td>O_TRUNC</td>
+<td>如果此文件存在，而且为只写或读写成功打开，则将其长度截短为0。</td>
+</tr>
+<tr>
+<td>O_NOCTTY</td>
+<td>如果<code>pathname</code>指的是终端设备，则不将该设备分配作为此进程的控制终端。</td>
+</tr>
+<tr>
+<td>O_NONBLOCK</td>
+<td>如果<code>pathname</code>指的是一个FIFO、一个块特殊文件或一个字符特殊文件，则此选项为文件的本次打开操作和后续的I/O操作设置非阻塞模式</td>
+</tr>
+</tbody>
+</table>
+<p>下面三个标志也是可选的。它们是Single UNIX Specification (以及POSIX.1) 中同步输入和输出选项的一部分。</p>
+<table>
+<thead>
+<tr>
+<th>oflag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>O_DSYNC</td>
+<td>使每次<code>write</code>等待物理I/O操作完成，但是如果写操作并不影响读取刚写入的数据，则不等待文件属性被更新。</td>
+</tr>
+<tr>
+<td>O_RSYNC</td>
+<td>使每一个以文件描述符作为参数的<code>read</code>操作等待，直至任何对文件同一部分进行的未决写操作都完成。</td>
+</tr>
+<tr>
+<td>O_SYNC</td>
+<td>使每次<code>write</code>都等待物理I/O操作完成，包括由<code>write</code>操作引起的文件属性更新所需的I/O。</td>
+</tr>
+</tbody>
+</table>
+<p>由<code>open</code>返回的文件描述符一定是最小的未用描述符数值。这一点被某些应用程序用来在标准输入、标准输出或标准出错输出上打开新的文件。例如，一个应用程序可以先关闭标准输出（通常是文件描述符<code>1</code>），然后打开另一个文件，执行打开操作前就能了解到该文件一定会在文件描述符<code>1</code>上打开。使用 <code>dup2</code> 函数可以更好的保证在一个给定的描述符上打开一个文件。</p>
+<p><strong>creat</strong>函数：创建一个新文件。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">creat</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname, <span class="keyword">mode_t</span> mode)</span></span>;</div><div class="line"></div><div class="line">    Returns: file descriptor opened <span class="keyword">for</span> write-only <span class="keyword">if</span> OK, <span class="number">-1</span> on error</div></pre></td></tr></table></figure></p>
+<p>此函数等效于：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">open(pathname, O_WRONLY | O_CREAT | O_TRUNC, mode);</div></pre></td></tr></table></figure></p>
+<p>在早期的UNIX系统版本中，<code>open</code>的第二个参数只能是<code>0</code>、<code>1</code>或<code>2</code>，没有办法打开一个尚未存在的文件，因此需要另一个系统调用<code>creat</code>以创建新文件。现在，<code>open</code>函数提供了选项<code>O_CREAT</code>和<code>O_TRUNC</code>，于是也就不再需要<code>creat</code>函数了。</p>
+<p><strong>close</strong>函数：关闭一个打开的文件。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">close</span><span class="params">(<span class="keyword">int</span> filedes)</span></span>;</div><div class="line"></div><div class="line">    Returns: <span class="number">0</span> <span class="keyword">if</span> OK, <span class="number">-1</span> on error</div></pre></td></tr></table></figure></p>
+<p>关闭一个文件时还会释放该进程加在该文件上的所有记录锁。当一个进程终止时，内核自动关闭它所有打开的文件。很多程序都利用了这一功能而不显式地用<code>close</code>关闭打开的文件。</p>
+<p><strong>lseek</strong>函数：显式地为一个打开的文件设置其偏移量。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">off_t</span> lseek(<span class="keyword">int</span> filedes, <span class="keyword">off_t</span> offset, <span class="keyword">int</span> whence);</div><div class="line"></div><div class="line">    Returns: <span class="keyword">new</span> file offset <span class="keyword">if</span> OK, <span class="number">-1</span> on error</div></pre></td></tr></table></figure></p>
+<p>每个打开的文件都有一个与其相关联的“当前文件偏移量(<code>current file offset</code>)”。它通常是一个非负整数，用以度量从文件开始处计算的字节数。通常，读、写操作都从当前文件偏移量处开始，并使偏移量增加所读写的字节数。按系统默认的情况，当打开一个文件时，除非指定<code>O_APPEND</code>选项，否则该偏移量被设置为<code>0</code>。</p>
+<p>对参数<code>offset</code>的解释与参数<code>whence</code>的值有关。</p>
+<ul>
+<li>若<code>whence</code>是<code>SEEK_SET</code>，则将该文件的偏移量设置为距文件开始处<code>offset</code>个字节。</li>
+<li>若<code>whence</code>是<code>SEEK_CUR</code>，则将该文件的偏移量设置为其当前值加<code>offset</code>，<code>offset</code>可为正或负。</li>
+<li>若<code>whence</code>是<code>SEEK_END</code>，则将该文件的偏移量设置为文件长度加<code>offset</code>，<code>offset</code>可为正或负。</li>
+</ul>
+<p>若<code>lseek</code>成功执行，则返回新的文件偏移量，为此可以用下列方式确定打开文件的当前偏移量：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">off_t</span> currpos;</div><div class="line">currpos = lseek(fd, <span class="number">0</span>, SEEK_CUR);</div></pre></td></tr></table></figure></p>
+<p>这种方法也可用来确定所涉及的文件是否可以设置偏移量。如果文件描述符引用的是一个管道、FIFO或网络套接字，则<code>lseek</code>返回 <code>-1</code>，并将<code>errno</code>设置为<code>ESPIPE</code>。</p>
+<p>通常，文件的当前偏移量应当是一个非负整数，但是，某些设备也可能允许负的偏移量。但对于普通文件，则其偏移量必须是非负值。因为偏移量可能是负值，所以在比较<code>lseek</code>的返回值时应当谨慎，不要测试它是否小于<code>0</code>，而要测试它是否等于 <code>-1</code>。</p>
+<p><code>lseek</code>仅将当前的文件偏移量记录在内核中，它并不引起任何I/O操作。然后，该偏移量用于下一个读或写操作。文件偏移量可以大于文件的当前长度，在这种情况下，对该文件的下一次写将加长该文件，并在文件中构成一个空洞，这一点是允许的。位于文件中但没有写过的字节都被读为<code>0</code>。文件中的空洞并不要求在磁盘上占用存储区。具体处理方式与文件系统的实现有关，当定位到超出文件尾端之后写时，对于新写的数据需要分配磁盘块，但是对于原文件尾端和新开始写位置之间的部分则不需要分配磁盘块。</p>
+<p><strong>read</strong>函数：从打开的文件中读数据。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">ssize_t</span> read(<span class="keyword">int</span> filedes, <span class="keyword">void</span> *buf, <span class="keyword">size_t</span> nbytes);</div><div class="line"></div><div class="line">    Returns: number of bytes read, <span class="number">0</span> <span class="keyword">if</span> end of file, <span class="number">-1</span> on error</div></pre></td></tr></table></figure></p>
+<p>如果<code>read</code>成功，则返回读到的字节数。如已到达文件结尾，则返回<code>0</code>。有多种情况可使实际读到的字节数少于要求读的字节数：</p>
+<ul>
+<li>读普通文件，在读到要求字节数之前已到达了文件尾端。</li>
+<li>读终端设备，通常一次最多读一行。</li>
+<li>读网络套接字，网络中的缓冲机制可能造成返回值小于所要求读的字节数。</li>
+<li>读管道或FIFO，如若管道包含的字节少于所需的数量，那么<code>read</code>将只返回实际可用的字节数。</li>
+<li>读某些面向记录的设备，一次最多返回一条记录。</li>
+<li>当某一信号造成中断，而已经读了部分数据量时。</li>
+</ul>
+<p>读操作从文件的当前偏移量处开始，在成功返回之前，该偏移量将增加实际读到的字节数。
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">man 2 <span class="built_in">read</span></div></pre></td></tr></table></figure></p>
+<p>查看<code>read</code>系统调用帮助文档。</p>
+<p><code>readn</code>函数：从打开的文件中读取 <code>n</code> 字节数据。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">ssize_t</span>             <span class="comment">/* Read "n" bytes from a descriptor  */</span></div><div class="line">readn(<span class="keyword">int</span> fd, <span class="keyword">void</span> *ptr, <span class="keyword">size_t</span> n)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">size_t</span>      nleft;</div><div class="line">    <span class="keyword">ssize_t</span>     nread;</div><div class="line"></div><div class="line">    nleft = n;</div><div class="line">    <span class="keyword">while</span> (nleft &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">if</span> ((nread = read(fd, ptr, nleft)) &lt; <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (nleft == n)</div><div class="line">                <span class="keyword">return</span>(<span class="number">-1</span>); <span class="comment">/* error, return -1 */</span></div><div class="line">            <span class="keyword">else</span></div><div class="line">                <span class="keyword">break</span>;      <span class="comment">/* error, return amount read so far */</span></div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nread == <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">break</span>;          <span class="comment">/* EOF */</span></div><div class="line">        &#125;</div><div class="line">        nleft -= nread;</div><div class="line">        ptr   += nread;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span>(n - nleft);      <span class="comment">/* return &gt;= 0 */</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>write</strong>函数：向打开的文件写数据。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">ssize_t</span> write(<span class="keyword">int</span> filedes, <span class="keyword">const</span> <span class="keyword">void</span> *buf, <span class="keyword">size_t</span> nbytes);</div><div class="line"></div><div class="line">    Returns: number of bytes written <span class="keyword">if</span> OK, <span class="number">-1</span> on error</div></pre></td></tr></table></figure></p>
+<p>其返回值通常与参数<code>nbytes</code>的值相同，否则表示出错。<code>write</code>出错的一个常见原因是：磁盘已写满，或者超过了一个给定进程的文件长度限制。
+对于普通文件，写操作从文件的当前偏移量处开始。如果打开该文件时，指定了<code>O_APPEND</code>选项，则在每次写操作之前，将文件偏移量设置在文件的当前结尾处。在一次成功写之后，该文件偏移量增加实际写的字节数。
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">man 2 write</div></pre></td></tr></table></figure></p>
+<p>查看<code>write</code>系统调用帮助文档。</p>
+<p><code>writen</code>函数：向打开的文件写入 <code>n</code> 字节数据
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">ssize_t</span>             <span class="comment">/* Write "n" bytes to a descriptor  */</span></div><div class="line">writen(<span class="keyword">int</span> fd, <span class="keyword">const</span> <span class="keyword">void</span> *ptr, <span class="keyword">size_t</span> n)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">size_t</span>      nleft;</div><div class="line">    <span class="keyword">ssize_t</span>     nwritten;</div><div class="line"></div><div class="line">    nleft = n;</div><div class="line">    <span class="keyword">while</span> (nleft &gt; <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">if</span> ((nwritten = write(fd, ptr, nleft)) &lt; <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">if</span> (nleft == n)</div><div class="line">                <span class="keyword">return</span>(<span class="number">-1</span>); <span class="comment">/* error, return -1 */</span></div><div class="line">            <span class="keyword">else</span></div><div class="line">                <span class="keyword">break</span>;      <span class="comment">/* error, return amount written so far */</span></div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nwritten == <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        &#125;</div><div class="line">        nleft -= nwritten;</div><div class="line">        ptr   += nwritten;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span>(n - nleft);      <span class="comment">/* return &gt;= 0 */</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>pread</strong>和<strong>pwrite</strong>函数：在给定的文件偏移处从文件读取或向文件写入数据。
+Single UNIX Specification包括了XSI扩展，该扩展允许原子性的定位搜索（seek）和执行I/O。<code>pread</code>和<code>pwrite</code>就是这种扩展。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">ssize_t</span> pread(<span class="keyword">int</span> filedes, <span class="keyword">void</span> *buf, <span class="keyword">size_t</span> nbytes, <span class="keyword">off_t</span> offset);</div><div class="line"></div><div class="line">    Returns: number of bytes read, <span class="number">0</span> <span class="keyword">if</span> end of file, <span class="number">-1</span> <span class="function">on error</span></div><div class="line"></div><div class="line">ssize_t <span class="title">pwrite</span><span class="params">(<span class="keyword">int</span> filedes, <span class="keyword">const</span> <span class="keyword">void</span> *buf, <span class="keyword">size_t</span> nbytes, <span class="keyword">off_t</span> offset)</span>;</div><div class="line"></div><div class="line">    Returns: number of bytes written <span class="keyword">if</span> OK, <span class="number">-1</span> on error</div></pre></td></tr></table></figure></p>
+<p>调用<code>pread</code>相当于顺序调用<code>lseek</code>和<code>read</code>，但是<code>pread</code>又与这种顺序调用有下列重要区别：</p>
+<ul>
+<li>调用<code>pread</code>时，无法中断其定位和读操作</li>
+<li>不更新文件指针</li>
+</ul>
+<p>调用<code>pwrite</code>相当于顺序调用<code>lseek</code>和<code>write</code>，但也与它们有类似的区别。</p>
+<p><strong>dup</strong>和<strong>dup2</strong>函数：复制一个现存的文件描述符。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup</span><span class="params">(<span class="keyword">int</span> oldfd)</span></span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">dup2</span><span class="params">(<span class="keyword">int</span> oldfd, <span class="keyword">int</span> newfd)</span></span>;</div><div class="line"></div><div class="line">    Both <span class="keyword">return</span>: <span class="keyword">new</span> file descriptor <span class="keyword">if</span> OK, <span class="number">-1</span> on error</div></pre></td></tr></table></figure></p>
+<p>由<code>dup</code>返回的新文件描述符一定是当前可用文件描述符中的最小数值。用<code>dup2</code>则可以用<code>newfd</code>参数指定新描述符的数值。如果<code>newfd</code>已经打开，则先将其关闭。</p>
+<ul>
+<li>如果<code>oldfd</code>是无效的文件描述符，则调用失败，<code>newfd</code>不会被关闭。</li>
+<li>如果<code>newfd</code>等于<code>oldfd</code>，则<code>dup2</code>返回<code>newfd</code>，而不关闭它。</li>
+</ul>
+<p>这些函数返回的新文件描述符与参数<code>oldfd</code>共享同一个文件表项。图3 显示了这种情况。<br>
+在此图中，假定进程执行了：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">newfd = dup(<span class="number">1</span>);</div></pre></td></tr></table></figure></p>
+<p>当此函数开始执行时，假定下一个可用的描述符是<code>3</code>。因为两个描述符指向同一文件表项，所以它们共享同一文件状态标志（读、写、添写等）以及同一当前文件偏移量。<br>
+每个文件描述符都有它自己的一套文件描述符标志，但新描述符的执行时关闭（close-on-exec）标志总是由<code>dup</code>函数清除。</p>
+<p></p>
+<p>复制一个描述符的另一种方法是使用<code>fcntl</code>函数，实际上，调用
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dup(oldfd);</div></pre></td></tr></table></figure></p>
+<p>等效于
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fcntl(oldfd, F_DUPFD, <span class="number">0</span>);</div></pre></td></tr></table></figure></p>
+<p>而调用
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dup2(oldfd, newfd);</div></pre></td></tr></table></figure></p>
+<p>等效于
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">close(newfd);</div><div class="line">fcntl(oldfd, F_DUPFD, newfd);</div></pre></td></tr></table></figure></p>
+<p>后一种情况，<code>dup2</code>并不完全等同于<code>close</code>加上<code>fcntl</code>。它们之间的区别是：<br>
+（1）<code>dup2</code>是一个原子操作，而<code>close</code>及<code>fcntl</code>则包括两个函数调用。有可能在<code>close</code>和<code>fcntl</code>之间插入执行信号捕获函数，它可能修改文件描述符。<br>
+（2）<code>dup2</code>和<code>fcntl</code>有某些不同的<code>errno</code>。</p>
+<p><strong>sync</strong>、<strong>fsync</strong>和<strong>fdatasync</strong>函数</p>
+<p>传统的UNIX实现在内核中设有缓冲区高速缓存或页面高速缓存，大多数磁盘I/O都通过缓冲进行。当将数据写入文件时，内核通常先将数据复制到其中的一个缓冲区中，如果该缓冲区尚未写满，则并不将其排入输出队列，而是等待其写满或者当内核需要重用该缓冲区以便存放其他磁盘块数据时，再将该缓冲排入输出队列，然后待其到达队首时，才进行实际的I/O操作。这种输出方式被称为&lt;span style=&quot;color:red;&quot;&gt;延迟写&lt;/span&gt;。<br>
+延迟写减少了磁盘读写次数，但是降低了文件内容的更新速度，使得欲写到文件中的数据在一段时间内并没有写到磁盘上。当系统发生故障时，这种延迟写可能造成文件更新内容的丢失。为保证磁盘上实际文件系统与缓冲区高速缓存中内容一致，UNIX系统提供了<code>sync</code>、<code>fsync</code>和<code>fdatasync</code>三个函数。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">fsync</span><span class="params">(<span class="keyword">int</span> filedes)</span></span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">fdatasync</span><span class="params">(<span class="keyword">int</span> filedes)</span></span>;</div><div class="line"></div><div class="line">    Returns: <span class="number">0</span> <span class="keyword">if</span> OK, <span class="number">-1</span> <span class="function">on error</span></div><div class="line"></div><div class="line"><span class="keyword">void</span> <span class="title">sync</span><span class="params">(<span class="keyword">void</span>)</span>;</div></pre></td></tr></table></figure></p>
+<p><code>sync</code> 函数只是将所有修改过的块缓冲区排入写队列，然后就返回，它并不等待实际写磁盘操作结束。通常称为<code>update</code>的系统守护进程会周期性地（一般每隔30秒）调用<code>sync</code>函数，这就保证了定期冲洗内核的块缓冲区。命令<code>sync</code>也调用<code>sync</code>函数。<br>
+<code>fsync</code> 函数只对由文件描述符<code>filedes</code>指定的单一文件起作用，并且等待写磁盘操作结束，然后返回。<code>fsync</code>可用于数据库这样的应用程序，这种应用程序需要确保将修改过的块立即写到磁盘上。<br>
+<code>fdatasync</code> 函数类似于<code>fsync</code>，但它只影向文件的数据部分。而除数据外，<code>fsync</code>还会同步更新文件的属性。</p>
+<p><strong>fcntl</strong>函数：改变已打开文件的性质。
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#include &lt;fcntl.h&gt;</div><div class="line"></div><div class="line">int fcntl(int filedes, int cmd, ... /* arg */ );</div><div class="line"></div><div class="line">    Returns: depends on cmd if OK (see following), -1 on error</div></pre></td></tr></table></figure></p>
+<p><code>fcntl</code>函数有5种功能：<br>
+（1）复制一个现有的描述符（<code>cmd = F_DUPFD</code>）。<br>
+（2）获得/设置文件描述符标志（<code>cmd = F_GETFD</code> 或 <code>F_SETFD</code>）。<br>
+（3）获得/设置文件状态标志（<code>cmd = F_GETFL</code> 或 <code>F_SETFL</code>）。<br>
+（4）获得/设置异步I/O所有权（<code>cmd = F_GETOWN</code> 或 <code>F_SETOWN</code>）。<br>
+（5）获得/设置记录锁（<code>cmd = F_GETLK</code>、<code>F_SETLK</code> 或 <code>F_SETLKW</code>）。<br>
+前4种功能中（<code>cmd</code>值中的前7种），第三个参数<code>arg</code>是一个整型数。<code>cmd</code>值中的后3种，都与记录锁有关，此时函数的第三个参数<code>arg</code>指向一个结构的指针。</p>
+<table>
+<thead>
+<tr>
+<th>cmd</th>
+<th>Descriptiong</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F_DUPFD</td>
+<td>复制文件描述符<code>filedes</code>，新文件描述符作为函数值返回。它是尚未打开的各描述符中大于或等于第三个参数值（取为整型值）中各值的最小值。新描述符与<code>filedes</code>共享同一文件表项，但是，新描述符有它自己的一套文件描述符标志，其<code>FD_CLOSEXEC</code>文件描述符标志被清除</td>
+</tr>
+<tr>
+<td>F_GETFD</td>
+<td>对应于<code>filedes</code>的文件描述符标志作为函数值返回。当前只定义了一个文件描述符标志<code>F_CLOSEXEC</code>。</td>
+</tr>
+<tr>
+<td>F_SETFD</td>
+<td>对于<code>filedes</code>设置文件描述符标志。新标志值按第三个参数（取为整型值）设置。</td>
+</tr>
+<tr>
+<td>F_GETFL</td>
+<td>对应于<code>filedes</code>的文件状态标志作为函数值返回，文件状态标志对应于<code>open</code>函数中的<code>flags</code>参数。</td>
+</tr>
+<tr>
+<td>F_SETFL</td>
+<td>将文件状态标志设置为第三个参数的值（取为整型值）。可以更改的几个标志是：<code>O_APPEND</code>、<code>O_NONBLOCK</code>、<code>O_SYNC</code>（等待写完成，包括数据和属性）、<code>O_DSYNC</code>（等待写完成，仅数据） 和<code>O_RSYNC</code>（同步读、写）</td>
+</tr>
+<tr>
+<td>F_GETOWN</td>
+<td>获取当前接收<code>SIGIO</code>和<code>SIGURG</code>信号的进程ID或进程组ID</td>
+</tr>
+<tr>
+<td>F_SETOWN</td>
+<td>设置接收<code>SIGIO</code>和<code>SIGURG</code>信号的进程ID或进程组ID。正的<code>arg</code>指定一个进程ID，负的<code>arg</code>表示等于<code>arg</code>绝对值的一个进程组ID。</td>
+</tr>
+</tbody>
+</table>
+<p><code>fcntl</code>的返回值与命令有关。如果出错，所有命令都返回<code>-1</code>,如果成功则返回某个其他值。下列四个命令有特定返回值：<code>F_DUPFD</code>、<code>F_GETFD</code>、<code>F_GETFL</code>以及<code>F_GETOWN</code>。第一个返回新的文件描述符，接下来两个返回相应标志，最后一个返回一个正的进程ID或负的进程组ID。</p>
+<p>在修改文件描述符标志或文件状态标志时必须谨慎，先要取得现有的标志值，然后根据需要修改它，最后设置新标志值。不能只是执行<code>F_SETFD</code>或<code>F_SETFL</code>命令，这样会关闭以前设置的标志位。
+下面代码显示了一个对一个文件描述符设置一个或多个文件状态标志的函数：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"apue.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span></span></div><div class="line"><span class="title">set_fl</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span> flags)</span> <span class="comment">/* flags are file status flags to turn on */</span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span>     val;</div><div class="line"></div><div class="line">    <span class="keyword">if</span> ((val = fcntl(fd, F_GETFL, <span class="number">0</span>)) &lt; <span class="number">0</span>)</div><div class="line">        err_sys(<span class="string">"fcntl F_GETFL error"</span>);</div><div class="line"></div><div class="line">    val |= flags;       <span class="comment">/* turn on flags */</span></div><div class="line"></div><div class="line">    <span class="keyword">if</span> (fcntl(fd, F_SETFL, val) &lt; <span class="number">0</span>)</div><div class="line">        err_sys(<span class="string">"fcntl F_SETFL error"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果将中间的一条语句改为：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">val &amp;= ~flags;  <span class="comment">/* turn flags off */</span></div></pre></td></tr></table></figure></p>
+<p>就构成另一个函数，称其为 <code>clr_fl</code> 。此语句使当前文件状态标志值<code>val</code>与<code>flags</code>的补码进行逻辑“与”运算。</p>
+<p><strong>ioctl</strong>函数：I/O操作的杂物箱。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">ioctl</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">int</span> request, ...)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>主要用于设备驱动程序，终端I/O是<code>ioctl</code>的最大使用方面。</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/04/12/2014-04-13-double-dispatchmo-shi-ji-qi-zai-ioskai-fa-zhong-shi-zhan/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/04/13/objc_dig_interface/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

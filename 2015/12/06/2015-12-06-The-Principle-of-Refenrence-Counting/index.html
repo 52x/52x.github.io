@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            Objective-C 引用计数原理 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,Objective-C,Runtime,Reference Counting">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Objective-C 引用计数原理 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="Objective-C"> <meta property="og:article:tag" content="Runtime"> <meta property="og:article:tag" content="Reference Counting"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">引用计数如何存储</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">TaggedPointer</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">isa 指针（NONPOINTER_ISA）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">散列表</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">获取引用计数</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">修改引用计数</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">retain 和 release</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">alloc, new, copy, mutableCopy</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">autorelease</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">Reference</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Objective-C 引用计数原理
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>12月 06, 2015</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/Objective-C/">Objective-C</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/Reference-Counting/">Reference Counting</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/Runtime/">Runtime</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Objective-C 引用计数原理&url=http://yoursite.com//2015/12/06/2015-12-06-The-Principle-of-Refenrence-Counting/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Objective-C 引用计数原理&url=http://yoursite.com//2015/12/06/2015-12-06-The-Principle-of-Refenrence-Counting/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2015/12/06/2015-12-06-The-Principle-of-Refenrence-Counting/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2015/12/06/2015-12-06-The-Principle-of-Refenrence-Counting/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <ul>
+<li>本文所使用的源码为 objc4-647 和 CF-1153.18</li>
+<li>实际上这是我本周实习周报的一部分，写的比较仓促，如有差错还请多多指正。</li>
+<li>不讲用法，只说原理。</li>
+</ul>
+<p>&lt;!--more--&gt;</p>
+<h1>引用计数如何存储</h1>
+<p>有些对象如果支持使用 TaggedPointer，苹果会直接将其指针值作为引用计数返回；如果当前设备是 64 位环境并且使用 Objective-C 2.0，那么“一些”对象会使用其 <code>isa</code> 指针的一部分空间来存储它的引用计数；否则 Runtime 会使用一张散列表来管理引用计数。</p>
+<p>其实还有一种情况会改变引用计数的存储策略，那就是是否使用垃圾回收（用<code>UseGC</code>属性判断），但这种早已弃用的东西就不要管了，而且初始化垃圾回收机制的 <code>void gc_init(BOOL wantsGC)</code> 方法一直被传入 <code>NO</code>。</p>
+<h2>TaggedPointer</h2>
+<p>判断当前对象是否在使用 TaggedPointer 是看标志位是否为 1 ：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#if SUPPORT_MSB_TAGGED_POINTERS</div><div class="line">#   define TAG_MASK (1ULL&lt;&lt;63)</div><div class="line">#else</div><div class="line">#   define TAG_MASK 1</div><div class="line"></div><div class="line">inline bool </div><div class="line">objc_object::isTaggedPointer() </div><div class="line">&#123;</div><div class="line">#if SUPPORT_TAGGED_POINTERS</div><div class="line">    return ((uintptr_t)this &amp; TAG_MASK);</div><div class="line">#else</div><div class="line">    return false;</div><div class="line">#endif</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>id</code> 其实就是 <code>objc_object *</code> 的简写（<code>typedef struct objc_object *id;</code>），它的 <code>isTaggedPointer()</code> 方法经常会在操作引用计数时用到，因为这决定了存储引用计数的策略。</p>
+<h2>isa 指针（NONPOINTER_ISA）</h2>
+<p>用 64 bit 存储一个内存地址显然是种浪费，毕竟很少有那么大内存的设备。于是可以优化存储方案，用一部分额外空间存储其他内容。<code>isa</code> 指针第一位为 1 即表示使用优化的 <code>isa</code> 指针，这里列出不同架构下的 64 位环境中 <code>isa</code> 指针结构：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line">union isa_t </div><div class="line">&#123;</div><div class="line">    isa_t() &#123; &#125;</div><div class="line">    isa_t(uintptr_t value) : bits(value) &#123; &#125;</div><div class="line"></div><div class="line">    Class cls;</div><div class="line">    uintptr_t bits;</div><div class="line"></div><div class="line">#if SUPPORT_NONPOINTER_ISA</div><div class="line"># if __arm64__</div><div class="line">#   define ISA_MASK        0x00000001fffffff8ULL</div><div class="line">#   define ISA_MAGIC_MASK  0x000003fe00000001ULL</div><div class="line">#   define ISA_MAGIC_VALUE 0x000001a400000001ULL</div><div class="line">    struct &#123;</div><div class="line">        uintptr_t indexed           : 1;</div><div class="line">        uintptr_t has_assoc         : 1;</div><div class="line">        uintptr_t has_cxx_dtor      : 1;</div><div class="line">        uintptr_t shiftcls          : 30; // MACH_VM_MAX_ADDRESS 0x1a0000000</div><div class="line">        uintptr_t magic             : 9;</div><div class="line">        uintptr_t weakly_referenced : 1;</div><div class="line">        uintptr_t deallocating      : 1;</div><div class="line">        uintptr_t has_sidetable_rc  : 1;</div><div class="line">        uintptr_t extra_rc          : 19;</div><div class="line">#       define RC_ONE   (1ULL&lt;&lt;45)</div><div class="line">#       define RC_HALF  (1ULL&lt;&lt;18)</div><div class="line">    &#125;;</div><div class="line"></div><div class="line"># elif __x86_64__</div><div class="line">#   define ISA_MASK        0x00007ffffffffff8ULL</div><div class="line">#   define ISA_MAGIC_MASK  0x0000000000000001ULL</div><div class="line">#   define ISA_MAGIC_VALUE 0x0000000000000001ULL</div><div class="line">    struct &#123;</div><div class="line">        uintptr_t indexed           : 1;</div><div class="line">        uintptr_t has_assoc         : 1;</div><div class="line">        uintptr_t has_cxx_dtor      : 1;</div><div class="line">        uintptr_t shiftcls          : 44; // MACH_VM_MAX_ADDRESS 0x7fffffe00000</div><div class="line">        uintptr_t weakly_referenced : 1;</div><div class="line">        uintptr_t deallocating      : 1;</div><div class="line">        uintptr_t has_sidetable_rc  : 1;</div><div class="line">        uintptr_t extra_rc          : 14;</div><div class="line">#       define RC_ONE   (1ULL&lt;&lt;50)</div><div class="line">#       define RC_HALF  (1ULL&lt;&lt;13)</div><div class="line">    &#125;;</div><div class="line"></div><div class="line"># else</div><div class="line">    // Available bits in isa field are architecture-specific.</div><div class="line">#   error unknown architecture</div><div class="line"># endif</div><div class="line"></div><div class="line">// SUPPORT_NONPOINTER_ISA</div><div class="line">#endif</div><div class="line"></div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p><code>SUPPORT_NONPOINTER_ISA</code> 用于标记是否支持优化的 <code>isa</code> 指针，其字面含义意思是 <code>isa</code> 的内容不再是类的指针了，而是包含了更多信息，比如引用计数，析构状态，被其他 weak 变量引用情况。判断方法也是根据设备类型：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// Define SUPPORT_NONPOINTER_ISA=1 to enable extra data in the isa field.</div><div class="line">#if !__LP64__  ||  TARGET_OS_WIN32  ||  TARGET_IPHONE_SIMULATOR  ||  __x86_64__</div><div class="line">#   define SUPPORT_NONPOINTER_ISA 0</div><div class="line">#else</div><div class="line">#   define SUPPORT_NONPOINTER_ISA 1</div><div class="line">#endif</div></pre></td></tr></table></figure></p>
+<p>综合看来目前只有 arm64 架构的设备支持，下面列出了 <code>isa</code> 指针中变量对应的含义：</p>
+<table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>indexed</td>
+<td>0 表示普通的 <code>isa</code> 指针，1 表示使用优化，存储引用计数</td>
+</tr>
+<tr>
+<td>has_assoc</td>
+<td>表示该对象是否包含 associated object，如果没有，则析构时会更快</td>
+</tr>
+<tr>
+<td>has_cxx_dtor</td>
+<td>表示该对象是否有 C++ 或 ARC 的析构函数，如果没有，则析构时更快</td>
+</tr>
+<tr>
+<td>shiftcls</td>
+<td>类的指针</td>
+</tr>
+<tr>
+<td>magic</td>
+<td>固定值为 0xd2，用于在调试时分辨对象是否未完成初始化。</td>
+</tr>
+<tr>
+<td>weakly_referenced</td>
+<td>表示该对象是否有过 <code>weak</code> 对象，如果没有，则析构时更快</td>
+</tr>
+<tr>
+<td>deallocating</td>
+<td>表示该对象是否正在析构</td>
+</tr>
+<tr>
+<td>has_sidetable_rc</td>
+<td>表示该对象的引用计数值是否过大无法存储在 <code>isa</code> 指针</td>
+</tr>
+<tr>
+<td>extra_rc</td>
+<td>存储引用计数值减一后的结果</td>
+</tr>
+</tbody>
+</table>
+<p>在 64 位环境下，优化的 <code>isa</code> 指针并不是就一定会存储引用计数，毕竟用 19bit （iOS 系统）保存引用计数不一定够。需要注意的是这 19 位保存的是<strong>引用计数的值减一</strong>。<code>has_sidetable_rc</code> 的值如果为 1，那么引用计数会存储在一个叫 <code>SideTable</code> 的类的属性中，后面会详细讲。</p>
+<h2>散列表</h2>
+<p>散列表来存储引用计数具体是用 <code>DenseMap</code> 类来实现，这个类中包含好多映射实例到其引用计数的键值对，并支持用 <code>DenseMapIterator</code> 迭代器快速查找遍历这些键值对。接着说键值对的格式：键的类型为 <code>DisguisedPtr&lt;objc_object&gt;</code>，<code>DisguisedPtr</code> 类是对 <code>objc_object *</code> 指针及其一些操作进行的封装，目的就是为了让它给人看起来不会有内存泄露的样子（真是心机裱），其内容可以理解为对象的内存地址；值的类型为 <code>__darwin_size_t</code>，在 darwin 内核一般等同于 <code>unsigned long</code>。其实这里保存的值也是等于<strong>引用计数减一</strong>。使用散列表保存引用计数的设计很好，即使出现故障导致对象的内存块损坏，只要引用计数表没有被破坏，依然可以顺藤摸瓜找到内存块的位置。</p>
+<p>之前说引用计数表是个散列表，这里简要说下散列的方法。有个专门处理键的 <code>DenseMapInfo</code> 结构体，它针对 <code>DisguisedPtr</code> 做了些优化匹配键值速度的方法：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">struct DenseMapInfo&lt;DisguisedPtr&lt;T&gt;&gt; &#123;</div><div class="line">  static inline DisguisedPtr&lt;T&gt; getEmptyKey() &#123;</div><div class="line">    return DisguisedPtr&lt;T&gt;((T*)(uintptr_t)-1);</div><div class="line">  &#125;</div><div class="line">  static inline DisguisedPtr&lt;T&gt; getTombstoneKey() &#123;</div><div class="line">    return DisguisedPtr&lt;T&gt;((T*)(uintptr_t)-2);</div><div class="line">  &#125;</div><div class="line">  static unsigned getHashValue(const T *PtrVal) &#123;</div><div class="line">      return ptr_hash((uintptr_t)PtrVal);</div><div class="line">  &#125;</div><div class="line">  static bool isEqual(const DisguisedPtr&lt;T&gt; &amp;LHS, const DisguisedPtr&lt;T&gt; &amp;RHS) &#123;</div><div class="line">      return LHS == RHS; </div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>当然这里的哈希算法会根据是否为 64 位平台来进行优化，算法具体细节就不深究了，我总觉得苹果在这里的 hardcode 是随便写的：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">#if __LP64__</div><div class="line">static inline uint32_t ptr_hash(uint64_t key)</div><div class="line">&#123;</div><div class="line">    key ^= key &gt;&gt; 4;</div><div class="line">    key *= 0x8a970be7488fda55;</div><div class="line">    key ^= __builtin_bswap64(key);</div><div class="line">    return (uint32_t)key;</div><div class="line">&#125;</div><div class="line">#else</div><div class="line">static inline uint32_t ptr_hash(uint32_t key)</div><div class="line">&#123;</div><div class="line">    key ^= key &gt;&gt; 4;</div><div class="line">    key *= 0x5052acdb;</div><div class="line">    key ^= __builtin_bswap32(key);</div><div class="line">    return key;</div><div class="line">&#125;</div><div class="line">#endif</div></pre></td></tr></table></figure></p>
+<p>再介绍下 <code>SideTable</code> 这个类，它用于管理引用计数表和 <code>weak</code> 表，并使用 <code>spinlock_lock</code> 自旋锁来防止操作表结构时可能的竞态条件。它用一个 64*128 大小的 <code>uint8_t</code> 静态数组作为 buffer 来保存所有的 <code>SideTable</code> 实例。并提供三个公有属性：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">spinlock_t slock;//保证原子操作的自选锁</div><div class="line">RefcountMap refcnts;//保存引用计数的散列表</div><div class="line">weak_table_t weak_table;//保存 weak 引用的全局散列表</div></pre></td></tr></table></figure></p>
+<p>还提供了一个工厂方法，用于根据对象的地址在 buffer 中寻找对应的 <code>SideTable</code> 实例：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">static SideTable *tableForPointer(const void *p)</div></pre></td></tr></table></figure></p>
+<p><code>weak</code> 表的作用是在对象执行 <code>dealloc</code> 的时候将所有指向该对象的 <code>weak</code> 指针的值设为 <code>nil</code>，避免悬空指针。这是 <code>weak</code> 表的结构：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">struct weak_table_t &#123;</div><div class="line">    weak_entry_t *weak_entries;</div><div class="line">    size_t    num_entries;</div><div class="line">    uintptr_t mask;</div><div class="line">    uintptr_t max_hash_displacement;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>苹果使用一个全局的 <code>weak</code> 表来保存所有的 <code>weak</code> 引用。并将对象作为键，<code>weak_entry_t</code> 作为值。<code>weak_entry_t</code> 中保存了所有指向该对象的 <code>weak</code> 指针。</p>
+<h1>获取引用计数</h1>
+<p>在非 ARC 环境可以使用 <code>retainCount</code> 方法获取某个对象的引用计数，其会调用 <code>objc_object</code> 的 <code>rootRetainCount()</code> 方法：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (NSUInteger)retainCount &#123;</div><div class="line">    return ((id)self)-&gt;rootRetainCount();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在 ARC 时代除了使用 Core Foundation 库的 <code>CFGetRetainCount()</code> 方法，也可以使用 Runtime 的 <code>_objc_rootRetainCount(id obj)</code> 方法来获取引用计数，此时需要引入 <code>&lt;objc/runtime.h&gt;</code> 头文件。这个函数也是调用 <code>objc_object</code> 的 <code>rootRetainCount()</code> 方法：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">inline uintptr_t </div><div class="line">objc_object::rootRetainCount()</div><div class="line">&#123;</div><div class="line">    assert(!UseGC);</div><div class="line">    if (isTaggedPointer()) return (uintptr_t)this;</div><div class="line"></div><div class="line">    sidetable_lock();</div><div class="line">    isa_t bits = LoadExclusive(&amp;isa.bits);</div><div class="line">    if (bits.indexed) &#123;</div><div class="line">        uintptr_t rc = 1 + bits.extra_rc;</div><div class="line">        if (bits.has_sidetable_rc) &#123;</div><div class="line">            rc += sidetable_getExtraRC_nolock();</div><div class="line">        &#125;</div><div class="line">        sidetable_unlock();</div><div class="line">        return rc;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    sidetable_unlock();</div><div class="line">    return sidetable_retainCount();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>rootRetainCount()</code> 方法对引用计数存储逻辑进行了判断，因为 TaggedPointer 前面已经说过了，可以直接获取引用计数；64 位环境优化的 <code>isa</code> 指针前面也说过了，所以这里的重头戏是在 TaggedPointer 无法使用时调用的 <code>sidetable_retainCount()</code> 方法：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">uintptr_t</div><div class="line">objc_object::sidetable_retainCount()</div><div class="line">&#123;</div><div class="line">    SideTable *table = SideTable::tableForPointer(this);</div><div class="line"></div><div class="line">    size_t refcnt_result = 1;</div><div class="line">    </div><div class="line">    spinlock_lock(&amp;table-&gt;slock);</div><div class="line">    RefcountMap::iterator it = table-&gt;refcnts.find(this);</div><div class="line">    if (it != table-&gt;refcnts.end()) &#123;</div><div class="line">        // this is valid for SIDE_TABLE_RC_PINNED too</div><div class="line">        refcnt_result += it-&gt;second &gt;&gt; SIDE_TABLE_RC_SHIFT;</div><div class="line">    &#125;</div><div class="line">    spinlock_unlock(&amp;table-&gt;slock);</div><div class="line">    return refcnt_result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>sidetable_retainCount()</code> 方法的逻辑就是先从 <code>SideTable</code> 的静态方法获取当前实例对应的 <code>SideTable</code> 对象，其 <code>refcnts</code> 属性就是之前说的存储引用计数的散列表，这里将其类型简写为 <code>RefcountMap</code>：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typedef objc::DenseMap&lt;DisguisedPtr&lt;objc_object&gt;,size_t,true&gt; RefcountMap;</div></pre></td></tr></table></figure></p>
+<p>然后在引用计数表中用迭代器查找当前实例对应的键值对，获取引用计数值，并在此基础上 <strong>+1</strong> 并将结果返回。这也就是为什么之前说<strong>引用计数表存储的值为实际引用计数减一</strong>。</p>
+<p>需要注意的是为什么这里把键值对的值做了向右移位操作（<code>it-&gt;second &gt;&gt; SIDE_TABLE_RC_SHIFT</code>）:</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#ifdef __LP64__</div><div class="line">#   define WORD_BITS 64</div><div class="line">#else</div><div class="line">#   define WORD_BITS 32</div><div class="line">#endif</div><div class="line"></div><div class="line">// The order of these bits is important.</div><div class="line">#define SIDE_TABLE_WEAKLY_REFERENCED (1UL&lt;&lt;0)</div><div class="line">#define SIDE_TABLE_DEALLOCATING      (1UL&lt;&lt;1)  // MSB-ward of weak bit</div><div class="line">#define SIDE_TABLE_RC_ONE            (1UL&lt;&lt;2)  // MSB-ward of deallocating bit</div><div class="line">#define SIDE_TABLE_RC_PINNED         (1UL&lt;&lt;(WORD_BITS-1))</div><div class="line"></div><div class="line">#define SIDE_TABLE_RC_SHIFT 2</div><div class="line">#define SIDE_TABLE_FLAG_MASK (SIDE_TABLE_RC_ONE-1)RefcountMap</div></pre></td></tr></table></figure></p>
+<p>可以看出值的第一个 bit 表示该对象是否有过 <code>weak</code> 对象，如果没有，在析构释放内存时可以更快；第二个 bit 表示该对象是否正在析构。从第三个 bit 开始才是存储引用计数数值的地方。所以这里要做向右移两位的操作，而对引用计数的 +1 和 -1 可以使用 <code>SIDE_TABLE_RC_ONE</code>,还可以用 <code>SIDE_TABLE_RC_PINNED</code> 来判断是否引用计数值有可能溢出。</p>
+<p>当然不能够完全信任这个 <code>_objc_rootRetainCount(id obj)</code> 函数，对于已释放的对象以及不正确的对象地址，有时也返回 “1”。它所返回的引用计数只是某个给定时间点上的值，该方法并未考虑到系统稍后会把自动释放吃池清空，因而不会将后续的释放操作从返回值里减去。clang 会尽可能把 <code>NSString</code> 实现成单例对象，其引用计数会很大。如果使用了 TaggedPointer，<code>NSNumber</code> 的内容<strong>有可能</strong>就不再放到堆中，而是直接写在宽敞的64位栈指针值里。其看上去和真正的 <code>NSNumber</code> 对象一样，只是使用 TaggedPointer 优化了下，但其引用计数可能不准确。</p>
+<h1>修改引用计数</h1>
+<h2>retain 和 release</h2>
+<p>在非 ARC 环境下可以使用 <code>retain</code> 和 <code>release</code> 方法对引用计数进行加一减一操作，它们分别调用了 <code>_objc_rootRetain(id obj)</code> 和 <code>_objc_rootRelease(id obj)</code> 函数，不过后两者在 ARC 环境下也可使用。最后这两个函数又会调用 <code>objc_object</code> 的下面两个方法：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">inline id </div><div class="line">objc_object::rootRetain()</div><div class="line">&#123;</div><div class="line">    assert(!UseGC);</div><div class="line"></div><div class="line">    if (isTaggedPointer()) return (id)this;</div><div class="line">    return sidetable_retain();</div><div class="line">&#125;</div><div class="line"></div><div class="line">inline bool </div><div class="line">objc_object::rootRelease()</div><div class="line">&#123;</div><div class="line">    assert(!UseGC);</div><div class="line"></div><div class="line">    if (isTaggedPointer()) return false;</div><div class="line">    return sidetable_release(true);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样的实现跟获取引用计数类似，先是看是否支持 TaggedPointer（毕竟数据存在栈指针而不是堆中，栈的管理本来就是自动的），否则去操作 <code>SideTable</code> 中的 <code>refcnts</code> 属性，这与获取引用计数策略类似。<code>sidetable_retain()</code> 将 引用计数加一后返回对象，<code>sidetable_release()</code> 返回是否要执行 <code>dealloc</code> 方法：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">bool </div><div class="line">objc_object::sidetable_release(bool performDealloc)</div><div class="line">&#123;</div><div class="line">#if SUPPORT_NONPOINTER_ISA</div><div class="line">    assert(!isa.indexed);</div><div class="line">#endif</div><div class="line">    SideTable *table = SideTable::tableForPointer(this);</div><div class="line"></div><div class="line">    bool do_dealloc = false;</div><div class="line"></div><div class="line">    if (spinlock_trylock(&amp;table-&gt;slock)) &#123;</div><div class="line">        RefcountMap::iterator it = table-&gt;refcnts.find(this);</div><div class="line">        if (it == table-&gt;refcnts.end()) &#123;</div><div class="line">            do_dealloc = true;</div><div class="line">            table-&gt;refcnts[this] = SIDE_TABLE_DEALLOCATING;</div><div class="line">        &#125; else if (it-&gt;second &lt; SIDE_TABLE_DEALLOCATING) &#123;</div><div class="line">            // SIDE_TABLE_WEAKLY_REFERENCED may be set. Don&apos;t change it.</div><div class="line">            do_dealloc = true;</div><div class="line">            it-&gt;second |= SIDE_TABLE_DEALLOCATING;</div><div class="line">        &#125; else if (! (it-&gt;second &amp; SIDE_TABLE_RC_PINNED)) &#123;</div><div class="line">            it-&gt;second -= SIDE_TABLE_RC_ONE;</div><div class="line">        &#125;</div><div class="line">        spinlock_unlock(&amp;table-&gt;slock);</div><div class="line">        if (do_dealloc  &amp;&amp;  performDealloc) &#123;</div><div class="line">            ((void(*)(objc_object *, SEL))objc_msgSend)(this, SEL_dealloc);</div><div class="line">        &#125;</div><div class="line">        return do_dealloc;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    return sidetable_release_slow(table, performDealloc);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>看到这里知道为什么在存储引用计数时<strong>总是真正的引用计数值减一</strong>了吧。因为 release 本来是要将引用计数减一，所以存储引用计数时先预留了个“一”，在减一之前先看看存储的引用计数值是否为 0 （<code>it-&gt;second &lt; SIDE_TABLE_DEALLOCATING</code>），如果是，那就将对象标记为“正在析构”（<code>it-&gt;second |= SIDE_TABLE_DEALLOCATING</code>）,并发送 <code>dealloc</code> 消息，返回 <code>YES</code>；否则就将引用计数减一（<code>it-&gt;second -= SIDE_TABLE_RC_ONE</code>）。这样做避免了负数的产生。</p>
+<p>除此之外，Core Foundation 库中也提供了增减引用计数的方法。比如在使用 Toll-Free Bridge 转换时使用的 <code>CFBridgingRetain</code> 和 <code>CFBridgingRelease</code> 方法，其本质是使用 <code>__bridge_retained</code> 和 <code>__bridge_transfer</code> 告诉编译器此处需要如何修改引用计数：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">NS_INLINE CF_RETURNS_RETAINED CFTypeRef __nullable CFBridgingRetain(id __nullable X) &#123;</div><div class="line">    return (__bridge_retained CFTypeRef)X;</div><div class="line">&#125;</div><div class="line"></div><div class="line">NS_INLINE id __nullable CFBridgingRelease(CFTypeRef CF_CONSUMED __nullable X) &#123;</div><div class="line">    return (__bridge_transfer id)X;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>此外 Objective-C 很多实现是靠 Core Foundation Runtime 来实现， Objective-C Runtime 源码中有些地方明确注明：&quot;<code>// Replaced by CF</code>&quot;，那就是意思说这块任务被 Core Foundation 库接管了。当然 Core Foundation 有一部分是开源的。还有一些 Objective-C Runtime 函数的实现被诸如 <code>ObjectAlloc</code> 和 <code>NSZombie</code> 这样的内存管理工具所替代：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">// Replaced by ObjectAlloc</div><div class="line">+ (id)allocWithZone:(struct _NSZone *)zone &#123;</div><div class="line">    return _objc_rootAllocWithZone(self, (malloc_zone_t *)zone);</div><div class="line">&#125;</div><div class="line"></div><div class="line">// Replaced by CF (throws an NSException)</div><div class="line">+ (id)init &#123;</div><div class="line">    return (id)self;</div><div class="line">&#125;</div><div class="line"></div><div class="line">// Replaced by NSZombies</div><div class="line">- (void)dealloc &#123;</div><div class="line">    _objc_rootDealloc(self);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>alloc, new, copy, mutableCopy</h2>
+<p>根据编译器的约定，这以这四个单词开头的方法都会使引用计数加一。而 <code>new</code> 相当于调用 <code>alloc</code> 后再调用 <code>init</code>：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">id</div><div class="line">_objc_rootAlloc(Class cls)</div><div class="line">&#123;</div><div class="line">    return callAlloc(cls, false/*checkNil*/, true/*allocWithZone*/);</div><div class="line">&#125;</div><div class="line">+ (id)alloc &#123;</div><div class="line">    return _objc_rootAlloc(self);</div><div class="line">&#125;</div><div class="line">+ (id)new &#123;</div><div class="line">    return [callAlloc(self, false/*checkNil*/) init];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可以看出 <code>alloc</code> 和 <code>new</code> 最终都会调用 <code>callAlloc</code>，默认使用 Objective-C 2.0 且忽视垃圾回收和 NSZone，那么后续的调用顺序依次是为：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">class_createInstance()</div><div class="line">_class_createInstanceFromZone()</div><div class="line">calloc()</div></pre></td></tr></table></figure></p>
+<p><code>calloc()</code> 函数相比于 <code>malloc()</code> 函数的优点是它将分配的内存区域初始化为0，相当于 <code>malloc()</code> 后再用 <code>memset()</code> 方法初始化一遍。</p>
+<p><code>copy</code> 和 <code>mutableCopy</code> 都是基于 <code>NSCopying</code> 和 <code>NSMutableCopying</code> 方法约定，分别调用各类自己实现的 <code>copyWithZone:</code> 和 <code>mutableCopyWithZone:</code> 方法。这些方法无论实现方式是深拷贝还是浅拷贝，都会增加引用计数。（有些类的策略是懒拷贝，只增加引用计数但并不真的拷贝，等对象内容发生变化时再拷贝一份出来，比如 <code>NSArray</code>）。</p>
+<p>在 <code>retain</code> 方法加符号断点会发现 <code>alloc</code>, <code>new</code>, <code>copy</code>, <code>mutableCopy</code> 这四个方法都会通过 Core Foundation 的 <code>CFBasicHashAddValue()</code> 函数来调用 <code>retain</code> 方法。其实 CF 有个修改和查看引用计数的入口函数 <code>__CFDoExternRefOperation</code>，在 <code>CFRuntime.c</code> 文件中实现。</p>
+<h2>autorelease</h2>
+<p>本想贴上一堆 Runtime 中关于自动释放池的源码然后说上一大堆，然后发现了太阳神的这篇<a href="http://blog.sunnyxx.com/2014/10/15/behind-autorelease/" target="_blank" rel="external">黑幕背后的Autorelease</a>把我想说的都说了，把我不知道的也说了，简直太屌了。</p>
+<p>其实通过看源码可以知道好多细节，没事点进去各种宏定义往往会得到惊喜：哇，原来是这么回事，XX 就是 XX 之类。。。</p>
+<h1>Reference</h1>
+<p>http://www.sealiesoftware.com/blog/archive/2013/09/24/objc_explain_Non-pointer_isa.html</p>
+<p>http://www.opensource.apple.com</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2015/12/06/understanding-532movie-iOS-v1-0/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2015/12/07/Codage-17-ipython-notebook-installation/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

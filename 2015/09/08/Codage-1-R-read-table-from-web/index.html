@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            Scraping Data Table from Website by R | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,R,dplyr,RMySQL,XML,quantmod">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Scraping Data Table from Website by R | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="R"> <meta property="og:article:tag" content="dplyr"> <meta property="og:article:tag" content="RMySQL"> <meta property="og:article:tag" content="XML"> <meta property="og:article:tag" content="quantmod"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">Climate Data Collection - XML::readHTMLTable</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">Stock Index Data Collection - quantmod::getSymbols</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">Load Data to MySQL</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Scraping Data Table from Website by R
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>9月 08, 2015</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/R/">R</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/RMySQL/">RMySQL</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/XML/">XML</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/dplyr/">dplyr</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/quantmod/">quantmod</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Scraping Data Table from Website by R&url=http://yoursite.com//2015/09/08/Codage-1-R-read-table-from-web/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Scraping Data Table from Website by R&url=http://yoursite.com//2015/09/08/Codage-1-R-read-table-from-web/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2015/09/08/Codage-1-R-read-table-from-web/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2015/09/08/Codage-1-R-read-table-from-web/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>For many quantitative analysis, we often consider factors such climate or economics data. Those data are usually displayed as tables on the websites and can be collected from there. However, to copy-paste with EXCEL is an extremely inefficient way.
+We can use R to read data directly from the web pages and store them uniformly without too may data clean steps.
+&lt;!-- more --&gt;
+To be clarified, most of the statistical models are <strong>not instantly renewed</strong>. The &quot;instant&quot; here means along with the data increase by time, the model need to be / can be renewed in the same time or in a short time.</p>
+<p>Our task is to realize a semi-automated web data scraping program, whenever a modeling refresh is needed, the raw data should be prepared.
+So we need to realize 2 things:</p>
+<ul>
+<li>read data by specifying various arguments;</li>
+<li>store the data into local data base server.</li>
+</ul>
+<p>Here we take 2 examples:</p>
+<ul>
+<li>Climate Data (daily)</li>
+<li>Stock Index (daily)</li>
+</ul>
+<p>Several packages need to be loaded before hand.
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">require(XML, quietly = T, warn.conflicts = F)</div><div class="line">require(quantmod, quietly = T, warn.conflicts = F)</div><div class="line">require(RMySQL, quietly = T, warn.conflicts = F)</div><div class="line">require(dplyr, quietly = T, warn.conflicts = F)</div></pre></td></tr></table></figure></p>
+<h2>Climate Data Collection - XML::readHTMLTable</h2>
+<p>In XML package, there is a function which enable R to directly read tables from website (when it really contains tables).
+Let's take a look on this function first:
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">readHTMLTable(doc, header = <span class="literal">NA</span>,</div><div class="line">              colClasses = <span class="literal">NULL</span>, skip.rows = integer(), trim = <span class="literal">TRUE</span>,</div><div class="line">              elFun = xmlValue, as.data.frame = <span class="literal">TRUE</span>, which = integer(),</div><div class="line">              <span class="keyword">...</span>)</div></pre></td></tr></table></figure></p>
+<p><code>readHTMLTable()</code> inherits <code>read.table()</code> in <code>base</code> package. You can specify more arguments than what you see here if you are familiar with the latter function.
+<code>doc</code> requires a HTML document - either a file name or a URL. To simplify it, we can directly assign a URL to it.
+<code>which</code> an integer vector identifying which tables to return from within the document. This applies to the method for the document, not individual tables. To judge the number of tables, you could inspect the elements of the website and count the number of <code>&lt;table&gt;</code> tags.
+We use &quot;http://en.tutiempo.net/climate/&quot; for gathering the climate data. The data in this website is on city basis. By selecting a city, year and month (i.e. China -&gt; Beijing -&gt; 2015 -&gt; jun), you can see a URL like &quot;http://en.tutiempo.net/climate/06-2015/ws-545110.html&quot;.
+Open this page, there are 2 tables, one for climate data and one for data field interpretation. Right click on that page, select <code>Inspect elements</code>, it's also not hard to find 2 <code>&lt;table&gt;</code> tags.
+To read the first table, specify the table number <code>which = 1</code>:
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">webtable &lt;- readHTMLTable(http://en.tutiempo.net/climate/<span class="number">06</span>-<span class="number">2015</span>/ws-<span class="number">545110.</span>html,</div><div class="line">                          header = <span class="literal">T</span>, which = <span class="number">1</span>, stringsAsFactors = <span class="literal">F</span></div></pre></td></tr></table></figure></p>
+<p>What if you want to download data of different countries and different period?
+Noticed that the URL is composed of 3 parts, take the previous case for instance.</p>
+<ul>
+<li>head: &quot;http://en.tutiempo.net/climate/&quot;</li>
+<li>month-year: &quot;06-2015&quot;</li>
+<li>country-city code: &quot;/ws-545110.html&quot;</li>
+</ul>
+<p>Changing the latter 2 parts, you could collect as many info as you want.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">GrabClimate &lt;- <span class="keyword">function</span>(year, month, country)&#123;</div><div class="line">  month &lt;- paste(ifelse(nchar(month)==<span class="number">1</span>,<span class="string">"0"</span>,<span class="string">""</span>), month, sep = <span class="string">""</span>)</div><div class="line"></div><div class="line">  <span class="comment"># link_tail: the collection of main APAC countries</span></div><div class="line">  link_tail &lt;- c(`AUSTRALIA` = <span class="string">"/ws-947680.html"</span>, <span class="comment"># SYDNEY</span></div><div class="line">                 `CHINA` = <span class="string">"/ws-545110.html"</span>, <span class="comment"># BEIJING</span></div><div class="line">                 `INDIA` = <span class="string">"/ws-421820.html"</span>, <span class="comment"># NEW DEHLI</span></div><div class="line">                 `INDONESIA` = <span class="string">"/ws-967490.html"</span>, <span class="comment"># JAKARTA</span></div><div class="line">                 `JAPAN` = <span class="string">"/ws-476620.html"</span>, <span class="comment"># TOKYO</span></div><div class="line">                 `KOREA` = <span class="string">"/ws-471080.html"</span>, <span class="comment"># SEOUL</span></div><div class="line">                 `MALAYSIA` = <span class="string">"/ws-486470.html"</span>, <span class="comment"># KUALA LUMPUR</span></div><div class="line">                 `NEW ZEALAND` = <span class="string">"/ws-934390.html"</span>, <span class="comment"># WELLINGTON</span></div><div class="line">                 `PHILIPPINES` = <span class="string">"/ws-984250.html"</span>, <span class="comment"># MANILA</span></div><div class="line">                 `THAILAND` = <span class="string">"/ws-484540.html"</span>, <span class="comment"># BANGKOK</span></div><div class="line">                 `TAIWAN` = <span class="string">"/ws-589680.html"</span>, <span class="comment"># TAIPEI</span></div><div class="line">                 `VIETNAM` = <span class="string">"/ws-488200.html"</span>)  <span class="comment"># HA NOI</span></div><div class="line"></div><div class="line">  <span class="comment"># the address need to be adjusted according to the country to be modeled</span></div><div class="line">  link &lt;- paste(<span class="string">"http://en.tutiempo.net/climate/"</span>, month, <span class="string">"-"</span>, year,</div><div class="line">                link_tail[toupper(country)], sep = <span class="string">""</span>)</div><div class="line"></div><div class="line">  webtable &lt;- readHTMLTable(link, header = <span class="literal">T</span>, which = <span class="number">1</span>, stringsAsFactors = <span class="literal">F</span>,</div><div class="line">                            na.strings = c(<span class="string">"-"</span>))</div><div class="line"></div><div class="line">  <span class="comment"># Add 2 columns and remove the bottom 2 lines</span></div><div class="line">  webtable &lt;- data.frame(Country = toupper(country), Year = as.numeric(year),</div><div class="line">                         Month = as.numeric(month), webtable[<span class="number">1</span>:(nrow(webtable)-<span class="number">2</span>),])</div><div class="line"></div><div class="line">  <span class="comment"># Remove unuseful columns and rename the table</span></div><div class="line">  webtable &lt;- select(webtable, -(VV:VG))</div><div class="line">  names(webtable) &lt;- c(<span class="string">"Country"</span>, <span class="string">"Year"</span>, <span class="string">"Month"</span>, <span class="string">"Day"</span>, <span class="string">"Avg_Temp"</span>, <span class="string">"Max_Temp"</span>,</div><div class="line">                       <span class="string">"Min_Temp"</span>, <span class="string">"Atm_Pressure"</span>, <span class="string">"Avg_Humidity"</span>, <span class="string">"Rainfall"</span>,</div><div class="line">                       <span class="string">"Ind_Rain_Drizzle"</span>, <span class="string">"Ind_Snow"</span>, <span class="string">"Ind_Storm"</span>, <span class="string">"Ind_Fog"</span>)</div><div class="line">  rownames(webtable) &lt;- <span class="literal">NULL</span></div><div class="line"></div><div class="line">  <span class="comment"># Replace "-" by NA.</span></div><div class="line">  webtable &lt;- mutate(webtable,</div><div class="line">                     Day = as.numeric(Day),</div><div class="line">                     Ind_Rain_Drizzle = ifelse(Ind_Rain_Drizzle == <span class="string">"o"</span>, <span class="number">1</span>, <span class="number">0</span>),</div><div class="line">                     Ind_Snow = ifelse(Ind_Snow == <span class="string">"o"</span>, <span class="number">1</span>, <span class="number">0</span>),</div><div class="line">                     Ind_Storm = ifelse(Ind_Storm == <span class="string">"o"</span>, <span class="number">1</span>, <span class="number">0</span>),</div><div class="line">                     Ind_Fog = ifelse(Ind_Fog == <span class="string">"o"</span>, <span class="number">1</span>, <span class="number">0</span>))</div><div class="line"></div><div class="line">  webtable</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Using this function in embedded loops you can get the full set of data (Suppose we assign the data to <code>climate</code>, we will use it later.).</p>
+<h2>Stock Index Data Collection - quantmod::getSymbols</h2>
+<p>In <code>quantmod</code> package, <code>getSymbols()</code> is well developed function. Specifying the index symbol, the function automatically returns the table read from Yahoo Finance (you can also set other website), and save it in the a variable named by the symbol. You can also specify the data start and end date.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># the list of major APAC stock index code</span></div><div class="line">sym_stock &lt;- c(`AUSTRALIA` = <span class="string">"^AORD"</span>, <span class="comment"># All Ordinaries</span></div><div class="line">               `CHINA` = <span class="string">"^SSEC"</span>, <span class="comment"># Shanghai Composite</span></div><div class="line">               `INDIA` = <span class="string">"^BSESN"</span>, <span class="comment"># Bombay BSE SENSEX / BSE 30</span></div><div class="line">               `INDONESIA` = <span class="string">"^JKSE"</span>, <span class="comment"># Jakarta Composite</span></div><div class="line">               `JAPAN` = <span class="string">"^N225"</span>, <span class="comment"># Tokyo Share Nikkei 225</span></div><div class="line">               `KOREA` = <span class="string">"^KS11"</span>, <span class="comment"># Seoul Composite</span></div><div class="line">               `MALAYSIA` = <span class="string">"^KLSE"</span>, <span class="comment"># FTSE Bursa Malaysia KLCI</span></div><div class="line">               `NEW ZEALAND` = <span class="string">"^NZ50"</span>, <span class="comment"># New Zealand NZX 50 Index</span></div><div class="line">               `PHILIPPINES` = <span class="string">"^PSI"</span>, <span class="comment"># Manila</span></div><div class="line">               `THAILAND` = <span class="string">"SET"</span>, <span class="comment"># BANGKOK</span></div><div class="line">               `TAIWAN` = <span class="string">"^TWII"</span>, <span class="comment"># Taiwan Weighted</span></div><div class="line">               `VIETNAM` = <span class="string">"VNM"</span>) <span class="comment"># Vietnam Index</span></div><div class="line"></div><div class="line">stock_ind &lt;- data.frame(matrix(numeric(), ncol = <span class="number">8</span>,</div><div class="line">                               dimnames = list(<span class="literal">NULL</span>,</div><div class="line">                                               c(<span class="string">"Country"</span>, <span class="string">"Date"</span>, <span class="string">"Open"</span>, <span class="string">"High"</span>, <span class="string">"Low"</span>,</div><div class="line">                                                 <span class="string">"Close"</span>, <span class="string">"Volumne"</span>, <span class="string">"AdjClose"</span>))))</div><div class="line"></div><div class="line"><span class="keyword">for</span> (i <span class="keyword">in</span> <span class="number">1</span>:<span class="number">12</span>)&#123;</div><div class="line">  <span class="comment"># auto.assign = F, do not assign the read table under the name of index code</span></div><div class="line">  temp &lt;- as.data.frame(suppressWarnings(getSymbols(sym_stock[i], auto.assign = <span class="literal">F</span>,</div><div class="line">                                                    from = <span class="string">"2013-01-01"</span>,</div><div class="line">                                                    to = <span class="string">"2015-07-31"</span>)))</div><div class="line">  names(temp) &lt;- c(<span class="string">"Open"</span>, <span class="string">"High"</span>, <span class="string">"Low"</span>, <span class="string">"Close"</span>, <span class="string">"Volumne"</span>, <span class="string">"AdjClose"</span>)</div><div class="line">  stock_ind &lt;- rbind(stock_ind, data.frame(Country = names(sym_stock)[i],</div><div class="line">                                           Date = rownames(temp), temp))</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>Load Data to MySQL</h2>
+<p><code>dplyr</code> and <code>RMySQL</code> both provide method for R to connect to MySQL.
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># create a database "example"</span></div><div class="line">con &lt;- dbConnect(MySQL(), host = <span class="string">"xx.xxx.xxxx.xxx"</span>, port = <span class="number">3306</span>,</div><div class="line">                 user = <span class="string">"Admin"</span>, password = <span class="string">"Power_Overwhelming"</span>)</div><div class="line">dbSendQuery(con, <span class="string">"CREATE SCHEMA `example`"</span>)</div><div class="line"></div><div class="line"><span class="comment"># connection to MySQL db "example" using dplyr method</span></div><div class="line">con1 &lt;- src_mysql(dbname = <span class="string">"example"</span>, host = <span class="string">"xx.xxx.xxxx.xxx"</span>, port = <span class="number">3306</span>,</div><div class="line">                  user = <span class="string">"Admin"</span>, password = <span class="string">"Power_Overwhelming"</span>)</div><div class="line"></div><div class="line"><span class="comment"># connection to MySQL db "example" using RMySQL method</span></div><div class="line">con2 &lt;- dbConnect(MySQL(), host = <span class="string">"xx.xxx.xxxx.xxx"</span>, port = <span class="number">3306</span>, db = <span class="string">"example"</span>,</div><div class="line">                  user = <span class="string">"Admin"</span>, password = <span class="string">"Power_Overwhelming"</span>)</div></pre></td></tr></table></figure></p>
+<p>To create new tables, we can use <code>dplyr::copy_to</code> to create MySQL table.
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">copy_to(con1, climate, <span class="string">"climate"</span>, temporary = <span class="literal">F</span>)</div><div class="line">copy_to(con1, stock_ind, <span class="string">"stock"</span>, temporary = <span class="literal">F</span>)</div></pre></td></tr></table></figure></p>
+<p>If the table already exists:
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">db_insert_into(con2, table = <span class="string">"climate"</span>, value = climate)</div><div class="line">db_insert_into(con2, table = <span class="string">"stock"</span>, value = stock_ind)</div></pre></td></tr></table></figure></p>
+<p>Add index to optimize query speed:
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">dbSendQuery(con2, <span class="string">"ALTER TABLE climate</span></div><div class="line">            ADD KEY climate(Country, Year, Month, Day,</div><div class="line">                            Avg_Temp, Max_Temp, Min_Temp,</div><div class="line">                            Rainfall, Ind_Rain, Ind_Snow,</div><div class="line">                            Ind_Storm, Ind_Fog)")</div><div class="line">dbSendQuery(con2, <span class="string">"ALTER TABLE stock</span></div><div class="line">            ADD KEY stock(Open, High, Low, Close, Volumne, AdjClose)")</div></pre></td></tr></table></figure></p>
+<p>We can use <code>dplyr::tbl()</code> and a series of <code>dplyr</code> functions to manipulate data in MySQL databasess.</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2015/09/07/Pensee-1-Q-A-No.1/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2015/09/10/01.hello-world/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

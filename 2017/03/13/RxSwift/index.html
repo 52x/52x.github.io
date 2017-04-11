@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            RxSwift的简单使用 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,RxSwift">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="RxSwift的简单使用 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="RxSwift"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">1. bindTo</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">2.UIBindingObserver</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">3.Driver</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">4.DisposeBag</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">5.DataSource</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">6.项目实战</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.1.</span> <span class="post-toc-text"><1>.界面</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.2.</span> <span class="post-toc-text"><2>.Entity 实体</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.3.</span> <span class="post-toc-text"><3>.ViewModelServer 服务</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.4.</span> <span class="post-toc-text"><4>.ViewModel 视图模型</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.5.</span> <span class="post-toc-text"><5>.ViewController 视图控制器</span></a></li></ol></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                RxSwift的简单使用
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>3月 13, 2017</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/RxSwift/">RxSwift</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=RxSwift的简单使用&url=http://yoursite.com//2017/03/13/RxSwift/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=RxSwift的简单使用&url=http://yoursite.com//2017/03/13/RxSwift/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2017/03/13/RxSwift/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2017/03/13/RxSwift/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p><code>RxSwift</code>为<code>ReactiveX</code>（<code>Reactive Extensions</code>）旗下的<code>Swift</code>语言库，提供了Swift平台上进行响应式编程的解决方案。Rx的重要角色为<code>Observable</code>（被观察者）和<code>Observer</code>（观察者），<code>Observable</code>类似于<code>ReactiveCoco</code>a中的<code>Signal</code>，里面装有事件流，供<code>Observer</code>订阅。事件流&lt;!--more--&gt;在Rx中与<code>ReactiveCocoa</code>一样具有三类：<code>Next</code>、<code>Error</code>、<code>Completed</code>，代表着继续事件、错误事件、完成事件。我们在使用<code>RxSwift</code>进行<code>iOS</code>开发时，通常会引入另外一个库：<code>RxCocoa</code>，这个库将<code>UIKit</code>以及<code>Foundation</code>框架中许多成员，如视图(<code>View</code>)、控制事件(<code>Control Event</code>)、键值观察（<code>KVO</code>）、通知（<code>Notification</code>）等等进行与<code>RxSwift</code>接入的扩展，将Rx与iOS API无缝连接。</p>
+<h2><strong>1. bindTo</strong></h2>
+<p><code>bindTo</code>为<code>ObservableType</code>协议的几个重载方法（<code>Observable</code>也会实现<code>ObservableType</code>协议）。顾名思义，它会将某个东东与一个可观察者进行绑定，也就是说，当这个可观察者的事件流中有事件“流过”（有事件元素发送），被绑定的这个东东就会被刺激到，进而进行相关的操作。</p>
+<p>在这里，有一个用的比较多的是重载方法为<code>bindTo&lt;O : ObserverType where O.E == E&gt;(observer: O) -&gt; Disposable</code>，这个方法有一个参数，从方法泛型的声明中可以得知，参数的类型为一个观察者类型，且这个观察者能够接受到的事件流元素的类型要跟被观察者的一样(O.E == E)。这个方法意图就是将一个被观察者与一个指定的观察者进行绑定，被观察者事件流中发出的所有事件元素都会让观察者接收。
+在MVVM架构模式中，此方法主要用于视图（View）层跟视图模型（ViewModel）层或视图层跟视图层的绑定，这里举个栗子：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">textField.rx_text</div><div class="line">.bindTo(label.rx_text)</div><div class="line">.addDisposableTo(disposeBag)</div></pre></td></tr></table></figure></p>
+<p><code>其中，UITextField的rx_text属性为ControlProperty类型，实现了ControlPropertyType，所以不仅是观察者类型，还是被观察者类型，UILabel中的rx_text只是单纯的观察者类型。</code></p>
+<p><code>bindTo</code>的另外一个用得比较多的重载方法为：<code>bindTo(variable: RxSwift.Variable&lt;Self.E&gt;) -&gt; Disposable</code>，这个方法将一个被观察者与一个<code>Variable</code>（变量）绑定在一起，这个变量的元素类型跟被观察者的事件元素类型一致。此方法作用就是把从被观察者事件流中发射出的事件元素存入变量中，在这里不做演示。
+关于bindTo的其他重载方法在这里就不完全阐述了，剩下的主要是用于对函数的绑定。</p>
+<h2><strong>2.UIBindingObserver</strong></h2>
+<p>现在介绍的这个东东就跟上面说的被观察者类型的<code>bindTo</code>方法密切相关了。
+<code>UIBindingObserver</code>，名字就告诉了我们它是一个观察者，用于对UI的绑定，我这里通过一个例子来讲解它：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//  MARK: - 绑定方法</div><div class="line">func binding() &#123;</div><div class="line">textField.rx_text</div><div class="line">.bindTo(label.rx_sayHelloObserver)</div><div class="line">.addDisposableTo(disposeBag)</div><div class="line">&#125;</div><div class="line">//  MARK: - 视图控件扩展</div><div class="line">private extension UILabel &#123;</div><div class="line">var rx_sayHelloObserver: AnyObserver&lt;String&gt; &#123;</div><div class="line">return UIBindingObserver(UIElement: self, binding: &#123; (label, string) in</div><div class="line">label.text = &quot;Hello \(string)&quot;</div><div class="line">&#125;).asObserver()</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的代码中，我在视图控制器<code>ViewController</code>所在的<code>Swift</code>文件中创建了一个私有的<code>UILabel</code>扩展，并在扩展中定义了一个只读计算属性，属性的类型为<code>AnyObserver&lt;String&gt;</code>，为一个事件元素是<code>String</code>的观察者类型。当获取这个属性值的时候，就返回了与特定<code>UIBindingObserver</code>关联的观察者。
+现在我们来看一下<code>UIBindingObserver</code>的构造方法：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">init(UIElement: UIElementType, binding: (UIElementType, Value) -&gt; Void)</div></pre></td></tr></table></figure></p>
+<p>方法的第一个参数就是传入一个要被绑定的视图的实例，由于现在是在<code>UILabel</code>的扩展中，所以这里我传入了<code>self</code>，代表<code>UILabel</code>自己；构造方法的第二个参数为一个无返回值的闭包类型，闭包的参数其一就是被绑定了的视图，其二就是由绑定的被观察者中所发射出来的事件元素。通过这个闭包，我们能够将视图中的某些属性根据相应的事件元素而进行改变，如例子中<code>label.text = &quot;Hello \(string)&quot;</code>。当我们执行例子中的<code>binding</code>函数进行绑定后，<code>TextField</code>中的字符串每经过修改，<code>Label</code>中的文字总会实时更新，并在字符串前面加上<code>Hello</code>。</p>
+<p>在<code>RxCocoa</code>框架中，某些地方也用到了<code>UIBindingObserver</code>，如<code>UILable</code>中的<code>rx_text</code>：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public var rx_text: AnyObserver&lt;String&gt; &#123;</div><div class="line">return UIBindingObserver(UIElement: self) &#123; label, text in</div><div class="line">label.text = text</div><div class="line">&#125;.asObserver()</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2><strong>3.Driver</strong></h2>
+<p><code>Driver</code>从名字上可以理解为<code>驱动</code>（我自己会亲切地把它叫做&quot;老司机&quot;），在功能上它类似被观察者（<code>Observable</code>），而它本身也可以与被观察者相互转换（<code>Observable: asDriver, Driver: asObservable</code>），它驱动着一个观察者，当它的事件流中有事件涌出时，被它驱动着的观察者就能进行相应的操作。一般我们会将一个<code>Observable</code>被观察者转换成<code>Driver</code>后再进行驱动操作：</p>
+<p>我们沿用上面例子中的<code>UILabel</code>私有扩展，并修改下<code>binding</code>方法：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">func binding() &#123;</div><div class="line">textField.rx_text</div><div class="line">.asDriver()</div><div class="line">.drive(label.rx_sayHelloObserver)</div><div class="line">.addDisposableTo(disposeBag)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可见，<code>Driver</code>的<code>drive</code>方法与<code>Observable</code>的方法<code>bindTo</code>用法非常相似，事实上，它们的作用也是一样，说白了就是被观察者与观察者的绑定。那为什么<code>RxSwift</code>的作者又搞出<code>Driver</code>这么个东西来呢？
+其实，比较与Observable，Driver有以下的特性：</p>
+<ol>
+<li>它不会发射出错误(Error)事件</li>
+<li>对它的观察订阅是发生在主线程(UI线程)的</li>
+<li>自带shareReplayLatestWhileConnected</li>
+</ol>
+<p>下面就围绕着这三个特性一一研究下：</p>
+<ul>
+<li>当你将一个<code>Observable</code>转换成<code>Driver</code>时，用到的<code>asDriver</code>方法有下面几个重载：</li>
+</ul>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">asDriver(onErrorJustReturn onErrorJustReturn: Self.E)</div><div class="line"></div><div class="line">asDriver(onErrorDriveWith onErrorDriveWith: RxCocoa.Driver&lt;Self.E&gt;)</div><div class="line"></div><div class="line">asDriver(onErrorRecover onErrorRecover: (error: ErrorType) -&gt; RxCocoa.Driver&lt;Self.E&gt;)</div></pre></td></tr></table></figure></p>
+<p>从这三个重载方法中可看出，当我们要将有可能会发出错误事件的<code>Observable</code>转换成<code>Driver</code>时，必须要先将所有可能发出的错误事件滤除掉，从而使得<code>Driver</code>不可能会发射出错误的事件。</p>
+<ul>
+<li>在<code>Observable</code>中假如你要进行限流，你要用到方法<code>throttle(dueTime: RxSwift.RxTimeInterval, scheduler: SchedulerType)</code>，方法的第一个参数是两个事件之间的间隔时间，第二个参数是一个线程的有关类，如我要在主线程中，我可以传入<code>MainScheduler.instance</code>。而在<code>Driver</code>中我们要限流，调用的是<code>throttle(dueTime: RxSwift.RxTimeInterval)</code>，只配置事件的间隔时间，而它默认会在主线程中进行。</li>
+</ul>
+<ul>
+<li>一般我们在对<code>Observable</code>进行<code>map</code>操作后，我们会在后面加上<code>shareReplay(1)</code>或<code>shareReplayLatestWhileConnected</code>，以防止以后被观察者被多次订阅观察后，<code>map</code>中的语句会多次调用：</li>
+</ul>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">let rx_textChange = textField.rx_text</div><div class="line">.map &#123; return &quot;Good \($0)&quot; &#125;</div><div class="line">.shareReplay(1)</div><div class="line">rx_textChange</div><div class="line">.subscribeNext &#123; print(&quot;1 -- \($0)&quot;) &#125;</div><div class="line">.addDisposableTo(disposeBag)</div><div class="line">rx_textChange</div><div class="line">.subscribeNext &#123; print(&quot;2 -- \($0)&quot;) &#125;</div><div class="line">.addDisposableTo(disposeBag)</div></pre></td></tr></table></figure></p>
+<p>在<code>Driver</code>中，框架已经默认帮我们加上了<code>shareReplayLatestWhileConnected</code>，所以我们也没必要再加上<code>&quot;replay&quot;</code>相关的语句了。</p>
+<p>从这些特性可以看出，<code>Driver</code>是一个专门针对于<code>UI</code>的特定可观察者类。并不是说对<code>UI</code>进行相应绑定操作不能使用纯粹的<code>Observable</code>，但是，<code>Driver</code>已经帮我们省去了好多的操作，让我们对<code>UI</code>的绑定更加的高效便捷。所以，对<code>UI</code>视图的绑定操作，我们首选“老司机”<code>Driver</code>。</p>
+<h2><strong>4.DisposeBag</strong></h2>
+<p>当一个<code>Observable</code>（被观察者）被观察订阅后，就会产生一个<code>Disposable</code>实例，通过这个实例，我们就能进行资源的释放了。
+对于<code>RxSwift中</code>资源的释放，也就是解除绑定、释放空间，有两种方法，分别是显式释放以及隐式释放：</p>
+<ul>
+<li><strong>显式释放</strong> 可以让我们在代码中直接调用释放方法进行资源的释放，如下面的实例：</li>
+</ul>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">let dispose = textField.rx_text</div><div class="line">.bindTo(label.rx_sayHelloObserver)</div><div class="line">dispose.dispose()</div></pre></td></tr></table></figure></p>
+<p>这个例子只是为了更明朗地说明显式释放方法而已，实际上并不会这样写。</p>
+<ul>
+<li><strong>隐式释放</strong> 则通过DisposeBag来进行，它类似于Objective-C ARC中的自动释放池机制，当我们创建了某个实例后，会被添加到所在线程的自动释放池中，而自动释放池会在一个RunLoop周期后进行池子的释放与重建；DisposeBag对于RxSwift就像自动释放池一样，我们把资源添加到DisposeBag中，让资源随着DisposeBag一起释放。如下实例：</li>
+</ul>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">let disposeBag = DisposeBag()</div><div class="line">func binding() &#123;</div><div class="line">textField.rx_text</div><div class="line">.bindTo(label.rx_sayHelloObserver)</div><div class="line">.addDisposableTo(self.disposeBag)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>方法<code>addDisposableTo</code>会对<code>DisposeBag</code>进行弱引用，所以这个<code>DisposeBag</code>要被实例引用着，一般可作为实例的成员变量，当实例被销毁了，成员<code>DisposeBag</code>会跟着销毁，从而使得<code>RxSwift</code>在此实例上绑定的资源得到释放。</p>
+<p>对于<code>UITableViewCell</code>跟<code>UICollectionViewCell</code>来说，<code>DisposeBag</code>也能让cell在重用前释放掉之前被绑定的资源：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">class TanTableViewCell: UITableViewCell &#123;</div><div class="line">var disposeBag: DisposeBag?</div><div class="line">var viewModel: TanCellViewModel? &#123;</div><div class="line">didSet &#123;</div><div class="line">let disposeBag = DisposeBag()</div><div class="line">viewModel?.title</div><div class="line">.drive(self.textLabel!.rx_text)</div><div class="line">.addDisposableTo(disposeBag)</div><div class="line">self.disposeBag = disposeBag</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">override func prepareForReuse() &#123;</div><div class="line">super.prepareForReuse()</div><div class="line">self.disposeBag = nil</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2><strong>5.DataSource</strong></h2>
+<p>这里主要讲解的是<code>RxCocoa</code>框架中带有的对于<code>UITableView</code>以及<code>UICollectionView</code>数据源的解决方案，在<code>GitHub</code>中也有一个开源小库<code>RxDataSource</code>，在这里我就不再研究了，有兴趣的朋友可以去看看：<a href="https://github.com/RxSwiftCommunity/RxDataSources" target="_blank" rel="external">GitHub RxDataSource</a>。
+我这里用一个例子来展示下<code>RxCocoa</code>中的简单<code>UITableView</code>数据源：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">class TanViewController: UIViewController &#123;</div><div class="line"></div><div class="line">var disposeBag = DisposeBag()</div><div class="line"></div><div class="line">let data = [TanCellViewModel(title: &quot;One&quot;), TanCellViewModel(title: &quot;Two&quot;), TanCellViewModel(title: &quot;Three&quot;)]</div><div class="line"></div><div class="line">override func viewDidLoad() &#123;</div><div class="line">super.viewDidLoad()</div><div class="line">self.view.addSubview(self.tableView)</div><div class="line">self.tableView.frame = self.view.bounds</div><div class="line"></div><div class="line">self.binging()</div><div class="line">&#125;</div><div class="line"></div><div class="line">private func binging() &#123;</div><div class="line">Observable.just(self.data)</div><div class="line">.asDriver(onErrorJustReturn: [])</div><div class="line">.drive(self.tableView.rx_itemsWithCellIdentifier(TanTableViewCell.CELL_IDENTIFIER, cellType: TanTableViewCell.self)) &#123; (_, viewModel, cell) in</div><div class="line">cell.viewModel = viewModel</div><div class="line">&#125;</div><div class="line">.addDisposableTo(self.disposeBag)</div><div class="line">&#125;</div><div class="line"></div><div class="line">//  MARK: - Lazy</div><div class="line">private var tableView: UITableView = &#123;</div><div class="line">let tableView = UITableView(frame: CGRectZero, style: .Plain)</div><div class="line">tableView.registerClass(TanTableViewCell.self, forCellReuseIdentifier: TanTableViewCell.CELL_IDENTIFIER)</div><div class="line">return tableView</div><div class="line">&#125;()</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如上，我们能够将数据封装在<code>Observable</code>中，然后把<code>Observable</code>绑定到<code>UITableView</code>中，通过<code>UITableView</code>的方法<code>rx_itemsWithCellIdentifier</code>，我们就能够进行数据跟Cell的一一对应配置。
+到此，<code>UITableView</code>的数据源就设置好了。<code>UICollectionView</code>的数据源设置跟<code>UITableView</code>差不多，在这里就不再作例子了。</p>
+<h2><strong>6.项目实战</strong></h2>
+<p>下面就是重头戏了，我将通过折腾出一个小项目来演示<code>RxSwift</code>的使用，包括基础以及进阶的内容，首先来设定下这个项目：
+说简单点，就是做一个登录界面（万能Demo），输入用户号码跟密码，点击登录按钮，即可登录获取数据。
+说复杂点，我们要完成下面的要求：</p>
+<ol>
+<li>用户号码输入框要判断用户输入的是否全是数字，若格式不正确，提示用户格式错误。</li>
+<li>号码输入框输入的数字最少要有11位，密码输入框输入的字符串长度最少要有6位。</li>
+<li>要满足上面的两条要求，登录按钮才可以点击。</li>
+<li>登录按钮点击后进行登录，界面显示正在转动的等待视图，当接收到后台数据时，等待视图消失。</li>
+<li>解析后台返回的数据，并把数据呈现到界面中。</li>
+</ol>
+<p>在这个项目中，我还是使用熟悉的MVVM架构模式。在开干之前我首先要说几点：</p>
+<ul>
+<li>
+<p><code>RxSwift</code>中的<code>ViewModel</code>是没有什么明确的状态的，它的输出由输入决定，可以这么说，我们要使用<code>RxSwift</code>将<code>ViewModel</code>中的外界输入（UI触发、外界事件）转换成输出，再由这些输出去驱动UI界面，并且，<code>ViewModel</code>做的是转换，我们不能够在其中对某个<code>Observable</code>进行订阅操作，所以，在<code>ViewModel</code>中我们是看不到<code>addDisposableTo</code>的。</p>
+</li>
+<li>
+<p>我对比了一下由<code>ReactiveCocoa</code>与<code>RxSwift</code>实现的<code>ViewModel</code>，发现使用<code>ReactiveCocoa</code>实现的<code>ViewModel</code>中会有比较多的明确状态变量，比如说现在实现的是登录的界面，在<code>ReactiveCocoa</code>的<code>ViewModel</code>中我们会看到有<code>&quot;userName&quot;</code>、<code>&quot;passWord</code>&quot;等等之类的状态变量，它是由<code>ReactiveCocoa</code>将其与UI视图属性相绑定的：<code>RAC(self.viewModel, userName) = userNameTextField.rac_textSignal</code>;，而在<code>RxSwift</code>实现的<code>ViewModel</code>，就不会看到这些状态变量了，有的是驱动外界UI的输出<code>Driver</code>，个人认为<code>RxSwift</code>实现<code>ViewModel</code>的宗旨是将外界视图的输入经过转变产生输出，在让输出去驱动回UI视图，所以我在构建<code>ViewModel</code>类的时候，会在它的构造方法中开设一个接收输入的参数，其次就在后面的控制器绑定中将<code>ViewModel</code>的输出进行订阅，驱动视图层。</p>
+</li>
+<li>
+<p>这个项目我使用的第三方库有<code>RxSwift</code>、<code>RxCocoa</code>、<code>Moya</code>、<code>Argo</code>、<code>Curry</code>，前面两个在上面有说到；<code>Moya</code>是一款<code>Swift</code>语言的网络请求框架，它是另一款网络请求框架<code>Alamofire</code>的再度封装，它有基于<code>RxSwift</code>的扩展，能与<code>RxSwift</code>无缝对接；<code>Argo</code>是一款小巧的<code>JSON</code>解析库，函数柯里化(Currying)库<code>Curry</code>配合着它一起使用，而且，<code>Argo</code>的解析语法非常新颖奇特，用着感觉非常过瘾！</p>
+</li>
+</ul>
+<h3><strong>&lt;1&gt;.界面</strong></h3>
+<p>在<code>Storyboard</code>中布局好登录界面，分别有用户电话号码的输入框、用户密码输入框、等待视图（菊花）、提示视图（用于提醒输入的错误，以及登录的状态）、登录按钮：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1484579-61761f1db78fe2b0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="这里写图片描述"></p>
+<h3><strong>&lt;2&gt;.Entity 实体</strong></h3>
+<p>下面进行实体类(Entity)的构建：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div></pre></td><td class="code"><pre><div class="line">import UIKit</div><div class="line">import RxSwift</div><div class="line">import RxCocoa</div><div class="line">import Argo</div><div class="line">import Moya</div><div class="line">import Curry</div><div class="line"></div><div class="line">//  MARK: - User</div><div class="line">struct User &#123;</div><div class="line">let name: String</div><div class="line">let userToken: String</div><div class="line">&#125;</div><div class="line"></div><div class="line">extension User: Decodable &#123;</div><div class="line">static func decode(json: JSON) -&gt; Decoded&lt;User&gt; &#123;</div><div class="line">return curry(self.init)</div><div class="line">&lt;^&gt; json &lt;| &quot;name&quot;</div><div class="line">&lt;*&gt; json &lt;| &quot;user_token&quot;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//  MARK: - ResponseResult</div><div class="line">enum ResponseResult &#123;</div><div class="line">case succeed(user: User)</div><div class="line">case faild(message: String)</div><div class="line"></div><div class="line">var user: User? &#123;</div><div class="line">switch self &#123;</div><div class="line">case let .succeed(user):</div><div class="line">return user</div><div class="line">case .faild:</div><div class="line">return nil</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">extension ResponseResult: Decodable &#123;</div><div class="line">init(statusCode: Int, message: String, user: User?) &#123;</div><div class="line">if statusCode == 200 &amp;&amp; user != nil &#123;</div><div class="line">self = .succeed(user: user!)</div><div class="line">&#125;else&#123;</div><div class="line">self = .faild(message: message)</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">static func decode(json: JSON) -&gt; Decoded&lt;ResponseResult&gt; &#123;</div><div class="line">return curry(self.init)</div><div class="line">&lt;^&gt; json &lt;| &quot;status_code&quot;</div><div class="line">&lt;*&gt; json &lt;| &quot;message&quot;</div><div class="line">&lt;*&gt; json &lt;|? &quot;user&quot;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//  MARK: - ValidateResult</div><div class="line">enum ValidateResult &#123;</div><div class="line">case succeed</div><div class="line">case faild(message: String)</div><div class="line">case empty</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">infix operator ^-^ &#123;&#125;</div><div class="line">func ^-^ (lhs: ValidateResult, rhs: ValidateResult) -&gt; Bool &#123;</div><div class="line">switch (lhs, rhs) &#123;</div><div class="line">case  (.succeed, .succeed):</div><div class="line">return true</div><div class="line">default:</div><div class="line">return false</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//  MARK: - RequestTarget</div><div class="line">enum RequestTarget &#123;</div><div class="line">case login(telNum: String, password: String)</div><div class="line">&#125;</div><div class="line"></div><div class="line">extension RequestTarget: TargetType &#123;</div><div class="line">var baseURL: NSURL &#123;</div><div class="line">return NSURL(string: &quot;&quot;)!</div><div class="line">&#125;</div><div class="line"></div><div class="line">var path: String &#123;</div><div class="line">return &quot;/login&quot;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var method: Moya.Method &#123;</div><div class="line">return .POST</div><div class="line">&#125;</div><div class="line"></div><div class="line">var parameters: [String: AnyObject]? &#123;</div><div class="line">switch self &#123;</div><div class="line">case let .login(telNum, password):</div><div class="line">return [&quot;tel_num&quot;: telNum, &quot;password&quot;: password]</div><div class="line">default:</div><div class="line">()</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var sampleData: NSData &#123;</div><div class="line">let jsonString = &quot;&#123;\&quot;status_code\&quot;:200, \&quot;message\&quot;:\&quot;登录成功\&quot;, \&quot;user\&quot;:&#123;\&quot;name\&quot;:\&quot;Tangent\&quot;,\&quot;user_token\&quot;:\&quot;abcdefg123456\&quot;&#125;&#125;&quot;</div><div class="line">return jsonString.dataUsingEncoding(NSUTF8StringEncoding)!</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ul>
+<li>
+<p><strong>User</strong> 用户类，登录成功后，后台会返回用户的个人信息，包括用户名称以及用户的登录令牌。</p>
+</li>
+<li>
+<p><strong>ResponseResult</strong>
+网络请求返回类，枚举类型，成功的话它的关联值是一个用户类型，失败的话它就会有信息字符串关联。它的构造中靠的是状态码来完成，若后台返回的状态码为<code>200</code>，表示登录成功，返回用户，若为其他，表明登录失败，并返回错误信息。这里的<code>decode</code>方法为<code>Argo</code>解析所需实现的。</p>
+</li>
+<li>
+<p><strong>ValidateResult</strong> 验证类，如验证电话号码是否格式正确，号码或密码的长度是否达到要求等等，失败的时候会有错误信息相关联。</p>
+</li>
+<li>
+<p><strong>RequestTarget</strong> 请求目标，为<code>Moya</code>框架定制的网络请求类。</p>
+</li>
+</ul>
+<h3><strong>&lt;3&gt;.ViewModelServer 服务</strong></h3>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">import UIKit</div><div class="line">import RxCocoa</div><div class="line">import RxSwift</div><div class="line">import Moya</div><div class="line">import Argo</div><div class="line"></div><div class="line">//  MARK: - ValidateServer</div><div class="line">class ValidateServer &#123;</div><div class="line">static let instance = ValidateServer()</div><div class="line"></div><div class="line">class func shareInstance() -&gt; ValidateServer &#123;</div><div class="line">return self.instance</div><div class="line">&#125;</div><div class="line"></div><div class="line">let minTelNumCount = 11</div><div class="line">let minPasswordCount = 6</div><div class="line"></div><div class="line">func validateTelNum(telNum: String) -&gt; ValidateResult &#123;</div><div class="line">guard let _ = Int(telNum) else &#123; return .faild(message: &quot;号码格式错误&quot;) &#125;</div><div class="line">return telNum.characters.count &gt;= self.minTelNumCount ? .succeed : .faild(message: &quot;号码长度不足&quot;)</div><div class="line">&#125;</div><div class="line"></div><div class="line">func validatePassword(password: String) -&gt; ValidateResult &#123;</div><div class="line">return password.characters.count &gt;= self.minPasswordCount ? .succeed : .faild(message: &quot;密码长度不足&quot;)</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">//  MARK: - NetworkServer</div><div class="line">class NetworkServer &#123;</div><div class="line">static let instance = NetworkServer()</div><div class="line"></div><div class="line">class func shareInstace() -&gt; NetworkServer &#123;</div><div class="line">return self.instance</div><div class="line">&#125;</div><div class="line"></div><div class="line">//  Lazy</div><div class="line">private lazy var provider: RxMoyaProvider = &#123;</div><div class="line">return RxMoyaProvider&lt;RequestTarget&gt;(stubClosure: MoyaProvider.ImmediatelyStub)</div><div class="line">&#125;()</div><div class="line"></div><div class="line">func loginWork(telNum: String, password: String) -&gt; Driver&lt;ResponseResult&gt; &#123;</div><div class="line">return self.provider.request(.login(telNum: telNum, password: password))</div><div class="line">.mapJSON()</div><div class="line">.map &#123; jsonObject -&gt; ResponseResult in</div><div class="line">let decodeResult: Decoded&lt;ResponseResult&gt; = decode(jsonObject)</div><div class="line">return try decodeResult.dematerialize()</div><div class="line">&#125;</div><div class="line">.asDriver(onErrorJustReturn: .faild(message: &quot;网络或数据解析错误！&quot;))</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里有两个服务类，第一个为验证服务类，用于验证用户号码格式以及号码或密码的长度是否达到要求，第二个为网络请求类，用于向后台请求登录，这里要注意的是，<code>RxMoyaProvider</code>一定要被类引用，否则若把它设置为局部变量，请求就不能完成。在构建<code>RxMoyaProvider</code>的时候，我在构造方法中传入了<code>MoyaProvider.ImmediatelyStub</code>这个<code>stubClosure</code>参数，为的是测试，这样子系统就不会请求网络，而是直接通过获取<code>Target</code>的<code>sampleData</code>属性。</p>
+<h3><strong>&lt;4&gt;.ViewModel 视图模型</strong></h3>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div></pre></td><td class="code"><pre><div class="line">import UIKit</div><div class="line">import RxSwift</div><div class="line">import RxCocoa</div><div class="line"></div><div class="line">class ViewModel &#123;</div><div class="line">//  MARK: - Output</div><div class="line">let juhuaShow: Driver&lt;Bool&gt;</div><div class="line">let loginEnable: Driver&lt;Bool&gt;</div><div class="line">let tipString: Driver&lt;String&gt;</div><div class="line"></div><div class="line">init(input: (telNum: Driver&lt;String&gt;, password: Driver&lt;String&gt;, loginTap: Driver&lt;Void&gt;),</div><div class="line">dependency: (validateServer: ValidateServer, networkServer: NetworkServer)) &#123;</div><div class="line"></div><div class="line">let telNumValidate = input.telNum</div><div class="line">.distinctUntilChanged()</div><div class="line">.map &#123; return dependency.validateServer.validateTelNum($0) &#125;</div><div class="line"></div><div class="line">let passwordValidate = input.password</div><div class="line">.distinctUntilChanged()</div><div class="line">.map &#123; return dependency.validateServer.validatePassword($0) &#125;</div><div class="line"></div><div class="line">let validateString = [telNumValidate, passwordValidate]</div><div class="line">.combineLatest &#123; result -&gt; String in</div><div class="line">var validateString = &quot;&quot;</div><div class="line">if case let .faild(message) = result[0] &#123;</div><div class="line">validateString = &quot;\(message)&quot;</div><div class="line">&#125;</div><div class="line">if case let .faild(message) = result[1] &#123;</div><div class="line">validateString = &quot;\(validateString) \(message)&quot;</div><div class="line">&#125;</div><div class="line">return validateString</div><div class="line">&#125;</div><div class="line"></div><div class="line">let telNumAndPassWord = Driver.combineLatest(input.telNum, input.password) &#123; ($0, $1) &#125;</div><div class="line"></div><div class="line">let loginString = input.loginTap.withLatestFrom(telNumAndPassWord)</div><div class="line">.flatMapLatest &#123;</div><div class="line">return dependency.networkServer.loginWork($0.0, password: $0.1)</div><div class="line">&#125;</div><div class="line">.map &#123; result -&gt; String in</div><div class="line">switch result &#123;</div><div class="line">case let .faild(message):</div><div class="line">return &quot;登录失败 \(message)&quot;</div><div class="line">case let .succeed(user):</div><div class="line">return &quot;登录成功，用户名:\(user.name)，标识符:\(user.userToken)&quot;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">self.loginEnable = [telNumValidate, passwordValidate]</div><div class="line">.combineLatest &#123; result -&gt; Bool in</div><div class="line">return result[0] ^-^ result[1]</div><div class="line">&#125;</div><div class="line"></div><div class="line">self.juhuaShow = Driver.of(loginString.map&#123;_ in false&#125;, input.loginTap.map&#123;_ in true&#125;)</div><div class="line">.merge()</div><div class="line"></div><div class="line">self.tipString = Driver.of(validateString, loginString)</div><div class="line">.merge()</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>ViewModel</code>相对来说比较难搞，毕竟我们要处理好每一个输入输出的关系，灵活进行转变。在这里，没有显式的状态变量，只有对外的输出以及构造时对内的输入，思想就是将输入流进行加工转变成输出流，数据在传输中能够单向传递。</p>
+<h3><strong>&lt;5&gt;.ViewController 视图控制器</strong></h3>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line">import UIKit</div><div class="line">import RxSwift</div><div class="line">import RxCocoa</div><div class="line"></div><div class="line">class ViewController: UIViewController &#123;</div><div class="line"></div><div class="line">@IBOutlet weak var telNumTF: UITextField!</div><div class="line">@IBOutlet weak var passWordTF: UITextField!</div><div class="line">@IBOutlet weak var juhuaView: UIActivityIndicatorView!</div><div class="line">@IBOutlet weak var loginBtn: UIButton!</div><div class="line">@IBOutlet weak var tipLb: UILabel!</div><div class="line"></div><div class="line">private var viewModel: ViewModel?</div><div class="line">private var disposeBag = DisposeBag()</div><div class="line"></div><div class="line">override func viewDidLoad() &#123;</div><div class="line">super.viewDidLoad()</div><div class="line">self.viewModel = ViewModel(input: (</div><div class="line">self.telNumTF.rx_text.asDriver(),</div><div class="line">self.passWordTF.rx_text.asDriver(),</div><div class="line">self.loginBtn.rx_tap.asDriver()),</div><div class="line">dependency: (</div><div class="line">ValidateServer.shareInstance(),</div><div class="line">NetworkServer.shareInstace())</div><div class="line">)</div><div class="line">//  Binding</div><div class="line">self.viewModel!.juhuaShow</div><div class="line">.drive(self.juhuaView.rx_animating)</div><div class="line">.addDisposableTo(self.disposeBag)</div><div class="line"></div><div class="line">self.viewModel!.loginEnable</div><div class="line">.drive(self.loginBtn.rx_loginEnable)</div><div class="line">.addDisposableTo(self.disposeBag)</div><div class="line"></div><div class="line">self.viewModel!.tipString</div><div class="line">.drive(self.tipLb.rx_text)</div><div class="line">.addDisposableTo(self.disposeBag)</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">private extension UIButton &#123;</div><div class="line">var rx_loginEnable: AnyObserver&lt;Bool&gt; &#123;</div><div class="line">return UIBindingObserver(UIElement: self, binding: &#123; (button, bool) in</div><div class="line">self.enabled = bool</div><div class="line">if bool &#123;</div><div class="line">button.backgroundColor = UIColor.greenColor()</div><div class="line">&#125;else&#123;</div><div class="line">button.backgroundColor = UIColor.redColor()</div><div class="line">&#125;</div><div class="line">&#125;).asObserver()</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里，我们构建好<code>ViewModel</code>，将输入以及视图模型依赖的服务传入<code>ViewModel</code>构造方法中，并在下面把<code>ViewModel</code>的输入去驱动UI视图。</p>
+<p><a href="https://github.com/TangentW/RxLoginTest" target="_blank" rel="external">源码地址</a></p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2017/03/12/33.display/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2017/03/13/2017-03-13-install-golang-on-debian/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

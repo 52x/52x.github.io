@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            Initialization in Swift | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,Swift">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Initialization in Swift | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="Swift"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">简介</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">自定义构造过程</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">默认构造器</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">值类型的构造器代理</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">类的继承和构造过程</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">指定构造器和便利构造器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">构造器链</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">两段式构造过程</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">构造器的继承和重载</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">可失败构造器(Failable Initializers)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">枚举的可失败构造器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">带有原始值枚举的可失败构造器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">类的可失败构造器</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">可失败构造器的传播</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.5.</span> <span class="post-toc-text">可失败构造器的重载</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.6.</span> <span class="post-toc-text">init!可失败构造器</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">必需构造器(Required Initializers)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">8.</span> <span class="post-toc-text">通过闭包和函数来设置属性的默认值</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Initialization in Swift
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>6月 24, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/Swift/">Swift</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Initialization in Swift&url=http://yoursite.com//2014/06/23/2014-06-24-initialization-in-swift/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Initialization in Swift&url=http://yoursite.com//2014/06/23/2014-06-24-initialization-in-swift/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/06/23/2014-06-24-initialization-in-swift/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/06/23/2014-06-24-initialization-in-swift/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>本文参考自Swift文档，主要包括以下内容：</p>
+<ul>
+<li>简介</li>
+<li>自定义构造过程</li>
+<li>默认构造器</li>
+<li>值类型的构造器代理</li>
+<li>类的继承和构造过程</li>
+<li>可失败构造器</li>
+<li>必需构造器</li>
+<li>通过闭包和函数来设置属性的默认值</li>
+</ul>
+<p>(2014-8-8更新至beta5语法)<br>
+(2014-10-24更新至Swift1.1)
+&lt;!--more--&gt;</p>
+<h2>简介</h2>
+<p>构造过程是为了使用某个类、结构体或枚举类型的实例而进行的准备过程。这个过程包含了为实例中的每个属性设置初始值和为其执行必要的准备和初始化任务。</p>
+<p>Swift中的构造器不像Objective-C那样有返回值，但是跟C++有点像：所有的构造器都以<code>init</code>命名，用参数列表来区分各个构造器</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Fahrenheit</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> temperature = <span class="number">16.0</span></div><div class="line">    <span class="keyword">init</span>() &#123;</div><div class="line">        temperature = <span class="number">32.0</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> f = <span class="type">Fahrenheit</span>()</div></pre></td></tr></table></figure></p>
+<p><code>Fahrenheit</code>是一个结构体，与类一样，Swift中的值类型也有构造器和普通方法。上面的代码先是定义了<code>temperature</code>属性的默认值，然后又在构造器中将其赋值，最后<code>temperature</code>属性的值为32。对于<code>temperature</code>这种存储型属性，无论定义默认值还是在构造器中赋值，最终它们实现的效果是一样的。</p>
+<p><strong>给存储型类型属性赋默认值或在初始构造器中设置初始值时，此属性的属性观察者不会被调用</strong></p>
+<h2>自定义构造过程</h2>
+<p>你可以定义一些带参数的构造器</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">struct Celsius &#123;</div><div class="line">    var temperatureInCelsius: Double = 0.0</div><div class="line">    init(fromFahrenheit fahrenheit: Double) &#123;</div><div class="line">        temperatureInCelsius = (fahrenheit - 32.0) / 1.8</div><div class="line">    &#125;</div><div class="line">    init(fromKelvin kelvin: Double) &#123;</div><div class="line">        temperatureInCelsius = kelvin - 273.15</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>构造器的参数也跟Swift中的方法定义（注意不是函数）一样，也分内部和外部参数名。上面代码中两个构造器外部参数名不同，调用构造器的时候也是通过外部参数名来区分的：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">let boilingPointOfWater = Celsius(fromFahrenheit: 212.0)</div><div class="line">// boilingPointOfWater.temperatureInCelsius 是 100.0</div><div class="line">let freezingPointOfWater = Celsius(fromKelvin: 273.15)</div><div class="line">// freezingPointOfWater.temperatureInCelsius 是 0.0”</div></pre></td></tr></table></figure></p>
+<p>如果不写外部参数名那么外部参数名就等于内部参数名：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">struct Color &#123;</div><div class="line">    let red = 0.0, green = 0.0, blue = 0.0</div><div class="line">    init(red: Double, green: Double, blue: Double) &#123;</div><div class="line">        self.red   = red</div><div class="line">        self.green = green</div><div class="line">        self.blue  = blue</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">let magenta = Color(red: 1.0, green: 0.0, blue: 1.0)</div></pre></td></tr></table></figure></p>
+<p>如果你不希望为构造器的某个参数提供外部名字，你还可以使用下划线<code>_</code>来显示描述它的外部名：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">struct Celsius &#123;</div><div class="line">    var temperatureInCelsius: Double</div><div class="line">    init(fromFahrenheit fahrenheit: Double) &#123;</div><div class="line">        temperatureInCelsius = (fahrenheit - 32.0) / 1.8</div><div class="line">    &#125;</div><div class="line">    init(fromKelvin kelvin: Double) &#123;</div><div class="line">        temperatureInCelsius = kelvin - 273.15</div><div class="line">    &#125;</div><div class="line">    init(_ celsius: Double) &#123;</div><div class="line">        temperatureInCelsius = celsius</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">let bodyTemperature = Celsius(37.0)</div><div class="line">// bodyTemperature.temperatureInCelsius is 37.0</div></pre></td></tr></table></figure></p>
+<p>你会发现构造器的第一个内部参数名也会默认作为其外部参数名供调用，这一点与方法不同（方法不会默认将第一个内部参数名作为外部参数名使用），因为方法名可以在结尾加上介词来烘托出第一个参数的名字，这样就不需要为第一个参数弄一个外部参数名了，但是构造器只能用<code>init</code>关键字来定义。</p>
+<p>如果你定制的类型包含一个逻辑上允许取值为空的存储型属性--不管是因为它无法在初始化时赋值，还是因为它可以在之后某个时间点可以赋值为空--你都需要将它定义为可选类型<code>optional type</code>。可选类型的属性将自动初始化为空<code>nil</code>，表示这个属性是故意在初始化时设置为空的。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class SurveyQuestion &#123;</div><div class="line">    let text: String</div><div class="line">    var response: String?</div><div class="line">    init(text: String) &#123;</div><div class="line">        self.text = text</div><div class="line">    &#125;</div><div class="line">    func ask() &#123;</div><div class="line">        println(text)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">let cheeseQuestion = SurveyQuestion(text: &quot;Do you like cheese?&quot;)</div><div class="line">cheeseQuestion.ask()</div><div class="line">// 输出 &quot;Do you like cheese?&quot;</div><div class="line">cheeseQuestion.response = &quot;Yes, I do like cheese.</div></pre></td></tr></table></figure></p>
+<p>调查问题在问题提出之后，我们才能得到回答。所以我们将属性回答response声明为String?类型，或者说是可选字符串类型optional String。当SurveyQuestion实例化时，它将自动赋值为空nil，表明暂时还不存在此字符串。<br>
+只要在构造过程结束前常量的值能确定，你可以在构造过程中的任意时间点修改常量属性的值。尽管text属性是常量，我们仍然可以在其类的构造器中设置它的值。<strong>对某个类实例来说，它的常量属性只能在定义它的类的构造过程中修改；不能在子类中修改。</strong></p>
+<h2>默认构造器</h2>
+<p>Swift将为所有属性已提供默认值的且自身没有定义任何构造器的结构体或基类，提供一个默认的构造器。这个默认构造器将简单的创建一个所有属性值都设置为默认值的实例：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">class ShoppingListItem &#123;</div><div class="line">    var name: String?</div><div class="line">    var quantity = 1</div><div class="line">    var purchased = false</div><div class="line">&#125;</div><div class="line">var item = ShoppingListItem()</div></pre></td></tr></table></figure></p>
+<p><code>ShoppingListItem</code>类没有父类（是基类），所有属性都有默认值（可选属性默认值为<code>nil</code>），所以可以直接调用默认的无参数构造器来初始化。<br>
+除上面提到的默认构造器，如果结构体对所有存储型属性提供了默认值且自身没有提供定制的构造器，它们能自动获得一个<strong>逐一成员构造器（Memberwise Initializers）</strong>：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">struct Size &#123;</div><div class="line">    var width = 0.0, height = 0.0</div><div class="line">&#125;</div><div class="line">let twoByTwo = Size(width: 2.0, height: 2.0)</div></pre></td></tr></table></figure></p>
+<p>逐一成员构造器是用来初始化结构体新实例里成员属性的快捷方法。我们在调用逐一成员构造器时，通过与成员属性名相同的参数名进行传值来完成对成员属性的初始赋值。</p>
+<h2>值类型的构造器代理</h2>
+<p>构造器可以通过调用其它构造器来完成实例的部分构造过程。这一过程称为构造器代理，它能减少多个构造器间的代码重复：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">struct Size &#123;</div><div class="line">    var width = 0.0, height = 0.0</div><div class="line">&#125;</div><div class="line">struct Point &#123;</div><div class="line">    var x = 0.0, y = 0.0</div><div class="line">&#125;</div><div class="line">struct Rect &#123;</div><div class="line">    var origin = Point()</div><div class="line">    var size = Size()</div><div class="line">    init() &#123;&#125;</div><div class="line">    init(origin: Point, size: Size) &#123;</div><div class="line">        self.origin = origin</div><div class="line">        self.size = size</div><div class="line">    &#125;</div><div class="line">    init(center: Point, size: Size) &#123;</div><div class="line">        let originX = center.x - (size.width / 2)</div><div class="line">        let originY = center.y - (size.height / 2)</div><div class="line">        self.init(origin: Point(x: originX, y: originY), size: size)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在值类型中，如果你添加了自定义构造器（如<code>init(center: Point, size: Size)</code>），Swift不会再为结构体生成一个默认构造器和逐一成员构造器，所以我们自己定义了<code>init()</code>和<code>init(origin: Point, size: Size)</code>，他们与自动生成的默认构造器和逐一成员构造器是一样的。这样子会显得很麻烦，我们可以将自定义构造器<code>init(center: Point, size: Size)</code>写在结构体<code>Rect</code>的扩展（<code>extension</code>）里，这样就不用自己把默认构造器和逐一成员构造器写一遍了。</p>
+<p>构造器<code>init(center:size:)</code>先通过<code>center</code>和<code>size</code>的值计算出<code>origin</code>的坐标。然后再调用（或代理给）<code>init(origin:size:)</code>构造器来将新的<code>origin</code>和<code>size</code>值赋值到对应的属性中。因为值类型（结构体和枚举类型）不支持继承，所以构造器代理的过程相对简单，因为它们只能代理给本身提供的其它构造器：你只能在构造器内部调用<code>self.init</code></p>
+<h2>类的继承和构造过程</h2>
+<p>类里面的所有存储型属性--包括所有继承自父类的属性--都必须在构造过程中设置初始值。</p>
+<p>Swift 提供了两种类型的类构造器来确保所有类实例中存储型属性都能获得初始值，它们分别是指定构造器(<code>Designated Initializers</code>)和便利构造器(<code>Convenience Initializers</code>)。</p>
+<h3>指定构造器和便利构造器</h3>
+<p>指定构造器是类中最主要的构造器。一个指定构造器将初始化类中提供的所有属性，并根据父类链往上调用父类的构造器来实现父类的初始化。<strong>每一个类都必须拥有至少一个指定构造器。</strong></p>
+<p>便利构造器是类中比较次要的、辅助型的构造器。你可以定义便利构造器来调用同一个类中的指定构造器，并为其参数提供默认值。你也可以定义便利构造器来创建一个特殊用途或特定输入的实例。</p>
+<p>类的指定构造器的写法跟值类型简单构造器一样，便利构造器也采用相同样式的写法，但需要在<code>init</code>关键字之前放置<code>convenience</code>关键字：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">convenience init(parameters) &#123;</div><div class="line">    statements</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>构造器链</h3>
+<p>为了简化指定构造器和便利构造器之间的调用关系，Swift 采用以下三条规则来限制构造器之间的代理调用：</p>
+<ol>
+<li>指定构造器必须调用其直接父类的的指定构造器。</li>
+<li>便利构造器必须调用同一类中定义的其它构造器。</li>
+<li>便利构造器必须最终以调用一个指定构造器结束。</li>
+</ol>
+<p>一个更方便记忆的方法是:</p>
+<ul>
+<li>指定构造器必须总是向上代理</li>
+<li>便利构造器必须总是横向代理</li>
+</ul>
+<p><img src="https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/Art/initializerDelegation01_2x.png" alt="">
+举个栗子：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">class Food &#123;</div><div class="line">    var name: String</div><div class="line">    init(name: String) &#123;</div><div class="line">        self.name = name</div><div class="line">    &#125;</div><div class="line">    convenience init() &#123;</div><div class="line">        self.init(name: &quot;[Unnamed]&quot;)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">let namedMeat = Food(name: &quot;Bacon&quot;)</div><div class="line">// namedMeat 的名字是 &quot;Bacon”</div><div class="line">let mysteryMeat = Food()</div><div class="line">// mysteryMeat 的名字是 [Unnamed]</div></pre></td></tr></table></figure></p>
+<p><img src="https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/Art/initializersExample01_2x.png" alt=""></p>
+<h3>两段式构造过程</h3>
+<p>Swift 中类的构造过程包含两个阶段。第一个阶段，每个存储型属性通过引入它们的类的构造器来设置初始值。当每一个存储型属性值被确定后，第二阶段开始，它给每个类一次机会在新实例准备使用之前进一步定制它们的存储型属性。<br>
+下图展示了在假定的子类和父类之间构造的阶段1：</p>
+<p><img src="https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/Art/twoPhaseInitialization01_2x.png" alt=""></p>
+<p>指定构造器将确保所有子类的属性都有值，然后它将调用父类的指定构造器，并沿着造器链一直往上完成父类的构建过程。一旦父类中所有属性都有了初始值，实例的内存被认为是完全初始化，而阶段1也已完成。</p>
+<p>以下展示了相同构造过程的阶段2：</p>
+<p><img src="https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/Art/twoPhaseInitialization02_2x.png" alt=""></p>
+<p>父类中的指定构造器现在有机会进一步来定制实例（尽管它没有这种必要）。</p>
+<p>一旦父类中的指定构造器完成调用，子类的构指定构造器可以执行更多的定制操作（同样，它也没有这种必要）。</p>
+<p>最终，一旦子类的指定构造器完成调用，最开始被调用的便利构造器可以执行更多的定制操作。</p>
+<p>两段式构造过程是基于<strong>安全检查</strong>的，可以简单的理解为：</p>
+<ul>
+<li>指定构造器初始化顺序：初始化类自己引入的属性-&gt;向上代理调用父类指定构造器-&gt;为继承的属性设置新值</li>
+<li>便利构造器初始化顺序：代理调用同一类中的其它构造器-&gt;为任意属性赋新值</li>
+<li>构造器在第一阶段构造完成之前，不能调用任何实例方法、不能读取任何实例属性的值，也不能引用self的值。</li>
+</ul>
+<h3>构造器的继承和重载</h3>
+<p>**跟 Objective-C 中的子类不同，Swift 中的子类不会默认继承父类的构造器。**这是为了防止你想初始化一个很牛逼的类，但是调用的却是它继承于父类的菜逼构造器，那将会是个悲剧。</p>
+<p><strong>但是如果特定条件可以满足，父类构造器是可以被自动继承的：</strong></p>
+<ol>
+<li>如果子类没有定义任何指定构造器，它将自动继承所有父类的指定构造器。</li>
+<li>如果子类提供了所有父类指定构造器的实现--不管是通过规则1继承过来的，还是通过自定义实现的--它将自动继承所有父类的便利构造器。</li>
+</ol>
+<p>即使你在子类中添加了更多的便利构造器，这两条规则仍然适用。子类可以通过定义便利构造器来实现父类中的指定构造器，来部分满足规则2</p>
+<p>如果你需要在子类中重写一个父类的指定构造器（包括自动生成的默认构造器），无论子类中的构造器是指定构造器还是便利构造器，都需要在子类定义重载的构造器前加上<code>override</code>修饰；如果你需要在子类中重写一个父类的便利构造器，根据构造器链，父类的便利构造器不会被子类直接调用，所以不必在子类重写构造器的定义前用<code>override</code>修饰。这是Xcode6beta5新修订的规则，在以前的版本中重载构造器不用<code>override</code>修饰。</p>
+<p>还记得之前指定的<code>Food</code>类吧，现在它多了一个子类<code>RecipeIngredient</code>:</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class RecipeIngredient: Food &#123;</div><div class="line">    var quantity: Int</div><div class="line">    init(name: String, quantity: Int) &#123;</div><div class="line">        self.quantity = quantity</div><div class="line">        super.init(name: name)</div><div class="line">    &#125;</div><div class="line">    override convenience init(name: String) &#123;</div><div class="line">        self.init(name: name, quantity: 1)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可以看出来<code>RecipeIngredient</code>类的指定构造器和便利构造器都符合两段式构造安全检查，并且便利构造器跟<code>Food</code>类中的指定构造器具有相同的参数，尽管<code>RecipeIngredient</code>这个构造器是便利构造器，<code>RecipeIngredient</code>依然提供了对所有父类指定构造器的实现。因此，<code>RecipeIngredient</code>也能自动继承了所有父类的便利构造器(也就是<code>init()</code>):</p>
+<p><img src="https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/Art/initializersExample02_2x.png" alt=""></p>
+<p>上图中<code>RecipeIngredient</code>类继承的init()函数版本跟Food提供的版本是一样的，除了它是将任务代理给RecipeIngredient版本的init(name: String)而不是Food提供的版本。</p>
+<p>食材都已经建立好了，下面开始采购吧！我们需要一个购物单，购物单中每一项是这样子的：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">class ShoppingListItem: RecipeIngredient &#123;</div><div class="line">    var purchased = false</div><div class="line">    var description: String &#123;</div><div class="line">    var output = &quot;\(quantity) x \(name.lowercaseString)&quot;</div><div class="line">        output += purchased ? &quot; ✔&quot; : &quot; ✘&quot;</div><div class="line">        return output</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>由于它为自己引入的所有属性都提供了默认值，并且自己没有定义任何构造器，ShoppingListItem将自动继承所有父类中的指定构造器和便利构造器。</p>
+<p><img src="https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/swift_programming_language/Art/initializersExample03_2x.png" alt=""></p>
+<p>你可以使用全部三个继承来的构造器来创建ShoppingListItem的新实例：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">var breakfastList = [</div><div class="line">    ShoppingListItem(),</div><div class="line">    ShoppingListItem(name: &quot;Bacon&quot;),</div><div class="line">    ShoppingListItem(name: &quot;Eggs&quot;, quantity: 6),</div><div class="line">]</div><div class="line">breakfastList[0].name = &quot;Orange juice&quot;</div><div class="line">breakfastList[0].purchased = true</div><div class="line">for item in breakfastList &#123;</div><div class="line">    println(item.description)</div><div class="line">&#125;</div><div class="line">// 1 x orange juice ✔</div><div class="line">// 1 x bacon ✘</div><div class="line">// 6 x eggs ✘</div></pre></td></tr></table></figure></p>
+<h2>可失败构造器(Failable Initializers)</h2>
+<p>有时候定义一个构造器可以失败的类，结构体或枚举是很有用的。这样的失败可能被非法的初始化参数，所需外部资源的缺失或一些其他阻止初始化成功的情况触发。</p>
+<p>为了应付初始化可能失败的情形，需要在定义类，结构体或枚举时再定义一个或多个可失败构造器。在<code>init</code>关键字后面放一个问号(<code>init?</code>)即可写出一个可失败构造器。</p>
+<p><strong>你不能定义具有相同参数类型和参数名称的可失败构造器和非可失败构造器</strong></p>
+<p>可失败构造器返回它初始化类型的可选值。你要在可失败构造器中可能触发失败的地方返回<code>nil</code>。</p>
+<p><strong>严格的来说，构造器不返回值。更确切地说，它们的角色是确保<code>self</code>在构造过程结束时被完整正确的初始化。虽然你写下<code>return nil</code>来触发一个构造过程的失败，但你不要使用<code>return</code>关键字来指明构造过程的成功。</strong></p>
+<p>下面的例子定义了一个叫做<code>Animal</code>的结构体，它有一个叫做<code>species</code>的<code>String</code>常量属性。<code>Animal</code>结构体还定义了一个可失败构造器，它只接收一个<code>species</code>参数。这个构造器检查被传递过来的<code>species</code>参数是否为空字符串：如果是空字符串那就触发构造过程失败，否则<code>species</code>属性会被赋值，构造过程成功：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">struct Animal &#123;</div><div class="line">    let species: String</div><div class="line">    init?(species: String) &#123;</div><div class="line">        if species.isEmpty &#123; return nil &#125;</div><div class="line">        self.species = species</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>你可以试着使用可失败构造器来初始化一个<code>Animal</code>对象来检验构造过程是否成功：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">let someCreature = Animal(species: &quot;Giraffe&quot;)</div><div class="line">// someCreature is of type Animal?, not Animal</div><div class="line"> </div><div class="line">if let giraffe = someCreature &#123;</div><div class="line">    println(&quot;An animal was initialized with a species of \(giraffe.species)&quot;)</div><div class="line">&#125;</div><div class="line">// prints &quot;An animal was initialized with a species of Giraffe&quot;</div></pre></td></tr></table></figure></p>
+<p>如果你给可失败构造器传递一个空字符串作为参数，那么将会触发构造过程失败：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">let anonymousCreature = Animal(species: &quot;&quot;)</div><div class="line">// anonymousCreature is of type Animal?, not Animal</div><div class="line"> </div><div class="line">if anonymousCreature == nil &#123;</div><div class="line">    println(&quot;The anonymous creature could not be initialized&quot;)</div><div class="line">&#125;</div><div class="line">// prints &quot;The anonymous creature could not be initialized&quot;</div></pre></td></tr></table></figure></p>
+<p><strong>这里注意下空字符串与<code>nil</code>的区别。空字符串是合法的，它并不像<code>nil</code>那样代表了某种类型值得缺失。但在<code>Animal</code>中我们必须设定一个有意义的<code>species</code>属性，它不能是空字符串。</strong></p>
+<h3>枚举的可失败构造器</h3>
+<p>你可以使用可失败构造器根据一或多个参数来选择合适的枚举成员。如果传入的参数没能匹配到合适的枚举成员，构造就会失败。</p>
+<p>下面的例子定义了一个叫做<code>TemperatureUnit</code>的枚举，有三个可能的情况 (<code>Kelvin</code>, <code>Celsius</code>, 和 <code>Fahrenheit</code>)。可失败构造器用于在表现一个温度符号字符时找到一个合适的枚举成员：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">enum TemperatureUnit &#123;</div><div class="line">    case Kelvin, Celsius, Fahrenheit</div><div class="line">    init?(symbol: Character) &#123;</div><div class="line">        switch symbol &#123;</div><div class="line">        case &quot;K&quot;:</div><div class="line">            self = .Kelvin</div><div class="line">        case &quot;C&quot;:</div><div class="line">            self = .Celsius</div><div class="line">        case &quot;F&quot;:</div><div class="line">            self = .Fahrenheit</div><div class="line">        default:</div><div class="line">            return nil</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>你可以使用这个可失败构造器来为三种可能的状况选择合适的枚举成员，也可在参数不能匹配任何状况时让构造过程失败：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">let fahrenheitUnit = TemperatureUnit(symbol: &quot;F&quot;)</div><div class="line">if fahrenheitUnit != nil &#123;</div><div class="line">    println(&quot;This is a defined temperature unit, so initialization succeeded.&quot;)</div><div class="line">&#125;</div><div class="line">// prints &quot;This is a defined temperature unit, so initialization succeeded.&quot;</div><div class="line"> </div><div class="line">let unknownUnit = TemperatureUnit(symbol: &quot;X&quot;)</div><div class="line">if unknownUnit == nil &#123;</div><div class="line">    println(&quot;This is not a defined temperature unit, so initialization failed.&quot;)</div><div class="line">&#125;</div><div class="line">// prints &quot;This is not a defined temperature unit, so initialization failed.&quot;</div></pre></td></tr></table></figure></p>
+<h3>带有原始值枚举的可失败构造器</h3>
+<p>带有原始值的枚举会自动得到一个可失败构造器：<code>init?(rawValue:)</code>，它接受<code>rawValue</code>参数来匹配一个枚举成员，如果无法匹配就出发构造过程失败。</p>
+<p>发挥<code>init?(rawValue:)</code>的优势将上面的例子<code>TemperatureUnit</code>重写：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">enum TemperatureUnit: Character &#123;</div><div class="line">    case Kelvin = &quot;K&quot;, Celsius = &quot;C&quot;, Fahrenheit = &quot;F&quot;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">let fahrenheitUnit = TemperatureUnit(rawValue: &quot;F&quot;)</div><div class="line">if fahrenheitUnit != nil &#123;</div><div class="line">    println(&quot;This is a defined temperature unit, so initialization succeeded.&quot;)</div><div class="line">&#125;</div><div class="line">// prints &quot;This is a defined temperature unit, so initialization succeeded.&quot;</div><div class="line"> </div><div class="line">let unknownUnit = TemperatureUnit(rawValue: &quot;X&quot;)</div><div class="line">if unknownUnit == nil &#123;</div><div class="line">    println(&quot;This is not a defined temperature unit, so initialization failed.&quot;)</div><div class="line">&#125;</div><div class="line">// prints &quot;This is not a defined temperature unit, so initialization failed.&quot;</div></pre></td></tr></table></figure></p>
+<h3>类的可失败构造器</h3>
+<p>值类型的可失败构造器可以在任何地方触发构造过程失败。在上面的<code>Animal</code>结构体例子中，构造器在<code>species</code>属性被赋值前就触发了构造过程失败，位置很靠前。</p>
+<p>对于类，可失败构造器只能在所有存储型属性被赋初值并且任意构造器代理发生后才触发构造过程失败。</p>
+<p>下面给出的例子展现了如何使用隐式解析可选属性来满足这个可失败类构造器的需求：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class Product &#123;</div><div class="line">    let name: String!</div><div class="line">    init?(name: String) &#123;</div><div class="line">        if name.isEmpty &#123; return nil &#125;</div><div class="line">        self.name = name</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面定义的<code>Product</code>类非常类似之前见过的<code>Animal</code>结构体。<code>Product</code>类有一个不能为空值的字符串常量属性<code>name</code>。为了强制满足这个要求，<code>Product</code>类使用可失败构造器来确保<code>name</code>属性值在构造过程成功前不为空。</p>
+<p>然而<code>Product</code>是一个类而不是结构体。这意味着它不像<code>Animal</code>，任何<code>Product</code>类的可失败构造器都必须在触发构造过程失败之前为<code>name</code>属性提供一个初值。</p>
+<p>在上面的例子中，<code>Product</code>类的<code>name</code>属性被定义成隐式解析可选的字符串类型(<code>String!</code>)。因为它是一个可选类型，这意味着构造过程中<code>name</code>属性在被赋值前有一个默认值<code>nil</code>。这个默认值<code>nil</code>意味着<code>Product</code>类中所有属性都有一个合法的初值。结果就是<code>Product</code>类的可失败构造器如果被传递的是一个空字符串，它能在构造器开始时就触发一个构造过程失败。</p>
+<p>因为<code>name</code>属性是常量，你可以确信在构造过程成功后它将永远不是<code>nil</code>。尽管它被定义为隐式解析可选类型，你可以永远自信地获取它的隐式解析值，而不用检验是否为<code>nil</code>：<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">if let bowTie = Product(name: &quot;bow tie&quot;) &#123;</div><div class="line">    // no need to check if bowTie.name == nil</div><div class="line">    println(&quot;The product&apos;s name is \(bowTie.name)&quot;)</div><div class="line">&#125;</div><div class="line">// prints &quot;The product&apos;s name is bow tie&quot;</div></pre></td></tr></table></figure></p>
+<h3>可失败构造器的传播</h3>
+<p>类，结构体或枚举的可失败构造器可以横向代理给同一个的类，结构体或枚举中的另一个可失败构造器。类似的，子类的可失败构造器也能向上代理到超类的可失败构造器。</p>
+<p>不论发生何种情况，如果你代理给的另一个构造器发生了构造过程失败，整个构造过程程序立刻失败，后续的构造过程代码也不会执行。</p>
+<p><strong>可失败构造器也可代理给非可失败构造器。如果你想在一个已经存在的不会失败的构造过程中添加一个可能失败的状况时可以用到这招</strong></p>
+<p>下面的例子定义了一个<code>Product</code>的子类<code>CartItem</code>。<code>CartItem</code>类模拟了在线购物车中的一件物品。<code>CartItem</code>包含一个叫做<code>quantity</code>的常量属性并确保这个属性总是不小于1：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">class CartItem: Product &#123;</div><div class="line">    let quantity: Int!</div><div class="line">    init?(name: String, quantity: Int) &#123;</div><div class="line">        super.init(name: name)</div><div class="line">        if quantity &lt; 1 &#123; return nil &#125;</div><div class="line">        self.quantity = quantity</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>quantity</code>属性类型为隐式解析整型(<code>Int!</code>)。就像<code>Product</code>类的<code>name</code>属性一样，这意味着<code>quantity</code>属性在构造过程中被赋值前有一个默认值<code>nil</code>。</p>
+<p><code>CartItem</code>的可失败构造器开始于向上代理到超类<code>Product</code>的<code>init(name:)</code>构造器。这满足了要求--可失败构造器必需总是在构造过程失败被触发之前完成构造器代理。</p>
+<p>如果超类的构造过程由于空的<code>name</code>值而失败，整个构造过程程序立刻失败，后续的构造过程代码也不会执行。如果超类构造过程成功，<code>CartItem</code>构造器会验证获取到的<code>quantity</code>值是否大于等于1。</p>
+<p>如果你用非空的<code>name</code>和大等于1的<code>quantity</code>创建一个<code>CartItem</code>实例，构造过程会成功：<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">if let twoSocks = CartItem(name: &quot;sock&quot;, quantity: 2) &#123;</div><div class="line">    println(&quot;Item: \(twoSocks.name), quantity: \(twoSocks.quantity)&quot;)</div><div class="line">&#125;</div><div class="line">// prints &quot;Item: sock, quantity: 2&quot;</div></pre></td></tr></table></figure></p>
+<p>如果你试着用值为0的<code>quantity</code>创建一个<code>CartItem</code>实例，构造器将会导致构造过程失败：<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">if let zeroShirts = CartItem(name: &quot;shirt&quot;, quantity: 0) &#123;</div><div class="line">    println(&quot;Item: \(zeroShirts.name), quantity: \(zeroShirts.quantity)&quot;)</div><div class="line">&#125; else &#123;</div><div class="line">    println(&quot;Unable to initialize zero shirts&quot;)</div><div class="line">&#125;</div><div class="line">// prints &quot;Unable to initialize zero shirts&quot;</div></pre></td></tr></table></figure></p>
+<p>同样地，如果你尝试用空的<code>name</code>值创建一个<code>CartItem</code>实例，超类<code>Product</code>构造器会导致构造过程失败：<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">if let oneUnnamed = CartItem(name: &quot;&quot;, quantity: 1) &#123;</div><div class="line">    println(&quot;Item: \(oneUnnamed.name), quantity: \(oneUnnamed.quantity)&quot;)</div><div class="line">&#125; else &#123;</div><div class="line">    println(&quot;Unable to initialize one unnamed product&quot;)</div><div class="line">&#125;</div><div class="line">// prints &quot;Unable to initialize one unnamed product&quot;</div></pre></td></tr></table></figure></p>
+<h3>可失败构造器的重载</h3>
+<p>你可以在子类中重载超类的可失败构造器，就像重载其他任意构造器那样。另外，你还可以用子类的非可失败构造器重载超类的可失败构造器。这让你能定义一个构造过程不能失败的子类，尽管超类的构造过程是允许失败的。</p>
+<p>注意如果你用子类的非可失败构造器重载了超类的可失败构造器，子类构造器不能向上代理到超类构造器。非可失败构造器庸官都不能代理给可失败构造器。</p>
+<p><strong>注意：你可以用非可失败构造器重载可失败构造器，但是不能倒过来</strong></p>
+<p>下面的例子定义了一个叫做<code>Document</code>的类。这个类模拟了一个用<code>name</code>属性初始化的文档，<code>name</code>属性是非空字符串或者是<code>nil</code>，但不能是空字符串：<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">class Document &#123;</div><div class="line">    var name: String?</div><div class="line">    // this initializer creates a document with a nil name value</div><div class="line">    init() &#123;&#125;</div><div class="line">    // this initializer creates a document with a non-empty name value</div><div class="line">    init?(name: String) &#123;</div><div class="line">        if name.isEmpty &#123; return nil &#125;</div><div class="line">        self.name = name</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下一个例子定义了一个<code>Document</code>的子类<code>AutomaticallyNamedDocument</code>。子类<code>AutomaticallyNamedDocument</code>重载了两个<code>Document</code>添加的指定构造器。这些重载确保<code>AutomaticallyNamedDocument</code>实例在不用<code>name</code>初始化或传入<code>init(name:)</code>的值是空字符串时将“[Untitled]”作为<code>name</code>的初值：<br>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">class AutomaticallyNamedDocument: Document &#123;</div><div class="line">    override init() &#123;</div><div class="line">        super.init()</div><div class="line">        self.name = &quot;[Untitled]&quot;</div><div class="line">    &#125;</div><div class="line">    override init(name: String) &#123;</div><div class="line">        super.init()</div><div class="line">        if name.isEmpty &#123;</div><div class="line">            self.name = &quot;[Untitled]&quot;</div><div class="line">        &#125; else &#123;</div><div class="line">            self.name = name</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>AutomaticallyNamedDocument</code>用非可失败的<code>init(name:)</code>构造器重载了它超类的可失败的<code>init?(name:)</code>构造器。因为<code>AutomaticallyNamedDocument</code>应付空字符串情形的方式与它的超类不同，它的构造器不需要失败，所以它提供了一个非可失败版本的构造器来替代。</p>
+<h3>init!可失败构造器</h3>
+<p>你一贯地通过在<code>init</code>关键字后放置问号(<code>init?</code>)来定义一个创建可选值类型实例的可失败构造器。另外，你还可以定义一个创建隐式解析可选类型实例的可失败构造器。在<code>init</code>关键字后放置一个叹号来替代问号(<code>init!</code>)就可以啦。</p>
+<p>你可以从<code>init?</code>代理到<code>init!</code>，反之亦然；你可以用<code>init!</code>重载<code>init?</code>，反之亦然。你也可以从<code>init</code>代理到<code>init!</code>，不过这么做将会在<code>init!</code>发生构造过程失败时触发一个断言。</p>
+<h2>必需构造器(Required Initializers)</h2>
+<p>当你想让一个类的某个构造器被所有子类都实现，你可以在定义这个构造器时在前面用<code>required</code>修饰：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class SomeClass &#123;</div><div class="line">    required init() &#123;</div><div class="line">        // initializer implementation goes here</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>你也必须在它的子类定义必需构造器前用<code>required</code>修饰，但不必用<code>override</code>修饰：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">class SomeSubClass: SomeClass &#123;</div><div class="line">    required init() &#123;</div><div class="line">        // subclass implementation of the required initializer goes here</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样的语法可以将这种“必需”信号传递给未来更多的子类，表明这个构造器一定要实现，千秋万代~</p>
+<p>当然你可以满足构造器的继承规则来继承必需构造器，这样就不用“必须”重写“必需”构造器了：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">class SomeSubSubClass:SomeSubClass &#123;</div><div class="line">    convenience init(a:String) &#123;</div><div class="line">        self.init()</div><div class="line">        //subsubclass implementation of a convenience initializer goes here</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>通过闭包和函数来设置属性的默认值</h2>
+<p>如果某个存储型属性的默认值需要特别的定制或准备，你就可以使用闭包或全局函数来为其属性提供定制的默认值。每当某个属性所属的新类型实例创建时，对应的闭包或函数会被调用，而它们的返回值会当做默认值赋值给这个属性。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">class SomeClass &#123;</div><div class="line">    let someProperty: SomeType = &#123;</div><div class="line">        // 在这个闭包中给 someProperty 创建一个默认值</div><div class="line">        // someValue 必须和 SomeType 类型相同</div><div class="line">        return someValue</div><div class="line">        &#125;()</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>注意闭包结尾的大括号后面接了一对空的小括号。这是用来告诉 Swift 需要立刻执行此闭包。如果你忽略了这对括号，相当于是将闭包本身作为值赋值给了属性，而不是将闭包的返回值赋值给属性。</p>
+<p>如果你使用闭包来初始化属性的值，请记住在闭包执行时，实例的其它部分都还没有初始化。这意味着你不能够在闭包里访问其它的属性，就算这个属性有默认值也不允许。同样，你也不能使用隐式的self属性，或者调用其它的实例方法。</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/06/19/2014-06-19-rang-ruan-jian-zhi-chi-retina/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/06/29/2014-06-29-migrating-from-tfs-to-git-to-visual-studio-online-the-survival-guide/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

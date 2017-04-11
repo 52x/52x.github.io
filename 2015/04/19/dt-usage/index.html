@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            设备树使用手册（译） | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,DevTree">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="设备树使用手册（译） | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="DevTree"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">基本数据格式（Basic Data Format）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">基本概念（Basic Concepts）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">模型机（Sample Machine）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">初始结构（Initial structure）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">中央处理器（CPUs）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">节点名称（Node Names）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">设备（Devices）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">理解 compatible 属性</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">如何编址（How Addressing Works）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">CPU 编址（CPU addressing）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">内存映射设备（Memory Mapped Devices）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">非内存映射设备（Non Memory Mapped Devices）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">范围（地址转换）Ranges (Address Translation)</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">中断如何工作（How Interrupts Work）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">设备特定数据（Device Specific Data）</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">特殊节点（Special Nodes）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">aliases 节点</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">chosen 节点</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">高级主题（Advanced Topics）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">高级模型机（Advanced Sample Machine）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">PCI 主桥（PCI Host Bridge）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">PCI 总线编号（PCI Bus numbering）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.4.</span> <span class="post-toc-text">PCI 地址转换（PCI Address Translation）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.5.</span> <span class="post-toc-text">高级中断映射（Advanced Interrupt Mapping）</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">8.</span> <span class="post-toc-text">附注（Notes）</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                设备树使用手册（译）
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>4月 19, 2015</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/DevTree/">DevTree</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=设备树使用手册（译）&url=http://yoursite.com//2015/04/19/dt-usage/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=设备树使用手册（译）&url=http://yoursite.com//2015/04/19/dt-usage/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2015/04/19/dt-usage/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2015/04/19/dt-usage/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>原文链接：<a href="http://devicetree.org/Device_Tree_Usage" target="_blank" rel="external">http://devicetree.org/Device_Tree_Usage</a>
+参考译文：<a href="http://blog.chinaunix.net/uid-20522771-id-3457184.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-20522771-id-3457184.html</a></p>
+<p>本文将介绍如何为一个新机器编写设备树。我们准备提供一个有关设备树概念的概述和如何使用这些设备树来描述一个机器。
+完整的设备树数据格式的技术说明书请参考 ePAPR 规范。ePAPR 规范涵盖了比本文基本主题更丰富的细节，要查阅本文没有涉及到的高级用法请参考该规范。
+&lt;!--more--&gt;</p>
+<h2>基本数据格式（Basic Data Format）</h2>
+<p>设备树是一个包含节点和属性的简单树状结构。属性就是键－值对，而节点可以同时包含属性和子节点。例如，以下就是一个<code>.dts</code>格式的简单树：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">/ &#123;</div><div class="line">    node1 &#123;</div><div class="line">        a-string-property = &quot;A string&quot;;</div><div class="line">        a-string-list-property = &quot;first string&quot;, &quot;second string&quot;;</div><div class="line">        a-byte-data-property = [0x01 0x23 0x34 0x56];</div><div class="line">        child-node1 &#123;</div><div class="line">            first-child-property;</div><div class="line">            second-child-property = &lt;1&gt;;</div><div class="line">            a-string-property = &quot;Hello, world&quot;;</div><div class="line">        &#125;;</div><div class="line">        child-node2 &#123;</div><div class="line">        &#125;;</div><div class="line">    &#125;;</div><div class="line">    node2 &#123;</div><div class="line">        an-empty-property;</div><div class="line">        a-cell-property = &lt;1 2 3 4&gt;; /* each number (cell) is a uint32 */</div><div class="line">        child-node1 &#123;</div><div class="line">        &#125;;</div><div class="line">    &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>这棵树显然是没什么用的，因为它并没有描述任何东西，但它确实体现了节点的一些属性：</p>
+<ul>
+<li>一个单独的根节点：<code>/</code></li>
+<li>两个子节点：<code>node1</code>和<code>node2</code></li>
+<li>两个<code>node1</code>的子节点：<code>child-node1</code>和<code>child-node2</code></li>
+<li>一堆分散在树里的属性。
+属性是简单的键－值对，它的值可以为空或者包含一个任意字节流。虽然数据类型并没有编码进数据结构，但在设备树源文件中任有几个基本的数据表示形式。</li>
+<li>文本字符串（以空字符结束 null terminated）可以用双引号表示：
+<code>string-property = &quot;a string&quot;</code></li>
+<li>‘Cells’（单元）是 32 位无符号整数，用尖括号限定：
+<code>cell-property = &lt;0xbeef 123 0xabcd1234&gt;</code></li>
+<li>二进制数据用方括号限定：
+<code>binary-property = [0x01 0x23 0x45 0x67];</code></li>
+<li>不同表示形式的数据可以使用逗号连在一起：
+<code>mixed-property = &quot;a string&quot;, [0x01 0x23 0x45 0x67], &lt;0x12345678&gt;;</code></li>
+<li>逗号也可用于创建字符串列表：
+<code>string-list = &quot;red fish&quot;, &quot;blue fish&quot;;</code></li>
+</ul>
+<h2>基本概念（Basic Concepts）</h2>
+<p>我们将以一个简单机器开始，然后通过一步步的建立一个描述这个简单机器的设备树，来了解如何使用设备树。</p>
+<h3>模型机（Sample Machine）</h3>
+<p>考虑下面这个假想的机器（大致基于ARM Versatile），制造商为<code>Acme</code>，并命名为<code>Coyote's Revenge</code>：</p>
+<ul>
+<li>一个32位 ARM CPU</li>
+<li>处理器本地总线连接到内存映射的串行口、spi 总线控制器、i2c 控制器、中断控制器和外部总线桥</li>
+<li>256MB SDRAM 起始地址为 0</li>
+<li>两个串口起始地址：<code>0x101F1000</code>和<code>0x101F2000</code></li>
+<li>GPIO 控制器起始地址：<code>0x101F3000</code></li>
+<li>带有以下设备的 SPI 控制器起始地址：<code>0x10170000</code>
+<ul>
+<li>MMC 插槽的 SS 管脚连接至 GPIO #1</li>
+</ul>
+</li>
+<li>外部总线桥挂载以下设备
+<ul>
+<li>SMC SMC91111 以太网设备连接到外部总线，起始地址：<code>0x10100000</code></li>
+<li>i2c 控制器起始地址：<code>0x10160000</code>，并挂载以下设备
+<ul>
+<li>Maxim DS1338 实时时钟。响应从地址<code>1101000 (0x58)</code></li>
+</ul>
+</li>
+<li>64MB NOR 闪存起始地址<code>0x30000000</code></li>
+</ul>
+</li>
+</ul>
+<h3>初始结构（Initial structure）</h3>
+<p>第一步就是要为这个模型机构建一个基本结构，这是一个有效的设备树最基本的结构。在这个阶段你需要唯一的标识该机器。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">/ &#123;</div><div class="line">    compatible = &quot;acme,coyotes-revenge&quot;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p><code>compatible</code>指定了系统的名称。它包含了一个“&lt;制造商&gt;,&lt;型号&gt;”形式的字符串。重要的是要指定一个确切的设备，并且包括制造商的名字，以避免命名空间冲突。由于操作系统会使用<code>compatible</code>的值来决定如何在机器上运行，所以正确的设置这个属性变得非常重要。
+理论上讲，兼容性（compatible）是操作系统唯一标识一个机器所需的所有数据。如果所有的机器细节都是硬编码的，那么操作系统则可以在顶层的<code>compatible</code>属性中具体查看<code>acme,coyotes-revenge</code>。</p>
+<h3>中央处理器（CPUs）</h3>
+<p>接下来就应该描述每个 CPU 了。先添加一个名为<code>cpus</code>的容器节点，然后为每个 CPU 分别添加子节点。具体到我们的情况是一个 ARM 的 双核 Cortex A9 系统。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">/ &#123;</div><div class="line">    compatible = &quot;acme,coyotes-revenge&quot;;</div><div class="line"></div><div class="line">    cpus &#123;</div><div class="line">        cpu@0 &#123;</div><div class="line">            compatible = &quot;arm,cortex-a9&quot;;</div><div class="line">        &#125;;</div><div class="line">        cpu@1 &#123;</div><div class="line">            compatible = &quot;arm,cortex-a9&quot;;</div><div class="line">        &#125;;</div><div class="line">    &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>每个<code>cpu</code>节点的<code>compatible</code>属性是一个“&lt;制造商&gt;,&lt;型号&gt;”形式的字符串，指定了确切的 <code>cpu</code>，就像顶层的<code>compatible</code>属性一样。
+稍后将会有更多的属性添加进<code>cpu</code>节点，但我们先得讨论更多一些的基本概念。</p>
+<h3>节点名称（Node Names）</h3>
+<p>现在应该花点时间来讨论命名约定了。每个节点必须有一个“&lt;名称&gt;[@&lt;单元地址&gt;]”（&lt;name&gt;[@&lt;unit-address&gt;]）形式的名字。</p>
+<p>&lt;名称&gt; 是一个长度不超过31位的简单ascii字符串。通常，节点的命名应该根据它所表述的设备类型。比如一个&quot;3com&quot;以太网适配器的节点就应该命名为<code>ethernet</code>，而不应该是<code>3com509</code>。</p>
+<p>如果该节点描述的设备包含有一个地址，则还应该加上单元地址（<code>unit-address</code>）。通常，单元地址就是用来访问该设备的主地址，并且该地址也在节点的<code>reg</code>属性中列出。本文档中我们将在稍后讲述<code>reg</code>属性。</p>
+<p>同级（兄弟）节点命名必须是唯一的，但只要地址不同，多个节点也可以使用一样的通用名称（例如<code>serial@101f1000</code>和<code>serial@101f2000</code>）。关于节点命名的更多细节请参考ePAPR规范2.2.1节。</p>
+<h3>设备（Devices）</h3>
+<p>系统中每个设备都表示为一个设备树节点。所以接下来就应该为这个设备树填充设备节点。现在，直到我们讨论如何进行寻址和中断请求如何处理之前这些新节点将一直为空。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">/ &#123;</div><div class="line">    compatible = &quot;acme,coyotes-revenge&quot;;</div><div class="line"></div><div class="line">    cpus &#123;</div><div class="line">        cpu@0 &#123;</div><div class="line">            compatible = &quot;arm,cortex-a9&quot;;</div><div class="line">        &#125;;</div><div class="line">        cpu@1 &#123;</div><div class="line">            compatible = &quot;arm,cortex-a9&quot;;</div><div class="line">        &#125;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    serial@101F0000 &#123;</div><div class="line">        compatible = &quot;arm,pl011&quot;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    serial@101F2000 &#123;</div><div class="line">        compatible = &quot;arm,pl011&quot;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    gpio@101F3000 &#123;</div><div class="line">        compatible = &quot;arm,pl061&quot;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    interrupt-controller@10140000 &#123;</div><div class="line">        compatible = &quot;arm,pl190&quot;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    spi@10115000 &#123;</div><div class="line">        compatible = &quot;arm,pl022&quot;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    external-bus &#123;</div><div class="line">        ethernet@0,0 &#123;</div><div class="line">            compatible = &quot;smc,smc91c111&quot;;</div><div class="line">        &#125;;</div><div class="line"></div><div class="line">        i2c@1,0 &#123;</div><div class="line">            compatible = &quot;acme,a1234-i2c-bus&quot;;</div><div class="line">            rtc@58 &#123;</div><div class="line">                compatible = &quot;maxim,ds1338&quot;;</div><div class="line">            &#125;;</div><div class="line">        &#125;;</div><div class="line"></div><div class="line">        flash@2,0 &#123;</div><div class="line">            compatible = &quot;samsung,k8f1315ebm&quot;, &quot;cfi-flash&quot;;</div><div class="line">        &#125;;</div><div class="line">    &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>在此树中，已经为系统中的每个设备添加了节点，而且这个层次结构也反映了设备与系统的连接方式。例如，外部总线上的设备就是外部总线节点的子节点，i2c 设备就是 i2c 总线控制器节点的子节点。通常，这个层次结构表现的是 CPU 视角的系统视图。</p>
+<p>现在这棵树还是无效的，因为它缺少关于设备之间互联的信息。稍后将添加这些信息。</p>
+<p>在这颗树中，应该注意这些事情：</p>
+<ul>
+<li>每个设备节点都拥有一个<code>compatible</code>属性。</li>
+<li>闪存（flash）节点的<code>compatible</code>属性由两个字符串构成。欲知为何，请阅读下一节。</li>
+<li>正如前面所述，节点的命名应当反映设备的类型而不是特定的型号。请查阅 ePAPR 规范第 2.2.2 节里定义的通用节点名，应当优先使用这些节点名。</li>
+</ul>
+<h3>理解 compatible 属性</h3>
+<p>树中每个表示设备的节点都需要一个<code>compatible</code>属性。<code>compatible</code>属性是操作系统用来决定使用哪个设备驱动来绑定一个设备的关键因素。</p>
+<p><code>compatible</code>是一个字符串列表，其中的第一个字符串指定了这个节点所表示的确切的设备，该字符串的格式为：&quot;&lt;制造商&gt;,&lt;型号&gt;&quot;。剩下的字符串的则表示其它与之相兼容的设备。</p>
+<p>例如，Freescale MPC8349 片上系统（SoC）拥有一个实现了美国国家半导体<code>ns16550</code>寄存器接口的串行设备，那么 MPC8349 的串行设备的<code>compatible</code>属性就应该是：<code>compatible = &quot;fsl,mpc8349-uart&quot;, &quot;ns16550&quot;</code>。在这里，<code>fsl,mpc8349-uart</code>指定了确切的设备，而<code>ns16550</code>则说明这是与美国国家半导体<code>ns16550</code>UART 在寄存器级别兼容。</p>
+<p>注：<code>ns16550</code>并没有制造商前缀，这仅仅是历史原因造成的。所有新的<code>compatible</code>值都应该使用制造商前缀。</p>
+<p>这种做法可以使现有的设备驱动能够绑定到新设备上，并仍然唯一的指定确切的硬件。</p>
+<p>警告：不要使用带通配符的<code>compatible</code>值，比如<code>fsl,mpc83xx-uart</code>或类似情况。芯片提供商总会做出一些打破通配符所假定情况的变化，这时候修改已来不及。相反，应该选择一个特定的芯片然后是所有后续芯片都与之兼容。</p>
+<h2>如何编址（How Addressing Works）</h2>
+<p>可编址设备使用以下属性将地址信息编码进设备树：</p>
+<ul>
+<li>reg</li>
+<li>#address-cells</li>
+<li>#size-cells
+每个可编址设备都有一个reg元组列表，形式为：
+<code>reg = &lt;address1 length1 [address2 length2] [address3 length3] ... &gt;</code>
+每个元组都表示一个该设备使用的地址范围，每个地址（address）值是一个或多个 32 位整型数（称为 cell）列表，同样，长度（length）值也可以是一个 cell 列表或者为空。</li>
+</ul>
+<p>由于地址和长度字段都是大小可变的变量，那么父节点的<code>#address-cells</code>和<code>#size-cells</code>属性就用来声明各个字段的 cell 的数量。换句话说，正确解释一个 reg 属性需要用到父节点的<code>#address-cells</code>和<code>#size-cells</code>的值。要知道这一切是如何运作的，我们将给模型机添加编址属性，就从 CPU 开始。</p>
+<h3>CPU 编址（CPU addressing）</h3>
+<p>CPU 节点表示了一个关于编址的最简单的例子。每个 CPU 都分配了一个唯一的 ID，并且没有 CPU id 相关的大小信息。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">cpus &#123;</div><div class="line">    #address-cells = &lt;1&gt;;</div><div class="line">    #size-cells = &lt;0&gt;;</div><div class="line">    cpu@0 &#123;</div><div class="line">        compatible = &quot;arm,cortex-a9&quot;;</div><div class="line">        reg = &lt;0&gt;;</div><div class="line">    &#125;;</div><div class="line">    cpu@1 &#123;</div><div class="line">        compatible = &quot;arm,cortex-a9&quot;;</div><div class="line">        reg = &lt;1&gt;;</div><div class="line">    &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>在 cpu 节点中，<code>#address-cells</code>设置为 1，<code>#size-cells</code>设置为 0，这意味着子节点的 reg 值是一个单一的 uint32，这是一个不包含大小字段的地址，为这两个 cpu 分配的地址是 0 和 1。cpu 节点的<code>#size-cells</code>为 0 是因为只为每个 cpu 分配一个单一的地址。</p>
+<p>你可能还会注意到 reg 的值和节点名字中的单元地址值是相同的。按照惯例，&lt;span style=&quot;color:red;&quot;&gt;如果一个节点有 reg 属性，那么该节点的名字就必须包含单元地址（unit-address），且该地址就是 reg 属性里第一个地址值。&lt;/span&gt;</p>
+<h3>内存映射设备（Memory Mapped Devices）</h3>
+<p>与 cpu 节点里单一地址值不同，内存映射设备将分配到一个与其对应的地址范围。<code>#size-cells</code>声明每个子节点的 reg 元组中长度字段的大小。在接下来的例子中，每个地址值是 1 cell（32 位），每个长度值也是 1 cell，这是典型的 32 位系统。64 位的机器则可以使用值为 2 的<code>#address-cells</code>和<code>#size-cells</code>来获得在设备树中的 64 位编址。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">/ &#123;</div><div class="line">    #address-cells = &lt;1&gt;;</div><div class="line">    #size-cells = &lt;1&gt;;</div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">    serial@101f0000 &#123;</div><div class="line">        compatible = &quot;arm,pl011&quot;;</div><div class="line">        reg = &lt;0x101f0000 0x1000 &gt;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    serial@101f2000 &#123;</div><div class="line">        compatible = &quot;arm,pl011&quot;;</div><div class="line">        reg = &lt;0x101f2000 0x1000 &gt;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    gpio@101f3000 &#123;</div><div class="line">        compatible = &quot;arm,pl061&quot;;</div><div class="line">        reg = &lt;0x101f3000 0x1000</div><div class="line">               0x101f4000 0x0010&gt;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    interrupt-controller@10140000 &#123;</div><div class="line">        compatible = &quot;arm,pl190&quot;;</div><div class="line">        reg = &lt;0x10140000 0x1000 &gt;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    spi@10115000 &#123;</div><div class="line">        compatible = &quot;arm,pl022&quot;;</div><div class="line">        reg = &lt;0x10115000 0x1000 &gt;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    ...</div><div class="line"></div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>每个设备都被分配了一个基址以及该区域的大小。这个例子中为 GPIO 设备分配了两个地址范围：<code>0x101f3000...0x101f3fff</code>和<code>0x101f4000..0x101f400f</code>。</p>
+<p>一些挂在总线上的设备有不同的编址方案。例如一个带独立片选线的设备可以连接至外部总线。由于父节点会为其子节点定义地址域，所以可以选择不同的地址映射来最恰当的描述该系统。下面的代码展示了设备连接至外部总线并将其片选号编码进地址的地址分配。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">external-bus &#123;</div><div class="line">    #address-cells = &lt;2&gt;</div><div class="line">    #size-cells = &lt;1&gt;;</div><div class="line"></div><div class="line">    ethernet@0,0 &#123;</div><div class="line">        compatible = &quot;smc,smc91c111&quot;;</div><div class="line">        reg = &lt;0 0 0x1000&gt;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    i2c@1,0 &#123;</div><div class="line">        compatible = &quot;acme,a1234-i2c-bus&quot;;</div><div class="line">        reg = &lt;1 0 0x1000&gt;;</div><div class="line">        rtc@58 &#123;</div><div class="line">            compatible = &quot;maxim,ds1338&quot;;</div><div class="line">        &#125;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    flash@2,0 &#123;</div><div class="line">        compatible = &quot;samsung,k8f1315ebm&quot;, &quot;cfi-flash&quot;;</div><div class="line">        reg = &lt;2 0 0x4000000&gt;;</div><div class="line">    &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>外部总线的地址值使用了两个 cell，一个用于片选号；另一个则用于片选基址的偏移量。而长度字段则还是单个 cell，这是因为只有地址的偏移部分才需要一个范围量。所以，在这个例子中，每个 reg 项都有三个 cell：片选号、偏移量和长度。</p>
+<p>由于地址域是包含在一个节点及其子节点的，所以父节点可以自由的定义任何对于该总线来说有意义的编址方案。那些在直接父节点（immediate parent）和子节点（child nodes）以外的节点通常不关心本地地址域，而地址应该从一个域映射到另一个域。</p>
+<h3>非内存映射设备（Non Memory Mapped Devices）</h3>
+<p>其他没有被映射到处理器总线上的设备，虽然这些设备可以有一个地址范围，但它们并不能由 CPU 直接访问。取而代之的是，父设备的驱动程序会代表 CPU 间接访问设备资源。</p>
+<p>以 i2c 设备为例，每个设备都分配了一个地址，但并没有与之关联的长度或范围信息。这看起来和 CPU 的地址分配很像。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">i2c@1,0 &#123;</div><div class="line">    compatible = &quot;acme,a1234-i2c-bus&quot;;</div><div class="line">    #address-cells = &lt;1&gt;;</div><div class="line">    #size-cells = &lt;0&gt;;</div><div class="line">    reg = &lt;1 0 0x1000&gt;;</div><div class="line">    rtc@58 &#123;</div><div class="line">        compatible = &quot;maxim,ds1338&quot;;</div><div class="line">        reg = &lt;58&gt;;</div><div class="line">    &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h3>范围（地址转换）Ranges (Address Translation)</h3>
+<p>我们已经讨论了如何给设备分配地址，但目前来说这些地址还只是设备节点的本地地址，我们还没有描述如何将这些地址映射成 CPU 可使用的地址。</p>
+<p>根节点始终描述的是 CPU 视角的地址空间。根节点的子节点已经使用的是 CPU 的地址域，所以它们不需要任何显式的映射。例如，<code>serial@101f0000</code>设备就是直接分配<code>0x101f0000</code>地址。</p>
+<p>那些不是根节点直接子节点的节点就没有使用 CPU 地址域。为了得到一个内存映射地址，设备树必须指定如何从一个域到另一个域地址转换的方法，因此<code>ranges</code>属性应运而生。</p>
+<p>下面就是一个添加了 ranges 属性的示例设备树。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">/ &#123;</div><div class="line">    compatible = &quot;acme,coyotes-revenge&quot;;</div><div class="line">    #address-cells = &lt;1&gt;;</div><div class="line">    #size-cells = &lt;1&gt;;</div><div class="line">    ...</div><div class="line">    external-bus &#123;</div><div class="line">        #address-cells = &lt;2&gt;</div><div class="line">        #size-cells = &lt;1&gt;;</div><div class="line">        ranges = &lt;0 0  0x10100000   0x10000      // Chipselect 1, Ethernet</div><div class="line">                  1 0  0x10160000   0x10000      // Chipselect 2, i2c controller</div><div class="line">                  2 0  0x30000000   0x10000000&gt;; // Chipselect 3, NOR Flash</div><div class="line"></div><div class="line">        ethernet@0,0 &#123;</div><div class="line">            compatible = &quot;smc,smc91c111&quot;;</div><div class="line">            reg = &lt;0 0 0x1000&gt;;</div><div class="line">        &#125;;</div><div class="line"></div><div class="line">        i2c@1,0 &#123;</div><div class="line">            compatible = &quot;acme,a1234-i2c-bus&quot;;</div><div class="line">            #address-cells = &lt;1&gt;;</div><div class="line">            #size-cells = &lt;0&gt;;</div><div class="line">            reg = &lt;1 0 0x1000&gt;;</div><div class="line">            rtc@58 &#123;</div><div class="line">                compatible = &quot;maxim,ds1338&quot;;</div><div class="line">                reg = &lt;58&gt;;</div><div class="line">            &#125;;</div><div class="line">        &#125;;</div><div class="line"></div><div class="line">        flash@2,0 &#123;</div><div class="line">            compatible = &quot;samsung,k8f1315ebm&quot;, &quot;cfi-flash&quot;;</div><div class="line">            reg = &lt;2 0 0x4000000&gt;;</div><div class="line">        &#125;;</div><div class="line">    &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p><code>ranges</code>是一个地址转换列表，<code>ranges</code>表中的每一项都是一个元组，包含子地址、父地址和子地址空间区域的大小。每个字段的值都取决于子节点的<code>#address-cells</code>、父节点的<code>#address-cells</code>和子节点的<code>#size-cells</code>。以本例中的外部总线来说，子地址是 2 cell、父地址是 1 cell、区域大小也是 1 cell。那么三个 ranges 被翻译为：</p>
+<ul>
+<li>从片选 0 偏移量 0 开始的地址被映射到地址范围：<code>0x10100000..0x1010ffff</code></li>
+<li>从片选 1 偏移量 0 开始的地址被映射到地址范围：<code>0x10160000..0x1016ffff</code></li>
+<li>从片选 2 偏移量 0 开始的地址被映射到地址范围：<code>0x30000000..0x3fffffff</code>
+另外，如果父地址空间和子地址空间是相同的，那么该节点可以添加一个空的 range 属性。一个空的 range 属性意味着子地址空间中的地址将被 1:1 映射到父地址空间。</li>
+</ul>
+<p>你有可能会问当全都可以设计成 1:1 映射的时候为何还要使用地址转换。答案就是，有一些具有完全不同地址空间的总线（比如 PCI），而它们的细节需要暴露给操作系统；另外一些带有 DMA 引擎的设备需要知道总线上的真实地址；有时需要将设备组合到一块，因为它们共享相同的软件可编程物理地址映射。是否应该使用 1:1 映射在很大程度上取决于操作系统需要的信息以及硬件设计。</p>
+<p>你还应该注意到在<code>i2c@1,0</code>节点中并没有<code>range</code>属性。不同于外部总线，这里的原因是 i2c 总线上的设备并没有被内存映射到 CPU 的地址域。相反，CPU 将通过<code>i2c@1,0</code>设备间接访问<code>rtc@58</code>设备。缺少<code>ranges</code>属性意味着这个设备将不能被它的父设备以外的任何设备直接访问。</p>
+<h2>中断如何工作（How Interrupts Work）</h2>
+<p>与遵循树的自然结构而进行的地址转换不同，机器上的任何设备都可以发起和终止中断信号。另外，与在设备树中自然表示的地址编址不同，中断信号表示为独立于设备树结构的节点之间的链接。有四个属性用来描述中断连接：</p>
+<ul>
+<li><code>interrupt-controller</code>一个空的属性定义一个接收中断信号的设备节点。</li>
+<li><code>#interrupt-cells</code>这是一个中断控制器节点的属性。它声明了该中断控制器的中断指示符（interrupt specifier）中 cell 的个数（类似于<code>#address-cells</code>和<code>#size-cells</code>）。</li>
+<li><code>interrupt-parent</code>这是一个设备节点的属性，包含一个指向该设备所连接的中断控制器的 <code>phandle</code>。那些没有<code>interrupt-parent</code>属性的节点则从它们的父节点中继承该属性。</li>
+<li><code>interrupts</code>一个设备节点属性，包含一个中断指示符列表，对应于该设备上的每个中断输出信号。
+中断指示符是一个或多个 cell 的数据（由<code>#interrupt-cells</code>指定），这些数据指定了该设备连接至哪些中断输入。如以下的例子所示，大部分设备都只有一个中断输出，但也有可能在一个设备上有多个中断输出。一个中断指示符的意义完全取决于中断控制器设备的 binding（绑定）。每个中断控制器可以决定使用几个 cell 来唯一的定义一个中断输入。</li>
+</ul>
+<p>下面的代码为我们的 Coyote's Revenge 模型机添加了中断连接：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div></pre></td><td class="code"><pre><div class="line">/ &#123;</div><div class="line">    compatible = &quot;acme,coyotes-revenge&quot;;</div><div class="line">    #address-cells = &lt;1&gt;;</div><div class="line">    #size-cells = &lt;1&gt;;</div><div class="line">    interrupt-parent = &lt;&amp;intc&gt;;</div><div class="line"></div><div class="line">    cpus &#123;</div><div class="line">        #address-cells = &lt;1&gt;;</div><div class="line">        #size-cells = &lt;0&gt;;</div><div class="line">        cpu@0 &#123;</div><div class="line">            compatible = &quot;arm,cortex-a9&quot;;</div><div class="line">            reg = &lt;0&gt;;</div><div class="line">        &#125;;</div><div class="line">        cpu@1 &#123;</div><div class="line">            compatible = &quot;arm,cortex-a9&quot;;</div><div class="line">            reg = &lt;1&gt;;</div><div class="line">        &#125;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    serial@101f0000 &#123;</div><div class="line">        compatible = &quot;arm,pl011&quot;;</div><div class="line">        reg = &lt;0x101f0000 0x1000 &gt;;</div><div class="line">        interrupts = &lt; 1 0 &gt;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    serial@101f2000 &#123;</div><div class="line">        compatible = &quot;arm,pl011&quot;;</div><div class="line">        reg = &lt;0x101f2000 0x1000 &gt;;</div><div class="line">        interrupts = &lt; 2 0 &gt;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    gpio@101f3000 &#123;</div><div class="line">        compatible = &quot;arm,pl061&quot;;</div><div class="line">        reg = &lt;0x101f3000 0x1000</div><div class="line">               0x101f4000 0x0010&gt;;</div><div class="line">        interrupts = &lt; 3 0 &gt;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    intc: interrupt-controller@10140000 &#123;</div><div class="line">        compatible = &quot;arm,pl190&quot;;</div><div class="line">        reg = &lt;0x10140000 0x1000 &gt;;</div><div class="line">        interrupt-controller;</div><div class="line">        #interrupt-cells = &lt;2&gt;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    spi@10115000 &#123;</div><div class="line">        compatible = &quot;arm,pl022&quot;;</div><div class="line">        reg = &lt;0x10115000 0x1000 &gt;;</div><div class="line">        interrupts = &lt; 4 0 &gt;;</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    external-bus &#123;</div><div class="line">        #address-cells = &lt;2&gt;</div><div class="line">        #size-cells = &lt;1&gt;;</div><div class="line">        ranges = &lt;0 0  0x10100000   0x10000     // Chipselect 1, Ethernet</div><div class="line">                  1 0  0x10160000   0x10000     // Chipselect 2, i2c controller</div><div class="line">                  2 0  0x30000000   0x1000000&gt;; // Chipselect 3, NOR Flash</div><div class="line"></div><div class="line">        ethernet@0,0 &#123;</div><div class="line">            compatible = &quot;smc,smc91c111&quot;;</div><div class="line">            reg = &lt;0 0 0x1000&gt;;</div><div class="line">            interrupts = &lt; 5 2 &gt;;</div><div class="line">        &#125;;</div><div class="line"></div><div class="line">        i2c@1,0 &#123;</div><div class="line">            compatible = &quot;acme,a1234-i2c-bus&quot;;</div><div class="line">            #address-cells = &lt;1&gt;;</div><div class="line">            #size-cells = &lt;0&gt;;</div><div class="line">            reg = &lt;1 0 0x1000&gt;;</div><div class="line">            interrupts = &lt; 6 2 &gt;;</div><div class="line">            rtc@58 &#123;</div><div class="line">                compatible = &quot;maxim,ds1338&quot;;</div><div class="line">                reg = &lt;58&gt;;</div><div class="line">                interrupts = &lt; 7 3 &gt;;</div><div class="line">            &#125;;</div><div class="line">        &#125;;</div><div class="line"></div><div class="line">        flash@2,0 &#123;</div><div class="line">            compatible = &quot;samsung,k8f1315ebm&quot;, &quot;cfi-flash&quot;;</div><div class="line">            reg = &lt;2 0 0x4000000&gt;;</div><div class="line">        &#125;;</div><div class="line">    &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>一些需要注意的事情：</p>
+<ul>
+<li>这个机器只有一个中断控制器：<code>interrupt-controller@10140000</code>。</li>
+<li>中断控制器节点上添加了<code>inc:</code>标签，该标签用于给根节点的<code>interrupt-parent</code>属性分配一个<code>phandle</code>。这个<code>interrupt-parent</code>将成为本系统的默认值，因为所有的子节点都将继承它，除非显式覆写这个属性。</li>
+<li>每个设备使用一个<code>interrupts</code>属性指定一个不同的中断输入线。</li>
+<li><code>#interrupt-cells</code>是 2，所以每个中断指示符都有 2 个 cell。本例使用一种通用的模式，也就是用第一个 cell 来编码中断线号（interrupt line number）；然后用第二个 cell 编码标志位，比如高电平/低电平有效，或者边缘/水平触发。对于任何给定的中断控制器，请参考该控制器的 binding 文档以了解指示符如何编码。</li>
+</ul>
+<h2>设备特定数据（Device Specific Data）</h2>
+<p>除了通用属性以外，一个节点中可以添加任何属性和子节点。只要遵循一些规则，可以添加任何操作系统所需要的数据。</p>
+<p>首先，新的设备特定属性的名字都应该使用制造商前缀，以避免和现有标准属性名相冲突。</p>
+<p>其次，属性和子节点的含义必须记录在 binding 文档中，以便设备驱动程序的程序员知道如何解释这些数据。一个 binding 记录了一个特定<code>compatible</code>值的意义、应该包含什么样的属性、有可能包含那些子节点、以及它代表了什么样的设备。每个特别的<code>compatible</code>值都应该有一个它自己的 binding（或者要求与其他<code>compatible</code>值兼容）。新设备的 binding 存档在本 wiki 中。请查看主页上的文档格式描述和审核流程。</p>
+<p>第三，使用邮件列表 devicetree-discuss@lists.ozlabs.org 发送新的 binding 以进行审核。新 binding 的审核可以捕获很多可能在以后导致问题的常见错误。</p>
+<h2>特殊节点（Special Nodes）</h2>
+<h3>aliases 节点</h3>
+<p>引用一个特定的节点通常使用全路径，如<code>/external-bus/ethernet@0</code>,0，但当用户真正想知道的只是“哪个设备是 eth0？”时，这样的全路径就变得很冗长。这时，aliases 节点就可以用于指定一个设备全路径的别名。例如：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">aliases &#123;</div><div class="line">    ethernet0 = &amp;eth0;</div><div class="line">    serial0 = &amp;serial0;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>当给一个设备分配一个标识符时，操作系统更乐意使用别名。</p>
+<p>在这里你会发现一个新语法。<code>property = &amp;label;</code> 语法指定由标签引用的节点的完整路径为一个字符串属性。这与之前的把一个<code>phandle</code>值装入一个 cell的 <code>phandle = &lt; &amp;label &gt;;</code> 形式不同。</p>
+<h3>chosen 节点</h3>
+<p><code>chosen</code> 节点并不代表一个真正的设备，只是作为一个固件和操作系统之间传递数据的地方，比如引导参数。<code>chosen</code>节点里的数据也不代表硬件。通常，<code>chosen</code>节点在<code>.dts</code>源文件中为空，并在启动时填充。</p>
+<p>在我们的示例系统中，固件可以往 chosen 节点添加以下信息：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">chosen &#123;</div><div class="line">    bootargs = &quot;root=/dev/nfs rw nfsroot=192.168.1.1 console=ttyS0,115200&quot;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h2>高级主题（Advanced Topics）</h2>
+<h3>高级模型机（Advanced Sample Machine）</h3>
+<p>现在，我们已经掌握了基本的定义，接下来让我们往模型机里添加一些硬件，以讨论一些更复杂的用例。</p>
+<p>高级模型机添加了一个 PCI 主桥，其控制寄存器映射到内存<code>0x10180000</code>，并且 BARs 编程至以<code>0x80000000</code>为起始的地址。</p>
+<p>既然关于设备树我们已经有所了解了，那么我们就从以下所示新增加的节点来介绍 PCI 主桥。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">pci@10180000 &#123;</div><div class="line">    compatible = &quot;arm,versatile-pci-hostbridge&quot;, &quot;pci&quot;;</div><div class="line">    reg = &lt;0x10180000 0x1000&gt;;</div><div class="line">    interrupts = &lt;8 0&gt;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h3>PCI 主桥（PCI Host Bridge）</h3>
+<p>本节介绍 Host/PCI 桥节点。</p>
+<p>注，本节将假定读者了解 PCI 的一些基本知识。本文并不是 PCI 教程，想要了解更深入的信息，请阅读参考文献&lt;sup&gt;<a href="#ref-1">1</a>&lt;/sup&gt;。你也可以参考 ePAPR 或 PCI Bus Binding to Open Firmware（<a href="http://playground.sun.com/1275/bindings/pci/pci2_1.pdf" target="_blank" rel="external">http://playground.sun.com/1275/bindings/pci/pci2_1.pdf</a>）。还可以访问<a href="http://devicetree.org/MPC5200:PCI" target="_blank" rel="external">http://devicetree.org/MPC5200:PCI</a>，这里可以找到 Freescale MPC5200 的一个完整工作的例子。</p>
+<h3>PCI 总线编号（PCI Bus numbering）</h3>
+<p>每个 PCI 总线段都是唯一编号的，并且总线的编号通过使用<code>bus-ranges</code>属性在 pci 节点中暴露出来的，这个属性包含两个 cell。第一个 cell 给出分配给该节点的总线号；第二个 cell 给出任何次级 PCI 总线最大总线号。</p>
+<p>模型机只有一个 pci 总线，所以两个 cell 都是 0。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">pci@0x10180000 &#123;</div><div class="line">    compatible = &quot;arm,versatile-pci-hostbridge&quot;, &quot;pci&quot;;</div><div class="line">    reg = &lt;0x10180000 0x1000&gt;;</div><div class="line">    interrupts = &lt;8 0&gt;;</div><div class="line">    bus-ranges = &lt;0 0&gt;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h3>PCI 地址转换（PCI Address Translation）</h3>
+<p>类似于前面所描述的本地总线，PCI 地址空间和 CPU 地址空间是完全分离的，所以需要一个从 PCI 地址到 CPU 地址的转换。同样，完成这样的转换将使用<code>ranges</code>、<code>#address-cells</code>和<code>#size-cells</code>属性。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">pci@0x10180000 &#123;</div><div class="line">    compatible = &quot;arm,versatile-pci-hostbridge&quot;, &quot;pci&quot;;</div><div class="line">    reg = &lt;0x10180000 0x1000&gt;;</div><div class="line">    interrupts = &lt;8 0&gt;;</div><div class="line">    bus-ranges = &lt;0 0&gt;;</div><div class="line"></div><div class="line">    #address-cells = &lt;3&gt;</div><div class="line">    #size-cells = &lt;2&gt;;</div><div class="line">    ranges = &lt;0x42000000 0 0x80000000 0x80000000 0 0x20000000</div><div class="line">              0x02000000 0 0xa0000000 0xa0000000 0 0x10000000</div><div class="line">              0x01000000 0 0x00000000 0xb0000000 0 0x01000000&gt;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>正如你所看到的，子地址（PCI 地址）使用 3 个 cell，同时 PCI rangs 被编码为 2 个 cell。那么第一个问题就可能是，为什么我们要用三个 32 位 cell 来指定一个 PCI 地址？ 这三个 cell 分别标记为 phys.hi、phys.mid 和 phys.low&lt;sup&gt;<a href="#ref-2">2</a>&lt;/sup&gt;。</p>
+<ul>
+<li>
+<p>phys.hi cell:<code>npt000ss bbbbbbbb dddddfff rrrrrrrr</code></p>
+</li>
+<li>
+<p>phys.mid cell:<code>hhhhhhhh hhhhhhhh hhhhhhhh hhhhhhhh</code></p>
+</li>
+<li>
+<p>phys.low cell:<code>llllllll llllllll llllllll llllllll</code>
+PCI 地址是 64 位的，并被编码为 phys.mid 和 phys.low。然而真正有意思的是在 phys.high 里面，这是一个位域。</p>
+</li>
+<li>
+<p><code>n</code>: 可重定位区域标志（relocatable region flag）（在这里不起作用）</p>
+</li>
+<li>
+<p><code>p</code>: 可预取（可缓存）区域标志（prefetchable (cacheable) region flag）</p>
+</li>
+<li>
+<p><code>t</code>: 地址别名标志（aliased address flag）（在这里不起作用）</p>
+</li>
+<li>
+<p><code>ss</code>: 空间代码（space code ）</p>
+<ul>
+<li><code>00</code>: 配置空间（configuration space）</li>
+<li><code>01</code>: I/O 空间（I/O space）</li>
+<li><code>10</code>: 32 位内存空间（32 bit memory space）</li>
+<li><code>11</code>: 64 位内存空间（64 bit memory space）</li>
+</ul>
+</li>
+<li>
+<p><code>bbbbbbbb</code>: PCI 总线号。PCI 可以是分层结构，所以我们可能有 PCI/PCI 桥（用来定义子总线）。</p>
+</li>
+<li>
+<p><code>ddddd</code>: 设备号，通常与 IDSEL 信号相关联。</p>
+</li>
+<li>
+<p><code>fff</code>: 功能号。用于多功能 PCI 设备。</p>
+</li>
+<li>
+<p><code>rrrrrrrr</code>: 寄存器号，于配置周期时使用。
+对于 PCI 地址转换来说，<code>p</code>和<code>ss</code>是最重要的字段。在 phys.hi 里的<code>p</code>和<code>ss</code>的值决定了访问哪个 PCI 地址空间。因此，通过查找 ranges 属性，我们将得到三个区域。</p>
+</li>
+<li>
+<p>以 PCI 地址<code>0x80000000</code>开始的一个 512 MByte 32 位预取存储区，该区域将映射到主机 CPU 地址<code>0x80000000</code>。</p>
+</li>
+<li>
+<p>以 PCI 地址<code>0xa0000000</code>开始的一个 256 MByte 32 位非预取存储区，该区域将映射到主机 CPU 地址<code>0xa0000000</code>。</p>
+</li>
+<li>
+<p>以 PCI 地址<code>0x00000000</code>开始的一个 16 MByte I/O 区，该区域将映射到主机 CPU 地址<code>0xb0000000</code>。
+为阻止这些工作，phys.hi 位域的存在就意味着操作系统必须知道该节点代表了一个 PCI 桥，这样操作系统才能为了地址转换而忽略那些不相关的字段。为了判断应该掩码哪些额外的字段，操作系统需要在 PCI 总线节点中寻找“pci”字符串。</p>
+</li>
+</ul>
+<h3>高级中断映射（Advanced Interrupt Mapping）</h3>
+<p>现在我们来到了最有趣的部分，PCI 中断映射。一个 PCI 设备可以使用引线<code>#INTA</code>、<code>#INTB</code>、<code>#INTC</code>和<code>#INTD</code>来触发中断。如果我们没有多功能 PCI 设备，那么设备中断必须使用<code>#INTA</code>。然而，每个 PCI 插槽或设备通常会连接到中断控制器上不同的输入端。所以设备树需要一种能将各个 PCI 中断信号映射到中断控制器输入端的途径。<code>#interrupt-cells</code>、<code>interrupt-map</code>和<code>interrupt-map-mask</code>属性就被用来描述这个中断映射。</p>
+<p>这里所描述的中断映射并不仅仅局限于 PCI 总线，事实上，任何节点都可以指定复杂的中断映射，但 PCI 是最常见的情况。
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">pci@0x10180000 &#123;</div><div class="line">    compatible = &quot;arm,versatile-pci-hostbridge&quot;, &quot;pci&quot;;</div><div class="line">    reg = &lt;0x10180000 0x1000&gt;;</div><div class="line">    interrupts = &lt;8 0&gt;;</div><div class="line">    bus-ranges = &lt;0 0&gt;;</div><div class="line"></div><div class="line">    #address-cells = &lt;3&gt;</div><div class="line">    #size-cells = &lt;2&gt;;</div><div class="line">    ranges = &lt;0x42000000 0 0x80000000  0x80000000  0 0x20000000</div><div class="line">              0x02000000 0 0xa0000000  0xa0000000  0 0x10000000</div><div class="line">              0x01000000 0 0x00000000  0xb0000000  0 0x01000000&gt;;</div><div class="line"></div><div class="line">    #interrupt-cells = &lt;1&gt;;</div><div class="line">    interrupt-map-mask = &lt;0xf800 0 0 7&gt;;</div><div class="line">    interrupt-map = &lt;0xc000 0 0 1 &amp;intc  9 3 // 1st slot</div><div class="line">                     0xc000 0 0 2 &amp;intc 10 3</div><div class="line">                     0xc000 0 0 3 &amp;intc 11 3</div><div class="line">                     0xc000 0 0 4 &amp;intc 12 3</div><div class="line"></div><div class="line">                     0xc800 0 0 1 &amp;intc 10 3 // 2nd slot</div><div class="line">                     0xc800 0 0 2 &amp;intc 11 3</div><div class="line">                     0xc800 0 0 3 &amp;intc 12 3</div><div class="line">                     0xc800 0 0 4 &amp;intc  9 3&gt;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>首先你会发现，PCI 中断号只使用了一个 cell，不像系统中断控制器，它使用两个 cell，一个用于中断号，另一个用于标志。PCI 中断只使用了一个 cell，因为 PCI 中断指定为始终是低电平触发。</p>
+<p>在这个示例板上，我们有 2 个分别包含 4 个中断线的 PCI 插槽，所以我们需要映射 8 个中断线到中断控制器上。这已经在<code>interrupt-map</code>属性中完成了。关于中断映射的具体步骤请参考&lt;sup&gt;<a href="#ref-3">3</a>&lt;/sup&gt;。</p>
+<p>因为要区分单一 PCI 总线上的若干 PCI 设备中断号（<code>#INA</code>等）是不够用的，所以我们还需要指出是哪个 PCI 设备触发了中断线。幸运的是我们还可以使用每个设备所拥有的唯一设备号。为了区分这些 PCI 设备，我们需要一个元组，该元组由 PCI 设备号和 PCI 中断号组成。通俗的说，我们构造了由四个 cell 组成的设备中断指示符。</p>
+<ul>
+<li>三个<code>#address-cells</code>由 phys.hi、phys.mid、phys.low 组成，然后</li>
+<li>一个<code>#interrupt-cell</code>（<code>#INTA</code>、<code>#INTB</code>、<code>#INTC</code>、<code>#INTD</code>）
+因为我们只需要 PCI 地址中的设备号部分，所以 interrupt-map-mask 发挥了作用。<code>interrupt-map-mask</code>也是 4 元组，就像设备中断指示符一样。掩码的第一部分指出我们应该考虑设备中断指示符中哪一部分。在本例中，我们可以看到在 phys.hi 中只需要设备号部分，另外我们还需要 3 位来区分四个中断线（PCI 中断线是从 1 开始计数的，不是 0！）。</li>
+</ul>
+<p>现在。我们可以构建<code>interrupt-map</code>属性了。该属性是一个表，这个表的每一项都由一个子（PCI 总线）设备中断指示符、一个父句柄（<code>parent handle</code>）（用于中断服务的中断控制器）和一个父设备中断指示符组成。因此，在第一行中我们可以知道 PCI 中断<code>#INTA</code>将被映射到中断控制器的 IRQ 9，并且是低电平有效。&lt;sup&gt;<a href="#ref-4">4</a>&lt;/sup&gt;</p>
+<p>目前为止，唯一没有讨论的就是 PCI 总线设备中断指示符里古怪的数字了。来自 phys.hi 位域的设备号是设备中断指示符中的重要组成部分。设备号是平台特定的，并取决于 PCI 主控制器如何激活各个设备的 IDSEL 管脚。在本例中，PCI slot 1 分配设备 id 24（0x18）,PCI slot 2 分配设备 id 25（0x19）。每个 slot 的 phys.hi 值是通过将设备号左移 11 位至位域的<code>ddddd</code>段得到的，就像下面：</p>
+<ul>
+<li>slot 1 的 phys.hi 就是<code>0xC000</code>， 并且</li>
+<li>slot 2 的 phys.hi 就是<code>0xC800</code>。
+把这些放在一起之后，interrupt-map 属性就显示为：</li>
+<li>在主中断控制器上 slot 1 的<code>#INTA</code>是<code>IRQ9</code>，低电平触发</li>
+<li>在主中断控制器上 slot 1 的<code>#INTB</code>是<code>IRQ10</code>，低电平触发</li>
+<li>在主中断控制器上 slot 1 的<code>#INTC</code>是<code>IRQ11</code>，低电平触发</li>
+<li>在主中断控制器上 slot 1 的<code>#INTD</code>是<code>IRQ12</code>，低电平触发
+而</li>
+<li>在主中断控制器上 slot 2 的<code>#INTA</code>是<code>IRQ10</code>，低电平触发</li>
+<li>在主中断控制器上 slot 2 的<code>#INTA</code>是<code>IRQ11</code>，低电平触发</li>
+<li>在主中断控制器上 slot 2 的<code>#INTA</code>是<code>IRQ12</code>，低电平触发</li>
+<li>在主中断控制器上 slot 2 的<code>#INTA</code>是<code>IRQ9</code>，低电平触发
+属性<code>interrupts = &lt;8 0&gt;;</code>描述了主控制器或 PCI 桥控制器本身有可能触发中断。不要与 PCI 设备触发的中断（使用 INTA，INTB，...）搞混了。</li>
+</ul>
+<p>最后需要注意的事。就像<code>interrupt-parent</code>属性一样，节点中<code>interrupt-map</code>属性的存在将改变子节点和孙节点的默认中断控制器。在这个 PCI 示例中，这意味着 PCI 主桥变成了默认中断控制器。如果一个通过 PCI 总线连接的设备同时还直接连接至另一个中断控制器，这时就需要指定它自己的 interrupt-parent 属性。</p>
+<h2>附注（Notes）</h2>
+<p>&lt;a name=ref-1&gt;[1]&lt;/a&gt; Tom Shanley / Don Anderson: PCI System Architecture. <a href="http://www.mindshare.com/" target="_blank" rel="external">Mindshare Inc.</a>
+&lt;a name=ref-2&gt;[2]&lt;/a&gt; <a href="http://playground.sun.com/1275/bindings/pci/pci2_1.pdf" target="_blank" rel="external">PCI Bus Bindings to Open Firmware.</a>
+&lt;a name=ref-3&gt;[3]&lt;/a&gt; <a href="http://playground.sun.com/1275/practice/imap/imap0_9d.pdf" target="_blank" rel="external">Open Firmware Recommended Practice: Interrupt Mapping</a>
+&lt;a name=ref-4&gt;[4]&lt;/a&gt; PCI interrupts are always level low sensitive.（PCI 中断总是低电平触发。）</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2015/04/15/2015-04-15-preventing-a-certain-windows-update-from-installing-on-windows-10/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2015/04/19/why-dt/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

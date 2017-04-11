@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            小两百行 JavaScript 打造 lambda 演算解释器 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,JavaScript,翻译">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="小两百行 JavaScript 打造 lambda 演算解释器 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="JavaScript"> <meta property="og:article:tag" content="翻译"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">1. 语法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">2. Tokens</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">3. 词法分析器( Lexer )</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">4. 解析器</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">4.1. 抽象语法树 （AST）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">4.2. 解析器的实现</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">5. 求值（Evaluation）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">5.1. 求值规则</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">5.2. 解释器</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">6. Printing</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">7. 组合起来</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">8.</span> <span class="post-toc-text">源代码</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">8.0.1.</span> <span class="post-toc-text">完成了！</span></a></li></ol></li></ol></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                小两百行 JavaScript 打造 lambda 演算解释器
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>6月 27, 2016</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/JavaScript/">JavaScript</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/翻译/">翻译</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=小两百行 JavaScript 打造 lambda 演算解释器&url=http://yoursite.com//2016/06/26/writing-a-lambda-calculus-interpreter-in-javascript/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=小两百行 JavaScript 打造 lambda 演算解释器&url=http://yoursite.com//2016/06/26/writing-a-lambda-calculus-interpreter-in-javascript/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2016/06/26/writing-a-lambda-calculus-interpreter-in-javascript/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2016/06/26/writing-a-lambda-calculus-interpreter-in-javascript/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>最近，我发了一条<a href="https://twitter.com/tadeuzagallo/status/742836038264098817" target="_blank" rel="external">推特</a>，我喜欢上 lambda 演算了，它简单、强大。</p>
+<p>我当然听说过 lambda 演算，但直到我读了这本书 <a href="https://www.cis.upenn.edu/~bcpierce/tapl" target="_blank" rel="external">《类型和编程语言》（Types and Programming Languages）</a> 我才体会到其中美妙。</p>
+<p>&lt;!-- more --&gt;</p>
+<p>已经有许多编译器/解析器/解释器（compiler / parser / interpreter）的教程，但大多数不会引导你完整实现一种语言，因为实现完全的语言语义，通常需要很多工作。不过在本文中， lambda 演算（译者注：又写作“λ 演算”，为统一行文，下文一律作 “lambda 演算”）是如此简单，我们可以搞定一切！</p>
+<p>首先，什么是 lambda 演算呢？<a href="https://en.wikipedia.org/wiki/Lambda_calculus" target="_blank" rel="external">维基百科</a>是这样描述的:</p>
+<blockquote>
+<p>lambda 演算（又写作 “λ 演算”）是表达基于功能抽象和使用变量绑定和替代的应用计算数学逻辑形式系统。这是一个通用的计算模型，可以用来模拟单带图灵机，在 20 世纪 30 年代，由数学家奥隆索·乔奇第一次引入，作为数学基础的调查的一部分。</p>
+</blockquote>
+<p>这是一个非常简单的 lambda 演算程序的模样：</p>
+<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(λx. λy. x) (λy. y) (λx. x)</div></pre></td></tr></table></figure></p>
+<p>lambda 演算中只有两个结构，函数抽象（也就是函数声明）和应用（即函数调用），然而可以拿它做任何计算。</p>
+<h2>1. 语法</h2>
+<p>编写解析器之前，我们需要知道的第一件事是我们将要解析的语言的语法是什么，这是 <a href="https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_Form" target="_blank" rel="external">BNF</a>（译者注：Backus–Naur Form，巴科斯范式， 上下文无关的语法的标记技术） 表达式：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Term ::= Application</div><div class="line">        | LAMBDA LCID DOT Term</div><div class="line"></div><div class="line">Application ::= Application Atom</div><div class="line">               | Atom</div><div class="line"></div><div class="line">Atom ::= LPAREN Term RPAREN</div><div class="line">        | LCID</div></pre></td></tr></table></figure></p>
+<p>语法告诉我们如何在分析过程中寻找 token 。但是等一下，token 是什么鬼？</p>
+<h2>2. Tokens</h2>
+<p>正如你可能已经知道的，解析器不会操作源代码。在开始解析之前，先通过 <code>词法分析器（lexer）</code> 运行源码，这会将源码打散成 token（语法中全大写的部分）。我们可以从上面的语法中提取的如下的 token ：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">LPAREN: <span class="string">'('</span></div><div class="line">RPAREN: <span class="string">')'</span></div><div class="line">LAMBDA: <span class="string">'λ'</span> <span class="comment">// 为了方便也可以使用 “\”</span></div><div class="line">DOT: <span class="string">'.'</span></div><div class="line">LCID: <span class="regexp">/[a-z][a-zA-Z]*/</span> <span class="comment">// LCID 表示小写标识符</span></div><div class="line">                       <span class="comment">// 即任何一个小写字母开头的字符串</span></div></pre></td></tr></table></figure></p>
+<p>我们来建一个可以包含 <code>type</code> （以上的任意一种）的 <code>Token</code> 类，以及一个可选的 value (比如 <code>LCID</code> 的字符串)。</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Token</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(type, value) &#123;</div><div class="line">    <span class="keyword">this</span>.type = type;</div><div class="line">    <span class="keyword">this</span>.value = value;</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h2>3. 词法分析器( Lexer )</h2>
+<p>现在我们可以拿上面定义的 token 来写 <code>词法分析器（Lexer）</code> 了， 为解析器解析程序提供一个很棒的 <em>API</em> 。</p>
+<p>词法分析器的 token 生成的部分不是很好玩：这是一个大的 switch 语句，用来检查源代码中的下一个字符：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">_nextToken() &#123;</div><div class="line">  <span class="keyword">switch</span> (c) &#123;</div><div class="line">    <span class="keyword">case</span> <span class="string">'λ'</span>:</div><div class="line">    <span class="keyword">case</span> <span class="string">'\\'</span>:</div><div class="line">      <span class="keyword">this</span>._token = <span class="keyword">new</span> Token(Token.LAMBDA);</div><div class="line">      <span class="keyword">break</span>;</div><div class="line"></div><div class="line">    <span class="keyword">case</span> <span class="string">'.'</span>:</div><div class="line">      <span class="keyword">this</span>._token = <span class="keyword">new</span> Token(Token.DOT);</div><div class="line">      <span class="keyword">break</span>;</div><div class="line"></div><div class="line">    <span class="keyword">case</span> <span class="string">'('</span>:</div><div class="line">      <span class="keyword">this</span>._token = <span class="keyword">new</span> Token(Token.LPAREN);</div><div class="line">      <span class="keyword">break</span>;</div><div class="line"></div><div class="line">    <span class="comment">/* ... */</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下面这些方法是处理 token 的辅助方法：</p>
+<ul>
+<li><code>next(Token)</code>: 返回下一个 token 是否匹配 <code>Token</code></li>
+<li><code>skip(Token)</code>: 和 <code>next</code> 一样, 但如果匹配的话会跳过</li>
+<li><code>match(Token)</code>: 断言 <code>next</code> 方法返回 true 并 <code>skip</code></li>
+<li><code>token(Token)</code>: 断言 <code>next</code> 方法返回 true 并返回 token</li>
+</ul>
+<p>OK，现在来看 “解析器”！</p>
+<h2>4. 解析器</h2>
+<p>解析器基本上是语法的一个副本。我们基于每个 production 规则的名称（<code>::=</code> 的左侧）为其创建一个方法，再来看右侧内容 —— 如果是全大写的单词，说明它是一个 <em>终止符</em> （即一个 token ），词法分析器会用到它。如果是一个大写字母开头的单词，这是另外一段，所以同样为其调用 production 规则的方法。遇到 “/” （读作 “或”）的时候，要决定使用那一侧，这取决于基于哪一侧匹配我们的 token。</p>
+<p>这个语法有点棘手的地方是：手写的解析器通常是<a href="https://en.wikipedia.org/wiki/Recursive_descent_parser" target="_blank" rel="external">递归下降（recursive descent）</a>的（我们的就是），它们无法处理左侧递归。你可能已经注意到了， <code>Application</code> 的右侧开头包含 <code>Application</code> 本身。所以如果我们只是遵循前面段落说到的流程，调用我们找到的所有 production，会导致无限递归。</p>
+<p>幸运的是左递归可以用一个简单的技巧移除掉：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Application ::= Atom Application&apos;</div><div class="line"></div><div class="line">Application&apos; ::= Atom Application&apos;</div><div class="line">                | ε  # empty</div></pre></td></tr></table></figure></p>
+<h3>4.1. 抽象语法树 （AST）</h3>
+<p>进行分析时，需要以存储分析出的信息，为此要建立 <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree" target="_blank" rel="external">抽象语法树 ( AST )</a> 。lambda 演算的 AST 非常简单，因为我们只有 3 种节点： Abstraction （抽象）， Application （应用）以及 Identifier （标识符）（译者注： 为方便理解，这三个单词不译）。</p>
+<p><em>Abstraction</em> 持有其参数（param） 和主体（body）； <em>Application</em> 则持有语句的左右侧； <em>Identifier</em> 是一个叶节点，只有持有该标识符本身的字符串表示形式。</p>
+<p>这是一个简单的程序及其 AST:</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">(λx. x) (λy. y)</div><div class="line"></div><div class="line">Application &#123;</div><div class="line">  abstraction: Abstraction &#123;</div><div class="line">    param: Identifier &#123; name: &apos;x&apos; &#125;,</div><div class="line">    body: Identifier &#123; name: &apos;x&apos; &#125;</div><div class="line">  &#125;,</div><div class="line">  value: Abstraction &#123;</div><div class="line">    param: Identifier &#123; name: &apos;y&apos; &#125;,</div><div class="line">    body: Identifier &#123; name: &apos;y&apos; &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>4.2. 解析器的实现</h3>
+<p>现在有了我们的 AST 节点，可以拿它们来建构真正的树了。下面是基于语法中的生成规则的分析方法：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">term() &#123;</div><div class="line">  <span class="comment">// Term ::= LAMBDA LCID DOT Term</span></div><div class="line">  <span class="comment">//        | Application</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.lexer.skip(Token.LAMBDA)) &#123;</div><div class="line">    <span class="keyword">const</span> id = <span class="keyword">new</span> AST.Identifier(<span class="keyword">this</span>.lexer.token(Token.LCID).value);</div><div class="line">    <span class="keyword">this</span>.lexer.match(Token.DOT);</div><div class="line">    <span class="keyword">const</span> term = <span class="keyword">this</span>.term();</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> AST.Abstraction(id, term);</div><div class="line">  &#125;  <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.application();</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">application() &#123;</div><div class="line">  <span class="comment">// Application ::= Atom Application'</span></div><div class="line">  <span class="keyword">let</span> lhs = <span class="keyword">this</span>.atom();</div><div class="line">  <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line">    <span class="comment">// Application' ::= Atom Application'</span></div><div class="line">    <span class="comment">//                | ε</span></div><div class="line">    <span class="keyword">const</span> rhs = <span class="keyword">this</span>.atom();</div><div class="line">    <span class="keyword">if</span> (!rhs) &#123;</div><div class="line">      <span class="keyword">return</span> lhs;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      lhs = <span class="keyword">new</span> AST.Application(lhs, rhs);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">atom() &#123;</div><div class="line">  <span class="comment">// Atom ::= LPAREN Term RPAREN</span></div><div class="line">  <span class="comment">//        | LCID</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.lexer.skip(Token.LPAREN)) &#123;</div><div class="line">    <span class="keyword">const</span> term = <span class="keyword">this</span>.term(Token.RPAREN);</div><div class="line">    <span class="keyword">this</span>.lexer.match(Token.RPAREN);</div><div class="line">    <span class="keyword">return</span> term;</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">this</span>.lexer.next(Token.LCID)) &#123;</div><div class="line">    <span class="keyword">const</span> id = <span class="keyword">new</span> AST.Identifier(<span class="keyword">this</span>.lexer.token(Token.LCID).value);</div><div class="line">    <span class="keyword">return</span> id;</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="literal">undefined</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>5. 求值（Evaluation）</h2>
+<p>现在，我们可以用 AST 来给程序求值了。不过想知道我们的解释器长什么样子，还得先看看 lambda 的求值规则。</p>
+<h3>5.1. 求值规则</h3>
+<p>首先，我们需要定义，什么是形式（terms）（从语法可以推断），什么是值（values）。</p>
+<p>我们的 term 是:</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">t1 t2   # Application</div><div class="line"></div><div class="line">λx. t1  # Abstraction</div><div class="line"></div><div class="line">x       # Identifier</div></pre></td></tr></table></figure></p>
+<p>是的，这些几乎和我们的 AST 节点一模一样！但这其中哪些是 value？</p>
+<p>value 是最终的形式，也就是说，它们不能再被求值了。在这个例子中，唯一的既是 term 又是 value 的是 abstraction（不能对函数求值，除非它被调用）。</p>
+<p>实际的求值规则如下：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">1)       t1 -&gt; t1&apos;</div><div class="line">     _________________</div><div class="line"></div><div class="line">      t1 t2 -&gt; t1&apos; t2</div><div class="line"></div><div class="line">2)       t2 -&gt; t2&apos;</div><div class="line">     ________________</div><div class="line"></div><div class="line">      v1 t2 -&gt; v1 t2&apos;</div><div class="line"></div><div class="line">3)    (λx. t12) v2 -&gt; [x -&gt; v2]t12</div></pre></td></tr></table></figure></p>
+<p>我们可以这样解读每一条规则：</p>
+<ol>
+<li>如果 <code>t1</code> 是值为 <code>t1'</code> 的项， <code>t1 t2</code> 求值为 <code>t1' t2</code>。即一个 application 的左侧先被求值。</li>
+<li>如果 <code>t2</code> 是值为 <code>t2'</code> 的项， <code>v1 t2</code> 求值为 <code>v1 t2'</code>。注意这里左侧的是 <code>v1</code> 而非 <code>t1</code>， 这意味着它是 value，不能再一步被求值，也就是说，只有左侧的完成之后，才会对右侧求值。</li>
+<li>application <code>(λx. t12) v2</code> 的结果，和 <code>t12</code> 中出现的所有 <code>x</code> 被有效替换之后是一样的。注意在对 application 求值之前，两侧必须都是 value。</li>
+</ol>
+<h3>5.2. 解释器</h3>
+<p>解释器遵循求值规则，将一个程序归化为 value。现在我们将上面的规则用 JavaScript 写出来：</p>
+<p>首先定义一个工具，当某个节点是 value 的时候告诉我们：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> isValue = <span class="function"><span class="params">node</span> =&gt;</span> node <span class="keyword">instanceof</span> AST.Abstraction;</div></pre></td></tr></table></figure></p>
+<p>好了，如果 node 是 abstraction，它就是 value；否则就不是。</p>
+<p>接下来是解释器起作用的地方：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="built_in">eval</span> = <span class="function">(<span class="params">ast, context=&#123;&#125;</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line">    <span class="keyword">if</span> (ast <span class="keyword">instanceof</span> AST.Application) &#123;</div><div class="line">      <span class="keyword">if</span> (isValue(ast.lhs) &amp;&amp; isValue(ast.rhs)) &#123;</div><div class="line">        context[ast.lhs.param.name] = ast.rhs;</div><div class="line">        ast = <span class="built_in">eval</span>(ast.lhs.body, context);</div><div class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isValue(ast.lhs)) &#123;</div><div class="line">        ast.rhs = <span class="built_in">eval</span>(ast.rhs, <span class="built_in">Object</span>.assign(&#123;&#125;, context));</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        ast.lhs = <span class="built_in">eval</span>(ast.lhs, context);</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ast <span class="keyword">instanceof</span> AST.Identifier) &#123;</div><div class="line">       ast = context[ast.name];</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="keyword">return</span> ast;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>代码有点密，但睁大眼睛好好看下，可以看到编码后的规则：</p>
+<ul>
+<li>首先检测其是否为 application，如果是，则对其求值：
+<ul>
+<li>若 abstraction 的两侧都是值，只要将所有出现的 <code>x</code> 用给出的值替换掉； (3)</li>
+<li>否则，若左侧为值，给右侧求值；(2)</li>
+<li>如果上面都不行，只对左侧求值；(1)</li>
+</ul>
+</li>
+<li>现在，如果下一个节点是 identifier，我们只需将它替换为它所表示的变量绑定的值。</li>
+<li>最后，如果没有规则适用于AST，这意味着它已经是一个 value，我们将它返回。</li>
+</ul>
+<p>另外一个值得提出的是上下文（context）。上下文持有从名字到值（AST节点）的绑定，举例来说，调用一个函数时，就说你说传的参数绑定到函数需要的变量上，然后再对函数体求值。</p>
+<p>克隆上下文能保证一旦我们完成对右侧的求值，绑定的变量会从作用域出来，因为我们还持有原来的上下文。</p>
+<p>如果不克隆上下文， application 右侧引入的绑定可能泄露并可以在左侧获取到 —— 这是不应当的。考虑下面的代码：</p>
+<p><figure class="highlight haskell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(λx. y) ((λy. y) (λx. x))</div></pre></td></tr></table></figure></p>
+<p>这显然是无效程序： 最左侧 abstraction 中的标识符 <code>y</code>没有被绑定。来看下如果不克隆上下文，求值最后变成什么样。</p>
+<p>左侧已经是一个 value，所以对右侧求值。这是个 application，所以会将 <code>(λx .x)</code> 与 <code>y</code> 绑定，然后对 <code>(λy. y)</code> 求值，而这就是 <code>y</code> 本身。所以最后的求值就成了 <code>(λx. x)</code>。</p>
+<p>到目前，我们完成了右侧，它是 value，而 <code>y</code> 超出了作用域，因为我们退出了 <code>(λy. y)</code>， 如果求值的时候不克隆上下文，我们会得到一个变化过的的上下文，绑定就会泄漏，<code>y</code> 的值就是 <code>(λx. x)</code>，最后得到错误的结果。</p>
+<h2>6. Printing</h2>
+<p>OK， 现在差不多完成了：已经可以将一个程序归化为 value，我们要做的就是想办法将这个 value 表示出来。</p>
+<p>一个简单的 办法是为每个AST节点添加 <code>toString方法</code>：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Abstraction */</span> toString() &#123;</div><div class="line">  <span class="keyword">return</span> <span class="string">`(λ<span class="subst">$&#123;<span class="keyword">this</span>.param.toString()&#125;</span>. <span class="subst">$&#123;<span class="keyword">this</span>.body.toString()&#125;</span>)`</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* Application */</span> toString() &#123;</div><div class="line">  <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;<span class="keyword">this</span>.lhs.toString()&#125;</span> <span class="subst">$&#123;<span class="keyword">this</span>.rhs.toString()&#125;</span>`</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* Identifier */</span> toString() &#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.name;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>现在我们可以在结果的根节点上调用 <code>toString</code>方法，它会递归打印所有子节点， 以生成字符串表示形式。</p>
+<h2>7. 组合起来</h2>
+<p>我们需要一个脚本，将所有这些部分连接在一起，代码看起来是这样的：</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// assuming you have some source</span></div><div class="line"><span class="keyword">const</span> source = <span class="string">'(λx. λy. x) (λx. x) (λy. y)'</span>;</div><div class="line"></div><div class="line"><span class="comment">// wire all the pieces together</span></div><div class="line"><span class="keyword">const</span> lexer = <span class="keyword">new</span> Lexer(source);</div><div class="line"><span class="keyword">const</span> parser = <span class="keyword">new</span> Parser(lexer);</div><div class="line"><span class="keyword">const</span> ast = parser.parse();</div><div class="line"><span class="keyword">const</span> result = Interpreter.eval(ast);</div><div class="line"></div><div class="line"><span class="comment">// stringify the resulting node and print it</span></div><div class="line"><span class="built_in">console</span>.log(result.toString());</div></pre></td></tr></table></figure></p>
+<h2>源代码</h2>
+<p>完整实现可以在 Github 上找到： <a href="https://github.com/tadeuzagallo/lc-js" target="_blank" rel="external">github.com/tadeuzagallo/lc-js</a></p>
+<h4>完成了！</h4>
+<p>感谢阅读，一如既往地欢迎你的反馈！</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2016/06/26/infinite-scrolling-best-practices/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2016/06/27/notes-from-behind-the-firewall-the-state-of-web-design-in-china/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

@@ -1,0 +1,1207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Hexo</title>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2017-04-10T20:34:32.000Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>John Doe</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>TypeScript</title>
+    <link href="http://yoursite.com/2017/04/11/typescript/"/>
+    <id>http://yoursite.com/2017/04/11/typescript/</id>
+    <published>2017-04-11T22:00:10.826Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3>Install</h3>
+<pre><code>npm install -g typescript
+</code></pre>
+<h3>Codenames, Tags, and Build Numbers</h3>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3&gt;Install&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;npm install -g typescript
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Codenames, Tags, and Build Numbers&lt;/h3&gt;
+
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>树莓派声音设置</title>
+    <link href="http://yoursite.com/2017/04/11/raspberry-pi-setting-sound/"/>
+    <id>http://yoursite.com/2017/04/11/raspberry-pi-setting-sound/</id>
+    <published>2017-04-11T22:00:10.459Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>在树莓派上安装alsa-utils包，包含很多alsa相关的工具。</p>
+<h3>测试</h3>
+<p>可以通过speak-test和aplay命令来测试声音<br>
+speak-test: 播放白噪声<br>
+aplay: 用来播放wav文件, 如果安装了scratch包的话，可以在/usr/share/scratch/Media/Sounds下找到wav文件</p>
+<h3>amixer</h3>
+<p>amixer命令可以显示出配置的信息</p>
+<pre><code>pi@raspberrypi:~ $ amixer
+Simple mixer control 'Master',0
+  Capabilities: pvolume pswitch pswitch-joined
+  Playback channels: Front Left - Front Right
+  Limits: Playback 0 - 65536
+  Mono:
+  Front Left: Playback 43233 [66%] [on]
+  Front Right: Playback 43233 [66%] [on]
+Simple mixer control 'Capture',0
+  Capabilities: cvolume cswitch cswitch-joined
+  Capture channels: Front Left - Front Right
+  Limits: Capture 0 - 65536
+  Front Left: Capture 65536 [100%] [on]
+  Front Right: Capture 65536 [100%] [on]
+</code></pre>
+<p>获取可以控制的配置列表</p>
+<pre><code>pi@raspberrypi:~ $ amixer controls
+numid=4,iface=MIXER,name='Master Playback Switch'
+numid=3,iface=MIXER,name='Master Playback Volume'
+numid=2,iface=MIXER,name='Capture Switch'
+numid=1,iface=MIXER,name='Capture Volume'
+</code></pre>
+<p>获取一个配置的当前信息</p>
+<pre><code>pi@raspberrypi:~ $ amixer cget numid=3
+numid=3,iface=MIXER,name='Master Playback Volume'
+  ; type=INTEGER,access=rw------,values=2,min=0,max=65536,step=1
+  : values=43233,43233
+</code></pre>
+<p>改变配置</p>
+<pre><code>pi@raspberrypi:~ $ amixer cset numid=3 40%
+numid=3,iface=MIXER,name='Master Playback Volume'
+  ; type=INTEGER,access=rw------,values=2,min=0,max=65536,step=1
+  : values=26231,26231
+</code></pre>
+<h3>参考</h3>
+<p><a href="http://blog.scphillips.com/posts/2013/01/sound-configuration-on-raspberry-pi-with-alsa/" target="_blank" rel="external">http://blog.scphillips.com/posts/2013/01/sound-configuration-on-raspberry-pi-with-alsa/</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在树莓派上安装alsa-utils包，包含很多alsa相关的工具。&lt;/p&gt;
+&lt;h3&gt;测试&lt;/h3&gt;
+&lt;p&gt;可以通过speak-test和aplay命令来测试声音&lt;br&gt;
+speak-test: 播放白噪声&lt;br&gt;
+aplay: 用来播放wav文件, 如果安装了scratch
+    
+    </summary>
+    
+    
+      <category term="raspberry pi" scheme="http://yoursite.com/tags/raspberry-pi/"/>
+    
+      <category term="alsa" scheme="http://yoursite.com/tags/alsa/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>通过dlan在raspberry pi上播放歌曲</title>
+    <link href="http://yoursite.com/2017/04/11/raspberry-pi-playing-music/"/>
+    <id>http://yoursite.com/2017/04/11/raspberry-pi-playing-music/</id>
+    <published>2017-04-11T22:00:10.455Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>将手机或电脑中的歌曲通过raspberry pi播放。</p>
+<h3>安装gstreamer</h3>
+<pre><code>$ sudo apt-get install libupnp-dev libgstreamer1.0-dev \
+gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly \
+gstreamer1.0-alsa
+</code></pre>
+<h3>安装gmediarender</h3>
+<pre><code>$ sudo apt-get install gmediarender
+</code></pre>
+<h3>参考</h3>
+<p><a href="http://blog.scphillips.com/posts/2013/01/sound-configuration-on-raspberry-pi-with-alsa/" target="_blank" rel="external">http://blog.scphillips.com/posts/2013/01/sound-configuration-on-raspberry-pi-with-alsa/</a><br>
+<a href="http://blog.scphillips.com/posts/2013/07/playing-music-on-a-raspberry-pi-using-upnp-and-dlna-revisited/" target="_blank" rel="external">http://blog.scphillips.com/posts/2013/07/playing-music-on-a-raspberry-pi-using-upnp-and-dlna-revisited/</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;将手机或电脑中的歌曲通过raspberry pi播放。&lt;/p&gt;
+&lt;h3&gt;安装gstreamer&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;$ sudo apt-get install libupnp-dev libgstreamer1.0-dev \
+gstreamer1.0-plu
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Linux GPIO 驱动</title>
+    <link href="http://yoursite.com/2017/04/11/linux-gpio/"/>
+    <id>http://yoursite.com/2017/04/11/linux-gpio/</id>
+    <published>2017-04-11T22:00:10.145Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3>GPIO是什么</h3>
+<p>全称General Purpose Input/Output，是一种软件可控的数字信号，每个GPIO代表芯片的一个引脚或者BGA封装的一个ball。<br>
+GPIO包含包含以下一些选项：</p>
+<ul>
+<li>可是设置输出值(0或者1)</li>
+<li>可以读取gpio值(0或者1)</li>
+<li>有些可以用作IRQ中断信号</li>
+<li>可以设置为输入输出</li>
+</ul>
+<h3>GPIO表示</h3>
+<p>内核中用一个unsigned integers来表示一个GPIO，在0..MAX_INT中取值，负值用来表示GPIO不存在或者有错。</p>
+<pre><code>int gpio_is_valid(int number); /* 判断一个gpio number是否合法 */
+</code></pre>
+<h3>GPIO使用</h3>
+<p>系统需要做的第一件事就是分配gpio</p>
+<pre><code>gpio_request()
+</code></pre>
+<p>接着注册设备时需要标注GPIO的方向</p>
+<pre><code>int gpio_direction_input(unsigned gpio);
+int gpio_direction_output(unsigned gpio, int value);
+</code></pre>
+<h3>Spinlock-Safe GPIO接口</h3>
+<p>大部分GPIO控制器能直接通过地址读写访问，这些GPIO访问不需要睡眠，可以在硬中断中调用。</p>
+<pre><code>int gpio_get_value(unsigned gpio);
+void gpio_set_value(unsigned gpio, int value);
+</code></pre>
+<h3>GPIO访问可能需要睡眠的情况</h3>
+<p>对于一些需要通过IIC或者SPI总线访问的GPIO控制器，读写这些GPIO需要等待。</p>
+<pre><code>int gpio_cansleep(unsigned gpio);
+int gpio_get_value_cansleep(unsigned gpio);
+void gpio_set_value_cansleep(unsigned gpio, int value);
+</code></pre>
+<h3>请求与释放GPIO</h3>
+<p>使用下面的接口来请求与释放GPIO</p>
+<pre><code>int gpio_request(unsigned gpio, const char *label);
+void gpio_free(unsigned gpio);
+</code></pre>
+<p>使用这两个函数有两个目的，标记引脚当作GPIO来使用，防止多个驱动都申请同一个gpio。</p>
+<p>对于那些pinctrl子系统管理的gpio，gpiolib驱动的.request操作可能调用pinctrl_request_gpio(), .free会调用pinctrl_free_gpio()。</p>
+<p>大多数情况下请求到gpio后都会立刻进行配置，因此定义了额外的三个函数</p>
+<pre><code>int gpio_request_one(unsigned gpio, unsigned long flags, const char *label);
+int gpio_request_array(struct gpio *array, size_t num);
+void gpio_free_array(struct gpio *array, size_t num);
+</code></pre>
+<p>flags定义了以下属性</p>
+<ul>
+<li>GPIOF_DIR_IN</li>
+<li>GPIOF_DIR_OUT</li>
+<li>GPIOF_INIT_LOW</li>
+<li>GPIOF_INIT_HIGH</li>
+<li>GPIOF_OPEN_DRAIN</li>
+<li>GPIOF_OPEN_SOURCE</li>
+<li>GPIOF_EXPORT_DIR_FIXED</li>
+<li>GPIOF_EXPORT_DIR_CHANGEABLE</li>
+</ul>
+<p>合法的组合</p>
+<ul>
+<li>GPIOF_IN</li>
+<li>GPIOF_OUT_INIT_LOW</li>
+<li>GPIOF_OUT_INIT_HIGH</li>
+</ul>
+<p>为了方便使用，内核定义了下面的gpio结构体</p>
+<pre><code>struct gpio {
+	unsigned	gpio;
+	unsigned long	flags;
+	const char	*label;
+};
+</code></pre>
+<h3>sysfs用户空间接口</h3>
+<p>使用gpiolib可能会提供sysfs的用户接口。</p>
+<h4>sysfs路径</h4>
+<p>在/sys/class/gpio下面有三种类型的路径</p>
+<ul>
+<li>控制接口</li>
+<li>gpio自身</li>
+<li>gpio控制器</li>
+</ul>
+<h5>控制接口</h5>
+<p>/sys/class/gpio/</p>
+<ul>
+<li>export，用户可以通过写入gpio数字来为用户空间导入gpio控制</li>
+<li>unexport, 与上面相反</li>
+</ul>
+<p>/sys/class/gpio/gpioN/</p>
+<ul>
+<li>direction, 读取返回&quot;in&quot;或者&quot;out&quot;，写入&quot;out&quot;默认输出低电平，写入&quot;low&quot;或者&quot;high&quot;改变输出值</li>
+<li>value, 读取返回&quot;0&quot;或者&quot;1&quot;， 如果gpio被配置成可写，写入非零值输出高</li>
+<li>edge, 读取返回&quot;none&quot;, &quot;rising&quot;, &quot;failing&quot;, &quot;both&quot;</li>
+<li>active_low</li>
+</ul>
+<h3>导出gpio</h3>
+<pre><code>int gpio_export(unsigned gpio, bool direction_may_change);
+void gpio_unexport();
+int gpio_export_link(struct device *dev, const char *name,
+	unsigned gpio)
+int gpio_sysfs_set_active_low(unsigned gpio, int value);
+</code></pre>
+<h3>参考</h3>
+<p>内核文档gpio.txt</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3&gt;GPIO是什么&lt;/h3&gt;
+&lt;p&gt;全称General Purpose Input/Output，是一种软件可控的数字信号，每个GPIO代表芯片的一个引脚或者BGA封装的一个ball。&lt;br&gt;
+GPIO包含包含以下一些选项：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可是设置输出值(0或者1
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://yoursite.com/2017/04/11/hive_note/"/>
+    <id>http://yoursite.com/2017/04/11/hive_note/</id>
+    <published>2017-04-11T22:00:09.884Z</published>
+    <updated>2017-04-10T20:41:02.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>##Hive Note ##</p>
+<h3>Hive 实现 WordCount 示例程序</h3>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">CREATE TABLE docs (lines STRING);</div><div class="line">LOAD DATA INPUT &apos;docs&apos; OVERWRITE INTO TABLE docs;</div><div class="line">CREATE TABLE word_counts AS</div><div class="line">SELECT word, count(1) As count FROM </div><div class="line">  (SELECT explode(split(line, &apos;s&apos;)) AS word FROM docs) w</div><div class="line">GROUP BY word</div><div class="line">ORDER BY word;</div></pre></td></tr></table></figure></p>
+<h3>Hive 中的命名空间</h3>
+<table>
+<thead>
+<tr>
+<th>命名空间</th>
+<th style="text-align:center">使用权限</th>
+<th style="text-align:right">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hivevar</td>
+<td style="text-align:center">可读/可写</td>
+<td style="text-align:right">(Hive v0.8.0 以及以后的版本) 用户自定义变量</td>
+</tr>
+<tr>
+<td>hiveconf</td>
+<td style="text-align:center">可读/可写</td>
+<td style="text-align:right">Hive 相关的配置属性</td>
+</tr>
+<tr>
+<td>system</td>
+<td style="text-align:center">可读/可写</td>
+<td style="text-align:right">Java 定义的配置属性</td>
+</tr>
+<tr>
+<td>env</td>
+<td style="text-align:center">只可读</td>
+<td style="text-align:right">Shell 环境定义的环境变量</td>
+</tr>
+</tbody>
+</table>
+<p>用户可以自定义变量以便在 Hive 脚本中使用。</p>
+<h3>Hive 中的命令</h3>
+<ol>
+<li><code>hive -e &quot;select * from tablename limit 10&quot;; &gt; /tmp/tabledata</code>  运行 sql 语句，将输出结果重定向到文件中</li>
+<li><code>hive -f /path/to/file/queries.hql</code>；在 hive shell 中可以使用 <code>source /path/to/file/queries.hql;</code> 来执行一个脚本文件</li>
+<li>用户不需要退出 hive CLI 就可以执行简单的 bash shell 命令。只要在命令前加上 ！ 并且以分号(;)结尾。</li>
+<li>使用 <code>set hive.cli.print.current.db=true;</code> 显示当前所在的数据库.</li>
+<li>一般在 Hive 中不允许删除一个包含有表的数据库，一种做法是先删除数据库中的所有表，再删除数据库；另外一种做法是在删除语句后面加上关键字 cascade;</li>
+<li>通过拷贝一张已经存在的表的表模式（无需拷贝数据）来创建新表: <figure class="highlight plain"><figcaption><span>TABLE IF NOT EXISTS mydb.employees2 LIKE mydb.employees;```</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">7. 外部表 CREATE EXTERNAL TABLE .... LOCATION &apos;&apos;，通过 external 说明创建的是外部表，location指示该表的数据位于哪个路径。外部表，Hive 不认为自己完全拥有这份数据，因此，删除该表并不会删除这份数据，只会删除该表的元数据。</div><div class="line">8. 可以手动设置 Hive 为严格(strict)模式，此时，如果查询语句中没有指定分区过滤，就会禁止提交这个任务。当然也可以设置为非严格(nostrict)模式。set hive.mapred.mode=strict;</div><div class="line">9. SHOW PARTITIONS tablename; 查看表分区， SHOW PARTITIONS tablename PARTITIONS(partition1=&apos;&apos;) 查看某个分区下的数据</div><div class="line">10. 导出数据：按照原格式导出， `hadoop fs -cp source_path target_path`, 或者使用</div></pre></td></tr></table></figure></li>
+</ol>
+<p>INSERT OVERWRITE LOCAL DIRECTORY '/tmp/ca_employees'
+SELECT name, salary, address FROM employees WHERE se.state='CA';</p>
+<pre><code>
+###概念说明
+1. 管理表和外部表： **管理表**一般指的是我们自己创建的表，有时称为内部表，这种表 Hive 或多或少会控制着数据的生命周期。这些表的额数据存储在有配置项 hive.metastore.warehouse.dir 所定义的目录的子目录下。当我们删除一个管理表时，Hive 也会删除这个表中的数据；**外部表** 删除外部表时，只是删除了外部表的元数据。
+</code></pre>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;##Hive Note ##&lt;/p&gt;
+&lt;h3&gt;Hive 实现 WordCount 示例程序&lt;/h3&gt;
+&lt;p&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>用github和hexo搭建blog</title>
+    <link href="http://yoursite.com/2017/04/11/hexo-install/"/>
+    <id>http://yoursite.com/2017/04/11/hexo-install/</id>
+    <published>2017-04-11T22:00:09.847Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2>前言</h2>
+<p>win7上搭建自己的blog用于记录学习到的东西。</p>
+<h3>安装Node.JS</h3>
+<p>从<a href="http://nodejs.org/" target="_blank" rel="external">Node.JS</a>官网下载安装。</p>
+<h3>安装hexo</h3>
+<pre><code>npm install hexo -g
+</code></pre>
+<h3>配置hexo</h3>
+<pre><code>hexo init &lt;directory&gt;
+cd &lt;directory&gt;
+npm install
+</code></pre>
+<h3>安装hexo插件</h3>
+<pre><code>npm install hexo-renderer-ejs --save
+npm install hexo-renderer-stylus --save
+npm install hexo-renderer-marked --save
+
+npm install hexo-generator-index --save
+npm install hexo-generator-archive --save
+npm install hexo-generator-category --save
+npm install hexo-generator-tag --save
+npm install hexo-server --save
+npm install hexo-deployer-git --save
+npm install hexo-deployer-heroku --save
+npm install hexo-deployer-rsync --save
+npm install hexo-deployer-openshift --save
+npm install hexo-renderer-marked@0.2 --save
+npm install hexo-renderer-stylus@0.2 --save
+npm install hexo-generator-feed@1 --save
+npm install hexo-generator-sitemap@1 --save
+</code></pre>
+<h3>查看效果</h3>
+<p>运行下面命令，然后打开浏览器，输入http://&lt; yourip &gt;:4000查看是否安装成功</p>
+<pre><code>hexo server
+</code></pre>
+<h3>发布</h3>
+<p>运行下面命令然后将public目录下的内容拷贝到github项目目录下并且上传</p>
+<pre><code>hexo g
+</code></pre>
+<h3>参考</h3>
+<p><a href="http://wsgzao.github.io/post/hexo-guide/" target="_blank" rel="external">http://wsgzao.github.io/post/hexo-guide/</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2&gt;前言&lt;/h2&gt;
+&lt;p&gt;win7上搭建自己的blog用于记录学习到的东西。&lt;/p&gt;
+&lt;h3&gt;安装Node.JS&lt;/h3&gt;
+&lt;p&gt;从&lt;a href=&quot;http://nodejs.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Node.JS&lt;/a&gt;官
+    
+    </summary>
+    
+      <category term="hexo" scheme="http://yoursite.com/categories/hexo/"/>
+    
+    
+      <category term="hexo" scheme="http://yoursite.com/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>docker tutorial</title>
+    <link href="http://yoursite.com/2017/04/11/docker_tutorial/"/>
+    <id>http://yoursite.com/2017/04/11/docker_tutorial/</id>
+    <published>2017-04-11T22:00:09.606Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3>安装docker engine</h3>
+<p>有两种方式来安装docker，一种是通过linux的包管理工具（apt或者yum），另外一种是通过docker提供的shell脚本来安装，这里通过第二种方式来安装。</p>
+<ol>
+<li>
+<p>确保系统安装了curl，可以通过下面的命令确认</p>
+<pre><code>$ which curl   
+</code></pre>
+</li>
+</ol>
+<p>如果没安装的话，可以通过下面的命令来安装</p>
+<pre><code>	$ sudo apt-get update
+	$ sudo apt-get install curl
+</code></pre>
+<ol start="2">
+<li>
+<p>获取最新的docker包</p>
+<pre><code>$ curl -fsSL https://get.docker.com/ | sh
+</code></pre>
+</li>
+<li>
+<p>确认docker安装成功</p>
+<pre><code>ubuntu@ubuntu:~$ docker run hello-world
+Hello from Docker.
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the &quot;hello-world&quot; image from the Docker Hub.
+    (Assuming it was not already locally available.)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+For more examples and ideas, visit:
+ http://docs.docker.com/userguide/
+</code></pre>
+</li>
+</ol>
+<h3>images &amp; containers</h3>
+<p>Docker引擎是docker的核心，<code>docker run hello-world</code>分为三个部分<img src="/images/container_explainer.png" alt=""></p>
+<p>container是一个基础的linux，image是需要加载进container运行的软件。</p>
+<h3>运行whalesay image</h3>
+<p>每个人都可以创建自己的docker image，你可以通过浏览docker官方的docker hub来寻找这些image。</p>
+<ol>
+<li>
+<p>查找whalesay image<br>
+docker hub<a href="https://hub.docker.com" target="_blank" rel="external">(https://hub.docker.com)</a>包含了个人或者大公司创建的image。</p>
+</li>
+<li>
+<p>运行whalesay image</p>
+<pre><code>docker run docker/whalesay cowsay boo
+</code></pre>
+</li>
+</ol>
+<h3>创建自己的image</h3>
+<ol>
+<li>
+<p>编写Dockerfile<br>
+Dockerfile描述了如何构建一个image， Dockerfile描述了如何构建一个image。</p>
+<ul>
+<li>
+<p>建立一个目录，存放构建image需要的所有内容</p>
+<pre><code>mkdir mydockerbuild
+</code></pre>
+</li>
+<li>
+<p>建立Dockerfile文件<br>
+编译Dockerfile，添加下面内容</p>
+<pre><code>FROM docker/whalesay:latest
+RUN apt-get -y update &amp;&amp; apt-get install -y fortunes
+CMD /usr/games/fortune -a | cowsay
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>从Dockerfile构建image</p>
+<pre><code>docker build -t docker-whale .
+</code></pre>
+</li>
+</ol>
+<h3>给image打tag，push到dockerhub，从dockerhub上pull</h3>
+<ol>
+<li>
+<p>获取image id</p>
+<pre><code>docker build -t docker-whale .
+</code></pre>
+</li>
+<li>
+<p>给image打tag
+<img src="/images/image_tagger.png" alt=""></p>
+</li>
+<li>
+<p><code>docker login</code> 登录后通过<code>docker push</code>上传到docker hub</p>
+</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3&gt;安装docker engine&lt;/h3&gt;
+&lt;p&gt;有两种方式来安装docker，一种是通过linux的包管理工具（apt或者yum），另外一种是通过docker提供的shell脚本来安装，这里通过第二种方式来安装。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;确保系统安装了curl，
+    
+    </summary>
+    
+    
+      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>docker architecture</title>
+    <link href="http://yoursite.com/2017/04/11/docker_understanding_architecture/"/>
+    <id>http://yoursite.com/2017/04/11/docker_understanding_architecture/</id>
+    <published>2017-04-11T22:00:09.601Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3>docker是什麽</h3>
+<p>Docker是一个开放的平台，用来开发，传输和运行你的应用。<br>
+Docker通过将内核的容器功能和一个工作流程结合起来，提供相应的工具来管理和部署你的应用。<br>
+Docker的核心是将任何的应用都隔离的运行在一个容器里，相比于虚拟机，docker要轻量的多。</p>
+<h3>Docker能用来干什么</h3>
+<ul>
+<li>改善你的开发周期</li>
+</ul>
+<h3>Docker的主要组件</h3>
+<ul>
+<li>Docker: 开源的容器平台</li>
+<li>Docker hub: docker提供的Software-as-a-Service平台用来分享和管理docker容器</li>
+</ul>
+<h3>Docker架构</h3>
+<p>Docker使用的client-server架构。 <a href="/images/docker_architecture.png"></a></p>
+<ul>
+<li>Docker daemon<br>
+运行在主机上，用户通过docker client来与docker daemon交互。</li>
+<li>Docker client<br>
+Docker client是以docker命令提供给用户的。</li>
+<li>Docker内部
+<ul>
+<li>Docker images<br>
+Docker image是一个只读的镜像，通过docker image来创建docker容器。</li>
+<li>Docker registries
+用来存放images。docker hub是一个公开的docker registries。</li>
+<li>Docker containers
+从image创建，包含运行应用的所有依赖。</li>
+</ul>
+</li>
+</ul>
+<h3>Docker是如何工作的</h3>
+<ul>
+<li>
+<p>docker image<br>
+Docker image包含很多层，利用UFS文件系统来将这些层生成一个image，每当你改变docker image的时候，一个新的层就创建了。<br>
+Docker包含很多基础的镜像，docker image可以在这些镜像的基础上构建，docker可以根据一系列指令来构建你的镜像，每个指令都创建一个新的层，指令包含 :</p>
+<ul>
+<li>运行一个命令</li>
+<li>增加文件</li>
+<li>创建一个环境变量</li>
+<li>当容器运行时启动什么程序
+将这些指令存储到Dockerfile，docker会根据里面的指令创建镜像。</li>
+</ul>
+</li>
+<li>
+<p>container<br>
+docker image描述了container包含些什么，当contianer启动时运行什么程序。当docker启动容器时，会在image之上增加一个新的可读写的层。</p>
+<pre><code>1. Pulls the ubuntu image: Docker checks for the presence of the ubuntu image and, if it doesn’t exist locally on the host, then Docker downloads it from Docker Hub. If the image already exists, then Docker uses it for the new container.
+2. Creates a new container: Once Docker has the image, it uses it to create a container.
+3. Allocates a filesystem and mounts a read-write layer: The container is created in the file system and a 4. read-write layer is added to the image.
+5. Allocates a network / bridge interface: Creates a network interface that allows the Docker container to talk to the local host.
+6. Sets up an IP address: Finds and attaches an available IP address from a pool.
+7. Executes a process that you specify: Runs your application, and;
+8. Captures and provides application output: Connects and logs standard input, outputs and errors for you to see how your application is running.</code></pre>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3&gt;docker是什麽&lt;/h3&gt;
+&lt;p&gt;Docker是一个开放的平台，用来开发，传输和运行你的应用。&lt;br&gt;
+Docker通过将内核的容器功能和一个工作流程结合起来，提供相应的工具来管理和部署你的应用。&lt;br&gt;
+Docker的核心是将任何的应用都隔离的运行在一个容器里，相比于
+    
+    </summary>
+    
+    
+      <category term="docker" scheme="http://yoursite.com/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://yoursite.com/2017/04/11/build_cyanogenmod_for_galaxy_nexus/"/>
+    <id>http://yoursite.com/2017/04/11/build_cyanogenmod_for_galaxy_nexus/</id>
+    <published>2017-04-11T22:00:09.485Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>为galaxy nexus编译cm-10.2的步骤</p>
+<h3>下载代码</h3>
+<ol>
+<li>
+<p>Download Source</p>
+<pre><code> repo init -u https://github.com/CyanogenMod/android.git -b cm-10.2
+ repo sync -j 1
+</code></pre>
+</li>
+<li>
+<p>Get prebuilt apps(CM11 and below)</p>
+<pre><code> cd vendor/cm
+ ./get-prebuilts
+</code></pre>
+</li>
+<li>
+<p>Prepare the device-specific code</p>
+<pre><code> source build/envsetup.sh
+ breakfast maguro
+</code></pre>
+</li>
+<li>
+<p>Extract proprietary blobs<br>
+进行这个步骤需要连上galaxy nexus</p>
+<pre><code> cd device/samsung/maguro
+ ./extract-files.sh   
+</code></pre>
+</li>
+</ol>
+<h3>编译</h3>
+<pre><code>brunch maguro
+</code></pre>
+<h3>参考</h3>
+<p><a href="https://wiki.cyanogenmod.org/w/Build_for_maguro" target="_blank" rel="external">https://wiki.cyanogenmod.org/w/Build_for_maguro</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;为galaxy nexus编译cm-10.2的步骤&lt;/p&gt;
+&lt;h3&gt;下载代码&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Download Source&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; repo init -u https://github.com/CyanogenMod/andr
+    
+    </summary>
+    
+      <category term="cyanogenmod" scheme="http://yoursite.com/categories/cyanogenmod/"/>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+      <category term="cyanogenmod" scheme="http://yoursite.com/tags/cyanogenmod/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Atom editor</title>
+    <link href="http://yoursite.com/2017/04/11/atom/"/>
+    <id>http://yoursite.com/2017/04/11/atom/</id>
+    <published>2017-04-11T22:00:09.440Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3>tree-view快捷键</h3>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + \</div></pre></td></tr></table></figure></p>
+<p>打开或关闭tree-view</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Alt + \</div></pre></td></tr></table></figure></p>
+<p>将焦点至于tree-view上</p>
+<p>当焦点在treeview上时</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">A M Delete</div></pre></td></tr></table></figure></p>
+<p>增加，移动和删除文件或目录</p>
+<h3>打开文件</h3>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + P | Ctrl + T</div></pre></td></tr></table></figure></p>
+<p>打开fuzzy finder，快速搜索项目中的文件</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + B</div></pre></td></tr></table></figure></p>
+<p>在当前打开的文件中查找</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Shift + B</div></pre></td></tr></table></figure></p>
+<p>只查找最后一次git commit后修改或添加的文件</p>
+<h3>设置</h3>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + ,</div></pre></td></tr></table></figure></p>
+<p>打开设置</p>
+<p>###apm
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apm install &lt;package_name&gt;@&lt;package_version&gt;</div></pre></td></tr></table></figure></p>
+<p>命令行安装包</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apm search</div></pre></td></tr></table></figure></p>
+<p>查找</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apm view</div></pre></td></tr></table></figure></p>
+<p>查看包信息</p>
+<p>###移动
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Left</div></pre></td></tr></table></figure></p>
+<p>移动到单词开头</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Right</div></pre></td></tr></table></figure></p>
+<p>移动到单词结尾</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Home</div></pre></td></tr></table></figure></p>
+<p>移动到文件开头</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + End</div></pre></td></tr></table></figure></p>
+<p>移动到文件结尾</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + G</div></pre></td></tr></table></figure></p>
+<p>移动到指定行</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + R</div></pre></td></tr></table></figure></p>
+<p>移动当前文件的某个符号上</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Shift + R</div></pre></td></tr></table></figure></p>
+<p>需要tag文件，查找当前项目的符号</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Alt + Down</div></pre></td></tr></table></figure></p>
+<p>需要tag文件，跳到符号的定义</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Alt + Up</div></pre></td></tr></table></figure></p>
+<p>需要tag文件，从符号的定义返回</p>
+<p>###书签
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Alt + Ctrl + F2</div></pre></td></tr></table></figure></p>
+<p>在当前行设置或取消书签</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">F2 / Shift + F2</div></pre></td></tr></table></figure></p>
+<p>在当前文件中向前或向后在书签中跳转</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + F2</div></pre></td></tr></table></figure></p>
+<p>查看当前项目中的书签</p>
+<p>###选择
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Shift + Up / Shift + Down / Shift + Left / Shift + Right</div></pre></td></tr></table></figure></p>
+<p>选择</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Shift + Left / Ctrl + Shift + Right</div></pre></td></tr></table></figure></p>
+<p>选择到单词的开头/结尾</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Shift + Home / Shift + End</div></pre></td></tr></table></figure></p>
+<p>选择到行的开头/结尾</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Shift + Home / Ctrl + Shift + End</div></pre></td></tr></table></figure></p>
+<p>选择到文件的开头/结尾</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + L</div></pre></td></tr></table></figure></p>
+<p>选择整行</p>
+<p>###编辑和删除
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + J</div></pre></td></tr></table></figure></p>
+<p>将下一行加入到当前行结尾</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Up / Ctrl + Down</div></pre></td></tr></table></figure></p>
+<p>当前行上移或者下移</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Shift + D</div></pre></td></tr></table></figure></p>
+<p>复制当前行</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + K Ctrl + U</div></pre></td></tr></table></figure></p>
+<p>将当前单词大写</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + K Ctrl + L</div></pre></td></tr></table></figure></p>
+<p>将当前单词小写</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Shift + K</div></pre></td></tr></table></figure></p>
+<p>删除当前行</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Backspace</div></pre></td></tr></table></figure></p>
+<p>删除到单词开头</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Delete</div></pre></td></tr></table></figure></p>
+<p>删除到单词结尾</p>
+<p>###多光标编辑
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + Click</div></pre></td></tr></table></figure></p>
+<p>增加光标</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Alt + Ctrl + Up/Down</div></pre></td></tr></table></figure></p>
+<p>在当前光标上/下增加光标</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + D</div></pre></td></tr></table></figure></p>
+<p>选择下一个同样的单词</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Alt + F3</div></pre></td></tr></table></figure></p>
+<p>选择所有同样的单词</p>
+<p>###折叠
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Alt + Ctrl + [/]</div></pre></td></tr></table></figure></p>
+<p>折叠/展开代码</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Alt + Ctrl + Shift + [/]</div></pre></td></tr></table></figure></p>
+<p>折叠/展开所有代码</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Ctrl + K Ctrl + 0-9</div></pre></td></tr></table></figure></p>
+<p>按缩进等级折叠所有代码</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Alt + Ctrl + F</div></pre></td></tr></table></figure></p>
+<p>折叠选中代码</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3&gt;tree-view快捷键&lt;/h3&gt;
+&lt;p&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;div class=&quot;line&quot;&gt;1&lt;/div&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;c
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>ALSA audio api</title>
+    <link href="http://yoursite.com/2017/04/11/alsa-tutor/"/>
+    <id>http://yoursite.com/2017/04/11/alsa-tutor/</id>
+    <published>2017-04-11T22:00:09.376Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3>理解音频接口</h3>
+<p>音频接口就是一种计算机可以读或者写音频数据的设备。在音频接口内部有一个硬件buffer，当buffer中收集到足够多的音频数据后，会产生中断通知电脑读取数据，或者在发送数据的时候通知电脑可以写数据到buffer中。</p>
+<p>要执行发送或者接收音频数据，需要配置一些参数。</p>
+<ul>
+<li>转换的格式</li>
+<li>取样率</li>
+<li>当数据到达多少时产生中断</li>
+<li>硬件buffer大小</li>
+</ul>
+<h3>典型的音频应用</h3>
+<pre><code>open_the_device();
+set_the_parameters_of_the_device();
+while (!done) {
+    /* one or both of these */
+    receive_audio_data_from_the_device();
+    deliver_audio_data_to_the_device();
+}
+close the device
+</code></pre>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3&gt;理解音频接口&lt;/h3&gt;
+&lt;p&gt;音频接口就是一种计算机可以读或者写音频数据的设备。在音频接口内部有一个硬件buffer，当buffer中收集到足够多的音频数据后，会产生中断通知电脑读取数据，或者在发送数据的时候通知电脑可以写数据到buffer中。&lt;/p&gt;
+&lt;p&gt;要执行发送或
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>ALSA lib 概念</title>
+    <link href="http://yoursite.com/2017/04/11/alsa-lib/"/>
+    <id>http://yoursite.com/2017/04/11/alsa-lib/</id>
+    <published>2017-04-11T22:00:09.369Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<ul>
+<li>
+<p>Frame<br>
+一帧就是要播放的一个采样数据，与通道个数无关。</p>
+<ul>
+<li>对于一个环绕48khz 16bit PCM流来说一帧就是4个字节</li>
+<li>对于一个5.1声道48khz 16bit PCM流来说一帧就是12个字节</li>
+</ul>
+</li>
+<li>
+<p>period<br>
+两次中断间的帧数，poll函数每个period会返回一次</p>
+</li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Frame&lt;br&gt;
+一帧就是要播放的一个采样数据，与通道个数无关。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于一个环绕48khz 16bit PCM流来说一帧就是4个字节&lt;/li&gt;
+&lt;li&gt;对于一个5.1声道48khz 16bit PCM流来说一帧就是12个字节&lt;/
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://yoursite.com/2017/04/11/Codage-25-convert_sas7bdat_to_csv/"/>
+    <id>http://yoursite.com/2017/04/11/Codage-25-convert_sas7bdat_to_csv/</id>
+    <published>2017-04-11T22:00:08.815Z</published>
+    <updated>2017-04-10T20:35:56.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Convert Large Size <code>.sas7bdat</code> (SAS Database file) to <code>.csv</code></p>
+<p>R受限于内存，不可能读取太大的文件，现有的读取SAS文件的包(如<code>haven</code>, <code>sas7bdat</code>, <code>foreign</code>等)，并不提供类似<code>fread()</code>函数的参数功能，用于选取指定的列、跳过特定的行数以及读取指定的行数。</p>
+<p>&lt;!-- more --&gt;</p>
+<p>所以能想到的方案是先将<code>.sas7bdat</code>文件转换成<code>.csv</code>，然后用<code>fread</code>循环读取转换后的文件中的不同行数。(不要问我为什么不能直接从SAS中导出<code>.csv</code>文件...)</p>
+<p>http://stackoverflow.com/questions/22213203/how-to-read-in-large-sas7bdat-dataset-in-r
+http://www.oview.co.uk/dsread/
+http://benpiper.com/2011/11/forcing-apps-to-run-in-32-bit-mode-in-a-64-bit-windows-environment/</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Convert Large Size &lt;code&gt;.sas7bdat&lt;/code&gt; (SAS Database file) to &lt;code&gt;.csv&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;R受限于内存，不可能读取太大的文件，现有的读取SAS文件的包(如&lt;code&gt;haven&lt;/co
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://yoursite.com/2017/04/11/Codage-23-environment-var-setting/"/>
+    <id>http://yoursite.com/2017/04/11/Codage-23-environment-var-setting/</id>
+    <published>2017-04-11T22:00:08.810Z</published>
+    <updated>2017-04-10T20:35:56.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Windows下的环境变量设置，不同path之间不需要空格！
+不需要空格！
+不需要空格！</p>
+<p>&lt;!-- more --&gt;</p>
+<p>添加空格以后，cmd无法识别，只有PowerShell可以。
+这就是为什么设定环境变量后，要在程序安装路径以外的路径下调用该程序，cmd无法识别的原因。</p>
+<p>错误写法: <code>c:\path1; c:\Maven\bin\; c:\path2\</code>
+正确写法: <code>c:\path1;c:\Maven\bin\;c:\path2\</code></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Windows下的环境变量设置，不同path之间不需要空格！
+不需要空格！
+不需要空格！&lt;/p&gt;
+&lt;p&gt;&amp;lt;!-- more --&amp;gt;&lt;/p&gt;
+&lt;p&gt;添加空格以后，cmd无法识别，只有PowerShell可以。
+这就是为什么设定环境变量后，要在程序安装路径以外的路径
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Android</title>
+    <link href="http://yoursite.com/2017/04/11/Android/"/>
+    <id>http://yoursite.com/2017/04/11/Android/</id>
+    <published>2017-04-11T22:00:08.705Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3>Codelines, Branches, and Release</h3>
+<p>The Android Open Source Project(AOSP)维护了整个android软件工程。 Google 维护了几条代码线(code lines)用来将稳定版本和开发版本区分开来。代码线和git的分支是有区别的，对于一个代码线来说可能包含多个分支。</p>
+<p><img src="/img/AOSP_code_releases.png" alt=""></p>
+<h3>Codenames, Tags, and Build Numbers</h3>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3&gt;Codelines, Branches, and Release&lt;/h3&gt;
+&lt;p&gt;The Android Open Source Project(AOSP)维护了整个android软件工程。 Google 维护了几条代码线(code lines)用来将稳定版本和开发版本区
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>ASOC codec platform</title>
+    <link href="http://yoursite.com/2017/04/11/ASoc_driver_platform/"/>
+    <id>http://yoursite.com/2017/04/11/ASoc_driver_platform/</id>
+    <published>2017-04-11T22:00:08.699Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3>ASoC Platform Driver</h3>
+<p>ASoC platform driver class被分成auido DMA driver, SOC DAI drivers和DSP drivers。</p>
+<h3>Audio DMA</h3>
+<p>The platform DMA driver支持下面的ALSA操作</p>
+<pre><code>struct snd_soc_ops {
+	int (*startup)(struct snd_pcm_substream *);
+	void (*shutdown)(struct snd_pcm_substream *);
+	int (*hw_params)(struct snd_pcm_substream *, struct snd_pcm_hw_params *);
+	int (*hw_free)(struct snd_pcm_substream *);
+	int (*prepare)(struct snd_pcm_substream *);
+	int (*trigger)(struct snd_pcm_substream *, int);
+};
+</code></pre>
+<p>The platform驱动通过struct
+snd_soc_platform_driver来输出它的DMA能力
+struct snd_soc_platform_driver {
+		char *name;</p>
+<pre><code>	int (*probe)(struct platform_device *pdev);
+	int (*remove)(struct platform_device *pdev);
+	int (*suspend)(struct platform_device *pdev, struct snd_soc_cpu_dai *cpu_dai);
+	int (*resume)(struct platform_device *pdev, struct snd_soc_cpu_dai *cpu_dai);
+
+	/* pcm creation and destruction */
+	int (*pcm_new)(struct snd_card *, struct snd_soc_codec_dai *, struct snd_pcm *);
+	void (*pcm_free)(struct snd_pcm *);
+
+	/*
+	 * For platform caused delay reporting.
+	 * Optional.
+	 */
+	snd_pcm_sframes_t (*delay)(struct snd_pcm_substream *,
+		struct snd_soc_dai *);
+
+	/* platform stream ops */
+	struct snd_pcm_ops *pcm_ops;
+};</code></pre>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3&gt;ASoC Platform Driver&lt;/h3&gt;
+&lt;p&gt;ASoC platform driver class被分成auido DMA driver, SOC DAI drivers和DSP drivers。&lt;/p&gt;
+&lt;h3&gt;Audio DMA&lt;/h3&gt;
+&lt;p&gt;The p
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>ASoc_driver_overview</title>
+    <link href="http://yoursite.com/2017/04/11/ASoc_driver_overview/"/>
+    <id>http://yoursite.com/2017/04/11/ASoc_driver_overview/</id>
+    <published>2017-04-11T22:00:08.697Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3>ASoC Design</h3>
+<p>ASoC将嵌入式音频系统划分为多个组件的驱动：</p>
+<ul>
+<li>Codec class drivers: Codec class driver与平台无关，包含audio controls，audio interface capabilities，codec DAPM定义和Codec IO函数</li>
+<li>Platform class drivers: The platform class driver包含audio DMA gngine驱动，digital audio interface（DAI）驱动（I2S， AC97， PCM）以及audio DSP</li>
+<li>Machine class driver: machine driver class 将其他部分组件结合在一起生产一个声卡设备，处理与machine相关的controls和machine level audio events</li>
+</ul>
+<h3>参考</h3>
+<p>[kernel 3.10 document]</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3&gt;ASoC Design&lt;/h3&gt;
+&lt;p&gt;ASoC将嵌入式音频系统划分为多个组件的驱动：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Codec class drivers: Codec class driver与平台无关，包含audio controls，audio interface c
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>ASoc Machine Driver</title>
+    <link href="http://yoursite.com/2017/04/11/ASoc_driver_machine/"/>
+    <id>http://yoursite.com/2017/04/11/ASoc_driver_machine/</id>
+    <published>2017-04-11T22:00:08.695Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3>ASoc machine driver</h3>
+<p>ASoC machine driver 将所有的componentdriver联系起来。</p>
+<pre><code>struct snd_soc_card {
+	char *name;
+
+	...
+
+	int (*probe)(struct platform_device *pdev);
+	int (*remove)(struct platform_device *pdev);
+
+	/* the pre and post PM functions are used to do any PM work before and
+	 * after the codec and DAIs do any PM work. */
+	int (*suspend_pre)(struct platform_device *pdev, pm_message_t state);
+	int (*suspend_post)(struct platform_device *pdev, pm_message_t state);
+	int (*resume_pre)(struct platform_device *pdev);
+	int (*resume_post)(struct platform_device *pdev);
+
+	...
+
+	/* CPU &lt;--&gt; Codec DAI links  */
+	struct snd_soc_dai_link *dai_link;
+	int num_links;
+
+	...
+};
+</code></pre>
+<h3>Machine DAI Configuration</h3>
+<p>Machine DAI配置将CPU DAI和codec结合在一起。 struct snd_soc_dai_link用来设置machine中的每个DAI。</p>
+<h3>Machine Controls</h3>
+<p>Machine specific audio mixer controls可以在DAI的init函数总体按键。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3&gt;ASoc machine driver&lt;/h3&gt;
+&lt;p&gt;ASoC machine driver 将所有的componentdriver联系起来。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;struct snd_soc_card {
+	char *name;
+
+	...
+
+	int (
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>ASOC codec driver</title>
+    <link href="http://yoursite.com/2017/04/11/ASoc_driver_codec/"/>
+    <id>http://yoursite.com/2017/04/11/ASoc_driver_codec/</id>
+    <published>2017-04-11T22:00:08.693Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Codec驱动配置codec来提供音频的捕捉与播放，是通用的与硬件无关。</p>
+<p>Codec驱动必须提供下面的功能：</p>
+<ul>
+<li>Codec DAI and PCM configuration</li>
+<li>Codec control IO</li>
+<li>Mixer and audio controls</li>
+<li>Codec audio operations</li>
+</ul>
+<p>选择性提供：</p>
+<ul>
+<li>DAPM description</li>
+<li>DAPM event handler</li>
+<li>DAC Digital mute control</li>
+</ul>
+<h3>ASoC Codec驱动</h3>
+<ol>
+<li>
+<p>Codec DAI and PCM configuration<br>
+每个Codec驱动都必须包含一个struct snd_soc_dai_driver结构体来定义它的DAI和PCM能力及操作。</p>
+</li>
+<li>
+<p>Codec control IO<br>
+Codec驱动提供读写codec寄存器的函数，还提供了一个register cache</p>
+<pre><code> void *control_data;
+ void *reg_cache;
+</code></pre>
+</li>
+</ol>
+<p>Codec读写函数应该将数据整理好并调用硬件读写函数</p>
+<pre><code>    unsigned int (*read)(struct snd_soc_codec *, unsigned int);
+    int (*write)(struct snd_soc_codec *, unsigned int, unsigned int);
+</code></pre>
+<p>Codec硬件IO函数
+hw_write_t hw_write;
+hw_read_t hw_read;</p>
+<ol start="3">
+<li>
+<p>Mixers and audio controls<br>
+所有的codec mixer和audio control都可以使用soc.h里的宏定义</p>
+<pre><code> #define SOC_SINGLE(xname, reg, shift, mask, invert)
+</code></pre>
+</li>
+<li>
+<p>Codec Audio Operations<br>
+Codec提供以下ALSA操作</p>
+<pre><code> struct snd_soc_ops {
+	int (*startup)(struct snd_pcm_substream *);
+	void (*shutdown)(struct snd_pcm_substream *);
+	int (*hw_params)(struct snd_pcm_substream *, struct snd_pcm_hw_params *);
+	int (*hw_free)(struct snd_pcm_substream *);
+	int (*prepare)(struct snd_pcm_substream *);
+ };
+</code></pre>
+</li>
+<li>
+<p>DAPM描述<br>
+DAPM(Dynamic Audio Power Management)想ASoC core描述codec的电源组件及之间的关系，以及寄存器。</p>
+</li>
+<li>
+<p>DAPM event handler<br>
+这个函数用来作为codec domain PM call和system domain PM call(e.g. suspend and resume)的回调函数。</p>
+</li>
+<li>
+<p>Codec DAC digital mute control<br>
+大部分codec在DACS前包含一个digital mute，用来阻止数字数据进入DAC。</p>
+</li>
+</ol>
+<h3>参考</h3>
+<p>[kernel 3.10 document]</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Codec驱动配置codec来提供音频的捕捉与播放，是通用的与硬件无关。&lt;/p&gt;
+&lt;p&gt;Codec驱动必须提供下面的功能：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Codec DAI and PCM configuration&lt;/li&gt;
+&lt;li&gt;Codec control IO&lt;/li&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>DAPM</title>
+    <link href="http://yoursite.com/2017/04/11/ASoc_driver_DAPM/"/>
+    <id>http://yoursite.com/2017/04/11/ASoc_driver_DAPM/</id>
+    <published>2017-04-11T22:00:08.691Z</published>
+    <updated>2017-04-10T20:34:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>Dynamic Audio Power Management(DAPM)是为了节省移动linux设备audio子系统电量而设计的。</p>
+<p>在DAPM中划分了4个电源域：</p>
+<ol>
+<li>Codec domain: VREF, VMID(core codec and audio power). 通常在codec的probe/remove，syspend/resume时进行控制。</li>
+<li>Platform/Machine domain: 物理上连接的输入输出，与特定的platform/machine相关，通过machine读取来配置.</li>
+<li>Path domain: audio子系统信号路径。</li>
+<li>Stream domain: DAC和ADC, 当播放或捕捉流时打开或关闭。</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Dynamic Audio Power Management(DAPM)是为了节省移动linux设备audio子系统电量而设计的。&lt;/p&gt;
+&lt;p&gt;在DAPM中划分了4个电源域：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Codec domain: VREF, VMID(core codec
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>

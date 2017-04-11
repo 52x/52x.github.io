@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            Find Convex Hull with Graham Scan &amp; Swift | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,macOS,Swift,Algorithm">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Find Convex Hull with Graham Scan &amp; Swift | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="macOS"> <meta property="og:article:tag" content="Swift"> <meta property="og:article:tag" content="Algorithm"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">简单粗暴的想法</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">Graham Scan</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">后记</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Find Convex Hull with Graham Scan & Swift
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>4月 28, 2016</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/Algorithm/">Algorithm</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/Swift/">Swift</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/macOS/">macOS</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Find Convex Hull with Graham Scan &amp; Swift&url=http://yoursite.com//2016/04/28/2016-04-28-Find-Convex-Hull-with-Graham-Scan-Swift/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Find Convex Hull with Graham Scan &amp; Swift&url=http://yoursite.com//2016/04/28/2016-04-28-Find-Convex-Hull-with-Graham-Scan-Swift/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2016/04/28/2016-04-28-Find-Convex-Hull-with-Graham-Scan-Swift/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2016/04/28/2016-04-28-Find-Convex-Hull-with-Graham-Scan-Swift/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p><a href="https://en.wikipedia.org/wiki/Convex_hull" target="_blank" rel="external">凸包(Convex hull)</a> 是一个数学上的概念，在二维平面上可以想象成用一个橡皮筋套住一堆钉在平面上的钉子。本文讲述如何使用 Swift 实现 <a href="https://en.wikipedia.org/wiki/Graham_scan" target="_blank" rel="external">Graham scan</a> 算法来寻找二维平面点集上的凸包。工程源码 Github：https://github.com/yulingtianxia/Algorithm-Experiment</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/d/de/ConvexHull.svg" alt="By Maksim (original); en:User:Pbroks3 (redraw), via Wikimedia Commons">
+<img src="http://7ni3rk.com1.z0.glb.clouddn.com/convexhull/convexhull.gif" alt=""></p>
+<p>&lt;!--more--&gt;</p>
+<h1>简单粗暴的想法</h1>
+<p>直观上去看可以理解为『找出最外围的点』，进而把问题转化为『剔除凸多边形内部的点』，进而简化为『剔除任意三角形内的点』。PS：<strong>三角形</strong>指的是由点集内任意三个不相同的点构成的三角形，以下不再赘述定义，直接以<strong>三角形</strong>代指。</p>
+<p>下面需要做的是遍历所有三角形的排列组合，找出三角形上或内部的点，并剔除，因为它肯定不是凸包的顶点。</p>
+<p>如何判断一个点 <code>P</code> 是否在三角形 <code>ABC</code> 里面呢？</p>
+<p>很简单！如果点 <code>P</code> 在三角形 <code>ABC</code> 内，点 <code>A</code> 和 <code>P</code> 肯定在直线 <code>BC</code> 的同一侧，点 <code>B</code> 和 <code>P</code> 也肯定在直线 <code>AC</code> 同一侧，点 <code>C</code> 和 <code>P</code> 必定也在直线 <code>AB</code> 同一侧！</p>
+<p>果然够简单粗暴！</p>
+<p>假设直线 <code>BC</code> 方程为 <code>ax + by + c = 0</code>,如果点 <code>P(Xp,Yp)</code> 在直线 <code>BC</code> 上，则有 <code>a·Xp + b·Yp + c = 0</code>；如果点 <code>P(Xp,Yp)</code> 与点 <code>A(Xa,Ya)</code> 在直线 <code>BC</code> 同一侧，则有 <code>(a·Xp + b·Yp + c)(a·Xa + b·Ya + c) &gt; 0</code>。为了不被吐槽拿初中数学忽悠人，还是快速上代码吧：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">func calculatePoint(pointP:CGPoint,onLine line:(pointA:CGPoint,pointB:CGPoint)) -&gt; CGFloat &#123;</div><div class="line">    return (pointP.y - line.pointA.y) * (line.pointB.x - line.pointA.x) - (line.pointB.y - line.pointA.y) * (pointP.x - line.pointA.x)</div><div class="line">&#125;</div><div class="line"></div><div class="line">func checkPoint(P:CGPoint,inTriangle triangle:(A:CGPoint,B:CGPoint,C:CGPoint)) -&gt; Bool &#123;</div><div class="line">    var Pp = calculatePoint(P, onLine: (triangle.A,triangle.B))</div><div class="line">    let AB = Pp == 0||Pp * calculatePoint(triangle.C, onLine: (triangle.A,triangle.B)) &gt; 0</div><div class="line">    if !AB&#123;</div><div class="line">        return AB</div><div class="line">    &#125;</div><div class="line">    Pp = calculatePoint(P, onLine: (triangle.A,triangle.C))</div><div class="line">    let AC = Pp == 0||Pp * calculatePoint(triangle.B, onLine: (triangle.A,triangle.C)) &gt; 0</div><div class="line">    if !AC&#123;</div><div class="line">        return AC</div><div class="line">    &#125;</div><div class="line">    Pp = calculatePoint(P, onLine: (triangle.C,triangle.B))</div><div class="line">    let BC = Pp == 0||Pp * calculatePoint(triangle.A, onLine: (triangle.C,triangle.B)) &gt; 0</div><div class="line"></div><div class="line">    return AB &amp;&amp; AC &amp;&amp; BC</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>calculatePoint: onLine:</code> 函数的作用是将点坐标代入直线方程式并返回计算结果；<code>checkPoint: inTriangle:</code> 函数的作用是判断某点是否在三角形上或内部。</p>
+<p>在开始暴力遍历所有的三角形组合并剔除不符合要求的点之前，我想再声明一个命题：『X 轴和 Y 轴的极值点肯定是凸包顶点』。也就是说如果一个点的 X 坐标最大，那么它肯定是凸包顶点。这个命题像是废话，用反证法其实也很容易证明：假如 <code>Y</code> 值最大的点 <code>P</code> 不是凸包顶点，那么必然处于某个三角形 <code>ABC</code> 内，并且 <code>ABC</code> 三个点的 <code>Y</code> 值都比 <code>P</code> 小，假设 <code>A</code> 点为三角形 <code>ABC</code> 中 <code>Y</code> 值最小的点，则 <code>P</code> 点和 <code>A</code> 点必然处于直线 <code>BC</code> 两侧，矛盾。命题得证。</p>
+<p>PS：这里注意我们想要的结果仅仅是<strong>凸包顶点</strong>，有些点可能位于两个相邻的凸包顶点连线上，这样的点只能算作<strong>凸包上的点</strong>，它们与<strong>凸包内的点</strong>一样需要被剔除。</p>
+<p>我们最终输出的结果希望是逆时针顺序输出的，比如下图中的凸包顶点输出顺序应为：<code>A,B,C,D,E,F,G,H</code>，其中 <code>A</code> 点和 <code>D</code> 点分别为 X 最小的点和 X 最大的点。</p>
+<p><img src="http://7ni3rk.com1.z0.glb.clouddn.com/convexhullQQ20160428-0@2x.png" alt="随机生成50个点集的凸包"></p>
+<p>有两种方案可以按照逆时针顺序输出结果：</p>
+<ol>
+<li>以 <code>A</code> 点为中心，向量 <code>DA</code> 方向做射线逆时针扫描，按照扫描到点的顺序输出即可，直至 360° 扫描完毕。</li>
+<li>将直线 <code>AD</code> 上方的点集 <code>Su</code> 按照 X 值从大到小排列，下方的点集 <code>Sd</code> 按照 X 值从小到大排列，最后输出顺序为：<code>A，Sd，D，Su</code></li>
+</ol>
+<p>很明显，第二种方案计算量小并且实现简单。</p>
+<p>但受到方案 1 的启发，我们可以将暴力遍历的时间复杂度减少一层。将 <code>A</code> 点与其他凸包顶点连上虚线：</p>
+<p><img src="http://7ni3rk.com1.z0.glb.clouddn.com/convexhull/divideintotriangles@2x.png" alt="以 A 点将凸包划分成几个三角形"></p>
+<p>也就是说可以把 <code>A</code> 点作为公共点来遍历三角形。因为 <code>A</code> 点肯定不会被剔除，并且上图中以 <code>A</code> 点为公共点的三角形已经覆盖了所有的点，不用担心会有遗漏。于是三角形的一个顶点已经确定下来了，只需遍历生成另两个顶点和一个需要判定是否在三角形内的点，四层循环嵌套降为三层！</p>
+<p>献上核心算法的 Swift 代码：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line">func generateConvexHull(inout points:[PointView])&#123;</div><div class="line">   for point in points &#123;</div><div class="line">       point.isConvexHullNode = true</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   if points.count &lt;= 3 &#123;</div><div class="line">       return</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   var minXPoint = points[0]</div><div class="line">   var maxXPoint = points[0]</div><div class="line">   for point in points &#123;</div><div class="line">       minXPoint = point.position.x &lt; minXPoint.position.x ? point : minXPoint</div><div class="line">       maxXPoint = point.position.x &gt; maxXPoint.position.x ? point : maxXPoint</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   let point1 = minXPoint;</div><div class="line">   for point2 in points &#123;</div><div class="line">       if !point2.isConvexHullNode || point2 == point1 &#123;</div><div class="line">           continue</div><div class="line">       &#125;</div><div class="line">       for point3 in points &#123;</div><div class="line">           if !point3.isConvexHullNode || point3 == point1 || point3 == point2 &#123;</div><div class="line">               continue</div><div class="line">           &#125;</div><div class="line">           for point4 in points &#123;</div><div class="line">               if !point4.isConvexHullNode || point4 == point1 || point4 == point2 || point4 == point3 &#123;</div><div class="line">                   continue</div><div class="line">               &#125;</div><div class="line">               if checkPoint(point4.position, inTriangle: (point2.position,point3.position,point1.position)) &#123;</div><div class="line">                   point4.isConvexHullNode = false</div><div class="line">                   continue</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   var su = points.filter &#123;</div><div class="line">       calculatePoint($0.position, onLine: (minXPoint.position,maxXPoint.position)) &gt; 0</div><div class="line">   &#125;</div><div class="line">   var sl = points.filter &#123;</div><div class="line">       calculatePoint($0.position, onLine: (minXPoint.position,maxXPoint.position)) &lt; 0</div><div class="line">   &#125;</div><div class="line">   su = su.sort &#123;</div><div class="line">       return ($0.position as CGPoint).x &gt; ($1.position as CGPoint).x</div><div class="line">   &#125;</div><div class="line">   sl = sl.sort &#123;</div><div class="line">       return ($0.position as CGPoint).x &lt; ($1.position as CGPoint).x</div><div class="line">   &#125;</div><div class="line">   var result = [minXPoint]</div><div class="line">   result += sl</div><div class="line">   result.append(maxXPoint)</div><div class="line">   result += su</div><div class="line">   points = result</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这么暴力的算法复杂度也是高的惊人，为 <code>O(N^3)</code>！**想必此时已经有不少已经脱了裤子的同学想问博主为什么要给自己看这些！**说好的 <a href="https://en.wikipedia.org/wiki/Graham_scan" target="_blank" rel="external">Graham scan</a>算法呢？其实这部分『前戏』很重要，绝不是为了凑篇幅，一些重要概念对后面的正题理解有很大帮助，比如下面要介绍的 <code>PointView</code> 类（卧槽表碧莲啊还来！）</p>
+<p><code>PointView</code> 是算法演示程序中用于绘制和存储二维点坐标信息的类，它不仅存储坐标，还维护了状态 <code>isConvexHullNode</code>，并根据状态值是否为凸包顶点来改变 UI（红色的点为凸包顶点，紫色为非凸包顶点）。此外 <code>PointView</code> 还需要处理鼠标拖拽事件。这部分比较简单，就不上代码了。</p>
+<h1>Graham Scan</h1>
+<p>当沿着凸包逆时针漫游时，你会发现总是在『向左拐』；反之则是『向右拐』。</p>
+<p>还记得之前说的以 <code>A</code> 点为中心逆时针扫描所有点的方案吧？将所有除 <code>A</code> 以外的点按照这个扫描顺序进行排列。然后在此基础上遍历并剔除『不向左拐』的点，最后输出的点集正好是按顺序排列好的。</p>
+<p>PS:判断 <code>P1P2P3</code> 在 <code>P2</code> 拐弯方向公式：<code>(p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x)</code>，如果其结果为 <code>0</code>，这三个点是共线的，如果其结果为正，这三个点是向左拐的，否则，它是向右拐的。</p>
+<p>为了方便计算，通常选择 Y 值最小的点作为 <code>A</code> 点（Y 值一样就选最右边的点），其余的点就都落在第一、二象限。</p>
+<p>下图来自维基百科，但是漫游方向是<strong>顺时针</strong>的，也就是说要剔除<strong>不向右拐</strong>的点：</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Graham_scan.png" alt="via Wikimedia Commons"></p>
+<p>在 <code>P</code> 为原点的极坐标下按照极角大小构造顺时针排序的数组：<code>[A,B,C,D]</code>，计算极角的函数实现如下：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">func calculatePolarAngle(origin:CGPoint, target:CGPoint) -&gt; Double &#123;</div><div class="line">    let trans = (x: target.x - origin.x, y: target.y - origin.y)</div><div class="line">    let angle = atan(Double(trans.y) / Double(trans.x))</div><div class="line">    switch trans &#123;</div><div class="line">    case let (x,y) where x &gt;= 0 &amp;&amp; y &gt;= 0:</div><div class="line">        return angle</div><div class="line">    case let (x,y) where x &lt; 0 &amp;&amp; y &gt;= 0:</div><div class="line">        return angle + M_PI</div><div class="line">    case let (x,y) where x &lt;= 0 &amp;&amp; y &lt; 0:</div><div class="line">        return angle + M_PI</div><div class="line">    case let (x,y) where x &gt; 0 &amp;&amp; y &lt; 0:</div><div class="line">        return angle + 2 * M_PI</div><div class="line">    default:</div><div class="line">        return 0</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接着就是遍历按极角排序好的数组。先将 <code>P</code> 点和 <code>A</code> 点 push 进栈，然后检查 <code>PAB</code> 是否不向右拐，因为在 <code>A</code> 点右拐所以将 <code>B</code> 点 push 进栈，然后继续检查 <code>C</code> 点。可以看出在 <code>C</code> 点处 <code>BCD</code> 向左拐了，于是 <code>C</code> 点被剔除，栈 pop 出 <code>C</code>。然后检查 <code>ABD</code> 处是否符合要求，结果是符合要求的，于是将 <code>D</code> 点 push 进栈。</p>
+<p>也就是说遍历数组时始终判断栈顶元素处拐弯方向是否符合要求：方向符合要求则将当前遍历的点 push 进栈，否则将栈顶元素 pop，并继续判断栈顶元素处拐弯是否符合要求，直到符合要求为止。（如若栈元素个数小于 <code>3</code>，则不再 pop）</p>
+<p>最后的实现算法 Swift 代码如下（逆时针漫游）</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">func generateConvexHull(inout points: [PointView]) &#123;</div><div class="line">   for point in points &#123;</div><div class="line">       point.isConvexHullNode = true</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   if points.count &lt;= 3 &#123;</div><div class="line">       return</div><div class="line">   &#125;</div><div class="line">   </div><div class="line">   var minYPoint = points[0]</div><div class="line">   var minIndex = 0</div><div class="line">   for (index,point) in points.enumerate() &#123;</div><div class="line">       (minIndex,minYPoint) = point.position.y &lt; minYPoint.position.y ? (index,point) : (minIndex,minYPoint)</div><div class="line">   &#125;</div><div class="line">   points.removeAtIndex(minIndex)</div><div class="line">   points.sortInPlace &#123;</div><div class="line">       return calculatePolarAngle(minYPoint.position, target: $0.position) &lt; calculatePolarAngle(minYPoint.position, target: $1.position)</div><div class="line">   &#125;</div><div class="line">   var stack = [minYPoint]</div><div class="line">   var restPoints = [PointView]()</div><div class="line">   stack.append(points[0])</div><div class="line">   </div><div class="line">   for point in points[1..&lt;points.count] &#123;</div><div class="line">       </div><div class="line">       func checkTurnsRight() -&gt; Bool &#123;</div><div class="line">           let p1 = stack[stack.count-2].position</div><div class="line">           let p2 = stack.last!.position</div><div class="line">           let p3 = point.position</div><div class="line">           return (p2.x - p1.x) * (p3.y - p1.y) - (p2.y - p1.y) * (p3.x - p1.x) &lt;= 0</div><div class="line">       &#125;</div><div class="line">       </div><div class="line">       while checkTurnsRight() &#123;</div><div class="line">           stack.last?.isConvexHullNode = false</div><div class="line">           restPoints.append(stack.last!)</div><div class="line">           stack.removeLast()</div><div class="line">           if stack.count &lt; 3 &#123;</div><div class="line">               break</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">       stack.append(point)</div><div class="line">   &#125;</div><div class="line">   points = stack + restPoints</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Graham Scan 的时间复杂度是 <code>O(nlogn)</code>，而且只适用于二维平面。算法导论上也讲到了包裹法（Jarvis步进法）和分治法，时间复杂度都是 <code>O(nlogn)</code>。我的<a href="https://github.com/yulingtianxia/Algorithm-Experiment" target="_blank" rel="external">那个工程</a>里也有<a href="https://github.com/yulingtianxia/Algorithm-Experiment/blob/master/ConvexHull/ConvexHull/DivideAndConquer.swift" target="_blank" rel="external">分治法的 Swift 实现</a>。如果拓展到多维空间，我觉得使用 Swift 并不是一个很好的实现语言，Matlab 再适合不过了。</p>
+<h1>后记</h1>
+<p>博主江郎才尽竟然拿学校的某次算法实验充数尼玛坑爹呢这是！</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2016/04/26/ddns-scripts-principle-of-bb-on-openwrt/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2016/04/30/blockchain-slides/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

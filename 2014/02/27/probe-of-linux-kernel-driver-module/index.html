@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            linux设备模型深探 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,设备模型">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="linux设备模型深探 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="设备模型"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text"><a name=1>一：前言</a></span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text"><a name=2>二：kobject、kset和ktype </a></span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text"><a name=3>三：kobject、kset和ktype的操作</a></span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.1.</span> <span class="post-toc-text"><a name=3.1>kobject 操作</a></span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.2.</span> <span class="post-toc-text"><a name=3.2>kset 操作</a></span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text"><a name=4>四：bus、device和device_driver</a></span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.1.</span> <span class="post-toc-text"><a name=4.1>总线注册</a></span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.2.</span> <span class="post-toc-text"><a name=4.2>设备注册</a></span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.3.</span> <span class="post-toc-text"><a name=4.3>驱动注册</a></span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text"><a name=5>五：小结</a></span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                linux设备模型深探
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>2月 27, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/设备模型/">设备模型</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=linux设备模型深探&url=http://yoursite.com//2014/02/27/probe-of-linux-kernel-driver-module/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=linux设备模型深探&url=http://yoursite.com//2014/02/27/probe-of-linux-kernel-driver-module/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/02/27/probe-of-linux-kernel-driver-module/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/02/27/probe-of-linux-kernel-driver-module/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>原文链接：<a href="http://blog.chinaunix.net/uid-20543183-id-1930813.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-20543183-id-1930813.html</a></p>
+<p>源码文件：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">./lib/kobject.c</div><div class="line">./drivers/base/bus.c</div><div class="line">./drivers/base/driver.c</div><div class="line">./drivers/base/core.c</div></pre></td></tr></table></figure></p>
+<p>目录：<br>
+<a href="#1">一：前言</a><br>
+<a href="#2">二：kobject、kset和ktype</a><br>
+<a href="#3">三：kobject、kset和ktype的操作</a></p>
+<ul>
+<li><a href="#3.1">kobject 操作</a></li>
+<li><a href="#3.2">kset 操作</a></li>
+</ul>
+<p><a href="#4">四：bus、device和device_driver</a></p>
+<ul>
+<li><a href="#4.1">总线注册</a></li>
+<li><a href="#4.2">设备注册</a></li>
+<li><a href="#4.3">驱动注册</a></li>
+</ul>
+<p><a href="#5">五：小结</a>
+&lt;!--more--&gt;</p>
+<h2>&lt;a name=1&gt;一：前言&lt;/a&gt;</h2>
+<p>Linux设备模型是一个极其复杂的结构体系，在编写驱动程序的时候，通常不会用到这方面的东西，但是，理解这部份内容，对于我们理解linux设备驱动的结构是大有裨益的。我们不但可以在编写程序程序的时候知其然亦知其所以然，又可以学习到一种极其精致的架构设计方法。由于之前已经详细分析了<code>sysfs</code>文件系统，所以本节的讨论主要集中在设备模型的底层实现上。上层的接口，如<code>pci</code>、<code>usb</code>、网络设备都可以看成是底层的封装。</p>
+<h2>&lt;a name=2&gt;二：kobject、kset和ktype &lt;/a&gt;</h2>
+<p><code>kobject</code>,<code>kset</code>,<code>ktype</code>这三个结构是设备模型中的下层架构。模型中的每一个元素都对应一个<code>kobject</code>，<code>kset</code>和<code>ktype</code>可以看成是<code>kobject</code>在层次结构与属性结构方面的扩充。将三者之间的关系用图的方示描述如下：</p>
+<p></p>
+<p>如上图所示：我们知道，在<code>sysfs</code>中每一个目录都对应一个<code>kobject</code>，这些<code>kobject</code>都有自己的<code>parent</code>，在没有指定<code>parent</code>的情况下，都会指向它所属的<code>kset-&gt;object</code>；其次，<code>kset</code>也内嵌了<code>kobject</code>，这个<code>kobject</code>又可以指它上一级的<code>parent</code>。就这样，构成了一个空间层次关系。</p>
+<p>其实，每个对象都有属性，例如，电源管理，执插拨事性管理等等。因为大部份的同类设备都有相同的属性，因此将这个属性隔离开来，存放在<code>ktype</code>中。这样就可以灵活的管理了。记得在分析<code>sysfs</code>的时候，对于<code>sysfs</code>中的普通文件读写操作都是由<code>kobject-&gt;ktype-&gt;sysfs_ops</code>来完成的。</p>
+<p>经过上面的分析，我们大概了解了<code>kobject</code>、<code>kset</code>与<code>ktype</code>的大概架构与相互之间的关系。下面我们从linux源代码中的分析来详细研究他们的操作。</p>
+<h2>&lt;a name=3&gt;三：kobject、kset和ktype的操作&lt;/a&gt;</h2>
+<p>为了说明<code>kobject</code>的操作，先写一个测试模块，代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/device.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/module.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/kernel.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/init.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/sysfs.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/stat.h&gt;</span></span></div><div class="line"></div><div class="line">MODULE_AUTHOR(<span class="string">"eric xiao"</span>);</div><div class="line">MODULE_LICENSE(<span class="string">"Dual BSD/GPL"</span>);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">obj_test_release</span><span class="params">(<span class="keyword">struct</span> kobject *kobject)</span></span>;</div><div class="line"><span class="keyword">ssize_t</span> eric_test_show(<span class="keyword">struct</span> kobject *kobject, <span class="keyword">struct</span> attribute *attr,<span class="keyword">char</span> *buf);</div><div class="line"><span class="keyword">ssize_t</span> eric_test_store(<span class="keyword">struct</span> kobject *kobject,<span class="keyword">struct</span> attribute *attr,<span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> count);</div><div class="line"></div><div class="line"><span class="keyword">struct</span> attribute test_attr = &#123;</div><div class="line">        .name = <span class="string">"eric_xiao"</span>,</div><div class="line">        .mode = S_IRWXUGO,</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">static</span> <span class="keyword">struct</span> attribute *def_attrs[] = &#123;</div><div class="line">        &amp;test_attr,</div><div class="line">        <span class="literal">NULL</span>,</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> sysfs_ops obj_test_sysops =</div><div class="line">&#123;</div><div class="line">        .show = eric_test_show,</div><div class="line">        .store = eric_test_store,</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> kobj_type ktype =</div><div class="line">&#123;</div><div class="line">        .release = obj_test_release,</div><div class="line">        .sysfs_ops=&amp;obj_test_sysops,</div><div class="line">        .default_attrs=def_attrs,</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">obj_test_release</span><span class="params">(<span class="keyword">struct</span> kobject *kobject)</span></span></div><div class="line">&#123;</div><div class="line">        printk(<span class="string">"eric_test: release .\n"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">ssize_t</span> eric_test_show(<span class="keyword">struct</span> kobject *kobject, <span class="keyword">struct</span> attribute *attr,<span class="keyword">char</span> *buf)</div><div class="line">&#123;</div><div class="line">        printk(<span class="string">"have show.\n"</span>);</div><div class="line">        printk(<span class="string">"attrname:%s.\n"</span>, attr-&gt;name);</div><div class="line">        <span class="built_in">sprintf</span>(buf,<span class="string">"%s\n"</span>,attr-&gt;name);</div><div class="line">        <span class="keyword">return</span> <span class="built_in">strlen</span>(attr-&gt;name)+<span class="number">2</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">ssize_t</span> eric_test_store(<span class="keyword">struct</span> kobject *kobject,<span class="keyword">struct</span> attribute *attr,<span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> count)</div><div class="line">&#123;</div><div class="line">        printk(<span class="string">"havestore\n"</span>);</div><div class="line">        printk(<span class="string">"write: %s\n"</span>,buf);</div><div class="line">        <span class="keyword">return</span> count;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> kobject kobj;</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">kobject_test_init</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">        printk(<span class="string">"kboject test init.\n"</span>);</div><div class="line">        kobject_init_and_add(&amp;kobj,&amp;ktype,<span class="literal">NULL</span>,<span class="string">"eric_test"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">kobject_test_exit</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">        printk(<span class="string">"kobject test exit.\n"</span>);</div><div class="line">        kobject_del(&amp;kobj);</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">module_init(kobject_test_init);</div><div class="line">module_exit(kobject_test_exit);</div></pre></td></tr></table></figure></p>
+<p>加载模块之后，会发现，在<code>/sys</code>下多了一个<code>eric_test</code>目录。该目录下有一个叫<code>eric_xiao</code>的文件。如下所示：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost eric_test]<span class="comment"># ls</span></div><div class="line">eric_xiao</div></pre></td></tr></table></figure></p>
+<p>用<code>cat</code>察看此文件：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@localhost eric_test]<span class="comment"># cat eric_xiao</span></div><div class="line">eric_xiao</div></pre></td></tr></table></figure></p>
+<p>再用<code>echo</code>往里面写点东西；
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@localhost eric_test]<span class="comment"># echo  hello &gt; eric_xiao</span></div></pre></td></tr></table></figure></p>
+<p>Dmesg的输出如下：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">have show.</div><div class="line">attrname:eric_xiao.</div><div class="line">havestore</div><div class="line">write: hello</div></pre></td></tr></table></figure></p>
+<p>如上所示，我们看到了<code>kobject</code>的大概建立过程。</p>
+<h3>&lt;a name=3.1&gt;kobject 操作&lt;/a&gt;</h3>
+<p>我们来看一下<code>kobject_init_and_add()</code>的实现，在这个函数里，包含了对<code>kobject</code>的大部份操作。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">kobject_init_and_add</span><span class="params">(<span class="keyword">struct</span> kobject *kobj, <span class="keyword">struct</span> kobj_type *ktype,</span></span></div><div class="line">               <span class="keyword">struct</span> kobject *parent, <span class="keyword">const</span> <span class="keyword">char</span> *fmt, ...)</div><div class="line">&#123;</div><div class="line">     va_list args;</div><div class="line">     <span class="keyword">int</span> retval;</div><div class="line">     <span class="comment">//初始化kobject</span></div><div class="line">     kobject_init(kobj, ktype);</div><div class="line"></div><div class="line">     va_start(args, fmt);</div><div class="line">     <span class="comment">//为kobjcet设置名称，在sysfs中建立相关信息</span></div><div class="line">     retval = kobject_add_varg(kobj, parent, fmt, args);</div><div class="line">     va_end(args);</div><div class="line"></div><div class="line">     <span class="keyword">return</span> retval;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的流程主要分为两部份：一部份是<code>kobject</code>的初始化，在这一部份，它将<code>kobject</code>与给定的<code>ktype</code>关联起来，初始化<code>kobject</code>中的各项结构；另一部份是<code>kobject</code>的名称设置，空间层次关系的设置，具体表现在<code>sysfs</code>文件系统中。</p>
+<p>对于第一部份，代码比较简单，这里不再赘述。跟踪第二部份，也就是<code>kobject_add_varg()</code>的实现。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">kobject_add_varg</span><span class="params">(<span class="keyword">struct</span> kobject *kobj, <span class="keyword">struct</span> kobject *parent,</span></span></div><div class="line">                  <span class="keyword">const</span> <span class="keyword">char</span> *fmt, va_list vargs)</div><div class="line">&#123;</div><div class="line">     va_list aq;</div><div class="line">     <span class="keyword">int</span> retval;</div><div class="line"></div><div class="line">     va_copy(aq, vargs);</div><div class="line">     <span class="comment">//设置kobject的名字。即kobject的name成员</span></div><div class="line">     retval = kobject_set_name_vargs(kobj, fmt, aq);</div><div class="line">     va_end(aq);</div><div class="line">     <span class="keyword">if</span> (retval) &#123;</div><div class="line">         printk(KERN_ERR <span class="string">"kobject: can not set name properly!\n"</span>);</div><div class="line">         <span class="keyword">return</span> retval;</div><div class="line">     &#125;</div><div class="line">     <span class="comment">//设置kobject的parent。在上面的例子中，我们没有给它指定父结点</span></div><div class="line">     kobj-&gt;parent = parent;</div><div class="line">     <span class="comment">//在sysfs中添加kobjcet信息</span></div><div class="line">     <span class="keyword">return</span> kobject_add_internal(kobj);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>设置好<code>kobject-&gt;name</code>后，转入<code>kobject_add_internal()</code>，在sysfs中创建空间结构。代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">kobject_add_internal</span><span class="params">(<span class="keyword">struct</span> kobject *kobj)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">int</span> error = <span class="number">0</span>;</div><div class="line">     <span class="keyword">struct</span> kobject *parent;</div><div class="line"></div><div class="line">     <span class="keyword">if</span> (!kobj)</div><div class="line">         <span class="keyword">return</span> -ENOENT;</div><div class="line">     <span class="comment">//如果kobject的名字为空.退出</span></div><div class="line">     <span class="keyword">if</span> (!kobj-&gt;name || !kobj-&gt;name[<span class="number">0</span>]) &#123;</div><div class="line">         pr_debug(<span class="string">"kobject: (%p): attempted to be registered with empty "</span></div><div class="line">               <span class="string">"name!\n"</span>, kobj);</div><div class="line">         WARN_ON(<span class="number">1</span>);</div><div class="line">         <span class="keyword">return</span> -EINVAL;</div><div class="line">     &#125;</div><div class="line"></div><div class="line">     <span class="comment">//取kobject的父结点</span></div><div class="line">     parent = kobject_get(kobj-&gt;parent);</div><div class="line">     <span class="comment">//如果kobject的父结点没有指定，就将kset-&gt;kobject做为它的父结点</span></div><div class="line">     <span class="comment">/* join kset if set, use it as parent if we do not already have one */</span></div><div class="line">     <span class="keyword">if</span> (kobj-&gt;kset) &#123;</div><div class="line">         <span class="keyword">if</span> (!parent)</div><div class="line">              parent = kobject_get(&amp;kobj-&gt;kset-&gt;kobj);</div><div class="line">         kobj_kset_join(kobj);</div><div class="line">         kobj-&gt;parent = parent;</div><div class="line">     &#125;</div><div class="line">     <span class="comment">//调试用</span></div><div class="line">     pr_debug(<span class="string">"kobject: '%s' (%p): %s: parent: '%s', set: '%s'\n"</span>,</div><div class="line">          kobject_name(kobj), kobj, __FUNCTION__,</div><div class="line">          parent ? kobject_name(parent) : <span class="string">"&lt;NULL&gt;"</span>,</div><div class="line">          kobj-&gt;kset ? kobject_name(&amp;kobj-&gt;kset-&gt;kobj) : <span class="string">"&lt;NULL&gt;"</span>);</div><div class="line"></div><div class="line">     <span class="comment">//在sysfs中创建kobject的相关元素</span></div><div class="line">     error = create_dir(kobj);</div><div class="line">     <span class="keyword">if</span> (error) &#123;</div><div class="line">         <span class="comment">//如果创建失败。减少相关的引用计数</span></div><div class="line">         kobj_kset_leave(kobj);</div><div class="line">         kobject_put(parent);</div><div class="line">         kobj-&gt;parent = <span class="literal">NULL</span>;</div><div class="line"></div><div class="line">         <span class="comment">/* be noisy on error issues */</span></div><div class="line">         <span class="keyword">if</span> (error == -EEXIST)</div><div class="line">              printk(KERN_ERR <span class="string">"%s failed for %s with "</span></div><div class="line">                     <span class="string">"-EEXIST, don't try to register things with "</span></div><div class="line">                     <span class="string">"the same name in the same directory.\n"</span>,</div><div class="line">                     __FUNCTION__, kobject_name(kobj));</div><div class="line">         <span class="keyword">else</span></div><div class="line">              printk(KERN_ERR <span class="string">"%s failed for %s (%d)\n"</span>,</div><div class="line">                     __FUNCTION__, kobject_name(kobj), error);</div><div class="line">         dump_stack();</div><div class="line">     &#125; <span class="keyword">else</span></div><div class="line">         <span class="comment">//如果创建成功。将state_in_sysfs建为1。表示该object已经在sysfs中了</span></div><div class="line">         kobj-&gt;state_in_sysfs = <span class="number">1</span>;</div><div class="line"></div><div class="line">     <span class="keyword">return</span> error;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这段代码比较简单，它主要完成<code>kobject</code>父结点的判断和选定，然后再调用<code>create_dir()</code>在<code>sysfs</code>创建相关信息。该函数代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">create_dir</span><span class="params">(<span class="keyword">struct</span> kobject *kobj)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">int</span> error = <span class="number">0</span>;</div><div class="line">     <span class="keyword">if</span> (kobject_name(kobj)) &#123;</div><div class="line">          <span class="comment">//为kobject创建目录</span></div><div class="line">         error = sysfs_create_dir(kobj);</div><div class="line">         <span class="keyword">if</span> (!error) &#123;</div><div class="line">              <span class="comment">//为kobject-&gt;ktype中的属性创建文件</span></div><div class="line">              error = populate_dir(kobj);</div><div class="line">              <span class="keyword">if</span> (error)</div><div class="line">                   sysfs_remove_dir(kobj);</div><div class="line">         &#125;</div><div class="line">     &#125;</div><div class="line">     <span class="keyword">return</span> error;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们在上面的示例中看到的<code>/sys</code>下的<code>eric_test</code>目录，以及该目录下面的<code>eric_xiao</code>的这个文件就是这里被创建的。我们先看一下<code>kobject</code>所表示的目录创建过程，这是在<code>sysfs_create_dir()</code>中完成的。代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">sysfs_create_dir</span><span class="params">(<span class="keyword">struct</span> kobject * kobj)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> sysfs_dirent *parent_sd, *sd;</div><div class="line">     <span class="keyword">int</span> error = <span class="number">0</span>;</div><div class="line"></div><div class="line">     BUG_ON(!kobj);</div><div class="line">     <span class="comment">/*</span></div><div class="line">      *如果kobject的parnet存在，就在目录点的目录下创建这个目录;</div><div class="line">      *如果父结点不存在，就在/sys下面创建结点。</div><div class="line">      *在上面的流程中，我们可能并没有为其指定父结点，也没有为其指定kset。</div><div class="line">      */</div><div class="line">     <span class="keyword">if</span> (kobj-&gt;parent)</div><div class="line">         parent_sd = kobj-&gt;parent-&gt;sd;</div><div class="line">     <span class="keyword">else</span></div><div class="line">         parent_sd = &amp;sysfs_root;</div><div class="line"></div><div class="line">     <span class="comment">//在sysfs中创建目录</span></div><div class="line">     error = create_dir(kobj, parent_sd, kobject_name(kobj), &amp;sd);</div><div class="line">     <span class="keyword">if</span> (!error)</div><div class="line">         kobj-&gt;sd = sd;</div><div class="line">     <span class="keyword">return</span> error;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里，我们就要联系之前分析过的sysfs文件系统的研究了。如果不太清楚的，可以再找到那篇文章仔细的研读一下。<code>create_dir()</code>就是在<code>sysfs</code>中创建目录的接口，在之前已经详细分析过了。这里不再讲述。</p>
+<p>接着看为<code>kobject-&gt;ktype</code>中的属性创建文件，这是在<code>populate_dir()</code>中完成的。代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">populate_dir</span><span class="params">(<span class="keyword">struct</span> kobject *kobj)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> kobj_type *t = get_ktype(kobj);</div><div class="line">     <span class="keyword">struct</span> attribute *attr;</div><div class="line">     <span class="keyword">int</span> error = <span class="number">0</span>;</div><div class="line">     <span class="keyword">int</span> i;</div><div class="line"></div><div class="line">     <span class="keyword">if</span> (t &amp;&amp; t-&gt;default_attrs) &#123;</div><div class="line">         <span class="keyword">for</span> (i = <span class="number">0</span>; (attr = t-&gt;default_attrs[i]) != <span class="literal">NULL</span>; i++) &#123;</div><div class="line">              error = sysfs_create_file(kobj, attr);</div><div class="line">              <span class="keyword">if</span> (error)</div><div class="line">                   <span class="keyword">break</span>;</div><div class="line">         &#125;</div><div class="line">     &#125;</div><div class="line">     <span class="keyword">return</span> error;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这段代码比较简单，它遍历<code>ktype</code>中的属性，然后为其建立文件。请注意：文件的操作最后都会回溯到<code>ktype-&gt;sysfs_ops</code>的<code>show</code>和<code>store</code>这两个函数中。</p>
+<p><code>kobject</code>的创建已经分析完了，接着分析怎么将一个<code>kobject</code>注销掉。注意过程是在<code>kobject_del()</code>中完成的。代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">kobject_del</span><span class="params">(<span class="keyword">struct</span> kobject *kobj)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">if</span> (!kobj)</div><div class="line">         <span class="keyword">return</span>;</div><div class="line"></div><div class="line">     sysfs_remove_dir(kobj);</div><div class="line">     kobj-&gt;state_in_sysfs = <span class="number">0</span>;</div><div class="line">     kobj_kset_leave(kobj);</div><div class="line">     kobject_put(kobj-&gt;parent);</div><div class="line">     kobj-&gt;parent = <span class="literal">NULL</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>该函数会将在<code>sysfs</code>中的<code>kobject</code>对应的目录删除。请注意，属性文件是建立在这个目录下面的，只需要将这个目录删除，属性文件也随之删除。<br>
+最后，减少相关的引用计数，如果<code>kobject</code>的引用计数为零。则将其所占空间释放.</p>
+<h3>&lt;a name=3.2&gt;kset 操作&lt;/a&gt;</h3>
+<p><code>kset</code>的操作与<code>kobject</code>类似，因为<code>kset</code>中内嵌了一个<code>kobject</code>结构，所以，大部份操作都是集中在<code>kset-&gt;kobject</code>上。具体分析一下<code>kset_create_and_add()</code>这个接口,类似上面分析的<code>kobject</code>接口，这个接口也包括了<code>kset</code>的大部分操作。代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">struct</span> kset *<span class="title">kset_create_and_add</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name,</span></span></div><div class="line">                    <span class="keyword">struct</span> kset_uevent_ops *uevent_ops,</div><div class="line">                    <span class="keyword">struct</span> kobject *parent_kobj)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> kset *kset;</div><div class="line">     <span class="keyword">int</span> error;</div><div class="line">     <span class="comment">//创建一个kset</span></div><div class="line">     kset = kset_create(name, uevent_ops, parent_kobj);</div><div class="line">     <span class="keyword">if</span> (!kset)</div><div class="line">         <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">     <span class="comment">//注册kset</span></div><div class="line">     error = kset_register(kset);</div><div class="line">     <span class="keyword">if</span> (error) &#123;</div><div class="line">         <span class="comment">//如果注册失败,释放kset</span></div><div class="line">         kfree(kset);</div><div class="line">         <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">     &#125;</div><div class="line">     <span class="keyword">return</span> kset;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>kset_create()</code>用来创建一个<code>struct kset</code>结构。代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">struct</span> kset *<span class="title">kset_create</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *name,</span></span></div><div class="line">                   <span class="keyword">struct</span> kset_uevent_ops *uevent_ops,</div><div class="line">                   <span class="keyword">struct</span> kobject *parent_kobj)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> kset *kset;</div><div class="line"></div><div class="line">     kset = kzalloc(<span class="keyword">sizeof</span>(*kset), GFP_KERNEL);</div><div class="line">     <span class="keyword">if</span> (!kset)</div><div class="line">         <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">     kobject_set_name(&amp;kset-&gt;kobj, name);</div><div class="line">     kset-&gt;uevent_ops = uevent_ops;</div><div class="line">     kset-&gt;kobj.parent = parent_kobj;</div><div class="line"></div><div class="line">     kset-&gt;kobj.ktype = &amp;kset_ktype;</div><div class="line">     kset-&gt;kobj.kset = <span class="literal">NULL</span>;</div><div class="line"></div><div class="line">     <span class="keyword">return</span> kset;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们注意，在这里创建<code>kset</code>时，为其内嵌的<code>kobject</code>指定其<code>ktype</code>结构为<code>kset_ktype</code>。这个结构的定义如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">struct</span> kobj_type kset_ktype = &#123;</div><div class="line">     .sysfs_ops    = &amp;kobj_sysfs_ops,</div><div class="line">     .release = kset_release,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>属性文件的读写操作全部都包含在<code>sysfs_ops</code>成员里，<code>kobj_sysfs_ops</code>的定义如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> sysfs_ops kobj_sysfs_ops = &#123;</div><div class="line">     .show    = kobj_attr_show,</div><div class="line">     .store   = kobj_attr_store,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p><code>show</code>,<code>store</code>成员对应的函数代码如下所示:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">kobj_attr_show</span><span class="params">(<span class="keyword">struct</span> kobject *kobj, <span class="keyword">struct</span> attribute *attr,</span></span></div><div class="line">                    <span class="keyword">char</span> *buf)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> kobj_attribute *kattr;</div><div class="line">     <span class="keyword">ssize_t</span> ret = -EIO;</div><div class="line"></div><div class="line">     kattr = container_of(attr, <span class="keyword">struct</span> kobj_attribute, attr);</div><div class="line">     <span class="keyword">if</span> (kattr-&gt;show)</div><div class="line">         ret = kattr-&gt;show(kobj, kattr, buf);</div><div class="line">     <span class="keyword">return</span> ret;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">kobj_attr_store</span><span class="params">(<span class="keyword">struct</span> kobject *kobj, <span class="keyword">struct</span> attribute *attr,</span></span></div><div class="line">                     <span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> count)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> kobj_attribute *kattr;</div><div class="line">     <span class="keyword">ssize_t</span> ret = -EIO;</div><div class="line"></div><div class="line">     kattr = container_of(attr, <span class="keyword">struct</span> kobj_attribute, attr);</div><div class="line">     <span class="keyword">if</span> (kattr-&gt;store)</div><div class="line">         ret = kattr-&gt;store(kobj, kattr, buf, count);</div><div class="line">     <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从上面的代码看以看出，会将<code>struct attribute</code>结构转换为<code>struct kobj_attribte</code>结构，也就是说<code>struct kobj_attribte</code>内嵌了一个<code>struct attribute</code>。实际上，这是和宏<code>__ATTR</code>配合在一起使用的，经常用于<code>group</code>中，在这里并不打算研究<code>group</code>，原理都是一样的，这里列出来只是做个说明而已。</p>
+<p>创建好了<code>kset</code>之后，会调用<code>kset_register()</code>，这个函数就是<code>kset</code>操作的核心代码了。如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">kset_register</span><span class="params">(<span class="keyword">struct</span> kset *k)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">int</span> err;</div><div class="line"></div><div class="line">     <span class="keyword">if</span> (!k)</div><div class="line">         <span class="keyword">return</span> -EINVAL;</div><div class="line"></div><div class="line">     kset_init(k);</div><div class="line">     err = kobject_add_internal(&amp;k-&gt;kobj);</div><div class="line">     <span class="keyword">if</span> (err)</div><div class="line">         <span class="keyword">return</span> err;</div><div class="line">     kobject_uevent(&amp;k-&gt;kobj, KOBJ_ADD);</div><div class="line">     <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在<code>kset_init()</code>里会初始化<code>kset</code>中的其它字段，然后调用<code>kobject_add_internal()</code>为其内嵌的<code>kobject</code>结构建立空间层次结构，之后因为添加了<code>kset</code>，会产生一个事件，这个事件是通过用户空间的<code>hotplug</code>程序处理的，这就是<code>kset</code>明显不同于<code>kobject</code>的地方。详细研究一下这个函数，这对于我们研究<code>hotplug</code>的深层机理是很有帮助的，它的代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">kobject_uevent</span><span class="params">(<span class="keyword">struct</span> kobject *kobj, <span class="keyword">enum</span> kobject_action action)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">return</span> kobject_uevent_env(kobj, action, <span class="literal">NULL</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>之后，会调用<code>kobject_uevent_env()</code>。这个函数中的三个参数含义分别为:引起事件的<code>kobject</code>，事件类型(<code>add</code>,<code>remove</code>,<code>change</code>,<code>move</code>,<code>online</code>,<code>offline</code>等)，第三个参数是要添加的环境变量。</p>
+<p>代码篇幅较长，我们效仿情景分析的做法，分段分析如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">kobject_uevent_env</span><span class="params">(<span class="keyword">struct</span> kobject *kobj, <span class="keyword">enum</span> kobject_action action,</span></span></div><div class="line">                <span class="keyword">char</span> *envp_ext[])</div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> kobj_uevent_env *env;</div><div class="line">     <span class="keyword">const</span> <span class="keyword">char</span> *action_string = kobject_actions[action];</div><div class="line">     <span class="keyword">const</span> <span class="keyword">char</span> *devpath = <span class="literal">NULL</span>;</div><div class="line">     <span class="keyword">const</span> <span class="keyword">char</span> *subsystem;</div><div class="line">     <span class="keyword">struct</span> kobject *top_kobj;</div><div class="line">     <span class="keyword">struct</span> kset *kset;</div><div class="line">     <span class="keyword">struct</span> kset_uevent_ops *uevent_ops;</div><div class="line">     u64 seq;</div><div class="line">     <span class="keyword">int</span> i = <span class="number">0</span>;</div><div class="line">     <span class="keyword">int</span> retval = <span class="number">0</span>;</div><div class="line"></div><div class="line">     pr_debug(<span class="string">"kobject: '%s' (%p): %s\n"</span>,</div><div class="line">          kobject_name(kobj), kobj, __FUNCTION__);</div><div class="line"></div><div class="line">     <span class="comment">/* search the kset we belong to */</span></div><div class="line">     top_kobj = kobj;</div><div class="line">     <span class="keyword">while</span> (!top_kobj-&gt;kset &amp;&amp; top_kobj-&gt;parent)</div><div class="line">         top_kobj = top_kobj-&gt;parent;</div><div class="line"></div><div class="line">     <span class="keyword">if</span> (!top_kobj-&gt;kset) &#123;</div><div class="line">         pr_debug(<span class="string">"kobject: '%s' (%p): %s: attempted to send uevent "</span></div><div class="line">               <span class="string">"without kset!\n"</span>, kobject_name(kobj), kobj,</div><div class="line">               __FUNCTION__);</div><div class="line">         <span class="keyword">return</span> -EINVAL;</div><div class="line">     &#125;</div></pre></td></tr></table></figure></p>
+<p>因为对事件的处理函数包含在<code>kobject-&gt;kset-&gt;uevent_ops</code>中，要处理事件，就必须要找到上层的一个不为空的<code>kset</code>。上面的代码就是顺着<code>kobject-&gt;parent</code>找不到一个不为空的<code>kset</code>，如果不存在这样的<code>kset</code>，就退出
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">kset = top_kobj-&gt;kset;</div><div class="line">uevent_ops = kset-&gt;uevent_ops;</div><div class="line"></div><div class="line"><span class="comment">/* skip the event, if the filter returns zero. */</span></div><div class="line"><span class="keyword">if</span> (uevent_ops &amp;&amp; uevent_ops-&gt;filter)</div><div class="line">    <span class="keyword">if</span> (!uevent_ops-&gt;filter(kset, kobj)) &#123;</div><div class="line">         pr_debug(<span class="string">"kobject: '%s' (%p): %s: filter function "</span></div><div class="line">               <span class="string">"caused the event to drop!\n"</span>,</div><div class="line">               kobject_name(kobj), kobj, __FUNCTION__);</div><div class="line">         <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"><span class="comment">/* originating subsystem */</span></div><div class="line"><span class="keyword">if</span> (uevent_ops &amp;&amp; uevent_ops-&gt;name)</div><div class="line">    subsystem = uevent_ops-&gt;name(kset, kobj);</div><div class="line"><span class="keyword">else</span></div><div class="line">    subsystem = kobject_name(&amp;kset-&gt;kobj);</div><div class="line"><span class="keyword">if</span> (!subsystem) &#123;</div><div class="line">    pr_debug(<span class="string">"kobject: '%s' (%p): %s: unset subsystem caused the "</span></div><div class="line">          <span class="string">"event to drop!\n"</span>, kobject_name(kobj), kobj,</div><div class="line">          __FUNCTION__);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>找到了不为空的<code>kset</code>，就跟<code>kset-&gt;uevent_ops-&gt;filter()</code>匹配，看这个事件是否被过滤。如果没有被过滤掉，就会调用<code>kset-&gt;uevent_ops-&gt;name()</code>得到子系统的名称。如果不存在<code>kset-&gt;uevent_ops-&gt;name()</code>，就会以<code>kobject-&gt;name</code>做为子系统名称。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* environment buffer */</span></div><div class="line">env = kzalloc(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> kobj_uevent_env), GFP_KERNEL);</div><div class="line"><span class="keyword">if</span> (!env)</div><div class="line">    <span class="keyword">return</span> -ENOMEM;</div><div class="line"></div><div class="line"><span class="comment">/* complete object path */</span></div><div class="line">devpath = kobject_get_path(kobj, GFP_KERNEL);</div><div class="line"><span class="keyword">if</span> (!devpath) &#123;</div><div class="line">    retval = -ENOENT;</div><div class="line">    <span class="keyword">goto</span> <span class="built_in">exit</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* default keys */</span></div><div class="line">retval = add_uevent_var(env, <span class="string">"ACTION=%s"</span>, action_string);</div><div class="line"><span class="keyword">if</span> (retval)</div><div class="line">    <span class="keyword">goto</span> <span class="built_in">exit</span>;</div><div class="line">retval = add_uevent_var(env, <span class="string">"DEVPATH=%s"</span>, devpath);</div><div class="line"><span class="keyword">if</span> (retval)</div><div class="line">    <span class="keyword">goto</span> <span class="built_in">exit</span>;</div><div class="line">retval = add_uevent_var(env, <span class="string">"SUBSYSTEM=%s"</span>, subsystem);</div><div class="line"><span class="keyword">if</span> (retval)</div><div class="line">    <span class="keyword">goto</span> <span class="built_in">exit</span>;</div><div class="line"></div><div class="line"><span class="comment">/* keys passed in from the caller */</span></div><div class="line"><span class="keyword">if</span> (envp_ext) &#123;</div><div class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; envp_ext[i]; i++) &#123;</div><div class="line">         retval = add_uevent_var(env, envp_ext[i]);</div><div class="line">         <span class="keyword">if</span> (retval)</div><div class="line">              <span class="keyword">goto</span> <span class="built_in">exit</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接下来,就应该设置为调用<code>hotplug</code>设置环境变量了。首先,分配一个<code>struct kobj_uevent_env</code>结构用来存放环境变量的值；然后调用<code>kobject_get_path()</code>用来获得引起事件的<code>kobject</code>在<code>sysfs</code>中的路径；再调用<code>add_uevent_var()</code>将动作代表的字串、<code>kobject</code>路径、子系统名称填充到<code>struct kobj_uevent_env</code>中。如果有指定环境变量,也将其添加进去。 <code>kobject_get_path()</code>和<code>add_uevent_var()</code>都比较简单.这里不再详细分析了.请自行查看源代码
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* let the kset specific function add its stuff */</span></div><div class="line"><span class="keyword">if</span> (uevent_ops &amp;&amp; uevent_ops-&gt;uevent) &#123;</div><div class="line">    retval = uevent_ops-&gt;uevent(kset, kobj, env);</div><div class="line">    <span class="keyword">if</span> (retval) &#123;</div><div class="line">         pr_debug(<span class="string">"kobject: '%s' (%p): %s: uevent() returned "</span></div><div class="line">               <span class="string">"%d\n"</span>, kobject_name(kobj), kobj,</div><div class="line">               __FUNCTION__, retval);</div><div class="line">         <span class="keyword">goto</span> <span class="built_in">exit</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * Mark "add" and "remove" events in the object to ensure proper</div><div class="line"> * events to userspace during automatic cleanup. If the object did</div><div class="line"> * send an "add" event, "remove" will automatically generated by</div><div class="line"> * the core, if not already done by the caller.</div><div class="line"> */</div><div class="line"><span class="keyword">if</span> (action == KOBJ_ADD)</div><div class="line">    kobj-&gt;state_add_uevent_sent = <span class="number">1</span>;</div><div class="line"><span class="keyword">else</span> <span class="keyword">if</span> (action == KOBJ_REMOVE)</div><div class="line">    kobj-&gt;state_remove_uevent_sent = <span class="number">1</span>;</div><div class="line"></div><div class="line"><span class="comment">/* we will send an event, so request a new sequence number */</span></div><div class="line">spin_lock(&amp;sequence_lock);</div><div class="line">seq = ++uevent_seqnum;</div><div class="line">spin_unlock(&amp;sequence_lock);</div><div class="line">retval = add_uevent_var(env, <span class="string">"SEQNUM=%llu"</span>, (<span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span>)seq);</div><div class="line"><span class="keyword">if</span> (retval)</div><div class="line">    <span class="keyword">goto</span> <span class="built_in">exit</span>;</div></pre></td></tr></table></figure></p>
+<p>在这里还会调用<code>kobject-&gt;kset-&gt;uevent_ops-&gt;uevent()</code>，让产生事件的<code>kobject</code>添加环境变量，最后将事件序列添加到环境变量中去。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(CONFIG_NET)</span></div><div class="line">     <span class="comment">/* send netlink message */</span></div><div class="line">     <span class="keyword">if</span> (uevent_sock) &#123;</div><div class="line">         <span class="keyword">struct</span> sk_buff *skb;</div><div class="line">         <span class="keyword">size_t</span> len;</div><div class="line"></div><div class="line">         <span class="comment">/* allocate message with the maximum possible size */</span></div><div class="line">         len = <span class="built_in">strlen</span>(action_string) + <span class="built_in">strlen</span>(devpath) + <span class="number">2</span>;</div><div class="line">         skb = alloc_skb(len + env-&gt;buflen, GFP_KERNEL);</div><div class="line">         <span class="keyword">if</span> (skb) &#123;</div><div class="line">              <span class="keyword">char</span> *scratch;</div><div class="line"></div><div class="line">              <span class="comment">/* add header */</span></div><div class="line">              scratch = skb_put(skb, len);</div><div class="line">              <span class="built_in">sprintf</span>(scratch, <span class="string">"%s@%s"</span>, action_string, devpath);</div><div class="line"></div><div class="line">              <span class="comment">/* copy keys to our continuous event payload buffer */</span></div><div class="line">              <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; env-&gt;envp_idx; i++) &#123;</div><div class="line">                   len = <span class="built_in">strlen</span>(env-&gt;envp[i]) + <span class="number">1</span>;</div><div class="line">                   scratch = skb_put(skb, len);</div><div class="line">                   <span class="built_in">strcpy</span>(scratch, env-&gt;envp[i]);</div><div class="line">              &#125;</div><div class="line"></div><div class="line">              NETLINK_CB(skb).dst_group = <span class="number">1</span>;</div><div class="line">              netlink_broadcast(uevent_sock, skb, <span class="number">0</span>, <span class="number">1</span>, GFP_KERNEL);</div><div class="line">         &#125;</div><div class="line">     &#125;</div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line"></div><div class="line">     <span class="comment">/* call uevent_helper, usually only enabled during early boot */</span></div><div class="line">     <span class="keyword">if</span> (uevent_helper[<span class="number">0</span>]) &#123;</div><div class="line">         <span class="keyword">char</span> *argv [<span class="number">3</span>];</div><div class="line"></div><div class="line">         argv [<span class="number">0</span>] = uevent_helper;</div><div class="line">         argv [<span class="number">1</span>] = (<span class="keyword">char</span> *)subsystem;</div><div class="line">         argv [<span class="number">2</span>] = <span class="literal">NULL</span>;</div><div class="line">         retval = add_uevent_var(env, <span class="string">"HOME=/"</span>);</div><div class="line">         <span class="keyword">if</span> (retval)</div><div class="line">              <span class="keyword">goto</span> <span class="built_in">exit</span>;</div><div class="line">         retval = add_uevent_var(env,</div><div class="line">                        <span class="string">"PATH=/sbin:/bin:/usr/sbin:/usr/bin"</span>);</div><div class="line">         <span class="keyword">if</span> (retval)</div><div class="line">              <span class="keyword">goto</span> <span class="built_in">exit</span>;</div><div class="line"></div><div class="line">         call_usermodehelper(argv[<span class="number">0</span>], argv, env-&gt;envp, UMH_WAIT_EXEC);</div><div class="line">     &#125;</div><div class="line"></div><div class="line"><span class="built_in">exit</span>:</div><div class="line">     kfree(devpath);</div><div class="line">     kfree(env);</div><div class="line">     <span class="keyword">return</span> retval;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>忽略一段选择编译的代码，再后就是调用用户空间的<code>hotplug</code>了。添加最后两个环境变量：<code>HOME</code>和<code>PATH</code>。然后调用<code>hotplug</code>，以子系统名称为参数。<br>
+现在我们终于知道<code>hotplug</code>处理程序中的参数和环境变量是怎么来的了.^_^</p>
+<p>使用完了<code>kset</code>，再调用<code>kset_unregister()</code>将其注销。这个函数很简单,请自行查阅代码.<br>
+为了印证一下上面的分析，写一个测试模块。如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/device.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/module.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/kernel.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/init.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/sysfs.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/stat.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;linux/kobject.h&gt;</span></span></div><div class="line"></div><div class="line">MODULE_AUTHOR(<span class="string">"eric xiao"</span>);</div><div class="line">MODULE_LICENSE(<span class="string">"Dual BSD/GPL"</span>);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">kset_filter</span><span class="params">(<span class="keyword">struct</span> kset *kset, <span class="keyword">struct</span> kobject *kobj)</span></span>;</div><div class="line"><span class="function"><span class="keyword">const</span> <span class="keyword">char</span> *<span class="title">kset_name</span><span class="params">(<span class="keyword">struct</span> kset *kset, <span class="keyword">struct</span> kobject *kobj)</span></span>;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">kset_uevent</span><span class="params">(<span class="keyword">struct</span> kset *kset, <span class="keyword">struct</span> kobject *kobj,</span></span></div><div class="line">                      <span class="keyword">struct</span> kobj_uevent_env *env);</div><div class="line"></div><div class="line"><span class="keyword">struct</span> kset kset_p;</div><div class="line"><span class="keyword">struct</span> kset kset_c;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> kset_uevent_ops uevent_ops =</div><div class="line">&#123;</div><div class="line">        .filter = kset_filter,</div><div class="line">        .name   = kset_name,</div><div class="line">        .uevent = kset_uevent,</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">kset_filter</span><span class="params">(<span class="keyword">struct</span> kset *kset, <span class="keyword">struct</span> kobject *kobj)</span></span></div><div class="line">&#123;</div><div class="line">        printk(<span class="string">"UEVENT: filter. kobj %s.\n"</span>,kobj-&gt;name);</div><div class="line">        <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">const</span> <span class="keyword">char</span> *<span class="title">kset_name</span><span class="params">(<span class="keyword">struct</span> kset *kset, <span class="keyword">struct</span> kobject *kobj)</span></span></div><div class="line">&#123;</div><div class="line">        <span class="keyword">static</span> <span class="keyword">char</span> buf[<span class="number">20</span>];</div><div class="line">        printk(<span class="string">"UEVENT: name. kobj %s.\n"</span>,kobj-&gt;name);</div><div class="line">        <span class="built_in">sprintf</span>(buf,<span class="string">"%s"</span>,<span class="string">"kset_test"</span>);</div><div class="line">        <span class="keyword">return</span> buf;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">kset_uevent</span><span class="params">(<span class="keyword">struct</span> kset *kset, <span class="keyword">struct</span> kobject *kobj,</span></span></div><div class="line">                      <span class="keyword">struct</span> kobj_uevent_env *env)</div><div class="line">&#123;</div><div class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</div><div class="line">        printk(<span class="string">"UEVENT: uevent. kobj %s.\n"</span>,kobj-&gt;name);</div><div class="line"></div><div class="line">        <span class="keyword">while</span>( i&lt; env-&gt;envp_idx)&#123;</div><div class="line">                printk(<span class="string">"%s.\n"</span>,env-&gt;envp[i]);</div><div class="line">                i++;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">kset_test_init</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">        printk(<span class="string">"kset test init.\n"</span>);</div><div class="line">        kobject_set_name(&amp;kset_p.kobj,<span class="string">"kset_p"</span>);</div><div class="line">        kset_p.uevent_ops = &amp;uevent_ops;</div><div class="line">        kset_register(&amp;kset_p);</div><div class="line"></div><div class="line">       kobject_set_name(&amp;kset_c.kobj,<span class="string">"kset_c"</span>);</div><div class="line">        kset_c.kobj.kset = &amp;kset_p;</div><div class="line">        kset_register(&amp;kset_c);</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">kset_test_exit</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">        printk(<span class="string">"kset test exit.\n"</span>);</div><div class="line">        kset_unregister(&amp;kset_p);</div><div class="line">        kset_unregister(&amp;kset_c);</div><div class="line">        <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">module_init(kset_test_init);</div><div class="line">module_exit(kset_test_exit);</div></pre></td></tr></table></figure></p>
+<p>在这里，定义并注册了二个<code>kset</code>，第二个<code>kset</code>的<code>kobj-&gt;kset</code>域指向第一个<code>kset</code>。这样，当第二个<code>kset</code>注册或者卸载的时候就会调用第一个<code>kset</code>中的<code>uevent_ops</code>的相关操作.<br>
+<code>kset_p.uevent_ops-&gt;filter</code>函数中，使其返回<code>1</code>.使其匹配成功。<br>
+在<code>kset_p.uevent_ops-&gt;name</code>中，使其返回的子系统名为引起事件的<code>kobject</code>的名称，即：<code>kset_c</code>.<br>
+最后在<code>kset_p.uevent_ops-&gt;uevent</code>中将环境变量全部打印出来。<br>
+下面是<code>dmesg</code>的输出结果：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">kset test init.</div><div class="line">UEVENT: filter. kobj kset_c.</div><div class="line">UEVENT: name. kobj kset_c.</div><div class="line">UEVENT: uevent. kobj kset_c.</div><div class="line">ACTION=add.</div><div class="line">DEVPATH=/kset_p/kset_c.</div><div class="line">SUBSYSTEM=kset_test.</div></pre></td></tr></table></figure></p>
+<p>输出结果跟我们的分析是吻合的，在这里，值得我们注意的是：注册一个<code>kobject</code>不会产生事件，只有注册<code>kset</code>才会。</p>
+<h2>&lt;a name=4&gt;四：bus、device和device_driver&lt;/a&gt;</h2>
+<p>上面分析了<code>kobject</code>、<code>kset</code>、<code>ktype</code>，这三个结构联合起来一起构成了整个设备模型的基石。而<code>bus</code>、<code>device</code>、<code>device_driver</code>，则是基于<code>kobject</code>、<code>kset</code>、<code>ktype</code>之上的架构。在这里,总线、设备、驱动被有序的组合在一起。<code>bus</code>、<code>device</code>、<code>device_driver</code>三者之间的关系如下图所示:</p>
+<p></p>
+<p>如上图所示，<code>struct bus_type</code>的<code>p-&gt;drivers_kset</code>指向注册在上面的驱动程序，它的<code>p-&gt;device_kset</code>上挂着注册在上面的设备。每次有一个新的设备注册到上面，都会去匹配右边的驱动，看是否能匹配上。如果匹配成功，则将设备结构的<code>is_registerd</code>域置为<code>0</code>，然后将设备添加到驱动的<code>p-&gt;klist_devices</code>域。同理,每注册一个驱动,都会去匹配左边的设备。如果匹配成功,将则设备加到驱动的<code>p-&gt;klist_devices</code>域，再将设备的<code>is_registerd</code>置为<code>0</code>。<br>
+这就是linux设备模型用来管理设备和驱动的基本架构，我们来跟踪一下代码来看下详细的操作。</p>
+<h3>&lt;a name=4.1&gt;总线注册&lt;/a&gt;</h3>
+<p>注册一个总线的接口为<code>bus_register()</code>，我们照例分段分析:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">bus_register</span><span class="params">(<span class="keyword">struct</span> bus_type *bus)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">int</span> retval;</div><div class="line">     <span class="keyword">struct</span> bus_type_private *priv;</div><div class="line"></div><div class="line">     priv = kzalloc(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> bus_type_private), GFP_KERNEL);</div><div class="line">     <span class="keyword">if</span> (!priv)</div><div class="line">         <span class="keyword">return</span> -ENOMEM;</div><div class="line"></div><div class="line">     priv-&gt;bus = bus;</div><div class="line">     bus-&gt;p = priv;</div><div class="line"></div><div class="line">     BLOCKING_INIT_NOTIFIER_HEAD(&amp;priv-&gt;bus_notifier);</div><div class="line"></div><div class="line">     retval = kobject_set_name(&amp;priv-&gt;subsys.kobj, <span class="string">"%s"</span>, bus-&gt;name);</div><div class="line">     <span class="keyword">if</span> (retval)</div><div class="line">         <span class="keyword">goto</span> out;</div><div class="line"></div><div class="line">     priv-&gt;subsys.kobj.kset = bus_kset;</div><div class="line">     priv-&gt;subsys.kobj.ktype = &amp;bus_ktype;</div><div class="line">     priv-&gt;drivers_autoprobe = <span class="number">1</span>;</div><div class="line"></div><div class="line">     retval = kset_register(&amp;priv-&gt;subsys);</div><div class="line">     <span class="keyword">if</span> (retval)</div><div class="line">         <span class="keyword">goto</span> out;</div></pre></td></tr></table></figure></p>
+<p>首先,先为<code>struct bus_type</code>的私有区分配空间,然后将其和<code>struct bus_type</code>关联起来。由于<code>struct bus_type</code>也要在<code>sysfs</code>文件中表示一个节点,因此,它也内嵌一个<code>kset</code>的结构，这就是<code>priv-&gt;subsys</code>。</p>
+<p>首先,它为这个<code>kset</code>的名称赋值为<code>bus</code>的名称，然后将<code>priv-&gt;subsys.kobj.kset</code>指向<code>bus_kset</code>，<code>priv-&gt;subsys.kobj.ktype</code>指向<code>bus_ktype</code>;然后调用<code>kset_reqister()</code>将<code>priv-&gt;subsys</code>注册。这里涉及到的接口都在之前分析过，注册过后，应该会在<code>bus_kset</code>所表示的目录下创建一个总线名称的目录，并且用户空间的<code>hotplug</code>应该会检测到一个<code>add</code>事件。我们来看一下<code>bus_kset</code>到底指向的是什么:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bus_kset = kset_create_and_add(<span class="string">"bus"</span>, &amp;bus_uevent_ops, <span class="literal">NULL</span>);</div></pre></td></tr></table></figure></p>
+<p>从此可以看出，这个<code>bus_kset</code>在<code>sysfs</code>中的结点就是<code>/sys/bus</code>，在这里注册的<code>struct bus_types</code>就会在<code>/sys/bus/</code>下面出现。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">retval = bus_create_file(bus, &amp;bus_attr_uevent);</div><div class="line"><span class="keyword">if</span> (retval)</div><div class="line">    <span class="keyword">goto</span> bus_uevent_fail;</div></pre></td></tr></table></figure></p>
+<p><code>bus_create_file()</code>就是在<code>priv-&gt;subsys.kobj</code>的这个<code>kobject</code>上建立一个普通属性的文件，这个文件的属性对应在<code>bus_attr_uevent</code>，读写操作对应在<code>priv-&gt;subsys.ktype</code>中，我们到后面才统一分析<code>bus</code>注册时候的文件创建。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">priv-&gt;devices_kset = kset_create_and_add(<span class="string">"devices"</span>, <span class="literal">NULL</span>,</div><div class="line">                        &amp;priv-&gt;subsys.kobj);</div><div class="line"><span class="keyword">if</span> (!priv-&gt;devices_kset) &#123;</div><div class="line">    retval = -ENOMEM;</div><div class="line">    <span class="keyword">goto</span> bus_devices_fail;</div><div class="line">&#125;</div><div class="line"></div><div class="line">priv-&gt;drivers_kset = kset_create_and_add(<span class="string">"drivers"</span>, <span class="literal">NULL</span>,</div><div class="line">                        &amp;priv-&gt;subsys.kobj);</div><div class="line"><span class="keyword">if</span> (!priv-&gt;drivers_kset) &#123;</div><div class="line">    retval = -ENOMEM;</div><div class="line">    <span class="keyword">goto</span> bus_drivers_fail;</div><div class="line">&#125;</div><div class="line"></div><div class="line">klist_init(&amp;priv-&gt;klist_devices, klist_devices_get, klist_devices_put);</div><div class="line">klist_init(&amp;priv-&gt;klist_drivers, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</div></pre></td></tr></table></figure></p>
+<p>这段代码会在<code>bus</code>所在的目录下建立两个目录，分别为<code>devices</code>和<code>drivers</code>，并初始化挂载设备和驱动的链表。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">retval = add_probe_files(bus);</div><div class="line"><span class="keyword">if</span> (retval)</div><div class="line">    <span class="keyword">goto</span> bus_probe_files_fail;</div><div class="line"></div><div class="line">retval = bus_add_attrs(bus);</div><div class="line"><span class="keyword">if</span> (retval)</div><div class="line">    <span class="keyword">goto</span> bus_attrs_fail;</div><div class="line"></div><div class="line">pr_debug(<span class="string">"bus: '%s': registered\n"</span>, bus-&gt;name);</div><div class="line"><span class="keyword">return</span> <span class="number">0</span>;</div></pre></td></tr></table></figure></p>
+<p>在这里,会为<code>bus_attr_drivers_probe</code>, <code>bus_attr_drivers_autoprobe</code>.注册<code>bus_type</code>中的属性建立文件
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">bus_attrs_fail:</div><div class="line">     remove_probe_files(bus);</div><div class="line">bus_probe_files_fail:</div><div class="line">     kset_unregister(bus-&gt;p-&gt;drivers_kset);</div><div class="line">bus_drivers_fail:</div><div class="line">     kset_unregister(bus-&gt;p-&gt;devices_kset);</div><div class="line">bus_devices_fail:</div><div class="line">     bus_remove_file(bus, &amp;bus_attr_uevent);</div><div class="line">bus_uevent_fail:</div><div class="line">     kset_unregister(&amp;bus-&gt;p-&gt;subsys);</div><div class="line">     kfree(bus-&gt;p);</div><div class="line">out:</div><div class="line">     <span class="keyword">return</span> retval;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这段代码为出错处理</p>
+<p>这段代码中比较繁锁的就是<code>bus_type</code>对应目录下的属性文件建立,为了直观的说明,将属性文件的建立统一放到一起分析。从上面的代码中可以看,创建属性文件对应的属性分别为:<code>bus_attr_uevent</code>、<code>bus_attr_drivers_probe</code>、<code>bus_attr_drivers_autoprobe</code>。<br>
+分别定义如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="title">BUS_ATTR</span><span class="params">(uevent, S_IWUSR, <span class="literal">NULL</span>, bus_uevent_store)</span></span>;</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="title">BUS_ATTR</span><span class="params">(drivers_probe, S_IWUSR, <span class="literal">NULL</span>, store_drivers_probe)</span></span>;</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="title">BUS_ATTR</span><span class="params">(drivers_autoprobe, S_IWUSR | S_IRUGO,</span></span></div><div class="line">         show_drivers_autoprobe, store_drivers_autoprobe);</div></pre></td></tr></table></figure></p>
+<p><code>BUS_ATTR</code>定义如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> BUS_ATTR(_name, _mode, _show, _store)  \</span></div><div class="line">struct bus_attribute bus_attr_##_name = __ATTR(_name, _mode, _show, _store)</div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> __ATTR(_name,_mode,_show,_store) &#123; \</span></div><div class="line">     .attr = &#123;.name = __stringify(_name), .mode = _mode &#125;,   \</div><div class="line">     .show    = _show,                    \</div><div class="line">     .store   = _store,                   \</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>由此可见.上面这三个属性对应的名称为别为<code>uevent</code>、<code>drivers_probe</code>、<code>drivers_autoprobe</code>。也就是说，会在<code>bus_types</code>目录下生成三个文件，分别为<code>uevent</code>、<code>probe</code>、<code>autoprobe</code>。<br>
+根据之前的分析,我们知道在<code>sysfs</code>文件系统中,对普通属性文件的读写都会回溯到<code>kobject-&gt;ktype-&gt;sysfs_ops</code>中.在这里,注意到有:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">priv-&gt;subsys.kobj.kset = bus_kset;</div><div class="line">priv-&gt;subsys.kobj.ktype = &amp;bus_ktype;</div></pre></td></tr></table></figure></p>
+<p>显然,读写操作就回溯到了<code>bus_ktype</code>中.定义如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">struct</span> kobj_type bus_ktype = &#123;</div><div class="line">     .sysfs_ops    = &amp;bus_sysfs_ops,</div><div class="line">&#125;;</div><div class="line"><span class="keyword">static</span> <span class="keyword">struct</span> sysfs_ops bus_sysfs_ops = &#123;</div><div class="line">     .show    = bus_attr_show,</div><div class="line">     .store   = bus_attr_store,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p><code>show</code>和<code>store</code>函数对应的代码为:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">bus_attr_show</span><span class="params">(<span class="keyword">struct</span> kobject *kobj, <span class="keyword">struct</span> attribute *attr,</span></span></div><div class="line">                   <span class="keyword">char</span> *buf)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> bus_attribute *bus_attr = to_bus_attr(attr);</div><div class="line">     <span class="keyword">struct</span> bus_type_private *bus_priv = to_bus(kobj);</div><div class="line">     <span class="keyword">ssize_t</span> ret = <span class="number">0</span>;</div><div class="line"></div><div class="line">     <span class="keyword">if</span> (bus_attr-&gt;show)</div><div class="line">         ret = bus_attr-&gt;show(bus_priv-&gt;bus, buf);</div><div class="line">     <span class="keyword">return</span> ret;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">bus_attr_store</span><span class="params">(<span class="keyword">struct</span> kobject *kobj, <span class="keyword">struct</span> attribute *attr,</span></span></div><div class="line">                    <span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> count)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> bus_attribute *bus_attr = to_bus_attr(attr);</div><div class="line">     <span class="keyword">struct</span> bus_type_private *bus_priv = to_bus(kobj);</div><div class="line">     <span class="keyword">ssize_t</span> ret = <span class="number">0</span>;</div><div class="line"></div><div class="line">     <span class="keyword">if</span> (bus_attr-&gt;store)</div><div class="line">         ret = bus_attr-&gt;store(bus_priv-&gt;bus, buf, count);</div><div class="line">     <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从代码可以看出.读写操作又会回溯到<code>bus_attribute</code>中的<code>show</code>和<code>store</code>中.在自定义结构里嵌入<code>struct attribute</code>,.然后再操作回溯到自定义结构中,这是一种比较高明的架构设计手法.</p>
+<p>闲言少叙.我们对应看一下上面三个文件对应的最终操作:<br>
+<code>uevent</code>对应的读写操作为：<code>NULL</code>、<code>bus_uevent_store</code>。对于这个文件没有读操作，只有写操作，用<code>cat</code> 命令去查看这个文件的时候,可能会返回“设备不存在”的错误。<br>
+<code>bus_uevent_store()</code>代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">bus_uevent_store</span><span class="params">(<span class="keyword">struct</span> bus_type *bus,</span></span></div><div class="line">                   <span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> count)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">enum</span> kobject_action action;</div><div class="line"></div><div class="line">     <span class="keyword">if</span> (kobject_action_type(buf, count, &amp;action) == <span class="number">0</span>)</div><div class="line">         kobject_uevent(&amp;bus-&gt;p-&gt;subsys.kobj, action);</div><div class="line">     <span class="keyword">return</span> count;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从这里可以看到,可以在用户空间控制事件的发生,如<code>echo add &gt; event</code>就会产生一个<code>add</code>的事件。</p>
+<p><code>probe</code>文件对应的读写操作为：<code>NULL</code>、<code>store_drivers_probe</code>。 <code>store_drivers_probe()</code>这个函数的代码涉及到<code>struct device</code>，等分析完<code>struct device</code>可以自行回过来看下这个函数的实现。实际上,这个函数是将用户输入的设备名称对应的设备与驱动匹配一次。</p>
+<p><code>autoprobe</code>文件对应的读写操作为<code>show_drivers_autoprobe</code>, <code>store_drivers_autoprobe</code>.对应读的代码为:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">show_drivers_autoprobe</span><span class="params">(<span class="keyword">struct</span> bus_type *bus, <span class="keyword">char</span> *buf)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">return</span> <span class="built_in">sprintf</span>(buf, <span class="string">"%d\n"</span>, bus-&gt;p-&gt;drivers_autoprobe);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>它将总线对应的<code>drivers_autoprobe</code>的值输出到用户空间，这个值为<code>1</code>时，自动将驱动与设备进行匹配，否则，反之。</p>
+<p>写操作的代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">store_drivers_autoprobe</span><span class="params">(<span class="keyword">struct</span> bus_type *bus,</span></span></div><div class="line">                          <span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> count)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">if</span> (buf[<span class="number">0</span>] == <span class="string">'0'</span>)</div><div class="line">         bus-&gt;p-&gt;drivers_autoprobe = <span class="number">0</span>;</div><div class="line">     <span class="keyword">else</span></div><div class="line">         bus-&gt;p-&gt;drivers_autoprobe = <span class="number">1</span>;</div><div class="line">     <span class="keyword">return</span> count;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>写操作就会改变<code>bus-&gt;p-&gt;drivers_autoprobe</code>的值，就这样，通过<code>sysfs</code>就可以控制总线是否要进行自动匹配了。
+从这里也可以看出，内核开发者的思维是何等的灵活。我们从<code>sysfs</code>中找个例子来印证一下：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span>  / sys/bus/usb</div></pre></td></tr></table></figure></p>
+<p>用ls命令查看：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">devices  drivers  drivers_autoprobe  drivers_probe  uevent</div></pre></td></tr></table></figure></p>
+<p>与上面分析的相吻合</p>
+<h3>&lt;a name=4.2&gt;设备注册&lt;/a&gt;</h3>
+<p>设备的注册接口为: <code>device_register()</code>.
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">device_register</span><span class="params">(<span class="keyword">struct</span> device *dev)</span></span></div><div class="line">&#123;</div><div class="line">     device_initialize(dev);</div><div class="line">     <span class="keyword">return</span> device_add(dev);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>device_initialize()</code>中有几个很重要的操作,如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">device_initialize</span><span class="params">(<span class="keyword">struct</span> device *dev)</span></span></div><div class="line">&#123;</div><div class="line">     dev-&gt;kobj.kset = devices_kset;</div><div class="line">     kobject_init(&amp;dev-&gt;kobj, &amp;device_ktype);</div><div class="line">     klist_init(&amp;dev-&gt;klist_children, klist_children_get,</div><div class="line">            klist_children_put);</div><div class="line">     INIT_LIST_HEAD(&amp;dev-&gt;dma_pools);</div><div class="line">     INIT_LIST_HEAD(&amp;dev-&gt;node);</div><div class="line">     init_MUTEX(&amp;dev-&gt;sem);</div><div class="line">     spin_lock_init(&amp;dev-&gt;devres_lock);</div><div class="line">     INIT_LIST_HEAD(&amp;dev-&gt;devres_head);</div><div class="line">     device_init_wakeup(dev, <span class="number">0</span>);</div><div class="line">     set_dev_node(dev, <span class="number">-1</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里,它为<code>device</code>的内嵌<code>kobject</code>指定了<code>ktype</code>和<code>kset</code>。<code>device_kset</code>的值如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">devices_kset = kset_create_and_add(<span class="string">"devices"</span>, &amp;device_uevent_ops, <span class="literal">NULL</span>);</div></pre></td></tr></table></figure></p>
+<p>即对应<code>sysfs</code>中的<code>/sys/devices</code>。<br>
+<code>device_ktype</code>中对属性的读写操作同<code>bus</code>中的类似,被回溯到了<code>struct device_attribute</code>中的<code>show</code>和<code>store</code>。</p>
+<p>接着往下看<code>device_add()</code>的实现.这个函数比较长,分段分析如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">device_add</span><span class="params">(<span class="keyword">struct</span> device *dev)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> device *parent = <span class="literal">NULL</span>;</div><div class="line">     <span class="keyword">struct</span> class_interface *class_intf;</div><div class="line">     <span class="keyword">int</span> error;</div><div class="line"></div><div class="line">     dev = get_device(dev);</div><div class="line">     <span class="keyword">if</span> (!dev || !<span class="built_in">strlen</span>(dev-&gt;bus_id)) &#123;</div><div class="line">         error = -EINVAL;</div><div class="line">         <span class="keyword">goto</span> Done;</div><div class="line">     &#125;</div><div class="line"></div><div class="line">     pr_debug(<span class="string">"device: '%s': %s\n"</span>, dev-&gt;bus_id, __FUNCTION__);</div><div class="line"></div><div class="line">     parent = get_device(dev-&gt;parent);</div><div class="line">     setup_parent(dev, parent);</div><div class="line"></div><div class="line">     <span class="comment">/* first, register with generic layer. */</span></div><div class="line">     error = kobject_add(&amp;dev-&gt;kobj, dev-&gt;kobj.parent, <span class="string">"%s"</span>, dev-&gt;bus_id);</div><div class="line">     <span class="keyword">if</span> (error)</div><div class="line">         <span class="keyword">goto</span> Error;</div></pre></td></tr></table></figure></p>
+<p>如果注册<code>device</code>的时候,没有指定父结点,在<code>kobject_add</code>将会在<code>/sys/device/</code>下建立相同名称的目录
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* notify platform of device entry */</span></div><div class="line"><span class="keyword">if</span> (platform_notify)</div><div class="line">    platform_notify(dev);</div><div class="line"></div><div class="line"><span class="comment">/* notify clients of device entry (new way) */</span></div><div class="line"><span class="keyword">if</span> (dev-&gt;bus)</div><div class="line">    blocking_notifier_call_chain(&amp;dev-&gt;bus-&gt;p-&gt;bus_notifier,</div><div class="line">                       BUS_NOTIFY_ADD_DEVICE, dev);</div></pre></td></tr></table></figure></p>
+<p>忽略<code>notify</code>部份,这部份不会影响本函数的流程
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">error = device_create_file(dev, &amp;uevent_attr);</div><div class="line"><span class="keyword">if</span> (error)</div><div class="line">    <span class="keyword">goto</span> attrError;</div><div class="line"></div><div class="line"><span class="keyword">if</span> (MAJOR(dev-&gt;devt)) &#123;</div><div class="line">    error = device_create_file(dev, &amp;devt_attr);</div><div class="line">    <span class="keyword">if</span> (error)</div><div class="line">         <span class="keyword">goto</span> ueventattrError;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>建立属性为<code>uevent_attr</code>的属性文件,如果<code>device</code>中指定了设备号,则建立属性为<code>devt_attr</code>的属性文件
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">error = device_add_class_symlinks(dev);</div><div class="line"><span class="keyword">if</span> (error)</div><div class="line">    <span class="keyword">goto</span> SymlinkError;</div><div class="line">error = device_add_attrs(dev);</div><div class="line"><span class="keyword">if</span> (error)</div><div class="line">    <span class="keyword">goto</span> AttrsError;</div><div class="line">error = dpm_sysfs_add(dev);</div><div class="line"><span class="keyword">if</span> (error)</div><div class="line">    <span class="keyword">goto</span> PMError;</div><div class="line">device_pm_add(dev);</div></pre></td></tr></table></figure></p>
+<p>在这里,不打算讨论<code>class</code>的部份,<code>dpm</code>、<code>pm</code>是选择编译部份,不讨论.<code>device_add_attrs</code>中涉及到了<code>group</code>的部分,暂不讨论
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">error = bus_add_device(dev);</div><div class="line"><span class="keyword">if</span> (error)</div><div class="line">    <span class="keyword">goto</span> BusError;</div><div class="line">kobject_uevent(&amp;dev-&gt;kobj, KOBJ_ADD);</div><div class="line">bus_attach_device(dev);</div><div class="line"><span class="keyword">if</span> (parent)</div><div class="line">    klist_add_tail(&amp;dev-&gt;knode_parent, &amp;parent-&gt;klist_children);</div><div class="line"></div><div class="line"><span class="keyword">if</span> (dev-&gt;<span class="keyword">class</span>) &#123;</div><div class="line">    down(&amp;dev-&gt;<span class="keyword">class</span>-&gt;sem);</div><div class="line">    <span class="comment">/* tie the class to the device */</span></div><div class="line">    list_add_tail(&amp;dev-&gt;node, &amp;dev-&gt;<span class="keyword">class</span>-&gt;devices);</div><div class="line"></div><div class="line">    <span class="comment">/* notify any interfaces that the device is here */</span></div><div class="line">    list_for_each_entry(class_intf, &amp;dev-&gt;<span class="keyword">class</span>-&gt;interfaces, node)</div><div class="line">         <span class="keyword">if</span> (class_intf-&gt;add_dev)</div><div class="line">              class_intf-&gt;add_dev(dev, class_intf);</div><div class="line">    up(&amp;dev-&gt;<span class="keyword">class</span>-&gt;sem);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>bus_add_device()</code>在对应总线代表目录的<code>device</code>目录下创建几个到<code>device</code>的链接，然后调用<code>kobject_uevent()</code>产生一个<code>add</code>事件，再调用<code>bus_attach_device()</code>去匹配已经注册到总线的驱动程序。全部做完之后，将设备挂到父结点的子链表。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"> Done:</div><div class="line">     put_device(dev);</div><div class="line">     <span class="keyword">return</span> error;</div><div class="line"> BusError:</div><div class="line">     device_pm_remove(dev);</div><div class="line"> PMError:</div><div class="line">     <span class="keyword">if</span> (dev-&gt;bus)</div><div class="line">         blocking_notifier_call_chain(&amp;dev-&gt;bus-&gt;p-&gt;bus_notifier,</div><div class="line">                            BUS_NOTIFY_DEL_DEVICE, dev);</div><div class="line">     device_remove_attrs(dev);</div><div class="line"> AttrsError:</div><div class="line">     device_remove_class_symlinks(dev);</div><div class="line"> SymlinkError:</div><div class="line">     <span class="keyword">if</span> (MAJOR(dev-&gt;devt))</div><div class="line">         device_remove_file(dev, &amp;devt_attr);</div><div class="line"> ueventattrError:</div><div class="line">     device_remove_file(dev, &amp;uevent_attr);</div><div class="line"> attrError:</div><div class="line">     kobject_uevent(&amp;dev-&gt;kobj, KOBJ_REMOVE);</div><div class="line">     kobject_del(&amp;dev-&gt;kobj);</div><div class="line"> Error:</div><div class="line">     cleanup_device_parent(dev);</div><div class="line">     <span class="keyword">if</span> (parent)</div><div class="line">         put_device(parent);</div><div class="line">     <span class="keyword">goto</span> Done;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>出错处理部份.</p>
+<p><code>bus_attach_device()</code>是一个很重要的函数。它将设备自动与挂在总线上面的驱动进行匹配。代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">bus_attach_device</span><span class="params">(<span class="keyword">struct</span> device *dev)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> bus_type *bus = dev-&gt;bus;</div><div class="line">     <span class="keyword">int</span> ret = <span class="number">0</span>;</div><div class="line"></div><div class="line">     <span class="keyword">if</span> (bus) &#123;</div><div class="line">         dev-&gt;is_registered = <span class="number">1</span>;</div><div class="line">         <span class="keyword">if</span> (bus-&gt;p-&gt;drivers_autoprobe)</div><div class="line">              ret = device_attach(dev);</div><div class="line">         WARN_ON(ret &lt; <span class="number">0</span>);</div><div class="line">         <span class="keyword">if</span> (ret &gt;= <span class="number">0</span>)</div><div class="line">              klist_add_tail(&amp;dev-&gt;knode_bus, &amp;bus-&gt;p-&gt;klist_devices);</div><div class="line">         <span class="keyword">else</span></div><div class="line">              dev-&gt;is_registered = <span class="number">0</span>;</div><div class="line">     &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从上面的代码我们可以看出。只有在<code>bus-&gt;p-&gt;drivers_autoprobe</code>为<code>1</code>的情况下，才会去自己匹配。这也就是<code>bus</code>目录下的<code>drivers_probe</code> 文件的作用.然后，将设备挂到总线的设备链表。
+<code>device_attach()</code>代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">device_attach</span><span class="params">(<span class="keyword">struct</span> device *dev)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">int</span> ret = <span class="number">0</span>;</div><div class="line"></div><div class="line">     down(&amp;dev-&gt;sem);</div><div class="line">     <span class="keyword">if</span> (dev-&gt;driver) &#123;</div><div class="line">         ret = device_bind_driver(dev);</div><div class="line">         <span class="keyword">if</span> (ret == <span class="number">0</span>)</div><div class="line">              ret = <span class="number">1</span>;</div><div class="line">         <span class="keyword">else</span> &#123;</div><div class="line">              dev-&gt;driver = <span class="literal">NULL</span>;</div><div class="line">              ret = <span class="number">0</span>;</div><div class="line">         &#125;</div><div class="line">     &#125; <span class="keyword">else</span> &#123;</div><div class="line">         ret = bus_for_each_drv(dev-&gt;bus, <span class="literal">NULL</span>, dev, __device_attach);</div><div class="line">     &#125;</div><div class="line">     up(&amp;dev-&gt;sem);</div><div class="line">     <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>对于设备自己已经指定驱动的情况，只需要将其直接和驱动绑定即可。如果没有指定驱动,就匹配总线之上的驱动，这是在
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bus_for_each_drv(dev-&gt;bus, <span class="literal">NULL</span>, dev, __device_attach);</div></pre></td></tr></table></figure></p>
+<p>完成的。代码如下：
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">int bus_for_each_drv(struct bus_type *bus, struct device_driver *start,</div><div class="line">              void *data, int (*fn)(struct device_driver *, void *))</div><div class="line">&#123;</div><div class="line">     struct klist_iter i;</div><div class="line">     struct device_driver *drv;</div><div class="line">     int error = 0;</div><div class="line"></div><div class="line">     if (!bus)</div><div class="line">         return -EINVAL;</div><div class="line"></div><div class="line">     klist_iter_init_node(&amp;bus-&gt;p-&gt;klist_drivers, &amp;i,</div><div class="line">                   start ? &amp;start-&gt;p-&gt;knode_bus : NULL);</div><div class="line">     while ((drv = next_driver(&amp;i)) &amp;&amp; !error)</div><div class="line">         error = fn(drv, data);</div><div class="line">     klist_iter_exit(&amp;i);</div><div class="line">     return error;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>很明显，这个函数就是遍历总线之上的驱动。每遍历一个驱动就调用一次回调函数进行判断，如果回调函数返回不为<code>0</code>，就说明匹配已经成功了，不需要再匹配剩余的，退出。在这里调用的回调函数是<code>__device_attach()</code>，在这里，完成了设备与驱动匹配的最核心的动作。代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> __device_attach(<span class="keyword">struct</span> device_driver *drv, <span class="keyword">void</span> *data)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> device *dev = data;</div><div class="line">     <span class="keyword">return</span> driver_probe_device(drv, dev);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>转到<code>driver_probe_device()</code>:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">driver_probe_device</span><span class="params">(<span class="keyword">struct</span> device_driver *drv, <span class="keyword">struct</span> device *dev)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">int</span> ret = <span class="number">0</span>;</div><div class="line"></div><div class="line">     <span class="keyword">if</span> (!device_is_registered(dev))</div><div class="line">         <span class="keyword">return</span> -ENODEV;</div><div class="line">     <span class="keyword">if</span> (drv-&gt;bus-&gt;match &amp;&amp; !drv-&gt;bus-&gt;match(dev, drv))</div><div class="line">         <span class="keyword">goto</span> done;</div><div class="line"></div><div class="line">     pr_debug(<span class="string">"bus: '%s': %s: matched device %s with driver %s\n"</span>,</div><div class="line">          drv-&gt;bus-&gt;name, __FUNCTION__, dev-&gt;bus_id, drv-&gt;name);</div><div class="line"></div><div class="line">     ret = really_probe(dev, drv);</div><div class="line"></div><div class="line">done:</div><div class="line">     <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果设备没有注册到总线之上，即<code>dev-&gt;is_registered</code>不为<code>1</code>， 就直接返回。然后，再调用总线的<code>match()</code>函数进行匹配。如果<code>match()</code>函数返回<code>0</code>，说明匹配失败，那退出此函数。如果<code>match</code>函数返回<code>1</code>，说明初步的检查已经通过了，可以进入<code>really_probe()</code>再进行细致的检查。如果匹配成功，这个函数会返回<code>1</code>。此函数比较长而且比较重要，分段列出代码：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">really_probe</span><span class="params">(<span class="keyword">struct</span> device *dev, <span class="keyword">struct</span> device_driver *drv)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">int</span> ret = <span class="number">0</span>;</div><div class="line"></div><div class="line">     atomic_inc(&amp;probe_count);</div><div class="line">     pr_debug(<span class="string">"bus: '%s': %s: probing driver %s with device %s\n"</span>,</div><div class="line">          drv-&gt;bus-&gt;name, __FUNCTION__, drv-&gt;name, dev-&gt;bus_id);</div><div class="line">     WARN_ON(!list_empty(&amp;dev-&gt;devres_head));</div><div class="line"></div><div class="line">     dev-&gt;driver = drv;</div><div class="line">     <span class="keyword">if</span> (driver_sysfs_add(dev)) &#123;</div><div class="line">         printk(KERN_ERR <span class="string">"%s: driver_sysfs_add(%s) failed\n"</span>,</div><div class="line">              __FUNCTION__, dev-&gt;bus_id);</div><div class="line">         <span class="keyword">goto</span> probe_failed;</div><div class="line">     &#125;</div></pre></td></tr></table></figure></p>
+<p>先假设驱动和设备是匹配的，为设备结构设置驱动成员，使其指向匹配的驱动，然后再调用<code>driver_sysfs_add()</code>建立几个符号链接。这几个链接分别为：<br>
+1、在驱动目录下建立一个到设备的同名链接；<br>
+2、在设备目录下建立一个名为driver到驱动的链接。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (dev-&gt;bus-&gt;probe) &#123;</div><div class="line">    ret = dev-&gt;bus-&gt;probe(dev);</div><div class="line">    <span class="keyword">if</span> (ret)</div><div class="line">         <span class="keyword">goto</span> probe_failed;</div><div class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (drv-&gt;probe) &#123;</div><div class="line">    ret = drv-&gt;probe(dev);</div><div class="line">    <span class="keyword">if</span> (ret)</div><div class="line">         <span class="keyword">goto</span> probe_failed;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后，再调用总线的<code>probe</code>函数，如果总线的此函数不存在，就会调用驱动的<code>probe</code>函数。如果匹配成功，返回<code>0</code>；如果不成功，就会跳转到<code>probe_failed</code>。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">driver_bound(dev);</div><div class="line">ret = <span class="number">1</span>;</div><div class="line">pr_debug(<span class="string">"bus: '%s': %s: bound device %s to driver %s\n"</span>,</div><div class="line">     drv-&gt;bus-&gt;name, __FUNCTION__, dev-&gt;bus_id, drv-&gt;name);</div><div class="line"><span class="keyword">goto</span> done;</div></pre></td></tr></table></figure></p>
+<p>到这里，设备和驱动已经匹配成功，调用<code>driver_bound()</code>将其关联起来，在这个函数里会将设备加至驱动的设备链表，这在我们之前分析<code>bus</code>、<code>device</code>、<code>driver</code>中分析到的。相关的代码如下示：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">klist_add_tail(&amp;dev-&gt;knode_driver, &amp;dev-&gt;driver-&gt;p-&gt;klist_devices);</div></pre></td></tr></table></figure></p>
+<p>至此，这个匹配过程已经圆满结束了，返回<code>1</code>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">probe_failed:</div><div class="line">     devres_release_all(dev);</div><div class="line">     driver_sysfs_remove(dev);</div><div class="line">     dev-&gt;driver = <span class="literal">NULL</span>;</div><div class="line"></div><div class="line">     <span class="keyword">if</span> (ret != -ENODEV &amp;&amp; ret != -ENXIO) &#123;</div><div class="line">         <span class="comment">/* driver matched but the probe failed */</span></div><div class="line">         printk(KERN_WARNING</div><div class="line">                <span class="string">"%s: probe of %s failed with error %d\n"</span>,</div><div class="line">                drv-&gt;name, dev-&gt;bus_id, ret);</div><div class="line">     &#125;</div><div class="line">     <span class="comment">/*</span></div><div class="line">      * Ignore errors returned by -&gt;probe so that the next driver can try</div><div class="line">      * its luck.</div><div class="line">      */</div><div class="line">     ret = <span class="number">0</span>;</div></pre></td></tr></table></figure></p>
+<p>这里是匹配不成功的处理，在这里，删除之前建立的几个链接文件，然后将设备的<code>driver</code>域置空。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">done:</div><div class="line">     atomic_dec(&amp;probe_count);</div><div class="line">     wake_up(&amp;probe_waitqueue);</div><div class="line">     <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从上面的分析可以看到，对应创建的属性文件分别为：<code>uevent_attr</code>, <code>devt_attr</code>。它们的定义如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">struct</span> device_attribute uevent_attr =</div><div class="line">     __ATTR(uevent, S_IRUGO | S_IWUSR, show_uevent, store_uevent);</div><div class="line"><span class="keyword">static</span> <span class="keyword">struct</span> device_attribute devt_attr =</div><div class="line">     __ATTR(dev, S_IRUGO, show_dev, <span class="literal">NULL</span>);</div></pre></td></tr></table></figure></p>
+<p><code>uevent_attr</code>对应的读写函数分别为：<code>show_uevent</code>、<code>store_uevent</code>。先分析读操作。它的代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">show_uevent</span><span class="params">(<span class="keyword">struct</span> device *dev, <span class="keyword">struct</span> device_attribute *attr,</span></span></div><div class="line">                 <span class="keyword">char</span> *buf)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> kobject *top_kobj;</div><div class="line">     <span class="keyword">struct</span> kset *kset;</div><div class="line">     <span class="keyword">struct</span> kobj_uevent_env *env = <span class="literal">NULL</span>;</div><div class="line">     <span class="keyword">int</span> i;</div><div class="line">     <span class="keyword">size_t</span> count = <span class="number">0</span>;</div><div class="line">     <span class="keyword">int</span> retval;</div><div class="line"></div><div class="line">     <span class="comment">/* search the kset, the device belongs to */</span></div><div class="line">     top_kobj = &amp;dev-&gt;kobj;</div><div class="line">     <span class="keyword">while</span> (!top_kobj-&gt;kset &amp;&amp; top_kobj-&gt;parent)</div><div class="line">         top_kobj = top_kobj-&gt;parent;</div><div class="line">     <span class="keyword">if</span> (!top_kobj-&gt;kset)</div><div class="line">         <span class="keyword">goto</span> out;</div><div class="line"></div><div class="line">     kset = top_kobj-&gt;kset;</div><div class="line">     <span class="keyword">if</span> (!kset-&gt;uevent_ops || !kset-&gt;uevent_ops-&gt;uevent)</div><div class="line">         <span class="keyword">goto</span> out;</div><div class="line"></div><div class="line">     <span class="comment">/* respect filter */</span></div><div class="line">     <span class="keyword">if</span> (kset-&gt;uevent_ops &amp;&amp; kset-&gt;uevent_ops-&gt;filter)</div><div class="line">         <span class="keyword">if</span> (!kset-&gt;uevent_ops-&gt;filter(kset, &amp;dev-&gt;kobj))</div><div class="line">              <span class="keyword">goto</span> out;</div><div class="line"></div><div class="line">     env = kzalloc(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> kobj_uevent_env), GFP_KERNEL);</div><div class="line">     <span class="keyword">if</span> (!env)</div><div class="line">         <span class="keyword">return</span> -ENOMEM;</div><div class="line"></div><div class="line">     <span class="comment">/* let the kset specific function add its keys */</span></div><div class="line">     retval = kset-&gt;uevent_ops-&gt;uevent(kset, &amp;dev-&gt;kobj, env);</div><div class="line">     <span class="keyword">if</span> (retval)</div><div class="line">         <span class="keyword">goto</span> out;</div><div class="line"></div><div class="line">     <span class="comment">/* copy keys to file */</span></div><div class="line">     <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; env-&gt;envp_idx; i++)</div><div class="line">         count += <span class="built_in">sprintf</span>(&amp;buf[count], <span class="string">"%s\n"</span>, env-&gt;envp[i]);</div><div class="line">out:</div><div class="line">     kfree(env);</div><div class="line">     <span class="keyword">return</span> count;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从代码可以看出，这里会显示出由设备对应的<code>kset</code>，也就是由<code>devices_kset</code>所产生的环境变量。例如，在shell中输入如下指令：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /sys/devices/LNXSYSTM:00/uevent</div></pre></td></tr></table></figure></p>
+<p>输出结果如下：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">PHYSDEVBUS=acpi</div><div class="line">MODALIAS=acpi:LNXSYSTM:</div></pre></td></tr></table></figure></p>
+<p>这就是由<code>devices_kset</code>所添加的环境变量</p>
+<p>写操作对应的代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">store_uevent</span><span class="params">(<span class="keyword">struct</span> device *dev, <span class="keyword">struct</span> device_attribute *attr,</span></span></div><div class="line">                  <span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> count)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">enum</span> kobject_action action;</div><div class="line"></div><div class="line">     <span class="keyword">if</span> (kobject_action_type(buf, count, &amp;action) == <span class="number">0</span>) &#123;</div><div class="line">         kobject_uevent(&amp;dev-&gt;kobj, action);</div><div class="line">         <span class="keyword">goto</span> out;</div><div class="line">     &#125;</div><div class="line"></div><div class="line">     dev_err(dev, <span class="string">"uevent: unsupported action-string; this will "</span></div><div class="line">              <span class="string">"be ignored in a future kernel version\n"</span>);</div><div class="line">     kobject_uevent(&amp;dev-&gt;kobj, KOBJ_ADD);</div><div class="line">out:</div><div class="line">     <span class="keyword">return</span> count;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从上面的代码可以看出，这个文件的作用是输入一个字符字串，如果字符不合法，就会默认产生一个<code>add</code>事件。</p>
+<p><code>devt_attr</code>对应的读写函数为<code>show_dev</code>、<code>NULL</code>。写函数为空，也就是说这个属性文件不允许写，只允许读。读操作的代码如下示：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">show_dev</span><span class="params">(<span class="keyword">struct</span> device *dev, <span class="keyword">struct</span> device_attribute *attr,</span></span></div><div class="line">              <span class="keyword">char</span> *buf)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">return</span> <span class="keyword">print_dev_t</span>(buf, dev-&gt;devt);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>也就是说，会将设备号显示出来.</p>
+<h3>&lt;a name=4.3&gt;驱动注册&lt;/a&gt;</h3>
+<p>分析完了<code>bus</code>、<code>device</code>，再接着分析<code>driver</code>。这里我们要分析的最后一个元素了，耐着性子往下看，快要完了^_^<br>
+驱动注册的接口为：<code>driver_register()</code>。代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">driver_register</span><span class="params">(<span class="keyword">struct</span> device_driver *drv)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">int</span> ret;</div><div class="line"></div><div class="line">     <span class="keyword">if</span> ((drv-&gt;bus-&gt;probe &amp;&amp; drv-&gt;probe) ||</div><div class="line">         (drv-&gt;bus-&gt;remove &amp;&amp; drv-&gt;remove) ||</div><div class="line">         (drv-&gt;bus-&gt;shutdown &amp;&amp; drv-&gt;shutdown))</div><div class="line">         printk(KERN_WARNING <span class="string">"Driver '%s' needs updating - please use "</span></div><div class="line">              <span class="string">"bus_type methods\n"</span>, drv-&gt;name);</div><div class="line">     ret = bus_add_driver(drv);</div><div class="line">     <span class="keyword">if</span> (ret)</div><div class="line">         <span class="keyword">return</span> ret;</div><div class="line">     ret = driver_add_groups(drv, drv-&gt;groups);</div><div class="line">     <span class="keyword">if</span> (ret)</div><div class="line">         bus_remove_driver(drv);</div><div class="line">     <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>如果设备与总线定义了相同的成员的函数，内核是优先使用<code>bus</code>中定义的，这一点我们在分析<code>device</code>注册的时候已经分析过。所以，这里打印出警告信息，用来提醒代码编写者。在这里，忽略有关<code>group</code>的东西，剩余的便只剩下<code>bus_add_driver()</code>。代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">bus_add_driver</span><span class="params">(<span class="keyword">struct</span> device_driver *drv)</span></span></div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> bus_type *bus;</div><div class="line">     <span class="keyword">struct</span> driver_private *priv;</div><div class="line">     <span class="keyword">int</span> error = <span class="number">0</span>;</div><div class="line"></div><div class="line">     bus = bus_get(drv-&gt;bus);</div><div class="line">     <span class="keyword">if</span> (!bus)</div><div class="line">         <span class="keyword">return</span> -EINVAL;</div><div class="line"></div><div class="line">     pr_debug(<span class="string">"bus: '%s': add driver %s\n"</span>, bus-&gt;name, drv-&gt;name);</div><div class="line"></div><div class="line">     priv = kzalloc(<span class="keyword">sizeof</span>(*priv), GFP_KERNEL);</div><div class="line">     <span class="keyword">if</span> (!priv) &#123;</div><div class="line">         error = -ENOMEM;</div><div class="line">         <span class="keyword">goto</span> out_put_bus;</div><div class="line">     &#125;</div><div class="line">     klist_init(&amp;priv-&gt;klist_devices, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</div><div class="line">     priv-&gt;driver = drv;</div><div class="line">     drv-&gt;p = priv;</div><div class="line">     priv-&gt;kobj.kset = bus-&gt;p-&gt;drivers_kset;</div><div class="line">     error = kobject_init_and_add(&amp;priv-&gt;kobj, &amp;driver_ktype, <span class="literal">NULL</span>,</div><div class="line">                        <span class="string">"%s"</span>, drv-&gt;name);</div></pre></td></tr></table></figure></p>
+<p>初始化驱动的<code>driver_private</code>域，使其内嵌的<code>kobject</code>的<code>kset</code>指bus中的<code>drivers_kset</code>，这样，这个内嵌的<code>kobject</code>所生成的目录就会存在于<code>bus</code>对应目录的<code>driver</code>目录之下。这里还要注意的是,为内嵌<code>kobject</code>指定的<code>ktype</code>是<code>driver_ktype</code>，属性文件的读写操作都回回溯到<code>struct driver_attribute</code>中，这在之后再分析。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (error)</div><div class="line">    <span class="keyword">goto</span> out_unregister;</div><div class="line"></div><div class="line"><span class="keyword">if</span> (drv-&gt;bus-&gt;p-&gt;drivers_autoprobe) &#123;</div><div class="line">    error = driver_attach(drv);</div><div class="line">    <span class="keyword">if</span> (error)</div><div class="line">         <span class="keyword">goto</span> out_unregister;</div><div class="line">&#125;</div><div class="line">klist_add_tail(&amp;priv-&gt;knode_bus, &amp;bus-&gt;p-&gt;klist_drivers);</div><div class="line"></div><div class="line">module_add_driver(drv-&gt;owner, drv);</div></pre></td></tr></table></figure></p>
+<p>如果总线允许自动进行匹配，就会调用<code>driver_attach()</code>进行这个自己匹配过程。这个函数跟我们在上面分析的<code>device</code>自动匹配过程是一样的，请自行分析。最后，将驱动挂到<code>bus</code>对应的驱动链表。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">error = driver_create_file(drv, &amp;driver_attr_uevent);</div><div class="line"><span class="keyword">if</span> (error) &#123;</div><div class="line">    printk(KERN_ERR <span class="string">"%s: uevent attr (%s) failed\n"</span>,</div><div class="line">         __FUNCTION__, drv-&gt;name);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>生成一个属性为<code>driver_attr_uevent</code>的属性文件
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">error = driver_add_attrs(bus, drv);</div><div class="line"><span class="keyword">if</span> (error) &#123;</div><div class="line">    <span class="comment">/* How the hell do we get out of this pickle? Give up */</span></div><div class="line">    printk(KERN_ERR <span class="string">"%s: driver_add_attrs(%s) failed\n"</span>,</div><div class="line">         __FUNCTION__, drv-&gt;name);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>为<code>bus</code>中的<code>driver</code>属性生成属性文件
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">error = add_bind_files(drv);</div><div class="line"><span class="keyword">if</span> (error) &#123;</div><div class="line">    <span class="comment">/* Ditto */</span></div><div class="line">    printk(KERN_ERR <span class="string">"%s: add_bind_files(%s) failed\n"</span>,</div><div class="line">         __FUNCTION__, drv-&gt;name);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>生成属性为<code>driver_attr_unbind</code>和<code>driver_attr_bind</code>的属性文件
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kobject_uevent(&amp;priv-&gt;kobj, KOBJ_ADD);</div></pre></td></tr></table></figure></p>
+<p>生成一个<code>add</code>事件
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">     <span class="keyword">return</span> error;</div><div class="line">out_unregister:</div><div class="line">     kobject_put(&amp;priv-&gt;kobj);</div><div class="line">out_put_bus:</div><div class="line">     bus_put(bus);</div><div class="line">     <span class="keyword">return</span> error;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>总的来说，这个函数比较简单，其中涉及到的子函数大部份都在之前分析过。我们接下来分析一下，它所创建的几个属性文件的含义。<br>
+如上所述，在这里会创建三个属性文件，对应属性分别为：<code>driver_attr_uevent</code>，<code>driver_attr_unbind</code>，<code>driver_attr_bind</code>。这几个属性的定义如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="title">DRIVER_ATTR</span><span class="params">(uevent, S_IWUSR, <span class="literal">NULL</span>, driver_uevent_store)</span></span>;</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="title">DRIVER_ATTR</span><span class="params">(unbind, S_IWUSR, <span class="literal">NULL</span>, driver_unbind)</span></span>;</div><div class="line"><span class="function"><span class="keyword">static</span> <span class="title">DRIVER_ATTR</span><span class="params">(bind, S_IWUSR, <span class="literal">NULL</span>, driver_bind)</span></span>;</div></pre></td></tr></table></figure></p>
+<p><code>DRIVER_ATTR</code>宏的定义如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> DRIVER_ATTR(_name, _mode, _show, _store)   \</span></div><div class="line">struct driver_attribute driver_attr_##_name =      \</div><div class="line">     __ATTR(_name, _mode, _show, _store)</div></pre></td></tr></table></figure></p>
+<p>对于<code>driver_attr_uevent</code>，它的读写函数分别为：<code>NULL</code>，<code>driver_uevent_store</code>。也就是说这个文件只允许写，不允许读操作。写操作的代码如下示：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">driver_uevent_store</span><span class="params">(<span class="keyword">struct</span> device_driver *drv,</span></span></div><div class="line">                      <span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> count)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">enum</span> kobject_action action;</div><div class="line"></div><div class="line">     <span class="keyword">if</span> (kobject_action_type(buf, count, &amp;action) == <span class="number">0</span>)</div><div class="line">         kobject_uevent(&amp;drv-&gt;p-&gt;kobj, action);</div><div class="line">     <span class="keyword">return</span> count;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>很明显，这是一个手动产生事件的过程。用户可间可以写事件到这个文件来产生事件。
+对于<code>driver_unbind</code>，它的读写函数分别为：<code>NULL</code>，<code>driver_unbind</code>。这个文件也是不允许读的，写操作代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">driver_unbind</span><span class="params">(<span class="keyword">struct</span> device_driver *drv,</span></span></div><div class="line">                   <span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> count)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> bus_type *bus = bus_get(drv-&gt;bus);</div><div class="line">     <span class="keyword">struct</span> device *dev;</div><div class="line">     <span class="keyword">int</span> err = -ENODEV;</div><div class="line"></div><div class="line">     dev = bus_find_device_by_name(bus, <span class="literal">NULL</span>, buf);</div><div class="line">     <span class="keyword">if</span> (dev &amp;&amp; dev-&gt;driver == drv) &#123;</div><div class="line">         <span class="keyword">if</span> (dev-&gt;parent)   <span class="comment">/* Needed for USB */</span></div><div class="line">              down(&amp;dev-&gt;parent-&gt;sem);</div><div class="line">         device_release_driver(dev);</div><div class="line">         <span class="keyword">if</span> (dev-&gt;parent)</div><div class="line">              up(&amp;dev-&gt;parent-&gt;sem);</div><div class="line">         err = count;</div><div class="line">     &#125;</div><div class="line">     put_device(dev);</div><div class="line">     bus_put(bus);</div><div class="line">     <span class="keyword">return</span> err;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>从上面的代码可以看出，写入文件的是一个设备名称，这个函数对应操作是将这个设备与驱动的绑定分离开来。</p>
+<p><code>driver_attr_bind</code>属性对应的读写函数分别为：<code>NULL</code>，<code>driver_attr_bind</code>。 即也是不允许写的。从字面意思和上面分析的<code>driver_attr_unbind</code>操作代码来看，这个属性对应的写函数应该是将写入的设备文件与此驱动绑定起来。我们来看下代码，以证实我们的猜测。代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">driver_bind</span><span class="params">(<span class="keyword">struct</span> device_driver *drv,</span></span></div><div class="line">                 <span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> count)</div><div class="line">&#123;</div><div class="line">     <span class="keyword">struct</span> bus_type *bus = bus_get(drv-&gt;bus);</div><div class="line">     <span class="keyword">struct</span> device *dev;</div><div class="line">     <span class="keyword">int</span> err = -ENODEV;</div><div class="line"></div><div class="line">     dev = bus_find_device_by_name(bus, <span class="literal">NULL</span>, buf);</div><div class="line">     <span class="keyword">if</span> (dev &amp;&amp; dev-&gt;driver == <span class="literal">NULL</span>) &#123;</div><div class="line">         <span class="keyword">if</span> (dev-&gt;parent)   <span class="comment">/* Needed for USB */</span></div><div class="line">              down(&amp;dev-&gt;parent-&gt;sem);</div><div class="line">         down(&amp;dev-&gt;sem);</div><div class="line">         err = driver_probe_device(drv, dev);</div><div class="line">         up(&amp;dev-&gt;sem);</div><div class="line">         <span class="keyword">if</span> (dev-&gt;parent)</div><div class="line">              up(&amp;dev-&gt;parent-&gt;sem);</div><div class="line"></div><div class="line">         <span class="keyword">if</span> (err &gt; <span class="number">0</span>) &#123;</div><div class="line">              <span class="comment">/* success */</span></div><div class="line">              err = count;</div><div class="line">         &#125; <span class="keyword">else</span> <span class="keyword">if</span> (err == <span class="number">0</span>) &#123;</div><div class="line">              <span class="comment">/* driver didn't accept device */</span></div><div class="line">              err = -ENODEV;</div><div class="line">         &#125;</div><div class="line">     &#125;</div><div class="line">     put_device(dev);</div><div class="line">     bus_put(bus);</div><div class="line">     <span class="keyword">return</span> err;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>果然，和我们猜测的是一样的。</p>
+<h2>&lt;a name=5&gt;五：小结&lt;/a&gt;</h2>
+<p>在这一节里，分析了设备模型中的最底层的元素和他们之间的关系，也分析了它们建立的几个属性文件的含义。到这里，我们已经可以自己写驱动架构代码了 ^_^</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/02/27/hexo_startup/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/02/28/linux-sysfs/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

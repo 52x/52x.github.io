@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            开发者日常使用的 Git 命令 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,Git">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="开发者日常使用的 Git 命令 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="Git"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">个人开发者（单独开发）Individual Developer (Standalone)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">实例 Examples</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">个人开发者（参与开发）Individual Developer (Participant)</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">实例 Examples</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">集成人员 Integrator</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">实例 Examples</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">代码库管理 Repository Administration</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">实例 Examples</span></a></li></ol></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                开发者日常使用的 Git 命令
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>5月 22, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/Git/">Git</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=开发者日常使用的 Git 命令&url=http://yoursite.com//2014/05/22/everyday-git/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=开发者日常使用的 Git 命令&url=http://yoursite.com//2014/05/22/everyday-git/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/05/22/everyday-git/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/05/22/everyday-git/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>原文链接： <a href="https://www.kernel.org/pub/software/scm/git/docs/everyday.html" target="_blank" rel="external">Everyday GIT With 20 Commands Or So</a>   翻译： <a href="http://blog.jobbole.com" target="_blank" rel="external"> 伯乐在线 </a> - <a href="http://blog.jobbole.com/author/cjpan/" target="_blank" rel="external">cjpan</a>
+译文链接： <a href="http://blog.jobbole.com/54184/" target="_blank" rel="external">http://blog.jobbole.com/54184/</a> （下文在原译文基础上有修正补充）</p>
+<p>&lt;span style=&quot;color:red;&quot;&gt;原文（英）最后更新时间：Last updated 2013-02-15 15:53:17 UTC&lt;/span&gt;</p>
+<p>这些命令分四种类型：①不需要和其他开发者协作的独立开发者，会经常用到 <code>git init</code>、<code>git show branch</code>、<code>git commit</code> 等命令；②需要和其他人协作的开发者，会常用到 <code>git clone</code>、<code>git push</code>、<code>git pull</code>、<code>git format patch</code>；③在项目中负责接收其他开发者发来更新的核心开发者，会常用到 <code>git am</code>、<code>git pull</code>、<code>git format patch</code>、<code>git revert</code>、<code>git push</code>；④ 代码仓库管理员常用 <code>git daemon</code>、<code>git shell</code> ……</p>
+<p>对于任何想做提交的人来说，甚至对于某位单独工作的人来说，【个人开发者（单独开发）】部分命令都是必不可少的。如果你和别人一起工作，你也会需要【个人开发者（参与者）】部分列出的命令。</p>
+<p>除了上述的部分，担当【集成人员】角色的人需要知道更多命令。【代码库管理】命令帮助系统管理员负责管理，以及向git代码库提交内容。
+&lt;!--more--&gt;</p>
+<h2>个人开发者（单独开发）Individual Developer (Standalone)</h2>
+<p>单独的个人开发者不会与他人交换修补程序，只用到下列命令，独自在单独的代码库上工作：</p>
+<ul>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-init.html" target="_blank" rel="external">git-init(1)</a> 创建新代码库。to create a new repository.</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-show-branch.html" target="_blank" rel="external">git-show-branch(1)</a> 查看你在哪里。to see where you are.</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-log.html" target="_blank" rel="external">git-log(1)</a> 查看发生过什么。to see what happened.</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-checkout.html" target="_blank" rel="external">git-checkout(1)</a>和<a href="https://www.kernel.org/pub/software/scm/git/docs/git-branch.html" target="_blank" rel="external">git-branch(1)</a> 切换分支。to switch branches.</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-add.html" target="_blank" rel="external">git-add(1)</a> 管理索引文件。to manage the index file.</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-diff.html" target="_blank" rel="external">git-diff(1)</a>和<a href="https://www.kernel.org/pub/software/scm/git/docs/git-status.html" target="_blank" rel="external">git-status(1)</a> 查看你正在做什么。to see what you are in the middle of doing.</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-commit.html" target="_blank" rel="external">git-commit(1)</a> 将推进当前分支。to advance the current branch.</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-reset.html" target="_blank" rel="external">git-reset(1)</a>和<a href="https://www.kernel.org/pub/software/scm/git/docs/git-checkout.html" target="_blank" rel="external">git-checkout(1)</a> （带路径名参数）放弃（撤销）修改。to undo changes.</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-merge.html" target="_blank" rel="external">git-merge(1)</a> 合并本地分支。to merge between local branches.</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-rebase.html" target="_blank" rel="external">git-rebase(1)</a> 维护主题分支。to maintain topic branches.</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-tag.html" target="_blank" rel="external">git-tag(1)</a> 给已知点打标签。to mark known point.</li>
+</ul>
+<h3>实例 Examples</h3>
+<p><strong>用Tar包作为一个新代码库的起始点</strong>
+Use a tarball as a starting point for a new repository.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ tar zxf frotz.tar.gz</div><div class="line">$ <span class="built_in">cd</span> frotz</div><div class="line">$ git init</div><div class="line">$ git add . &lt;1&gt;</div><div class="line">$ git commit -m <span class="string">"import of frotz source tree."</span></div><div class="line">$ git tag v2.43 &lt;2&gt;</div></pre></td></tr></table></figure></p>
+<ol>
+<li>添加现目录下的所有文件。</li>
+<li>打一个轻量的无注释的标签。</li>
+</ol>
+<p><strong>创建一个主题分支并开发</strong>
+Create a topic branch and develop.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">$ git checkout -b alsa-audio &lt;1&gt;</div><div class="line">$ edit/compile/<span class="built_in">test</span></div><div class="line">$ git checkout -- curses/ux_audio_oss.c &lt;2&gt;</div><div class="line">$ git add curses/ux_audio_alsa.c &lt;3&gt;</div><div class="line">$ edit/compile/<span class="built_in">test</span></div><div class="line">$ git diff HEAD &lt;4&gt;</div><div class="line">$ git commit <span class="_">-a</span> <span class="_">-s</span> &lt;5&gt;</div><div class="line">$ edit/compile/<span class="built_in">test</span></div><div class="line">$ git reset --soft HEAD^ &lt;6&gt;</div><div class="line">$ edit/compile/<span class="built_in">test</span></div><div class="line">$ git diff ORIG_HEAD &lt;7&gt;</div><div class="line">$ git commit <span class="_">-a</span> -c ORIG_HEAD &lt;8&gt;</div><div class="line">$ git checkout master &lt;9&gt;</div><div class="line">$ git merge alsa-audio &lt;10&gt;</div><div class="line">$ git <span class="built_in">log</span> --since=<span class="string">'3 days ago'</span> &lt;11&gt;</div><div class="line">$ git <span class="built_in">log</span> v2.43.. curses/ &lt;12&gt;</div></pre></td></tr></table></figure></p>
+<ol>
+<li>创建(create)一个主题分支。</li>
+<li>还原(revert)你在<code>curses/ux_audio_oss.c</code>文件里搞砸了的修改。</li>
+<li>如果你添加一个新文件，你需要告诉git；之后，如果你使用_<code>git commit -a</code>_， 删除和修改就会被(git)捕获。</li>
+<li>查看你正在提交什么修改。</li>
+<li>提交所有的你已测试文件，包括你的签名。</li>
+<li>撤回最后一次提交，保留工作区（working tree）内容。</li>
+<li>查看自从上一个不成熟提交后的修改。</li>
+<li>沿用原先写过的（注释）信息，重做在之前步骤中撤销了的提交。</li>
+<li>切换到主干（master）分支。</li>
+<li>合并一个主题分支到主分支。</li>
+<li>回顾提交记录；其他限制输出的形式也可以合并包含（combined and include）： <em><code>--max-count=10</code></em>(显示10个提交)，<em><code>--until=2005-12-10</code></em> 等。</li>
+<li>只查看从_<code>v2.43</code><em>标签开始以来影响到</em><code>curses/</code>_目录的修改。</li>
+</ol>
+<h2>个人开发者（参与开发）Individual Developer (Participant)</h2>
+<p>作为一个团体项目里的参与角色，开发人员需要学习如何与他人沟通，除了那些单独开发者需要掌握的命令以外，还要使用这些命令。</p>
+<ul>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-clone.html" target="_blank" rel="external">git-clone(1)</a> 从上游代码库填充你的本地代码库。
+from the upstream to prime your local repository.</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-pull.html" target="_blank" rel="external">git-pull(1)</a>和<a href="https://www.kernel.org/pub/software/scm/git/docs/git-fetch.html" target="_blank" rel="external">git-fetch(1)</a> 从“origin”得到最新的上游代码库。
+from &quot;origin&quot; to keep up-to-date with the upstream.</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-push.html" target="_blank" rel="external">git-push(1)</a> 共享代码库，如果你采用cvs风格的代码库工作流的话。
+to shared repository, if you adopt CVS style shared repository workflow.</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-format-patch.html" target="_blank" rel="external">git-format-patch(1)</a> 准备e-mail提交，如果你使用Linux内核风格的公共论坛工作流的话。
+to prepare e-mail submission, if you adopt Linux kernel-style public forum workflow.</li>
+</ul>
+<h3>实例 Examples</h3>
+<p><strong>复制上游代码库并在其上工作，提交修改到上游代码库。</strong>
+Clone the upstream and work on it. Feed changes to upstream.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> git://git.kernel.org/pub/scm/.../torvalds/linux-2.6 my2.6</div><div class="line">$ <span class="built_in">cd</span> my2.6</div><div class="line">$ edit/compile/<span class="built_in">test</span>; git commit <span class="_">-a</span> <span class="_">-s</span> &lt;1&gt;</div><div class="line">$ git format-patch origin &lt;2&gt;</div><div class="line">$ git pull &lt;3&gt;</div><div class="line">$ git <span class="built_in">log</span> -p ORIG_HEAD.. arch/i386 include/asm-i386 &lt;4&gt;</div><div class="line">$ git pull git://git.kernel.org/pub/.../jgarzik/libata-dev.git ALL &lt;5&gt;</div><div class="line">$ git reset --hard ORIG_HEAD &lt;6&gt;</div><div class="line">$ git gc &lt;7&gt;</div><div class="line">$ git fetch --tags &lt;8&gt;</div></pre></td></tr></table></figure></p>
+<ol>
+<li>按需重复。(repeat as needed)</li>
+<li>从你的分支中提取补丁文件，用于电子邮件提交。</li>
+<li><em><code>git pull</code><em>命令默认从“</em><code>origin</code></em>”里取得内容并合并到当前的分支中去。</li>
+<li>在<code>pull</code>之后，立即查看在上游仓库中自上次检出之后提交的修改（日志），仅查看关注的部分。</li>
+<li>从一个指定代码库的一个指定分支获取内容并合并。</li>
+<li>撤销（revert）<code>pull</code>操作。</li>
+<li>从撤销的<code>pull</code>操作中回收残存的对象。（代码库清理）</li>
+<li>不时地，从_<code>origin</code><em>中获取官方的标签，并保存于</em><code>.git/refs/tags/</code>_。</li>
+</ol>
+<p><strong>推送到另一个代码库</strong>
+Push into another repository.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">satellite$ git <span class="built_in">clone</span> mothership:frotz frotz &lt;1&gt;</div><div class="line">satellite$ <span class="built_in">cd</span> frotz</div><div class="line">satellite$ git config --get-regexp <span class="string">'^(remote|branch)\.'</span> &lt;2&gt;</div><div class="line">remote.origin.url mothership:frotz</div><div class="line">remote.origin.fetch refs/heads/*:refs/remotes/origin/*</div><div class="line">branch.master.remote origin</div><div class="line">branch.master.merge refs/heads/master</div><div class="line">satellite$ git config remote.origin.push \</div><div class="line">           master:refs/remotes/satellite/master &lt;3&gt;</div><div class="line">satellite$ edit/compile/<span class="built_in">test</span>/commit</div><div class="line">satellite$ git push origin &lt;4&gt;</div><div class="line"></div><div class="line">mothership$ <span class="built_in">cd</span> frotz</div><div class="line">mothership$ git checkout master</div><div class="line">mothership$ git merge satellite/master &lt;5&gt;</div></pre></td></tr></table></figure></p>
+<ol>
+<li><code>mothership</code>机器的<code>home</code>目录下有一个<code>frotz</code>代码库；复制它（clone from it）以在<code>satellite</code>机器上开始一个代码库。</li>
+<li>复制（<code>clone</code>）操作默认设定这些配置变量。它安排_<code>git pull</code><em>去抓取并保存<code>mothership</code>机器上的分支到本地的</em><code>remotes/origin/*</code>_ 跟踪分支。</li>
+<li>安排_<code>git push</code><em>去推送本地的主（</em><code>master</code><em>）分支到<code>mothership</code>机器的</em><code>remotes/satellite/master</code>_分支</li>
+<li><code>push</code>操作会在<code>mothership</code>机器的_<code>remotes/satellite/master</code>_的远程跟踪分支上存储我们的工作。你可以用此作为一个备份方法。</li>
+<li>在<code>mothership</code>机器上，将<code>satellite</code>机器上已完成的工作合并到<code>master</code>分支中。</li>
+</ol>
+<p><strong>分支的特定标签</strong>
+Branch off of a specific tag.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ git checkout -b private2.6.14 v2.6.14 &lt;1&gt;</div><div class="line">$ edit/compile/<span class="built_in">test</span>; git commit <span class="_">-a</span></div><div class="line">$ git checkout master</div><div class="line">$ git format-patch -k -m --stdout v2.6.14..private2.6.14 |</div><div class="line">  git am -3 -k &lt;2&gt;</div></pre></td></tr></table></figure></p>
+<ol>
+<li>创建一个私有分支，基于熟知（但稍许过时的）标签。</li>
+<li>在还没有正式“合并（merging）”的情况下，向前移植<code>private2.6.14</code>分支所有的修改到<code>master</code>分支上。</li>
+</ol>
+<h2>集成人员 Integrator</h2>
+<p>在一个团队项目中担任集成者的是一名相当重要的人员，他/她接收其他人的修改，评审并集成然后发布最终结果供其他人使用；除了参与者需要的那些命令之外，还需要使用以下这些命令。</p>
+<ul>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-am.html" target="_blank" rel="external">git-am(1)</a> 采用你的贡献者邮寄过来的补丁文件。
+to apply patches e-mailed in from your contributors.*   <a href="https://www.kernel.org/pub/software/scm/git/docs/git-pull.html" target="_blank" rel="external">git-pull(1)</a> 从你的可信任的助手处合并内容。
+to merge from your trusted lieutenants.</li>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-format-patch.html" target="_blank" rel="external">git-format-patch(1)</a> 准备并向你的贡献者发送建议选项。
+to prepare and send suggested alternative to contributors.*   <a href="https://www.kernel.org/pub/software/scm/git/docs/git-revert.html" target="_blank" rel="external">git-revert(1)</a> 撤销不好的提交。
+to undo botched commits.*   <a href="https://www.kernel.org/pub/software/scm/git/docs/git-push.html" target="_blank" rel="external">git-push(1)</a> 发布最新的内容。
+to publish the bleeding edge.</li>
+</ul>
+<h3>实例 Examples</h3>
+<p><strong>我典型的GIT一天</strong>
+My typical GIT day.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">$ git status &lt;1&gt;</div><div class="line">$ git show-branch &lt;2&gt;</div><div class="line">$ mailx &lt;3&gt;</div><div class="line">&amp; s 2 3 4 5 ./+to-apply</div><div class="line">&amp; s 7 8 ./+hold-linus</div><div class="line">&amp; q</div><div class="line">$ git checkout -b topic/one master</div><div class="line">$ git am -3 -i <span class="_">-s</span> -u ./+to-apply &lt;4&gt;</div><div class="line">$ compile/<span class="built_in">test</span></div><div class="line">$ git checkout -b hold/linus &amp;&amp; git am -3 -i <span class="_">-s</span> -u ./+hold-linus &lt;5&gt;</div><div class="line">$ git checkout topic/one &amp;&amp; git rebase master &lt;6&gt;</div><div class="line">$ git checkout pu &amp;&amp; git reset --hard next &lt;7&gt;</div><div class="line">$ git merge topic/one topic/two &amp;&amp; git merge hold/linus &lt;8&gt;</div><div class="line">$ git checkout maint</div><div class="line">$ git cherry-pick master~4 &lt;9&gt;</div><div class="line">$ compile/<span class="built_in">test</span></div><div class="line">$ git tag <span class="_">-s</span> -m <span class="string">"GIT 0.99.9x"</span> v0.99.9x &lt;10&gt;</div><div class="line">$ git fetch ko &amp;&amp; git show-branch master maint <span class="string">'tags/ko-*'</span> &lt;11&gt;</div><div class="line">$ git push ko &lt;12&gt;</div><div class="line">$ git push ko v0.99.9x &lt;13&gt;</div></pre></td></tr></table></figure></p>
+<ol>
+<li>查看我正在做什么，如果有的话。</li>
+<li>查看我拥有的主题分支，并考虑它们的完成度。</li>
+<li>读邮件，保存合适的，并且保存那些尚未完成的。</li>
+<li>采用它们，交互式地，带着我的签名。</li>
+<li>按需创建主题分支，还是由我签名采用。</li>
+<li>为内部的还未合并到主分支，也没有作为稳定分支的一部分公开的主题分支重定基线。</li>
+<li>从接下来开始，每次都重置_pu_。</li>
+<li>合并仍然在料理中的主题分支</li>
+<li>向后移植（backport）极其重要的修正。</li>
+<li>创建一个签名的标签。</li>
+<li>确保我不会意外将主分支回滚到我已经推出来的内容。简写的_<code>ko</code>_指向我在kernel.org上已有的代码库里，看起来像这样：
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ cat .git/remotes/ko</div><div class="line">URL: kernel.org:/pub/scm/git/git.git</div><div class="line">Pull: master:refs/tags/ko-master</div><div class="line">Pull: next:refs/tags/ko-next</div><div class="line">Pull: maint:refs/tags/ko-maint</div><div class="line">Push: master</div><div class="line">Push: next</div><div class="line">Push: +pu</div><div class="line">Push: maint</div></pre></td></tr></table></figure></li>
+</ol>
+<p>在从_<code>git show-branch</code><em>的输出里，主分支（</em><code>master</code><em>）应该包含</em><code>ko-master</code><em>所有的内容，并且</em><code>next</code><em>应该包含</em><code>ko-next</code>_所有的内容。
+12.  推送最新内容
+13.  推送标签</p>
+<h2>代码库管理 Repository Administration</h2>
+<p>代码库管理员使用下列工具来设置及维护开发者对代码库的访问。</p>
+<ul>
+<li><a href="https://www.kernel.org/pub/software/scm/git/docs/git-daemon.html" target="_blank" rel="external">git-daemon(1)</a> 允许匿名者从代码库下载。
+to allow anonymous download from repository.*   <a href="https://www.kernel.org/pub/software/scm/git/docs/git-shell.html" target="_blank" rel="external">git-shell(1)</a> 可以被用作为限制登录shell，用于共享中央代码库的用户。
+can be used as a <em>restricted login shell</em> for shared central repository users.
+<a href="https://www.kernel.org/pub/software/scm/git/docs/howto/update-hook-example.txt" target="_blank" rel="external">update hook howto</a> 有一个很好的管理共享中央代码库的实例。</li>
+</ul>
+<h3>实例 Examples</h3>
+<p><strong>我们假设下面的内容均在/etc/services目录下</strong>
+We assume the following in /etc/services
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ grep 9418 /etc/services</div><div class="line">git             9418/tcp                <span class="comment"># Git Version Control System</span></div></pre></td></tr></table></figure></p>
+<p><strong>从inetd中运行git-daemon来服务于/pub/scm</strong>
+Run git-daemon to serve /pub/scm from inetd.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ grep git /etc/inetd.conf</div><div class="line">git     stream  tcp     nowait  nobody \</div><div class="line">  /usr/bin/git-daemon git-daemon --inetd --export-all /pub/scm</div></pre></td></tr></table></figure></p>
+<p>实际的配置应该在1行里。</p>
+<p><strong>从xinetd运行git-daemon来服务于/pub/scm</strong>
+Run git-daemon to serve /pub/scm from xinetd.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$ cat /etc/xinetd.d/git-daemon</div><div class="line"><span class="comment"># default: off</span></div><div class="line"><span class="comment"># description: The git server offers access to git repositories</span></div><div class="line">service git</div><div class="line">&#123;</div><div class="line">        <span class="built_in">disable</span> = no</div><div class="line">        <span class="built_in">type</span>            = UNLISTED</div><div class="line">        port            = 9418</div><div class="line">        socket_type     = stream</div><div class="line">        <span class="built_in">wait</span>            = no</div><div class="line">        user            = nobody</div><div class="line">        server          = /usr/bin/git-daemon</div><div class="line">        server_args     = --inetd --export-all --base-path=/pub/scm</div><div class="line">        log_on_failure  += USERID</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>检查<code>xinetd(8)</code>文档并设置，这个文档来自于Fedora系统。其他也许会不一样。</p>
+<p><strong>授予开发者只推/拉访问操作权限</strong>
+Give push/pull only access to developers.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ grep git /etc/passwd &lt;1&gt;</div><div class="line">alice:x:1000:1000::/home/alice:/usr/bin/git-shell</div><div class="line">bob:x:1001:1001::/home/bob:/usr/bin/git-shell</div><div class="line">cindy:x:1002:1002::/home/cindy:/usr/bin/git-shell</div><div class="line">david:x:1003:1003::/home/david:/usr/bin/git-shell</div><div class="line">$ grep git /etc/shells &lt;2&gt;</div><div class="line">/usr/bin/git-shell</div></pre></td></tr></table></figure></p>
+<ol>
+<li>登录<code>shell</code>被设置到<code>/usr/bin/git-shell</code>, 不允许_<code>git push</code><em>和</em><code>git pull</code>_以外的任何操作。用户需要获得一个访问此机器的<code>ssh</code>权限。</li>
+<li>在许多发布版本中，<code>/etc/shells</code>需要列出作为一个登录<code>shell</code>所使用的程序。</li>
+</ol>
+<p><strong>CVS风格的共享代码库</strong>
+CVS-style shared repository.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">$ grep git /etc/group &lt;1&gt;</div><div class="line">git:x:9418:alice,bob,cindy,david</div><div class="line">$ <span class="built_in">cd</span> /home/devo.git</div><div class="line">$ ls <span class="_">-l</span> &lt;2&gt;</div><div class="line">  lrwxrwxrwx   1 david git    17 Dec  4 22:40 HEAD -&gt; refs/heads/master</div><div class="line">  drwxrwsr-x   2 david git  4096 Dec  4 22:40 branches</div><div class="line">  -rw-rw-r--   1 david git    84 Dec  4 22:40 config</div><div class="line">  -rw-rw-r--   1 david git    58 Dec  4 22:40 description</div><div class="line">  drwxrwsr-x   2 david git  4096 Dec  4 22:40 hooks</div><div class="line">  -rw-rw-r--   1 david git 37504 Dec  4 22:40 index</div><div class="line">  drwxrwsr-x   2 david git  4096 Dec  4 22:40 info</div><div class="line">  drwxrwsr-x   4 david git  4096 Dec  4 22:40 objects</div><div class="line">  drwxrwsr-x   4 david git  4096 Nov  7 14:58 refs</div><div class="line">  drwxrwsr-x   2 david git  4096 Dec  4 22:40 remotes</div><div class="line">$ ls <span class="_">-l</span> hooks/update &lt;3&gt;</div><div class="line">  -r-xr-xr-x   1 david git  3536 Dec  4 22:40 update</div><div class="line">$ cat info/allowed-users &lt;4&gt;</div><div class="line">refs/heads/master       alice\|cindy</div><div class="line">refs/heads/doc-update   bob</div><div class="line">refs/tags/v[0-9]*       david</div></pre></td></tr></table></figure></p>
+<ol>
+<li>把开发者置于同一<code>git</code>组中。</li>
+<li>将共享代码库配为组可写。</li>
+<li>使用 Documentation/howto/ 中Carl的<code>update-hook</code>实例作为分支策略控制。</li>
+<li>alice和cindy可以推送到主分支（master），只有bob可以推送进<code>doc-update</code>。david是发布经理，并且是唯一可以创建并推送版本标签的人。</li>
+</ol>
+<p><strong>支持dumb协议传送的HTTP服务器</strong>
+HTTP server to support dumb protocol transfer.
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">dev$ git update-server-info &lt;1&gt;</div><div class="line">dev$ ftp user@isp.example.com &lt;2&gt;</div><div class="line">ftp&gt; cp -r .git /home/user/myproject.git</div></pre></td></tr></table></figure></p>
+<ol>
+<li>确保你的 <code>info/refs</code> 和 <code>objects/info/packs</code> 是最新的。</li>
+<li>上传到由你的ISP托管的公共HTTP服务器。</li>
+</ol>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/05/22/git-in-common/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/05/25/2014-05-26-publish-your-pods-on-cocoapods-with-trunk/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

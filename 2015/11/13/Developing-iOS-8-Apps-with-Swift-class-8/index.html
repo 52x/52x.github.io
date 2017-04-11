@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            Developing iOS 8 Apps with Swift 学习笔记8 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Developing iOS 8 Apps with Swift 学习笔记8 | Hexo">
+    <meta property="og:description" content="null">
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">View Controller Lifecycle</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">Autolayout</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">View Controller Lifecycle</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">View Controllers have a "Lifecycle"</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">Why does this matter?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">The start of the lifecycle …</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">What then?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">After instantiation and outlet-setting, viewDidLoad is called</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">And you get notified when you will disappear off screen too</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">There is a "did" version of this too</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">8.</span> <span class="post-toc-text">Geometry changed?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">9.</span> <span class="post-toc-text">ShowSizeClass</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">10.</span> <span class="post-toc-text">Autolayout</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">11.</span> <span class="post-toc-text">A Challenge to You!</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Developing iOS 8 Apps with Swift 学习笔记8
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>11月 13, 2015</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Developing iOS 8 Apps with Swift 学习笔记8&url=http://yoursite.com//2015/11/13/Developing-iOS-8-Apps-with-Swift-class-8/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Developing iOS 8 Apps with Swift 学习笔记8&url=http://yoursite.com//2015/11/13/Developing-iOS-8-Apps-with-Swift-class-8/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2015/11/13/Developing-iOS-8-Apps-with-Swift-class-8/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2015/11/13/Developing-iOS-8-Apps-with-Swift-class-8/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>lecture 8. View Controller Lifecycle, Autolayout</p>
+<p>&lt;!-- more --&gt;</p>
+<p>#Today</p>
+<h3>View Controller Lifecycle</h3>
+<p>Tracking what is going on with your View Controller</p>
+<p>Brief Demo</p>
+<h3>Autolayout</h3>
+<ul>
+<li>
+<p>Review</p>
+</li>
+<li>
+<p>Size Classes</p>
+</li>
+<li>
+<p>Demos</p>
+</li>
+</ul>
+<h2>View Controller Lifecycle</h2>
+<h3>View Controllers have a &quot;Lifecycle&quot;</h3>
+<p>A sequence of messages is sent to a View Controller as it progresses through its &quot;lifetime&quot;.</p>
+<h3>Why does this matter?</h3>
+<p>You very commonly override these methods to do certain work.</p>
+<h3>The start of the lifecycle …</h3>
+<p>Creation.</p>
+<p>MVCs are most often instantiated out of a storyboard (as you've seen).</p>
+<p>There are ways to do it in code (rare) as well which we may cover later in the quarter.</p>
+<h3>What then?</h3>
+<ul>
+<li>
+<p>Preparation if being segued to.</p>
+</li>
+<li>
+<p>Outlet setting.</p>
+</li>
+<li>
+<p>Appearing and disappearing.</p>
+</li>
+<li>
+<p>Geometry changes.</p>
+</li>
+<li>
+<p>Low-memory situations.</p>
+</li>
+</ul>
+<h3>After instantiation and outlet-setting, viewDidLoad is called</h3>
+<p>outlet此时已经设置完成</p>
+<ul>
+<li>
+<p>This is an exceptionally good place to put a lot of setup code.</p>
+<p>It's better than an init because your outlets are all set up by the time this is called.
+记得调用super的viewDidLoad
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</div><div class="line">      <span class="keyword">super</span>.viewDidLoad()  <span class="comment">// always let super have a chance in lifecycle methods</span></div><div class="line">      <span class="comment">// do some setup of my MVC</span></div><div class="line">  &#125;</div><div class="line"> ``` </div><div class="line"></div><div class="line"> - <span class="type">One</span> thing you may well want to <span class="keyword">do</span> here <span class="keyword">is</span> update your <span class="type">UI</span> from your <span class="type">Model</span>.</div><div class="line"> </div><div class="line">   <span class="type">Because</span> now you know all of your outlets are <span class="keyword">set</span>.</div><div class="line"></div><div class="line"> - <span class="type">But</span> be careful because the geometry of your view (its bounds) <span class="keyword">is</span> not <span class="keyword">set</span> yet!</div><div class="line"> </div><div class="line">   <span class="type">At</span> this point, you can't be sure you're on an iPhone <span class="number">5</span>-sized screen or an iPad or ???.</div><div class="line"></div><div class="line">   `<span class="type">So</span> <span class="keyword">do</span> not initialize things that are geometry-dependent here.`</div><div class="line">   有关几何位置的初始化不能再viewDidLoad中操作！</div><div class="line"></div><div class="line">### <span class="type">Just</span> before your view appears on screen, you <span class="keyword">get</span> notified</div><div class="line">```swift</div><div class="line">  <span class="function"><span class="keyword">func</span> <span class="title">viewWillAppear</span><span class="params">(animated: Bool)</span></span> <span class="comment">// animated is whether you are appearing over time</span></div></pre></td></tr></table></figure></p>
+</li>
+<li>
+<p>Your view will only get &quot;loaded&quot; once, but it might appear and disappear a lot.</p>
+<p>So don't put something in this method that really wants to be in viewDidLoad.</p>
+<p>Otherwise, you might be doing something over and over unnecessarily.</p>
+</li>
+<li>
+<p>Do something here if things your display is changing while your MVC is off-screen.</p>
+</li>
+<li>
+<p>You could use this to optimize performance by waiting until this method is called
+(as opposed to viewDidLoad) to kick off an expensive operation (probably in another thread).</p>
+</li>
+<li>
+<p>Your view's geometry is set here, but there are other places to react to geometry.</p>
+</li>
+</ul>
+<p>###There is a &quot;did&quot; version of this as well</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">viewDidAppear</span><span class="params">(animated: Bool)</span></span></div></pre></td></tr></table></figure></p>
+<h3>And you get notified when you will disappear off screen too</h3>
+<p>This is where you put &quot;remember what's going on&quot; and cleanup code.
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewWillDisappear</span><span class="params">(animated: Bool)</span></span> &#123;</div><div class="line">   <span class="keyword">super</span>.viewWillDisappear(animated) <span class="comment">// call super in all the viewWill/Did... methods</span></div><div class="line">   <span class="comment">// do some clean up now that we've been removed from the screen</span></div><div class="line">   <span class="comment">// but be careful not to do anything time-consuming here, or app will be sluggish</span></div><div class="line">   <span class="comment">// maybe even kick off a thread to do stuff here (again, we'll cover threads later)</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>There is a &quot;did&quot; version of this too</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">viewDidDisappear</span><span class="params">(animated: Bool)</span></span></div></pre></td></tr></table></figure></p>
+<h3>Geometry changed?</h3>
+<p>Most of the time this will be automatically handled with Autolayout.</p>
+<p>But you can get involved in geometry changes directly with these methods …
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">funcviewWillLayoutSubviews()</div><div class="line">funcviewDidLayoutSubviews()</div></pre></td></tr></table></figure></p>
+<p>They are called any time a view's frame changed and its subviews were thus re-layed out.</p>
+<p>For example, autorotation (more on this in a moment).</p>
+<p>You can reset the frames of your subviews here or set other geometry-related properties.</p>
+<p>These methods might be called more often than you'd imagine
+(e.g. for pre- and post- animation arrangement, etc.).</p>
+<p>So don't do anything in here that can't properly (and efficiently) be done repeatedly.</p>
+<p>#Autorotation</p>
+<ul>
+<li>
+<p>Usually, the UI changes shape when the user rotates the device between portrait/landscape</p>
+<p>You can control which orientations your app supports in the Settings of your project</p>
+</li>
+<li>
+<p>Almost always, your UI just responds naturally to rotation with autolayout</p>
+</li>
+<li>
+<p>But if you, for example, want to participate in the rotation animation, you can use this method …
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div></pre></td><td class="code"><pre><div class="line">  <span class="function"><span class="keyword">func</span> <span class="title">viewWillTransitionToSize</span><span class="params">(</span></span></div><div class="line">      size: CGSize,</div><div class="line">      withTransitionCoordinator: UIViewControllerTransitionCoordinator</div><div class="line">  )</div><div class="line">```  </div><div class="line"> </div><div class="line">  - <span class="type">The</span> coordinator provides a method to animate alongside the rotation animation</div><div class="line"> </div><div class="line">    <span class="type">We</span> are not going to be talking about animation, though, <span class="keyword">for</span> a couple of weeks</div><div class="line"></div><div class="line">    <span class="type">So</span> this <span class="keyword">is</span> just something to put <span class="keyword">in</span> the back of your mind (i.e. that it exists) <span class="keyword">for</span> now</div><div class="line"></div><div class="line">### <span class="type">In</span> low-memory situations, didReceiveMemoryWarning gets called ...</div><div class="line">  <span class="type">This</span> rarely happens, but well-designed code with big-ticket memory uses might anticipate it.</div><div class="line">  </div><div class="line">  <span class="type">Examples</span>: images and sounds.</div><div class="line">  </div><div class="line">  <span class="type">Anything</span> <span class="string">"big"</span> that <span class="keyword">is</span> not currently <span class="keyword">in</span> use and can be recreated relatively easily</div><div class="line">    should probably be released (by setting any pointers to it to <span class="literal">nil</span>)</div><div class="line">    </div><div class="line">### awakeFromNib</div><div class="line"></div><div class="line">  <span class="type">This</span> method <span class="keyword">is</span> sent to all objects that come out of a storyboard (including your <span class="type">Controller</span>).</div><div class="line">  </div><div class="line">  <span class="type">Happens</span> before outlets are <span class="keyword">set</span>! (i.e. before the <span class="type">MVC</span> <span class="keyword">is</span> <span class="string">"loaded"</span>)</div><div class="line">  </div><div class="line">  <span class="type">Put</span> code somewhere <span class="keyword">else</span> <span class="keyword">if</span> at all possible (e.g. viewDidLoad or viewWillAppear).</div><div class="line"></div><div class="line"></div><div class="line">###<span class="type">Summary</span></div><div class="line"></div><div class="line"> - <span class="type">Instantiated</span> (from storyboard usually)</div><div class="line">  </div><div class="line"> - awakeFromNib</div><div class="line">  </div><div class="line"> - segue preparation happens</div><div class="line">  </div><div class="line"> - outlets <span class="keyword">get</span> <span class="keyword">set</span></div><div class="line">  </div><div class="line"> - viewDidLoad</div><div class="line">  </div><div class="line"> - <span class="type">These</span> pairs will be called each time your <span class="type">Controller's</span> view goes on/off screen …</div><div class="line">  </div><div class="line">     viewWillAppear and viewDidAppear</div><div class="line">     </div><div class="line">     viewWillDisappear and viewDidDisappear</div><div class="line">     </div><div class="line"> - <span class="type">These</span> <span class="string">"geometry changed"</span> methods might be called at any time after viewDidLoad …</div><div class="line">  </div><div class="line">     viewWillLayoutSubviews (… then autolayout happens, then …) viewDidLayoutSubviews</div><div class="line">     </div><div class="line"> - <span class="type">If</span> memory gets low, you might <span class="keyword">get</span> …</div><div class="line">  </div><div class="line">     didReceiveMemoryWarning</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">### <span class="type">Demo</span></div><div class="line"> </div><div class="line">  <span class="type">Let's</span> plop some <span class="built_in">println</span> statements into the <span class="type">View</span> <span class="type">Controller</span> <span class="type">Lifecycle</span> methods <span class="keyword">in</span> <span class="type">Psychologist</span></div><div class="line">  </div><div class="line">  <span class="type">Then</span> we can watch <span class="keyword">as</span> <span class="type">Psychologist</span> and <span class="type">Happiness</span> <span class="type">MVCs</span> go through their lifecycle</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">#<span class="type">Autolayout</span></div><div class="line">### <span class="type">You've</span> seen a lot of <span class="type">Autolayout</span> already</div><div class="line"> - <span class="type">Using</span> the dashed blue lines to <span class="keyword">try</span> to tell <span class="type">Xcode</span> what you intend</div><div class="line"> - <span class="type">Ctrl</span>-<span class="type">Dragging</span> between views to create relationships (spacing, etc.)</div><div class="line"> - <span class="type">The</span> <span class="string">"Pin"</span> and <span class="string">"Arrange"</span> popovers <span class="keyword">in</span> the lower <span class="keyword">right</span> of the storyboard</div><div class="line"> - <span class="type">Reset</span> to <span class="type">Suggested</span> <span class="type">Constraints</span> (<span class="keyword">if</span> the blue lines were enough to unambiguously <span class="keyword">set</span> constraints)</div><div class="line"> - <span class="type">Document</span> <span class="type">Outline</span> (see all constraints, resolve misplacements and even conflicts)</div><div class="line"> - <span class="type">Size</span> <span class="type">Inspector</span> (look at (and edit!) the details of the constraints on the selected view)</div><div class="line"> - <span class="type">Clicking</span> on a constraint to select it then bring up <span class="type">Attributes</span> <span class="type">Inspector</span> (to edit its details)</div><div class="line"> </div><div class="line"></div><div class="line">### <span class="type">Mastering</span> <span class="type">Autolayout</span> requires experience</div><div class="line">  <span class="type">You</span> just have to <span class="keyword">do</span> it to learn it</div><div class="line">  </div><div class="line">### <span class="type">Autolayout</span> can be done from code too</div><div class="line">  <span class="type">Though</span> you're probably better off doing it <span class="keyword">in</span> the storyboard wherever possible</div><div class="line"></div><div class="line">  <span class="type">The</span> demo today will show a simple <span class="keyword">case</span> of doing <span class="type">Autolayout</span> from code</div><div class="line">### <span class="type">What</span> about rotation?</div><div class="line">  <span class="type">Sometimes</span> rotating changes the geometry so drastically that autolayout <span class="keyword">is</span> not enough</div><div class="line">  </div><div class="line">  <span class="type">You</span> actually need to reposition the views to make them fit properly</div><div class="line">### <span class="type">Calculator</span></div><div class="line">  <span class="type">For</span> example, what <span class="keyword">if</span> we had <span class="number">20</span> buttons <span class="keyword">in</span> a <span class="type">Calculator</span>?</div><div class="line">  </div><div class="line">  <span class="type">It</span> might be better <span class="keyword">in</span> <span class="type">Landscape</span> to have the buttons <span class="number">5</span> across and <span class="number">4</span> down</div><div class="line">  </div><div class="line">  <span class="type">Versus</span> <span class="keyword">in</span> <span class="type">Portrait</span> have them <span class="number">4</span> across and <span class="number">5</span> down</div><div class="line">  </div><div class="line">### <span class="type">View</span> <span class="type">Controllers</span> might want this <span class="keyword">in</span> other situations too</div><div class="line">  <span class="type">For</span> example, your <span class="type">MVC</span> <span class="keyword">is</span> the master of a side-by-side <span class="built_in">split</span> view</div><div class="line">  </div><div class="line">  <span class="type">In</span> that <span class="keyword">case</span>, you'd want to draw just like a <span class="type">Portrait</span> iPhone does</div><div class="line">  </div><div class="line">### <span class="type">The</span> solution? <span class="type">Size</span> <span class="type">Classes</span> </div><div class="line">  <span class="type">Your</span> <span class="type">View</span> <span class="type">Controller</span> always exists <span class="keyword">in</span> a certain <span class="string">"size class"</span> environment <span class="keyword">for</span> width and height</div><div class="line">  </div><div class="line">  <span class="type">Currently</span> this <span class="keyword">is</span> either <span class="type">Compact</span> or <span class="type">Regular</span> (i.e. not compact)</div><div class="line">### iPhone <span class="number">6</span>+</div><div class="line">  <span class="type">The</span> iPhone <span class="number">6</span>+ <span class="keyword">in</span> <span class="type">Portrait</span> orientation <span class="keyword">is</span> <span class="type">Compact</span> <span class="keyword">in</span> width and <span class="type">Regular</span> <span class="keyword">in</span> height</div><div class="line">  </div><div class="line">  <span class="type">In</span> <span class="type">Landscape</span>, it <span class="keyword">is</span> <span class="type">Compact</span> <span class="keyword">in</span> height and <span class="type">Regular</span> <span class="keyword">in</span> width</div><div class="line">  </div><div class="line">### iPhone</div><div class="line">  <span class="type">Other</span> iPhones <span class="keyword">in</span> <span class="type">Portrait</span> are also <span class="type">Compact</span> <span class="keyword">in</span> width and <span class="type">Regular</span> <span class="keyword">in</span> height</div><div class="line">  </div><div class="line">  <span class="type">But</span> <span class="keyword">in</span> <span class="type">Landscape</span>, non-<span class="number">6</span>+ iPhones are treated <span class="keyword">as</span> <span class="type">Compact</span> <span class="keyword">in</span> both dimensions</div><div class="line">  </div><div class="line">### iPad</div><div class="line">  <span class="type">Always</span> <span class="type">Regular</span> <span class="keyword">in</span> both dimensions</div><div class="line">  </div><div class="line">  <span class="type">An</span> <span class="type">MVC</span> that <span class="keyword">is</span> the master <span class="keyword">in</span> a side-by-side <span class="built_in">split</span> view will be <span class="type">Compact</span> width, <span class="type">Regular</span> height</div><div class="line">  </div><div class="line">### <span class="type">Extensible</span></div><div class="line">  <span class="type">This</span> whole concept <span class="keyword">is</span> extensible to any <span class="string">"MVC's inside other MVC's"</span> situation (not just <span class="built_in">split</span> view)</div><div class="line">  </div><div class="line">  <span class="type">An</span> <span class="type">MVC</span> can <span class="built_in">find</span> out its size <span class="class"><span class="keyword">class</span> <span class="title">environment</span> <span class="title">via</span> <span class="title">this</span> <span class="title">method</span> <span class="title">in</span> <span class="title">UIViewController</span> …</span></div><div class="line">```<span class="title">swift</span>  </div><div class="line">  <span class="title">let</span> <span class="title">mySizeClass</span>: <span class="title">UIUserInterfaceSizeClass</span> = <span class="title">self</span>.<span class="title">traitCollection</span>.<span class="title">horizontalSizeClass</span></div></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<p>The return value is an enum .Compact or .Regular (or .Unspecified).</p>
+<p>#Demos</p>
+<h3>ShowSizeClass</h3>
+<p>A trivial app to take a look at how we react to size class differences in our storyboard
+对于不同的屏幕可以利用SizeClass设置布局，共有3*3种状态，每种布局仅在对应SizeClass生效。</p>
+<h3>Autolayout</h3>
+<p>Let's pull it all together by building a UI that has some Autolayout challenges</p>
+<p>Including needing to do something different in different size classes
+可以调节水平和竖直的hugging优先级，决定缩放的时候优先压缩哪个控件。</p>
+<p>本课使用<code>extension</code>扩展了User和Image类。</p>
+<h3>A Challenge to You!</h3>
+<p>After watching today, see if you can make your Calculator react to size class changes</p>
+<p>For example, change the number of rows and columns in different size class situations</p>
+<p>Or even show more operations in one size class or another (like Apple's Calculator app does)</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2015/11/12/Plagues-1-the-wives/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2015/11/13/2015-11-13-Summary-of-the-first-month-in-the-internship-of-Tencent/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            R如何找对象？ - PART I | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,R,译文,environment">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="R如何找对象？ - PART I | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="R"> <meta property="og:article:tag" content="译文"> <meta property="og:article:tag" content="environment"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">动机</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">R在哪儿存储对象？</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">对所有者和指针撒个小谎</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">跟环境玩一玩</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">简短的答案：R如何找对象</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">世界地图</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">全局环境(the global environment)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">8.</span> <span class="post-toc-text">搜索列表(the search list)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">9.</span> <span class="post-toc-text">包 vs. 命名空间 vs. 导入项 vs. 环境</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">10.</span> <span class="post-toc-text">导入项(imports) vs. 依赖项(depends)</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">11.</span> <span class="post-toc-text">namespace:base</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">12.</span> <span class="post-toc-text">原文</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                R如何找对象？ - PART I
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>1月 23, 2016</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/R/">R</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/environment/">environment</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/译文/">译文</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=R如何找对象？ - PART I&url=http://yoursite.com//2016/01/23/Codage-19-how-r-searches-and-finds-stuff-1/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=R如何找对象？ - PART I&url=http://yoursite.com//2016/01/23/Codage-19-how-r-searches-and-finds-stuff-1/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2016/01/23/Codage-19-how-r-searches-and-finds-stuff-1/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2016/01/23/Codage-19-how-r-searches-and-finds-stuff-1/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>或者是……
+如何将自己推进环境、命名空间、导入、导出、框架、封装、继承和函数调用的巨坑中？</p>
+<p>(个人翻译，原文在全文页面底部)</p>
+<p>&lt;!-- more --&gt;</p>
+<h2>动机</h2>
+<p>为何读此贴？</p>
+<ol>
+<li>
+<p>避免被坑
+迄今为止你都躲开了上述那些坑，但现在是时候入坑了（避免被坑的前提是熟悉它而不是碰巧躲开它）。不幸的是，你说的是人类语言，但R的帮助文档只说“原始C语言”（脑补一个80年代毛发旺盛的C语言程序员——极其聪明但是说话像含了一嘴腌萝卜一样——并不擅长沟通）。</p>
+</li>
+<li>
+<p>R很傻缺
+你的函数一度工作的很好，但现在却甩你一脸报错。当然，你的函数并没有做过任何修改，你只是模糊的记得报错前你装了一个新包，但是那有什么关系呢？可是，的确有关系……</p>
+</li>
+<li>
+<p>R找错对象
+你加载了一个包叫<a href="https://cran.r-project.org/web/packages/matlab/index.html" target="_blank" rel="external">matlab</a>然后调用<code>sum()</code>函数去计算一个矩阵。返回的结果是每列求和后的向量(<code>base</code>包里的<code>colSums()</code>函数的效果)，而不是一个数值。脑海里奔腾过无数匹神兽。
+让R像Matlab一样运行，你想啥呢？</p>
+</li>
+<li>
+<p>你想让R找点儿别的东西
+你喜欢一个包里的绘图函数。如果这个函数能直接被自己的计算调用就完美了。看上去像是黑魔法，但是用函数的完整功能来支持你的小把戏多少有点诡异。那么，暗黑艺术欢迎你。</p>
+</li>
+<li>
+<p>写包
+你写了一个包，你的这个娃跟CRAN里其它的娃玩儿的开心伐？</p>
+</li>
+</ol>
+<h2>R在哪儿存储对象？</h2>
+<p>R里所有的东西都存在于<strong>环境</strong>中。我们最终想解决的问题是，搞清楚什么对象存放于什么环境中，并且如何调用到它。
+一个环境，也是R的一个对象。对象用于存储。环境比较特殊，只能用于存储两种东西：</p>
+<ol>
+<li>
+<p>框架(a frame)
+这是一个<strong>命名对象</strong>的集合。什么是命名对象？R里所有的东西都是一个对象——函数、数值、字符、逻辑值，等等。这些对象可以被命名为(比如)<code>myFunction</code>，<code>myNumeric</code>，<code>myCharacter</code>，<code>myLogical</code>。当你在命令行输入<code>myVar = &quot;chirlie&quot;</code>时，你就创建了一个叫做&quot;myVar&quot;的字符型变量，这个变量里存储了&quot;charlie&quot;这个字符串。
+因为所有的对象都存储在环境中，框架就是环境存储这些对象的地方。刚刚你创建的<code>myVar</code>就存在于某个环境的框架中。</p>
+</li>
+<li>
+<p>封装环境(the enclosing environment)
+一个环境的所有者即封装环境，它是对另一个环境的引用。
+<img src="http://7xndoy.com1.z0.glb.clouddn.com/Codage-19-img1-environment-structure.png" alt="img1"></p>
+</li>
+</ol>
+<p>上图可以看出封装环境的链条止步于一个特殊环境，叫做空环境(empty environment)。你可以通过执行<code>emptyenv()</code>来获取这个对象。
+对于一个给定的环境对象，你可以对其查询两件重要的事情：此环境的所有者(母环境、封装环境)还有它的框架下的对象。</p>
+<h2>对所有者和指针撒个小谎</h2>
+<p>笔者使用<em>所有关系</em>和<em>包含关系</em>两个松散的概念。当我说到<em>拥有</em>和<em>包含</em>的时候，那么我真的是在讨论<em>指针</em>。如果你对<em>指针</em>没有了解，那么你可以直接跳到下一个环节。</p>
+<p>接下来我会将环境描述为<em>拥有</em>对象，尤其是拥有函数。事实上，函数就是存储在内存某处的指令，他们可以在查询表里检索，一旦找到，就会被指针指出内存所在位置。这篇文章的核心概念就是指针的不可知性以及对于精通R的搜索机制而言，指针并不是必须的。
+事实上，R很努力的在隐藏指针。
+对，技术上的不精确让我很痛苦，但我会尝试着让文章保持简单，毕竟还是有很多人能理解<em>所有关系</em>。我们有很多东西要谈。</p>
+<h2>跟环境玩一玩</h2>
+<p>创建一个环境（环境是个对象）
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">myEnvironment = new.env() </div><div class="line"></div><div class="line"><span class="comment"># 打印出来</span></div><div class="line">myEnvironment</div></pre></td></tr></table></figure></p>
+<pre><code>## &lt;environment: 0x0000000006ce0920&gt;
+</code></pre>
+<p>除空环境(<code>R_EmptyEnv</code>)外，任何环境都有个封装环境。<code>myEnvironment</code>的封装环境是什么？是<code>R_GlobalEnv</code>，用<code>parent.env()</code>函数来找到它。</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">parent.env(myEnvironment)</div></pre></td></tr></table></figure></p>
+<pre><code>## &lt;environment: R_GlobalEnv&gt;
+</code></pre>
+<p><code>R_GlobalEnv</code>的封装环境是什么？是一个叫<code>package:stats</code>的环境 (以个人电脑里包的安装顺序而定，每个人的可能有差异)。</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">parent.env(parent.env(myEnvironment))</div></pre></td></tr></table></figure></p>
+<pre><code>## &lt;environment: package:stats&gt;
+## attr(,&quot;name&quot;)
+## [1] &quot;package:stats&quot;
+## attr(,&quot;path&quot;)
+## [1] &quot;C:/R/R-2.14.1/library/stats&quot;
+</code></pre>
+<p><code>R_GlobalEnv</code>也可以由以下两种标识来提取。
+<code>.GlobalEnv</code>和函数<code>globalenv()</code>。<code>R_GlobalEnv</code>我们会稍后讨论。
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">parent.env(.GlobalEnv)</div></pre></td></tr></table></figure></p>
+<pre><code>## &lt;environment: package:stats&gt;
+## attr(,&quot;name&quot;)
+## [1] &quot;package:stats&quot;
+## attr(,&quot;path&quot;)
+## [1] &quot;C:/R/R-2.14.1/library/stats&quot;
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">parent.env(globalenv())</div></pre></td></tr></table></figure></p>
+<pre><code>## &lt;environment: package:stats&gt;
+## attr(,&quot;name&quot;)
+## [1] &quot;package:stats&quot;
+## attr(,&quot;path&quot;)
+## [1] &quot;C:/R/R-2.14.1/library/stats&quot;
+</code></pre>
+<p>用<code>emptyenv()</code>获取空环境。</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">emptyenv()</div></pre></td></tr></table></figure></p>
+<pre><code>## &lt;environment: R_EmptyEnv&gt;
+</code></pre>
+<p>为什么<code>myEnvironment</code>有个恶心的名字：0x0000000006ce0920?
+那个名字只是环境在内存中的位置。我们可以对它的<code>name</code>属性(attribute)赋值，让它看起来不那么让人敬而远之。
+然而R并不会用这个正常点儿的名字去替代原有的名字。我们可以用<code>environmentName()</code>函数去提取那个正常的名字。</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">attr(myEnvironment, <span class="string">"name"</span>) = <span class="string">"Cool Name"</span> </div><div class="line">myEnvironment</div></pre></td></tr></table></figure></p>
+<pre><code>## &lt;environment: 0x0000000006ce0920&gt;
+## attr(,&quot;name&quot;)
+## [1] &quot;Cool Name&quot;
+## &gt; environmentName(myEnvironment) 
+## [1] &quot;Cool Name&quot;
+</code></pre>
+<p>然后我们创建一个数值变量。
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">myValue = <span class="number">5</span></div></pre></td></tr></table></figure></p>
+<p>创建的对象默认存放在当前的环境下，可用<code>environment()</code>函数获取当前环境。</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">environment()</div></pre></td></tr></table></figure></p>
+<pre><code>## &lt;environment: R_GlobalEnv&gt;
+</code></pre>
+<p>用<code>ls()</code>可在当前环境下查询所属框架内的所有对象。这里我们确认了<code>myEnvironment</code>和<code>myValue</code>都存在于当前的环境<code>R_GlobalEnv</code>中。</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls(envir = environment())</div></pre></td></tr></table></figure></p>
+<pre><code>## [1] &quot;myEnvironment&quot; &quot;myValue&quot;      
+</code></pre>
+<p>当然我们也可以无视默认的存储行为，踩在当前环境的脸上把新创建的对象存储在其它环境中。我们用<code>assign()</code>函数去实现上述目标——在<code>myEnvironment</code>中创建一个叫&quot;myLogical&quot;的变量。
+先用<code>ls()</code> 确认在赋值前，myEnvironment中没有任何东西。然后再赋值后再次用<code>ls()</code>去确认已经成功在<code>myEnvironment</code>中创建<code>myLogical</code>。</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls(envir = myEnvironment)</div></pre></td></tr></table></figure></p>
+<pre><code>## character(0)
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">assign(<span class="string">"myLogical"</span> , c(<span class="literal">FALSE</span>, <span class="literal">TRUE</span>), envir = myEnvironment)</div><div class="line">ls(envir = myEnvironment)</div></pre></td></tr></table></figure></p>
+<pre><code>## [1] &quot;myLogical&quot;
+</code></pre>
+<p>通过调用<code>get()</code>函数，我们可以从任何环境中获取任何对象。</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">get(<span class="string">"myLogical"</span> , envir = myEnvironment)</div></pre></td></tr></table></figure></p>
+<pre><code>## [1] FALSE  TRUE
+</code></pre>
+<p>创建对象之前，我怎么知道<code>myEnvironment</code>的封装环境是<code>R_GlobalEnv</code>?
+所以再强调一次，R以当前环境为默认存储环境。你可以使用<code>parent.env()</code>函数来替换一个环境的封装环境。</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">myEnvironment2 = new.env()</div><div class="line">parent.env(myEnvironment2)</div></pre></td></tr></table></figure></p>
+<pre><code>## &lt;environment: R_GlobalEnv&gt;
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">parent.env(myEnvironment2) = myEnvironment</div><div class="line">parent.env(myEnvironment2)</div></pre></td></tr></table></figure></p>
+<pre><code>## &lt;environment: 0x0000000006ce0920&gt;
+## attr(,&quot;name&quot;)
+## [1] &quot;Cool Name&quot;
+</code></pre>
+<p>从另一个角度去理解“当前”或“本地”环境：我们新建一个函数，让它调用<code>environment()</code>去查询本地环境。当R执行一个函数时，它会自动为函数创建一个（子）环境。当变量或者对象在函数内部被创建时，他们只存在于函数内部的环境中。调用<code>Test()</code>函数去验证时，并不会返回<code>R_GlobalEnv</code>。我们没有在<code>Test()</code>内部创建任何对象。如果我们创建了，他们便会存在于<code>0x0000000006ce9b58</code>环境中。当函数完成运算，函数内部环境就会消失。</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Test = <span class="keyword">function</span>() &#123; print(environment()) &#125; </div><div class="line">environment()</div></pre></td></tr></table></figure></p>
+<pre><code>## &lt;environment: R_GlobalEnv&gt;
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Test()</div></pre></td></tr></table></figure></p>
+<pre><code>## &lt;environment: 0x0000000006ce9b58&gt;
+</code></pre>
+<p>当然我们也可以尝试一下返回函数中子环境的封装环境。
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Test = <span class="keyword">function</span>() &#123; print(parent.env(environment())) &#125;</div><div class="line">Test()</div></pre></td></tr></table></figure></p>
+<pre><code>## &lt;environment: R_GlobalEnv&gt;
+</code></pre>
+<h2>简短的答案：R如何找对象</h2>
+<p>有跟着上面的代码运行一遍吗？从运行结果看上去，环境并不只是对象的静态仓库。R运行一段语句时，从事伴随着一个<em>本地</em>或<em>当前</em>环境。简单点讲，就是一个当前被<em>激活</em>的环境（对立面是目前未被使用的<em>未被激活</em>的环境。或是更直白地说，语句总是在一个指定的环境内运行的。
+也就是说，R可以在任何时间提一个问题(此处有翻译腔)“嘿，伙计，本地环境是什么？”，且R经常这么问。每当它需要找到一个命名变量的时候就需要问一次这个问题。
+我们知道每当R运行一个函数他就需要创建一个心的本地环境，所以当我们优雅地跑程序时，函数会调用其它函数，而环境会随之滋生然后湮灭。</p>
+<p>脑补一下我们在任意一段语句处冻结系统。当R搜寻那段语句中的一个名称时，它会首先在当前环境中进行查找。如果当前环境中找不到，R跑去其封装环境中找对象，以此类推。这就是R如何找对象的，它从本地环境开始遍历每一级封装环境，一级一级直至找到第一个出现对象名称的环境为止。</p>
+<p>这次大家满足了吧？
+No No No。我们继续。</p>
+<h2>世界地图</h2>
+<p>我们刚刚谈到的R找对象的方式，多少有点像一个限定了方向的寻宝游戏。要找到宝藏，我们只需要准备一个世界地图！</p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/Codage-19-img2-map-of-the-world.png" alt="img2"></p>
+<p>第一次启动R，所有环境的状态如上图所示。每一个方框代表了一个唯一的环境，紫色实线代表了封装环境之间的关系。紫色虚线会稍后提到，暂时将它视作一种与封装环境类似的关系。</p>
+<h2>全局环境(the global environment)</h2>
+<p><code>R_GlobalEnv</code>是一个特殊的环境。在上面的地图中，它是绿色的。绿色表示<em>开始</em>。精确地讲，全局环境是你启动R时的<em>本地</em>或<em>当前</em>环境，如果你在命令行上进行赋值的操作，那么命名对象会被储存在<code>R_GlobalEnv</code>中。</p>
+<p><code>ls()</code>函数返回指定环境中定义的所有对象。下面的代码中我们用<code>.GlobalEnv</code>来指代全局环境。
+我们会看到当我们刚刚启动R时，全局环境下没有任何对象。但是当我们给<code>myVariable</code>赋值后，全局环境中便包含了这个变量的名字。</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls(envir = .GlobalEnv)</div></pre></td></tr></table></figure></p>
+<pre><code>## character(0)
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">myVariable = <span class="number">0</span> </div><div class="line">ls(envir = .GlobalEnv)</div></pre></td></tr></table></figure></p>
+<pre><code>## [1] &quot;myVariable&quot;
+</code></pre>
+<p>注意<code>environment()</code>函数。
+当你看到它返回<code>NULL</code>的时候可能以为这是一个错误的结果。(然而并不是。)
+查一下帮助文档，你会知道这个<code>environment()</code>只以函数为输入参数。
+<code>myVariable</code>是一个数值变量，不是函数。
+<code>environment()</code>的目的并不是告诉你一个对象的封装环境是什么。</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">environment(myVariable)</div></pre></td></tr></table></figure></p>
+<pre><code>## NULL
+</code></pre>
+<h2>搜索列表(the search list)</h2>
+<p>搜索列表是从<code>R_GlobalEnv</code>到<code>R_EmptyEnv</code>的封装环境链条。在上面的世界地图里，你可以将它视作一条高速公路。R从<code>R_GlobalEnv</code>出发在这条路上行驶。所有的道路都最终汇集到这条高速公路上。你可以在命令行输入<code>search()</code>从而得到这个链条。</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">search</div></pre></td></tr></table></figure></p>
+<pre><code>## [1] &quot;.GlobalEnv&quot;        &quot;package:stats&quot;   &quot;package:graphics&quot; &quot;package:utils&quot; &quot;package:datasets&quot; 
+## [6] &quot;package:grDevices&quot; &quot;package:methods&quot; &quot;Autoloads&quot;        &quot;package:base&quot;
+</code></pre>
+<h2>包 vs. 命名空间 vs. 导入项 vs. 环境</h2>
+<p>package vs. namespace vs. imports vs. environment</p>
+<p>凝视我们那张世界地图一会儿，你会发现一个美女从图中显现……
+阿不，这不是3d图……
+你会注意到每个R的包都有3个关联的环境。如果你觉得这让人很疑惑，那么恭喜你，你还是正常人类。我第一次碰到这个关联的时候，差点儿没被它逼疯。
+不过相信我，唯一吊诡的地方就是命名规则，这三个关联非常有用且设计良好。</p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/Codage-19-img3-package-namespace-imports.png" alt="img3"></p>
+<p>让我们从左到右分解：</p>
+<ol>
+<li>
+<p>包的环境(package environment)
+包内<em>导出</em>的对象存储在此环境中。简单来讲，这些对象是包的作者希望你看到的，且它们大多数都是函数。一个典型的已经发布的包会提供特定主题或者领域相关的函数。就传统的OOP(Object Oriented Programming)而言，这与&quot;public&quot;类型或方法功能相近。</p>
+</li>
+<li>
+<p>命名空间的环境(namespace environment)
+包内<em>所有</em>的对象均存储在此环境中。其中也包括那些包的作者并不想让终端用户接触到的“隐藏”对象(并不是真正的被隐藏，如果你想获取，仍然可以接触到)。这些对象用于支持那些“可见”的对象。
+比如，<code>HardCalculation()</code>函数可能会使用到<code>MakeResultsPretty()</code>的处理复杂的文本格式的功能。但是作者并不想让你直接调用后者，后者唯一的功能就是给<code>HardCalculation()</code>傲娇的输出结果赋予特定的格式。这与OOP中的&quot;private&quot;或&quot;internal&quot;的类型或方法功能相近。
+等等，包的作者想让我看见的对象，既存在与包的环境又存在于命名空间的环境中？
+是又不是。
+是，两个环境均有一个框架列举了有同样名字的对象；不是，并同时不存在两个同样的对象集合。两个环境都有一个<a href="http://stackoverflow.com/questions/9278715/value-reference-equality-for-same-named-function-in-package-namespace-environmen" target="_blank" rel="external"><strong>指向同一函数的指针</strong></a>。如果你看不懂，那就姑且认为有两份同样的对象集合好了。这个安排看上去很诡异，但是这种安排的用处马上就会显现出来。这也是为什么查询一个对象所处的环境并不是那么容易——有可能拥有同一对象的环境有两个甚至两个以上。</p>
+</li>
+<li>
+<p>导入项环境(imports environment)
+这个环境存储着从其它包中导入的对象，这些包用于支持当前包的正常使用。在CRAN上发布的包大多不是孤立的，它们基于其它包提供的功能编写而成。以<a href="http://cran.r-project.org/web/packages/ggplot2/index.html" target="_blank" rel="external"><code>ggplot2</code></a>为例，在CRAN的页面上，&quot;Imports&quot;区块中这个包要求<code>plyr</code>及其它包(原文截图于2012年)。那么<code>imports::ggplot2</code>环境便包含了<code>plyr</code>包中所有的对象。
+<img src="http://7xndoy.com1.z0.glb.clouddn.com/Codage-19-img4-ggplot2.png" alt="img4"></p>
+</li>
+</ol>
+<h2>导入项(imports) vs. 依赖项(depends)</h2>
+<p>上面的截图里，<code>Depends</code>和<code>Imports</code>很让人疑惑。如果<code>Imports</code>声明了一个包对其它包的需求，那<code>Depends</code>是用来干啥的？这是一个糟糕的命名规则。<code>Depends</code><em>同样</em>也列举了<code>ggplot2</code>需要的包。两者的差别是我们在地图上的何处放置这些需求。地图限定了R寻找对象的路径，所以在<code>Imports</code>或者<code>Depends</code>中指定需求，对R寻找依赖包来说有不同的结果。</p>
+<p>如果依赖包是在<code>Imports</code>中指定，那么这个包中的内容将会存储于“导入项”环境中。在<code>ggplot2</code>的例子中，<code>plyr</code>的对象会出现在<code>imports:ggplot2</code>环境中。要注意的是<code>plyr</code>并没有生成一个独立的环境，它漂亮的将自己隐藏在了<code>imports::ggplot2</code>环境中。下图紫色的虚线我们会在后面提到。</p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/Codage-19-img5-imports-depends-plyr.png" alt="img5"></p>
+<p>如果依赖包是在<code>Depends</code>种指定(比如<code>reshape</code>包)，那么这个包的载入方式就像你在命令行输入<code>library()</code>或<code>require()</code>的效果一样。也就是说，依赖包的包、命名空间以及导入项这三个环境都会被创建。<code>reshape</code>包在<code>ggplot2</code>前被加载，<code>package:reshape</code>环境变成<code>package:ggplot2</code>的封装环境。</p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/Codage-19-img6-imports-depends-reshape.png" alt="img6"></p>
+<p>那么我们可以在<code>Depends</code>和<code>Imports</code>间任意选择吗？No No No...
+<code>library()</code>命令(或者更广泛的说加载一个库)将包的环境置于<code>R_Global</code>之下。更精确地说，加载包的环境变成<code>R_Global</code>的封装环境。<code>R_Global</code>的旧有封装环境现在封装加载包的环境。下图中你能看到这点。下图中的<a href="http://cran.r-project.org/web/packages/reshape2/index.html" target="_blank" rel="external"><code>reshape2</code></a>是原有的<code>reshape</code>包的重写/升级版。</p>
+<p><code>reshape</code>和<code>reshape2</code>均包含了<code>cast()</code>函数。我们假设<code>ggplot2</code>有一个函数(其实并没有)叫<code>FunctionThatCallsCast()</code>。你可以猜到，这个函数能调用<code>cast()</code>函数。不用深究R怎么去找对象，我们仅仅需要跟着那条“紫色线路”走。我们从1走到2并找到<code>FunctionThatCallsCast()</code>函数。
+提醒：包的环境和命名空间的环境都引用了一个公共函数。
+运行它就需要找到<code>cast()</code>函数，我们从3走到5最后在6找到了它并停止检索。但这并不是我们想要寻找的那个<code>cast()</code>。这是<code>reshape2</code>的<code>cast()</code>，但<code>ggplot2</code>需要的是<code>reshape</code>包里的那个。这种错误的调用可能会导致很可怕的后果。</p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/Codage-19-img7-reshape-reshape2-cast-conflict.png" alt="img7"></p>
+<p>更好的解决方案是遵循<code>Imports</code>特征，直接在<code>imports:ggplot2</code>中找到<code>reshape</code>的<code>cast()</code>，那样的话，我们只要走到3就可以停下。现在，你应该明白了为什么<code>Imports</code>和<code>Depends</code>间的选择并不是随意的。
+由于CRAN上已经有太多的包，不同包的函数拥有同样名字的情况已经司空见惯。<code>Depends</code>现在看起来已经不那么安全，它让自己的包更容易被其它加载的包所攻击(同名函数被覆盖)。
+译者注：下图是2016年1月23日的<code>ggplot2</code>包的截图，可以看到帮助文档里已经取消了<code>Depends</code>项中除R本身以外所有的依赖项。</p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/Codage-19-img4bis.PNG" alt="img4bis"></p>
+<h2>namespace:base</h2>
+<p>还有一个事实就是，所有的<code>imports:&lt;name&gt;</code>环境均以<code>namespace:base</code>作为其封装环境，就把它当做是创建一个包的赠品吧。由于基础函数被调用的频率最高，<code>base</code>包被绝大多数包设置为<code>Depends</code>或者<code>Imports</code>。没有<code>namespace:base</code>的话，R可能要走很远的路去找到<code>package:base</code>。
+基础函数跟其它包中重名的几率也很大，而包的作者既不可能预先知道谁会载入他的包，也不可能知道你决定写一个你自己的基础函数，所以，包的作者都希望R能在<code>Imports</code>后马上找到基础函数，不允许有任何误用。</p>
+<p>（未完待续）</p>
+<h2>原文</h2>
+<p><a href="http://blog.obeautifulcode.com/R/How-R-Searches-And-Finds-Stuff/" target="_blank" rel="external">How R Searches and Finds Stuff</a></p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2016/01/19/2016-01-19-bandwagon-auto-reboot/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2016/01/24/Codage-20-how-r-searches-and-finds-stuff-2/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

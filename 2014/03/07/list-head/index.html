@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            linux内核链表之list_head | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="linux内核链表之list_head | Hexo">
+    <meta property="og:description" content="null">
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">声明和初始化</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">链表修改</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">链表判断</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">链表遍历</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">参考原文</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                linux内核链表之list_head
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>3月 07, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=linux内核链表之list_head&url=http://yoursite.com//2014/03/07/list-head/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=linux内核链表之list_head&url=http://yoursite.com//2014/03/07/list-head/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/03/07/list-head/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/03/07/list-head/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>在linux内核中，有一种通用的双向循环链表，构成了各种队列的基础。链表的结构定义和相关函数均在include/linux/list.h中。</p>
+<p>在阅读<code>list.h</code>文件之前，有一点必须注意：linux内核中的链表使用方法和一般数据结构中定义的链表是有所不同的。</p>
+<p>一般的双向链表一般是如下的结构，</p>
+<ul>
+<li>有个单独的头结点(<code>head</code>)</li>
+<li>每个节点(<code>node</code>)除了包含必要的数据之外，还有2个指针(<code>pre</code>,<code>next</code>)</li>
+<li><code>pre</code>指针指向前一个节点(<code>node</code>)，<code>next</code>指针指向后一个节点(<code>node</code>)</li>
+<li>头结点(<code>head</code>)的<code>pre</code>指针指向链表的最后一个节点</li>
+<li>最后一个节点的<code>next</code>指针指向头结点(<code>head</code>)</li>
+</ul>
+<p>具体见下图：
+
+&lt;!--more--&gt;</p>
+<p>传统的链表有个最大的缺点就是不好共通化，因为每个<code>node</code>中的<code>data1</code>，<code>data2</code>等等都是不确定的(无论是个数还是类型)。</p>
+<p>linux中的链表巧妙的解决了这个问题，linux的链表不是将用户数据保存（嵌入）在链表节点中，而是将链表节点保存（嵌入）在用户数据中。</p>
+<p>linux的链表节点只有2个指针(<code>pre</code>和<code>next</code>)，这样的话，链表的节点将独立于用户数据之外，便于实现链表的共同操作。</p>
+<p>具体见下图：
+</p>
+<p>linux链表中的最大问题是怎样通过链表的节点来取得用户数据？
+和传统的链表不同，linux的链表节点(node)中没有包含用户的用户<code>data1</code>，<code>data2</code>等。</p>
+<p>下面就来全面的介绍这一链表的各种API。</p>
+<h2>声明和初始化</h2>
+<p><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> list_head &#123;</div><div class="line">	<span class="keyword">struct</span> list_head *next, *prev;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>这是链表的元素结构。因为是循环链表，表头和节点都是这一结构。有<code>prev</code>和<code>next</code>两个指针域，分别指向链表中前一节点和后一节点。</p>
+<p><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> LIST_HEAD_INIT(name) &#123; &amp;(name), &amp;(name) &#125;</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> LIST_HEAD(name) \</span></div><div class="line">	struct list_head name = LIST_HEAD_INIT(name)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">INIT_LIST_HEAD</span><span class="params">(<span class="keyword">struct</span> list_head *<span class="built_in">list</span>)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="built_in">list</span>-&gt;next = <span class="built_in">list</span>;</div><div class="line">	<span class="built_in">list</span>-&gt;prev = <span class="built_in">list</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>初始化链表，链表头的<code>prev</code>和<code>next</code>都指向自身。</p>
+<h2>链表修改</h2>
+<p><strong>插入</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> __list_add(<span class="keyword">struct</span> list_head *<span class="keyword">new</span>,</div><div class="line">			      <span class="keyword">struct</span> list_head *prev,</div><div class="line">			      <span class="keyword">struct</span> list_head *next)</div><div class="line">&#123;</div><div class="line">	next-&gt;prev = <span class="keyword">new</span>;</div><div class="line">	<span class="keyword">new</span>-&gt;next = next;</div><div class="line">	<span class="keyword">new</span>-&gt;prev = prev;</div><div class="line">	prev-&gt;next = <span class="keyword">new</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">list_add</span><span class="params">(<span class="keyword">struct</span> list_head *<span class="keyword">new</span>, <span class="keyword">struct</span> list_head *head)</span></span></div><div class="line">&#123;</div><div class="line">	__list_add(<span class="keyword">new</span>, head, head-&gt;next);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">list_add_tail</span><span class="params">(<span class="keyword">struct</span> list_head *<span class="keyword">new</span>, <span class="keyword">struct</span> list_head *head)</span></span></div><div class="line">&#123;</div><div class="line">	__list_add(<span class="keyword">new</span>, head-&gt;prev, head);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>双向循环链表的实现，很少有例外情况，基本都可以用公共的方式来处理。这里无论是加第一个节点，还是其它的节点，使用的方法都一样。</p>
+<p>另外，链表API实现时大致都是分为两层：一层外部的，如<code>list_add</code>、<code>list_add_tail</code>，用来消除一些例外情况，调用内部实现；一层是内部的，函数名前会加双下划线，如<code>__list_add</code>，往往是几个操作公共的部分，或者排除例外后的实现。</p>
+<p><strong>删除</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> __list_del(<span class="keyword">struct</span> list_head * prev, <span class="keyword">struct</span> list_head * next)</div><div class="line">&#123;</div><div class="line">	next-&gt;prev = prev;</div><div class="line">	prev-&gt;next = next;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">list_del</span><span class="params">(<span class="keyword">struct</span> list_head *entry)</span></span></div><div class="line">&#123;</div><div class="line">	__list_del(entry-&gt;prev, entry-&gt;next);</div><div class="line">	entry-&gt;next = LIST_POISON1;</div><div class="line">	entry-&gt;prev = LIST_POISON2;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">list_del_init</span><span class="params">(<span class="keyword">struct</span> list_head *entry)</span></span></div><div class="line">&#123;</div><div class="line">	__list_del(entry-&gt;prev, entry-&gt;next);</div><div class="line">	INIT_LIST_HEAD(entry);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>list_del</code>是链表中节点的删除。之所以在调用<code>__list_del</code>后又把被删除元素的<code>next</code>、<code>prev</code>指向特殊的<code>LIST_POSITION1</code>和<code>LIST_POSITION2</code>，是为了调试未定义的指针。</p>
+<p><code>list_del_init</code>则是删除节点后，随即把节点中指针再次初始化，这种删除方式更为实用。</p>
+<p><strong>替换</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">list_replace</span><span class="params">(<span class="keyword">struct</span> list_head *old,</span></span></div><div class="line">				<span class="keyword">struct</span> list_head *<span class="keyword">new</span>)</div><div class="line">&#123;</div><div class="line">	<span class="keyword">new</span>-&gt;next = old-&gt;next;</div><div class="line">	<span class="keyword">new</span>-&gt;next-&gt;prev = <span class="keyword">new</span>;</div><div class="line">	<span class="keyword">new</span>-&gt;prev = old-&gt;prev;</div><div class="line">	<span class="keyword">new</span>-&gt;prev-&gt;next = <span class="keyword">new</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">list_replace_init</span><span class="params">(<span class="keyword">struct</span> list_head *old,</span></span></div><div class="line">					<span class="keyword">struct</span> list_head *<span class="keyword">new</span>)</div><div class="line">&#123;</div><div class="line">	list_replace(old, <span class="keyword">new</span>);</div><div class="line">	INIT_LIST_HEAD(old);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>list_replace</code>是将链表中一个节点<code>old</code>，替换为另一个节点<code>new</code>。从实现来看，即使<code>old</code>所在地链表只有<code>old</code>一个节点，<code>new</code>也可以成功替换，这就是双向循环链表可怕的通用之处。</p>
+<p><code>list_replace_init</code>将被替换的<code>old</code>随即又初始化。</p>
+<p><strong>搬移</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">list_move</span><span class="params">(<span class="keyword">struct</span> list_head *<span class="built_in">list</span>, <span class="keyword">struct</span> list_head *head)</span></span></div><div class="line">&#123;</div><div class="line">	__list_del(<span class="built_in">list</span>-&gt;prev, <span class="built_in">list</span>-&gt;next);</div><div class="line">	list_add(<span class="built_in">list</span>, head);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">list_move_tail</span><span class="params">(<span class="keyword">struct</span> list_head *<span class="built_in">list</span>,</span></span></div><div class="line">				  <span class="keyword">struct</span> list_head *head)</div><div class="line">&#123;</div><div class="line">	__list_del(<span class="built_in">list</span>-&gt;prev, <span class="built_in">list</span>-&gt;next);</div><div class="line">	list_add_tail(<span class="built_in">list</span>, head);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>list_move</code>的作用是把<code>list</code>节点从原链表中去除，并加入新的链表<code>head</code>中。</p>
+<p><code>list_move_tail</code>只在加入新链表时与<code>list_move</code>有所不同，<code>list_move</code>是加到&lt;span style=&quot;color:red;&quot;&gt;head之后&lt;/span&gt;的链表&lt;span style=&quot;color:red;&quot;&gt;头部&lt;/span&gt;，而<code>list_move_tail</code>是加到&lt;span style=&quot;color:red;&quot;&gt;head之前&lt;/span&gt;的链表&lt;span style=&quot;color:red;&quot;&gt;尾部&lt;/span&gt;。</p>
+<p><strong>拆分</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> __list_cut_position(<span class="keyword">struct</span> list_head *<span class="built_in">list</span>,</div><div class="line">		<span class="keyword">struct</span> list_head *head, <span class="keyword">struct</span> list_head *entry)</div><div class="line">&#123;</div><div class="line">	<span class="keyword">struct</span> list_head *new_first = entry-&gt;next;</div><div class="line">	<span class="built_in">list</span>-&gt;next = head-&gt;next;</div><div class="line">	<span class="built_in">list</span>-&gt;next-&gt;prev = <span class="built_in">list</span>;</div><div class="line">	<span class="built_in">list</span>-&gt;prev = entry;</div><div class="line">	entry-&gt;next = <span class="built_in">list</span>;</div><div class="line">	head-&gt;next = new_first;</div><div class="line">	new_first-&gt;prev = head;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">list_cut_position</span><span class="params">(<span class="keyword">struct</span> list_head *<span class="built_in">list</span>,</span></span></div><div class="line">		<span class="keyword">struct</span> list_head *head, <span class="keyword">struct</span> list_head *entry)</div><div class="line">&#123;</div><div class="line">	<span class="keyword">if</span> (list_empty(head))</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	<span class="keyword">if</span> (list_is_singular(head) &amp;&amp;</div><div class="line">		(head-&gt;next != entry &amp;&amp; head != entry))</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	<span class="keyword">if</span> (entry == head)</div><div class="line">		INIT_LIST_HEAD(<span class="built_in">list</span>);</div><div class="line">	<span class="keyword">else</span></div><div class="line">		__list_cut_position(<span class="built_in">list</span>, head, entry);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>list_cut_position</code>用于把<code>head</code>链表分为两个部分。<code>head</code>链表中的<code>head-&gt;next</code>一直到<code>entry</code>（包括<code>entry</code>）被删除，并加入到新链表<code>list</code>的头部。新链表<code>list</code>应该是空的，或者原来的节点都可以被忽略掉。可以看到，<code>list_cut_position</code>中排除了一些意外情况，保证调用<code>__list_cut_position</code>时至少有一个元素会被加入到新链表<code>list</code>。</p>
+<p><strong>合并</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> __list_splice(<span class="keyword">const</span> <span class="keyword">struct</span> list_head *<span class="built_in">list</span>,</div><div class="line">				 <span class="keyword">struct</span> list_head *prev,</div><div class="line">				 <span class="keyword">struct</span> list_head *next)</div><div class="line">&#123;</div><div class="line">	<span class="keyword">struct</span> list_head *first = <span class="built_in">list</span>-&gt;next;</div><div class="line">	<span class="keyword">struct</span> list_head *last = <span class="built_in">list</span>-&gt;prev;</div><div class="line"></div><div class="line">	first-&gt;prev = prev;</div><div class="line">	prev-&gt;next = first;</div><div class="line"></div><div class="line">	last-&gt;next = next;</div><div class="line">	next-&gt;prev = last;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">list_splice</span><span class="params">(<span class="keyword">const</span> <span class="keyword">struct</span> list_head *<span class="built_in">list</span>,</span></span></div><div class="line">				<span class="keyword">struct</span> list_head *head)</div><div class="line">&#123;</div><div class="line">	<span class="keyword">if</span> (!list_empty(<span class="built_in">list</span>))</div><div class="line">		__list_splice(<span class="built_in">list</span>, head, head-&gt;next);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">list_splice_tail</span><span class="params">(<span class="keyword">struct</span> list_head *<span class="built_in">list</span>,</span></span></div><div class="line">				<span class="keyword">struct</span> list_head *head)</div><div class="line">&#123;</div><div class="line">	<span class="keyword">if</span> (!list_empty(<span class="built_in">list</span>))</div><div class="line">		__list_splice(<span class="built_in">list</span>, head-&gt;prev, head);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>list_splice</code>的功能和<code>list_cut_position</code>正相反，它合并两个链表。<code>list_splice</code>把<code>list</code>链表中的节点加入<code>head</code>链表中。在实际操作之前，要先判断<code>list</code>链表是否为空。它保证调用<code>__list_splice</code>时<code>list</code>链表中至少有一个节点可以被合并到<code>head</code>链表中。</p>
+<p><code>list_splice_tail</code>只是在合并链表时插入的位置不同。<code>list_splice</code>是把原来<code>list</code>链表中的节点全加到<code>head</code>链表的头部，而<code>list_splice_tail</code>则是把原来<code>list</code>链表中的节点全加到head链表的尾部。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">list_splice_init</span><span class="params">(<span class="keyword">struct</span> list_head *<span class="built_in">list</span>,</span></span></div><div class="line">				    <span class="keyword">struct</span> list_head *head)</div><div class="line">&#123;</div><div class="line">	<span class="keyword">if</span> (!list_empty(<span class="built_in">list</span>)) &#123;</div><div class="line">		__list_splice(<span class="built_in">list</span>, head, head-&gt;next);</div><div class="line">		INIT_LIST_HEAD(<span class="built_in">list</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">list_splice_tail_init</span><span class="params">(<span class="keyword">struct</span> list_head *<span class="built_in">list</span>,</span></span></div><div class="line">					 <span class="keyword">struct</span> list_head *head)</div><div class="line">&#123;</div><div class="line">	<span class="keyword">if</span> (!list_empty(<span class="built_in">list</span>)) &#123;</div><div class="line">		__list_splice(<span class="built_in">list</span>, head-&gt;prev, head);</div><div class="line">		INIT_LIST_HEAD(<span class="built_in">list</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>list_splice_init</code>除了完成<code>list_splice</code>的功能，还把变空了的<code>list</code>链表头重新初始化。</p>
+<p><code>list_splice_tail_init</code>除了完成<code>list_splice_tail</code>的功能，还把变空了得<code>list</code>链表头重新初始化。</p>
+<p>list操作的API大致如以上所列，包括链表节点添加与删除、节点从一个链表转移到另一个链表、链表中一个节点被替换为另一个节点、链表的合并与拆分、查看链表当前是否为空或者只有一个节点。</p>
+<h2>链表判断</h2>
+<p><strong>表尾</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">list_is_last</span><span class="params">(<span class="keyword">const</span> <span class="keyword">struct</span> list_head *<span class="built_in">list</span>,</span></span></div><div class="line">				<span class="keyword">const</span> <span class="keyword">struct</span> list_head *head)</div><div class="line">&#123;</div><div class="line">	<span class="keyword">return</span> <span class="built_in">list</span>-&gt;next == head;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>list_is_last</code>判断<code>list</code>是否处于<code>head</code>链表的尾部。</p>
+<p><strong>空链表</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">list_empty</span><span class="params">(<span class="keyword">const</span> <span class="keyword">struct</span> list_head *head)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">return</span> head-&gt;next == head;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">list_empty_careful</span><span class="params">(<span class="keyword">const</span> <span class="keyword">struct</span> list_head *head)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">struct</span> list_head *next = head-&gt;next;</div><div class="line">	<span class="keyword">return</span> (next == head) &amp;&amp; (next == head-&gt;prev);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>list_empty</code>判断<code>head</code>链表是否为空，为空的意思就是只有一个链表头<code>head</code>。</p>
+<p><code>list_empty_careful</code>同样是判断<code>head</code>链表是否为空，只是检查更为严格。</p>
+<p><strong>单节点</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">list_is_singular</span><span class="params">(<span class="keyword">const</span> <span class="keyword">struct</span> list_head *head)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">return</span> !list_empty(head) &amp;&amp; (head-&gt;next == head-&gt;prev);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>list_is_singular</code>判断<code>head</code>中是否只有一个节点，即除链表头<code>head</code>外只有一个节点。</p>
+<h2>链表遍历</h2>
+<p>遍历是链表最经常的操作之一，为了方便核心应用遍历链表，Linux链表将遍历操作抽象成几个宏。在介绍遍历宏之前，我们先看看如何从链表中访问到我们真正需要的数据项。</p>
+<p><strong>list_entry</strong></p>
+<p>我们知道，Linux 链表中仅保存了数据项结构中 <code>list_head</code> 成员变量的地址，那么我们如何通过这个<code>list_head</code>成员访问到作为它的所有者的节点数据呢？ Linux 为此提供了一个<code>list_entry(ptr,type,member)</code>宏，其中<code>ptr</code>是指向该数据中<code>list_head</code>成员的指针，也就是存储在链表中的地址值，<code>type</code>是数据项的类型，<code>member</code>则是数据项类型定义中<code>list_head</code>成员的变量名，例如，我们要访问<code>nf_sockopts</code>链表中首个<code>nf_sockopt_ops</code>变量，则如此调用：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">list_entry(nf_sockopts-&gt;next, <span class="keyword">struct</span> nf_sockopt_ops, <span class="built_in">list</span>);</div></pre></td></tr></table></figure></p>
+<p>这里<code>list</code>正是<code>nf_sockopt_ops</code>结构中定义的用于链表操作的节点成员变量名。</p>
+<p><code>list_entry</code>的使用相当简单，相比之下，它的实现则有一些难懂：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_entry(ptr, type, member) \</span></div><div class="line">	container_of(ptr, type, member)</div></pre></td></tr></table></figure></p>
+<p><code>container_of</code>宏定义在[include/linux/kernel.h]中：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> container_of(ptr, type, member) (&#123;			\</span></div><div class="line">        const typeof( ((type *)0)-&gt;member ) *__mptr = (ptr);	\</div><div class="line">        (type *)( (char *)__mptr - offsetof(type,member) );&#125;)</div></pre></td></tr></table></figure></p>
+<p><code>offsetof</code>宏定义在[include/linux/stddef.h]中：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> offsetof(TYPE, MEMBER) ((size_t) &amp;((TYPE *)0)-&gt;MEMBER)</span></div></pre></td></tr></table></figure></p>
+<p><code>size_t</code>最终定义为<code>unsigned int</code>（注：i386平台）。</p>
+<p>这里使用的是一个利用编译器技术的小技巧，即先求得结构成员在与结构中的偏移量，然后根据成员变量的地址反过来得出属主结构变量的地址。</p>
+<p><code>container_of()</code>和<code>offsetof()</code>并不仅用于链表操作，这里最有趣的地方是<code>((type *)0)-&gt;member</code>，它将<code>0</code>地址强制&quot;转换&quot;为<code>type</code>结构的指针，再访问到<code>type</code>结构中的<code>member</code>成员。在<code>container_of</code>宏中，它用来给<code>typeof()</code>提供参数（<code>typeof()</code>是gcc的扩展，和<code>sizeof()</code>类似 ），以获<code>member</code>成员的数据类型；在<code>offsetof()</code>中，这个<code>member</code>成员的地址实际上就是<code>type</code> 数据结构中<code>member</code>成员相对于结构变量的偏移量。</p>
+<p>如果这么说还不好理解的话，不妨看看下面这张图：<code>offsetof()</code>宏的原理
+</p>
+<p>对于给定一个结构，<code>offsetof(type,member)</code>是一个常量，<code>list_entry()</code>正是利用这个不变的偏移量来求得链表数据项的变量地址。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_first_entry(ptr, type, member) \</span></div><div class="line">	list_entry((ptr)-&gt;next, type, member)</div></pre></td></tr></table></figure></p>
+<p><code>list_first_entry</code>是将<code>ptr</code>看完一个链表的链表头，取出其中第一个节点对应的结构地址。使用<code>list_first_entry</code>是应保证链表中至少有一个节点。</p>
+<p><strong>list_for_each</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_for_each(pos, head) \</span></div><div class="line">	for (pos = (head)-&gt;next; prefetch(pos-&gt;next), pos != (head); \</div><div class="line">        	pos = pos-&gt;next)</div></pre></td></tr></table></figure></p>
+<p><code>list_for_each</code>循环遍历链表中的每个节点，从链表头部的第一个节点，一直到链表尾部。中间的<code>prefetch</code>是为了利用平台特性加速链表遍历，在某些平台下定义为空，可以忽略。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> __list_for_each(pos, head) \</span></div><div class="line">	for (pos = (head)-&gt;next; pos != (head); pos = pos-&gt;next)</div></pre></td></tr></table></figure></p>
+<p><code>__list_for_each</code>与<code>list_for_each</code>没什么不同，只是少了<code>prefetch</code>的内容，实现上更为简单易懂。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_for_each_prev(pos, head) \</span></div><div class="line">	for (pos = (head)-&gt;prev; prefetch(pos-&gt;prev), pos != (head); \</div><div class="line">        	pos = pos-&gt;prev)</div></pre></td></tr></table></figure></p>
+<p><code>list_for_each_prev</code>与<code>list_for_each</code>的遍历顺序相反，从链表尾逆向遍历到链表头。</p>
+<p><strong>list_for_each_safe</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_for_each_safe(pos, n, head) \</span></div><div class="line">	for (pos = (head)-&gt;next, n = pos-&gt;next; pos != (head); \</div><div class="line">		pos = n, n = pos-&gt;next)</div></pre></td></tr></table></figure></p>
+<p><code>list_for_each_safe</code>也是链表顺序遍历，只是更加安全。即使在遍历过程中，当前节点从链表中删除，也不会影响链表的遍历。参数上需要加一个暂存的链表节点指针<code>n</code>。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_for_each_prev_safe(pos, n, head) \</span></div><div class="line">	for (pos = (head)-&gt;prev, n = pos-&gt;prev; \</div><div class="line">	     prefetch(pos-&gt;prev), pos != (head); \</div><div class="line">	     pos = n, n = pos-&gt;prev)</div></pre></td></tr></table></figure></p>
+<p><code>list_for_each_prev_safe</code>与<code>list_for_each_prev</code>同样是链表逆序遍历，只是加了链表节点删除保护。</p>
+<p><strong>list_for_each_entry</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_for_each_entry(pos, head, member)				\</span></div><div class="line">	for (pos = list_entry((head)-&gt;next, typeof(*pos), member);	\</div><div class="line">	     prefetch(pos-&gt;member.next), &amp;pos-&gt;member != (head); 	\</div><div class="line">	     pos = list_entry(pos-&gt;member.next, typeof(*pos), member))</div></pre></td></tr></table></figure></p>
+<p><code>list_for_each_entry</code>是遍历链表节点，而是遍历链表节点所有者的数据结构。这个实现上较为复杂，但可以等价于 &lt;span style=&quot;color:red;&quot;&gt;list_for_each&lt;/span&gt; 加上 &lt;span style=&quot;color:red;&quot;&gt;list_entry&lt;/span&gt; 的组合。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_for_each_entry_reverse(pos, head, member)			\</span></div><div class="line">	for (pos = list_entry((head)-&gt;prev, typeof(*pos), member);	\</div><div class="line">	     prefetch(pos-&gt;member.prev), &amp;pos-&gt;member != (head); 	\</div><div class="line">	     pos = list_entry(pos-&gt;member.prev, typeof(*pos), member))</div></pre></td></tr></table></figure></p>
+<p><code>list_for_each_entry_reverse</code>是逆序遍历链表节点所有者的数据结构，等价于 <code>list_for_each_prev</code>加上<code>list_etnry</code>的组合。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_for_each_entry_continue(pos, head, member) 		\</span></div><div class="line">	for (pos = list_entry(pos-&gt;member.next, typeof(*pos), member);	\</div><div class="line">	     prefetch(pos-&gt;member.next), &amp;pos-&gt;member != (head);	\</div><div class="line">	     pos = list_entry(pos-&gt;member.next, typeof(*pos), member))</div></pre></td></tr></table></figure></p>
+<p><code>list_for_each_entry_continue</code>也是遍历链表上的节点所有者的数据结构。只是并非从链表头开始，而是从结构指针的下一个结构开始，一直到链表尾部。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_for_each_entry_continue_reverse(pos, head, member)		\</span></div><div class="line">	for (pos = list_entry(pos-&gt;member.prev, typeof(*pos), member);	\</div><div class="line">	     prefetch(pos-&gt;member.prev), &amp;pos-&gt;member != (head);	\</div><div class="line">	     pos = list_entry(pos-&gt;member.prev, typeof(*pos), member))</div></pre></td></tr></table></figure></p>
+<p><code>list_for_each_entry_continue_reverse</code>是逆序遍历链表上的节点所有者的数据结构。只是并非从链表尾开始，而是从结构指针的前一个结构开始，一直到链表头部。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_for_each_entry_from(pos, head, member) 			\</span></div><div class="line">	for (; prefetch(pos-&gt;member.next), &amp;pos-&gt;member != (head);	\</div><div class="line">	     pos = list_entry(pos-&gt;member.next, typeof(*pos), member))</div></pre></td></tr></table></figure></p>
+<p><code>list_for_each_entry_from</code>是从当前结构指针pos开始，顺序遍历链表上的结构指针。</p>
+<p><strong>list_for_each_entry_safe</strong>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_for_each_entry_safe(pos, n, head, member)			\</span></div><div class="line">	for (pos = list_entry((head)-&gt;next, typeof(*pos), member),	\</div><div class="line">		n = list_entry(pos-&gt;member.next, typeof(*pos), member);	\</div><div class="line">	     &amp;pos-&gt;member != (head); 					\</div><div class="line">	     pos = n, n = list_entry(n-&gt;member.next, typeof(*n), member))</div></pre></td></tr></table></figure></p>
+<p><code>list_for_each_entry_safe</code>也是顺序遍历链表上节点所有者的数据结构。只是加了删除节点的保护。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_for_each_entry_safe_continue(pos, n, head, member) 		\</span></div><div class="line">	for (pos = list_entry(pos-&gt;member.next, typeof(*pos), member), 		\</div><div class="line">		n = list_entry(pos-&gt;member.next, typeof(*pos), member);		\</div><div class="line">	     &amp;pos-&gt;member != (head);						\</div><div class="line">	     pos = n, n = list_entry(n-&gt;member.next, typeof(*n), member))</div></pre></td></tr></table></figure></p>
+<p><code>list_for_each_entry_safe_continue</code>是从pos的下一个结构指针开始，顺序遍历链表上的结构指针，同时加了节点删除保护。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_for_each_entry_safe_from(pos, n, head, member) 			\</span></div><div class="line">	for (n = list_entry(pos-&gt;member.next, typeof(*pos), member);		\</div><div class="line">	     &amp;pos-&gt;member != (head);						\</div><div class="line">	     pos = n, n = list_entry(n-&gt;member.next, typeof(*n), member))</div></pre></td></tr></table></figure></p>
+<p><code>list_for_each_entry_safe_from</code>是从pos开始，顺序遍历链表上的结构指针，同时加了节点删除保护。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> list_for_each_entry_safe_reverse(pos, n, head, member)		\</span></div><div class="line">	for (pos = list_entry((head)-&gt;prev, typeof(*pos), member),	\</div><div class="line">		n = list_entry(pos-&gt;member.prev, typeof(*pos), member);	\</div><div class="line">	     &amp;pos-&gt;member != (head); 					\</div><div class="line">	     pos = n, n = list_entry(n-&gt;member.prev, typeof(*n), member))</div></pre></td></tr></table></figure></p>
+<p><code>list_for_each_entry_safe_reverse</code>是从pos的前一个结构指针开始，逆序遍历链表上的结构指针，同时加了节点删除保护。</p>
+<p>至此为止，我们介绍了linux中双向循环链表的结构、所有的操作函数和遍历宏定义。相信以后在linux代码中遇到链表的使用，不会再陌生。</p>
+<h2>参考原文</h2>
+<p><a href="http://blog.csdn.net/qb_2008/article/details/6839230" target="_blank" rel="external">linux内核部件分析（一）——连通世界的list </a>
+<a href="https://www.ibm.com/developerworks/cn/linux/kernel/l-chain/" target="_blank" rel="external">深入分析 Linux 内核链表</a>
+<a href="http://www.cnblogs.com/wang_yb/archive/2013/04/16/3023892.html" target="_blank" rel="external">《Linux内核设计与实现》读书笔记（六）- 内核数据结构</a></p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/03/07/hexo_customize/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/03/08/hlist/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

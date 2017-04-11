@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            sysfs - 用于导出内核对象(kobject)的文件系统 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,设备模型">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="sysfs - 用于导出内核对象(kobject)的文件系统 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="设备模型"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">sysfs 简介</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">使用 sysfs</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">创建目录</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">属性</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">子系统特有的回调函数</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">读写属性数据</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">顶层目录布局</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">8.</span> <span class="post-toc-text">当前接口</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">设备 (include/linux/device.h)</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">总线驱动程序 (include/linux/device.h)</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">8.3.</span> <span class="post-toc-text">设备驱动程序 (include/linux/device.h)</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">9.</span> <span class="post-toc-text">文档</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                sysfs - 用于导出内核对象(kobject)的文件系统
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>3月 04, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/设备模型/">设备模型</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=sysfs - 用于导出内核对象(kobject)的文件系统&url=http://yoursite.com//2014/03/04/sysfs/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=sysfs - 用于导出内核对象(kobject)的文件系统&url=http://yoursite.com//2014/03/04/sysfs/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/03/04/sysfs/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/03/04/sysfs/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>Chinese translated version of Documentation/filesystems/sysfs.txt</p>
+<p>If you have any comment or update to the content, please contact the
+original document maintainer directly.  However, if you have a problem
+communicating in English you can also ask the Chinese maintainer for
+help.  Contact the Chinese maintainer if this translation is outdated
+or if there is a problem with the translation.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Maintainer:</td>
+<td>Patrick Mochel	&lt;mochel@osdl.org&gt;</td>
+</tr>
+<tr>
+<td></td>
+<td>Mike Murphy &lt;mamurph@cs.clemson.edu&gt;</td>
+</tr>
+<tr>
+<td>Chinese maintainer:</td>
+<td>Fu Wei &lt;tekkamanninja@gmail.com&gt;</td>
+</tr>
+</tbody>
+</table>
+<p>Documentation/filesystems/sysfs.txt 的中文翻译</p>
+<p>如果想评论或更新本文的内容，请直接联系原文档的维护者。如果你使用英文
+交流有困难的话，也可以向中文版维护者求助。如果本翻译更新不及时或者翻
+译存在问题，请联系中文版维护者。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>英文版维护者：</td>
+<td>Patrick Mochel	&lt;mochel@osdl.org&gt;</td>
+</tr>
+<tr>
+<td></td>
+<td>Mike Murphy &lt;mamurph@cs.clemson.edu&gt;</td>
+</tr>
+<tr>
+<td>中文版维护者：</td>
+<td>傅炜 Fu Wei &lt;tekkamanninja@gmail.com&gt;</td>
+</tr>
+<tr>
+<td>中文版翻译者：</td>
+<td>傅炜 Fu Wei &lt;tekkamanninja@gmail.com&gt;</td>
+</tr>
+<tr>
+<td>中文版校译者：</td>
+<td>傅炜 Fu Wei &lt;tekkamanninja@gmail.com&gt;</td>
+</tr>
+</tbody>
+</table>
+<p>以下为正文:</p>
+<p>sysfs - 用于导出内核对象(kobject)的文件系统</p>
+<p>Patrick Mochel	<a href="mailto:mochel@osdl.org" target="_blank" rel="external">mochel@osdl.org</a>
+Mike Murphy <a href="mailto:mamurph@cs.clemson.edu" target="_blank" rel="external">mamurph@cs.clemson.edu</a></p>
+<p>修订:    16 August 2011
+原始版本:   10 January 2003
+&lt;!--more--&gt;</p>
+<h3>sysfs 简介</h3>
+<p>sysfs 是一个最初基于 <code>ramfs</code> 内存文件系统。它提供一种导出内核数据结构及其属性以及它们之间的关联到用户空间的方法。</p>
+<p>sysfs 始终与 <code>kobject</code> 的底层结构紧密相关。请阅读Documentation/kobject.txt 文档以获得更多关于 <code>kobject</code> 接口的信息。</p>
+<h3>使用 sysfs</h3>
+<p>只要内核配置中定义了 <code>CONFIG_SYSFS</code> ，sysfs 就总会被编译进内核。你可通过以下命令挂载它:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mount -t sysfs sysfs /sys</div></pre></td></tr></table></figure></p>
+<h3>创建目录</h3>
+<p>任何 <code>kobject</code> 在系统中注册，就会有一个目录在 sysfs 中被创建。这个目录是作为该 <code>kobject</code> 的父对象所在目录的子目录创建的，以准确地传递内核的对象层次到用户空间。sysfs 中的顶层目录代表着内核对象层次的共同祖先；例如：某些对象属于某个子系统。</p>
+<p>Sysfs 在与其目录关联的 <code>sysfs_dirent</code> 对象中内部保存一个指向实现目录的 <code>kobject</code> 的指针。以前，这个 <code>kobject</code> 指针被 sysfs 直接用于<code>kobject</code> 文件打开和关闭的引用计数。而现在的 sysfs 实现中，<code>kobject</code>引用计数只能通过 <code>sysfs_schedule_callback()</code> 函数直接修改。</p>
+<h3>属性</h3>
+<p><code>kobject</code> 的属性可在文件系统中以普通文件的形式导出。Sysfs 为属性定义了面向文件 I/O 操作的方法，以提供对内核属性的读写。</p>
+<p>属性应为 ASCII 码文本文件。以一个文件只存储一个属性值为宜。但一个文件只包含一个属性值可能影响效率，所以一个包含相同数据类型的属性值数组也被广泛地接受。</p>
+<p>混合类型、表达多行数据以及一些怪异的数据格式会遭到强烈反对。这样做是很丢脸的,而且其代码会在未通知作者的情况下被重写。</p>
+<p>一个简单的属性结构定义如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> attribute &#123;</div><div class="line">        <span class="keyword">char</span>                    * name;</div><div class="line">        <span class="keyword">struct</span> <span class="keyword">module</span>		*owner;</div><div class="line">        <span class="keyword">umode_t</span>                 mode;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">sysfs_create_file</span><span class="params">(<span class="keyword">struct</span> kobject * kobj, <span class="keyword">const</span> <span class="keyword">struct</span> attribute * attr)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">sysfs_remove_file</span><span class="params">(<span class="keyword">struct</span> kobject * kobj, <span class="keyword">const</span> <span class="keyword">struct</span> attribute * attr)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>一个单独的属性结构并不包含读写其属性值的方法。子系统最好为增删特定对象类型的属性定义自己的属性结构体和封装函数。</p>
+<p>例如:驱动程序模型定义的 <code>device_attribute</code> 结构体如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> device_attribute &#123;</div><div class="line">	<span class="keyword">struct</span> attribute	attr;</div><div class="line">	<span class="keyword">ssize_t</span> (*show)(<span class="keyword">struct</span> device *dev, <span class="keyword">struct</span> device_attribute *attr,</div><div class="line">			<span class="keyword">char</span> *buf);</div><div class="line">	<span class="keyword">ssize_t</span> (*store)(<span class="keyword">struct</span> device *dev, <span class="keyword">struct</span> device_attribute *attr,</div><div class="line">			 <span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> count);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">device_create_file</span><span class="params">(<span class="keyword">struct</span> device *, <span class="keyword">const</span> <span class="keyword">struct</span> device_attribute *)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">device_remove_file</span><span class="params">(<span class="keyword">struct</span> device *, <span class="keyword">const</span> <span class="keyword">struct</span> device_attribute *)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>为了定义设备属性，同时定义了一下辅助宏:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> DEVICE_ATTR(_name, _mode, _show, _store) \</span></div><div class="line">struct device_attribute dev_attr_##_name = __ATTR(_name, _mode, _show, _store)</div></pre></td></tr></table></figure></p>
+<p>例如:声明
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="title">DEVICE_ATTR</span><span class="params">(foo, S_IWUSR | S_IRUGO, show_foo, store_foo)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>等同于如下代码：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">struct</span> device_attribute dev_attr_foo = &#123;</div><div class="line">       .attr	= &#123;</div><div class="line">		.name = <span class="string">"foo"</span>,</div><div class="line">		.mode = S_IWUSR | S_IRUGO,</div><div class="line">	&#125;,</div><div class="line">	.show = show_foo,</div><div class="line">	.store = store_foo,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<h3>子系统特有的回调函数</h3>
+<p>当一个子系统定义一个新的属性类型时，必须实现一系列的 sysfs 操作，使读写调用指向属性所有者的显示(<code>show</code>)和储存(<code>store</code>)方法。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> sysfs_ops &#123;</div><div class="line">        <span class="keyword">ssize_t</span> (*show)(<span class="keyword">struct</span> kobject *, <span class="keyword">struct</span> attribute *, <span class="keyword">char</span> *);</div><div class="line">        <span class="keyword">ssize_t</span> (*store)(<span class="keyword">struct</span> kobject *, <span class="keyword">struct</span> attribute *, <span class="keyword">const</span> <span class="keyword">char</span> *, <span class="keyword">size_t</span>);</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>[子系统应已经定义了一个 <code>struct kobj_type</code> 结构体作为这个类型的描述符，并在此保存 <code>sysfs_ops</code> 的指针。更多的信息参见 <code>kobject</code> 的文档]</p>
+<p>当一个文件被读写时，sysfs 会为这个类型调用适当的方法。这个方法会将一般的<code>kobject</code> 和 <code>attribute</code> 结构体指针转换为适当的指针类型，然后调用其关联的函数。</p>
+<p>示例:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">define</span> to_dev(obj) container_of(obj, struct device, kobj)</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> to_dev_attr(_attr) container_of(_attr, struct device_attribute, attr)</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">dev_attr_show</span><span class="params">(<span class="keyword">struct</span> kobject *kobj, <span class="keyword">struct</span> attribute *attr,</span></span></div><div class="line">                             <span class="keyword">char</span> *buf)</div><div class="line">&#123;</div><div class="line">        <span class="keyword">struct</span> device_attribute *dev_attr = to_dev_attr(attr);</div><div class="line">        <span class="keyword">struct</span> device *dev = to_dev(kobj);</div><div class="line">        <span class="keyword">ssize_t</span> ret = -EIO;</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (dev_attr-&gt;show)</div><div class="line">                ret = dev_attr-&gt;show(dev, dev_attr, buf);</div><div class="line">        <span class="keyword">if</span> (ret &gt;= (<span class="keyword">ssize_t</span>)PAGE_SIZE) &#123;</div><div class="line">                print_symbol(<span class="string">"dev_attr_show: %s returned bad count\n"</span>,</div><div class="line">                                (<span class="keyword">unsigned</span> <span class="keyword">long</span>)dev_attr-&gt;show);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>读写属性数据</h3>
+<p>在声明属性时，必须指定 <code>show()</code> 或 <code>store()</code> 方法，以实现属性的读或写。这些方法的类型应该和以下的设备属性定义一样简单。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">ssize_t</span> (*show)(<span class="keyword">struct</span> device *dev, <span class="keyword">struct</span> device_attribute *attr, <span class="keyword">char</span> *buf);</div><div class="line"><span class="keyword">ssize_t</span> (*store)(<span class="keyword">struct</span> device *dev, <span class="keyword">struct</span> device_attribute *attr,</div><div class="line">                 <span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> count);</div></pre></td></tr></table></figure></p>
+<p>也就是说,它们应只以一个处理对象、一个属性和一个缓冲指针作为参数。</p>
+<p>sysfs 会分配一个大小为 (<code>PAGE_SIZE</code>) 的缓冲区并传递给这个方法。Sysfs 将会为每次读写操作调用一次这个方法。这使得这些方法的实现遵循以下的行为:</p>
+<ul>
+<li>在读方面（<code>read</code>(2)），<code>show()</code> 方法应该填充整个缓冲区。回想一下，属性应只导出了一个属性值或是一个同类型属性值的数组，所以这个代价将不会不太高。这使得用户空间可以局部地读和任意的向前搜索整个文件。如果用户空间向后搜索到零或使用‘0’偏移执行一个<code>pread</code>(2)操作，<code>show()</code>方法将再次被调用，以重新填充缓存。</li>
+<li>在写方面（<code>write</code>(2)），sysfs 希望在第一次写操作时得到整个缓冲区。之后 Sysfs 传递整个缓冲区给 <code>store()</code> 方法。当要写 sysfs 文件时，用户空间进程应首先读取整个文件，修该想要改变的值，然后回写整个缓冲区。在读写属性值时，属性方法的执行应操作相同的缓冲区。
+注记:</li>
+<li>写操作导致的 <code>show()</code> 方法重载，会忽略当前文件位置。</li>
+<li>缓冲区应总是 <code>PAGE_SIZE</code> 大小。对于i386，这个值为<code>4096</code>。</li>
+<li><code>show()</code> 方法应该返回写入缓冲区的字节数，也就是 <code>snprintf()</code>的返回值。</li>
+<li><code>show()</code> 应始终使用 <code>snprintf()</code>。</li>
+<li><code>store()</code> 应返回缓冲区的已用字节数。如果整个缓存都已使用，只需返回<code>count</code> 参数。</li>
+<li><code>show()</code> 或 <code>store()</code> 可以返回错误值。当得到一个非法值，必须返回一个错误值。</li>
+<li>一个传递给方法的对象将会通过 sysfs 引用计数其内嵌对象而驻留在内存中。尽管如此，对象代表的物理实体(如设备)可能已不存在。如有必要，应该实现一个检测机制。</li>
+</ul>
+<p>一个简单的(未经实验证实的)设备属性实现如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">show_name</span><span class="params">(<span class="keyword">struct</span> device *dev, <span class="keyword">struct</span> device_attribute *attr,</span></span></div><div class="line">                         <span class="keyword">char</span> *buf)</div><div class="line">&#123;</div><div class="line">	<span class="keyword">return</span> <span class="built_in">snprintf</span>(buf, PAGE_SIZE, <span class="string">"%s\n"</span>, dev-&gt;name);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> ssize_t <span class="title">store_name</span><span class="params">(<span class="keyword">struct</span> device *dev, <span class="keyword">struct</span> device_attribute *attr,</span></span></div><div class="line">                          <span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> count)</div><div class="line">&#123;</div><div class="line">        <span class="built_in">snprintf</span>(dev-&gt;name, <span class="keyword">sizeof</span>(dev-&gt;name), <span class="string">"%.*s"</span>,</div><div class="line">                 (<span class="keyword">int</span>)min(count, <span class="keyword">sizeof</span>(dev-&gt;name) - <span class="number">1</span>), buf);</div><div class="line">	<span class="keyword">return</span> count;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="title">DEVICE_ATTR</span><span class="params">(name, S_IRUGO, show_name, store_name)</span></span>;</div></pre></td></tr></table></figure></p>
+<p>（注意：真正的实现不允许用户空间设置设备名。）</p>
+<h3>顶层目录布局</h3>
+<p>sysfs 目录的安排显示了内核数据结构之间的关系。</p>
+<p>顶层 sysfs 目录看起来像这样:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">block/</div><div class="line">bus/</div><div class="line">class/</div><div class="line">dev/</div><div class="line">devices/</div><div class="line">firmware/</div><div class="line">net/</div><div class="line">fs/</div></pre></td></tr></table></figure></p>
+<p><code>devices/</code> 包含了一个设备树的文件系统表示。它直接映射了内核内部的设备树，设备(<code>struct device</code>)的层次结构。</p>
+<p><code>bus/</code> 包含了内核中各种总线类型的平面目录布局。每个总线目录包含两个子目录:
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">devices/</div><div class="line">drivers/</div></pre></td></tr></table></figure></p>
+<p><code>devices/</code> 包含了系统中出现的每个设备的符号链接，它们指向 <code>root/</code> 下的设备目录。</p>
+<p><code>drivers/</code> 包含了每个已为特定总线上的设备而挂载的驱动程序的目录(这里假定驱动没有跨越多个总线类型)。</p>
+<p><code>fs/</code> 包含了一个为文件系统设立的目录。现在每个想要导出属性的文件系统必须在 <code>fs/</code> 下创建自己的层次结构(参见Documentation/filesystems/fuse.txt)。</p>
+<p><code>dev/</code> 包含两个子目录： <code>char/</code> 和 <code>block/</code>。在这两个子目录中，有以<code>&lt;major&gt;:&lt;minor&gt;</code> 格式命名的符号链接。这些符号链接指向 sysfs 目录中相应的设备。<code>/sys/dev</code> 为查找某个设备提供一个通过<code>stat</code>(2) 调用快速搜索 sysfs 接口的方法。</p>
+<p>更多有关 driver-model 的特性信息可以在 Documentation/driver-model/ 中找到。</p>
+<p>TODO: 完成这一节。</p>
+<h3>当前接口</h3>
+<p>以下的接口层存在于当前的sysfs中:</p>
+<h4>设备 (include/linux/device.h)</h4>
+<p>结构体:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> device_attribute &#123;</div><div class="line">	<span class="keyword">struct</span> attribute	attr;</div><div class="line">	<span class="keyword">ssize_t</span> (*show)(<span class="keyword">struct</span> device *dev, <span class="keyword">struct</span> device_attribute *attr,</div><div class="line">			<span class="keyword">char</span> *buf);</div><div class="line">	<span class="keyword">ssize_t</span> (*store)(<span class="keyword">struct</span> device *dev, <span class="keyword">struct</span> device_attribute *attr,</div><div class="line">			 <span class="keyword">const</span> <span class="keyword">char</span> *buf, <span class="keyword">size_t</span> count);</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>声明:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DEVICE_ATTR(_name, _mode, _show, _store);</div></pre></td></tr></table></figure></p>
+<p>增/删属性:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">device_create_file</span><span class="params">(<span class="keyword">struct</span> device *dev, <span class="keyword">const</span> <span class="keyword">struct</span> device_attribute * attr)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">device_remove_file</span><span class="params">(<span class="keyword">struct</span> device *dev, <span class="keyword">const</span> <span class="keyword">struct</span> device_attribute * attr)</span></span>;</div></pre></td></tr></table></figure></p>
+<h4>总线驱动程序 (include/linux/device.h)</h4>
+<p>结构体:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> bus_attribute &#123;</div><div class="line">        <span class="keyword">struct</span> attribute        attr;</div><div class="line">        <span class="keyword">ssize_t</span> (*show)(<span class="keyword">struct</span> bus_type *, <span class="keyword">char</span> * buf);</div><div class="line">        <span class="keyword">ssize_t</span> (*store)(<span class="keyword">struct</span> bus_type *, <span class="keyword">const</span> <span class="keyword">char</span> * buf, <span class="keyword">size_t</span> count);</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>声明:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">BUS_ATTR(_name, _mode, _show, _store)</div></pre></td></tr></table></figure></p>
+<p>增/删属性:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">bus_create_file</span><span class="params">(<span class="keyword">struct</span> bus_type *, <span class="keyword">struct</span> bus_attribute *)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">bus_remove_file</span><span class="params">(<span class="keyword">struct</span> bus_type *, <span class="keyword">struct</span> bus_attribute *)</span></span>;</div></pre></td></tr></table></figure></p>
+<h4>设备驱动程序 (include/linux/device.h)</h4>
+<p>结构体:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> driver_attribute &#123;</div><div class="line">        <span class="keyword">struct</span> attribute        attr;</div><div class="line">        <span class="keyword">ssize_t</span> (*show)(<span class="keyword">struct</span> device_driver *, <span class="keyword">char</span> * buf);</div><div class="line">        <span class="keyword">ssize_t</span> (*store)(<span class="keyword">struct</span> device_driver *, <span class="keyword">const</span> <span class="keyword">char</span> * buf,</div><div class="line">                         <span class="keyword">size_t</span> count);</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>声明:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">DRIVER_ATTR(_name, _mode, _show, _store)</div></pre></td></tr></table></figure></p>
+<p>增/删属性：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">driver_create_file</span><span class="params">(<span class="keyword">struct</span> device_driver *, <span class="keyword">const</span> <span class="keyword">struct</span> driver_attribute *)</span></span>;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">driver_remove_file</span><span class="params">(<span class="keyword">struct</span> device_driver *, <span class="keyword">const</span> <span class="keyword">struct</span> driver_attribute *)</span></span>;</div></pre></td></tr></table></figure></p>
+<h3>文档</h3>
+<p>sysfs 目录结构以及其中包含的属性定义了一个内核与用户空间之间的 ABI。对于任何 ABI，其自身的稳定和适当的文档是非常重要的。所有新的 sysfs 属性必须在 Documentation/ABI 中有文档。详见 Documentation/ABI/README。</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/03/04/kobject/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/03/05/bus/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

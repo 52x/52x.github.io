@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            pbxprojHelper--Xcode工程文件助手 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,macOS,Xcode,Swift">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="pbxprojHelper--Xcode工程文件助手 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="macOS"> <meta property="og:article:tag" content="Xcode"> <meta property="og:article:tag" content="Swift"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">产品方案</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">为什么造这个工具？</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">需求！</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">技术实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">对比工程文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">应用 JSON 配置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">操作工程文件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.3.1.</span> <span class="post-toc-text">编码问题</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.3.2.</span> <span class="post-toc-text">备份机制</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">预览和过滤工程文件内容</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.4.1.</span> <span class="post-toc-text">预览</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.4.2.</span> <span class="post-toc-text">过滤</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">快速切换工程文件</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.6.</span> <span class="post-toc-text">构造命令行工具</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">结果</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">感悟</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                pbxprojHelper--Xcode工程文件助手
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>11月 28, 2016</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/Swift/">Swift</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/Xcode/">Xcode</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/macOS/">macOS</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=pbxprojHelper--Xcode工程文件助手&url=http://yoursite.com//2016/11/27/2016-11-23-pbxprojHelper/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=pbxprojHelper--Xcode工程文件助手&url=http://yoursite.com//2016/11/27/2016-11-23-pbxprojHelper/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2016/11/27/2016-11-23-pbxprojHelper/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2016/11/27/2016-11-23-pbxprojHelper/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p><a href="https://github.com/yulingtianxia/pbxprojHelper" target="_blank" rel="external">pbxprojHelper</a> 可以帮你快速配置 Xcode 工程文件，省去麻烦的人工手动操作。项目开源，使用 Swift 开发，详细介绍请见<a href="https://github.com/yulingtianxia/pbxprojHelper/blob/master/Documentation/README_ZH.md" target="_blank" rel="external">使用说明</a>。除了 Mac App 外还提供了命令行工具 <a href="https://github.com/yulingtianxia/pbxprojHelper/releases/download/1.1.3/pbxproj" target="_blank" rel="external"><code>pbxproj</code></a>，它集成了 <a href="https://github.com/yulingtianxia/pbxprojHelper" target="_blank" rel="external">pbxprojHelper</a> 的核心功能，同样简易实用。</p>
+<p>因为 <a href="https://github.com/yulingtianxia/pbxprojHelper/blob/master/Documentation/README_ZH.md" target="_blank" rel="external">README_ZH</a> 中对使用方法已经讲得很详细了，这里重点说的是产品方案和技术实现。</p>
+<p>&lt;!--more--&gt;</p>
+<h2>产品方案</h2>
+<h3>为什么造这个工具？</h3>
+<p>在开发公司的项目时，check out 代码到本地后需要修改工程文件。比如更改证书和 Bundle Identifier、删除一些编译不过的 Target，修改 Build Settings 等配置。重复手动修改这些配置的场景很多：</p>
+<ol>
+<li>第一次 check out 新的分支，需要使用自己的配置。</li>
+<li>增删代码文件前会先 revert project.pbxproj 文件，修改完成后再 commit。此时本地工程文件需要重新配置。</li>
+<li>没有增删代码文件但 project.pbxproj 文件有冲突（conflict），需要先 revert 后重新配置工程文件。</li>
+<li>一些自动化流程（比如 CI）每次执行都需要特定的编译选项和证书来编包。</li>
+</ol>
+<p>而我本人最常遇到的场景是 1 和 2，因为不能用公司的证书配置来编译，一些跟苹果开发者账号相关的功能导致一些 target 编译不过，还有些 debug 模式下需要设置的编译选项。所以每次都需要手动修改 Xcode 工程配置，很是麻烦。</p>
+<h3>需求！</h3>
+<p>可以说开发这个工具一开始完全就是为了解决我个人的痛点的，基本没考虑做成功能强大的通用工具。虽然做的事情比较小众，但也能满足一批苹果开发者的需求了。我把需求分为以下几点：</p>
+<ol>
+<li>将程序员对工程文件做出的配置修改记录下来，并保存成 JSON 文件</li>
+<li>下次使用时直接导入 JSON 文件，将配置修改应用到当前的工程文件上</li>
+<li>支持回滚操作</li>
+<li>支持工程文件内容的预览、过滤</li>
+<li>快速切换最近使用的工程</li>
+<li>提供命令行工具</li>
+</ol>
+<p>可以说 1 和 2 是刚需，也是常用功能。3、4 和 5 是辅助功能，6 是附加需求。我平时最常碰到的需求点就是 2 和 5 了。</p>
+<h2>技术实现</h2>
+<p>关于 Xcode 工程文件的介绍，请参考我之前写的 <a href="http://yulingtianxia.com/blog/2016/09/28/Let-s-Talk-About-project-pbxproj/" target="_blank" rel="external">Let's Talk About project.pbxproj</a>。本篇文章可以算作是它的续集。</p>
+<p>我把工程文件相关的底层方法都封装在 <code>PropertyListHandler</code> 类中，它们跟界面无关。还有一些工具类和方法写到 <code>Utils</code> 文件中。</p>
+<h3>对比工程文件</h3>
+<p>想要记录工程文件的修改是很难的，所以只能是比较下两个工程文件的差异。这里不是对比文件那种简单的 <code>diff</code> 操作，而是要记录具体针对哪个配置项做了『增删改』。</p>
+<p>**工程文件的内容可以比作一颗多叉树，的根节点是字典，其余中间节点都是字典的键。数组的元素肯定是字符串（叶子节点），字典的键值对则可能继续拓展出子树，也可能是叶子节点。**在拿到两个工程文件的数据后，就需要对两棵树的每个层级进行对比。对比两颗树的差异算法不难实现，核心思想是：<strong>在对比中间节点时，如果内容相同那就递归比较下一层，否则就记为『增』或『删』</strong>。</p>
+<p>而比较同一层级中间节点的差异，直接用 <code>Set</code> 是最方便的了。我将两棵树的差异保存在字典 <code>difference</code> 中，在内嵌方法中又实现了个尾递归。递归过程中需要记录中间节点作为路径，因为生成的路径需要保存到对比结果中。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div></pre></td><td class="code"><pre><div class="line">/// 将 project 与 other project 做比较</div><div class="line">///</div><div class="line">/// - parameter project1: 作为比较的 project</div><div class="line">/// - parameter project2: 被参照的 project</div><div class="line">///</div><div class="line">/// - returns: project1 相对于 project2 的变化</div><div class="line">class func compare(project project1: [String: Any], withOtherProject project2: [String: Any]) -&gt; Any &#123;</div><div class="line">    </div><div class="line">    var difference = [&quot;insert&quot;: [String: Any](), &quot;remove&quot;: [String: Any](), &quot;modify&quot;: [String: Any]()]</div><div class="line">    </div><div class="line">    /// 将两个数据对象作递归比较，将最深层次节点的差异保存到 difference 中。</div><div class="line">    ///</div><div class="line">    /// - Parameters:</div><div class="line">    ///   - data1: 第一个数据对象，数组或字典</div><div class="line">    ///   - data2: 第二个数据对象，数组或字典</div><div class="line">    ///   - parentKeyPath: 父路径</div><div class="line">    func compare(data data1: Any?, withOtherData data2: Any?, parentKeyPath: String) &#123;</div><div class="line">        if let dictionary1 = data1 as? [String: Any], let dictionary2 = data2 as? [String: Any] &#123;</div><div class="line">            let set1 = Set(dictionary1.keys)</div><div class="line">            let set2 = Set(dictionary2.keys)</div><div class="line">            for key in set1.subtracting(set2) &#123;</div><div class="line">                if let value = dictionary1[key], difference[&quot;insert&quot;]?[parentKeyPath] == nil &#123;</div><div class="line">                    difference[&quot;insert&quot;]?[parentKeyPath] = [key: value]</div><div class="line">                &#125;</div><div class="line">                else if let value = dictionary1[key], var insertDictionary = difference[&quot;insert&quot;]?[parentKeyPath] as? [String: Any] &#123;</div><div class="line">                    insertDictionary[key] = value</div><div class="line">                    difference[&quot;insert&quot;]?[parentKeyPath] = insertDictionary</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            for key in set2.subtracting(set1) &#123;</div><div class="line">                if difference[&quot;remove&quot;]?[parentKeyPath] == nil &#123;</div><div class="line">                    difference[&quot;remove&quot;]?[parentKeyPath] = [key]</div><div class="line">                &#125;</div><div class="line">                else if var removeArray = difference[&quot;remove&quot;]?[parentKeyPath] as? [Any] &#123;</div><div class="line">                    removeArray.append(key)</div><div class="line">                    difference[&quot;remove&quot;]?[parentKeyPath] = removeArray</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            for key in set1.intersection(set2) &#123;</div><div class="line">                let keyPath = parentKeyPath == &quot;&quot; ? key : &quot;\(parentKeyPath).\(key)&quot;</div><div class="line">                // values are both String, leaf node</div><div class="line">                if let str1 = dictionary1[key] as? String,</div><div class="line">                    let str2 = dictionary2[key] as? String &#123;</div><div class="line">                    if str1 != str2 &#123;</div><div class="line">                        difference[&quot;modify&quot;]?[keyPath] = str1</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                else &#123; // continue compare subtrees</div><div class="line">                    compare(data: dictionary1[key], withOtherData: dictionary2[key], parentKeyPath: keyPath)</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        if let array1 = data1 as? [String], let array2 = data2 as? [String] &#123;</div><div class="line">            let set1 = Set(array1)</div><div class="line">            let set2 = Set(array2)</div><div class="line">            for element in set1.subtracting(set2) &#123;</div><div class="line">                if difference[&quot;insert&quot;]?[parentKeyPath] == nil &#123;</div><div class="line">                    difference[&quot;insert&quot;]?[parentKeyPath] = [element]</div><div class="line">                &#125;</div><div class="line">                else if var insertArray = difference[&quot;insert&quot;]?[parentKeyPath] as? [Any] &#123;</div><div class="line">                    insertArray.append(element)</div><div class="line">                    difference[&quot;insert&quot;]?[parentKeyPath] = insertArray</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            for element in set2.subtracting(set1) &#123;</div><div class="line">                if difference[&quot;remove&quot;]?[parentKeyPath] == nil &#123;</div><div class="line">                    difference[&quot;remove&quot;]?[parentKeyPath] = [element]</div><div class="line">                &#125;</div><div class="line">                else if var removeArray = difference[&quot;remove&quot;]?[parentKeyPath] as? [Any] &#123;</div><div class="line">                    removeArray.append(element)</div><div class="line">                    difference[&quot;remove&quot;]?[parentKeyPath] = removeArray</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    compare(data: project1, withOtherData: project2, parentKeyPath: &quot;&quot;)</div><div class="line">    return difference</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这段看似很长的代码其实逻辑超级简单，就是分别针对字典和数组两种情况进行比较而已，弱智的一逼。需要注意的是数组内容作为叶子节点，只存在『增』和『删』两种情况。</p>
+<p>每次递归都将 <code>parentKeyPath</code> 与当前节点的值 <code>key</code> 用 <code>.</code> 拼接在一起。也就是说最后得到的路径是 <code>A.B.C</code> 这种格式。</p>
+<p>可以看出生成的对比结果是个字典，包含三个键值对，键分别是 <code>insert</code>、<code>remove</code> 和 <code>modify</code>，值为字典。</p>
+<h3>应用 JSON 配置</h3>
+<p>因为生成的 JSON 配置文件具有一定格式，所以必须按照格式规则来应用这些配置到工程文件中。最关键的是在上一步中生成的路径格式为 <code>A.B.C</code>，且路径内容是未知的，需要实时处理。所以我写了个方法来解析路径，步入到路径最底层后提供闭包来对路径的值进行修改。假设 <code>keyPath</code> 为路径字符串内容，方法实现如下：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">let keys = keyPath.components(separatedBy: &quot;.&quot;)</div><div class="line">                </div><div class="line">/// 假如 command 为 &quot;modify&quot; keyPath 为 &quot;A.B.C&quot;，目的是让 value[A][B][C] = data。需要沿着路径深入，使用闭包修改叶子节点的数据，递归过程中逐级向上返回修改后的结果，完成整个路径上数据的更新。</div><div class="line">///</div><div class="line">/// - parameter index:    路径深度</div><div class="line">/// - parameter value:    当前路径对应的值</div><div class="line">/// - parameter complete: 路径终点所要做的操作</div><div class="line">///</div><div class="line">/// - returns: 当前路径层级修改后的值</div><div class="line">func walkIn(atIndex index: Int, withCurrentValue value: Any, complete: (Any) -&gt; Any?) -&gt; Any? &#123;</div><div class="line">    if index &lt; keys.count &#123;</div><div class="line">        let key = keys[index]</div><div class="line">        if let dicValue = value as? [String: Any],</div><div class="line">            let nextValue = dicValue[key] &#123;</div><div class="line">            var resultValue = dicValue</div><div class="line">            resultValue[key] = walkIn(atIndex: index + 1, withCurrentValue: nextValue, complete: complete)</div><div class="line">            return resultValue</div><div class="line">        &#125;</div><div class="line">        else &#123;</div><div class="line">            print(&quot;Wrong KeyPath&quot;)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">        return complete(value)</div><div class="line">    &#125;</div><div class="line">    return value</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个方法会将当前层级（<code>index</code>）路径的节点作为键（<code>key</code>），并查找字典中该键对应的值（<code>nextValue</code>）。然后递归遍历下一层，直至步入到路径（<code>keypath</code>）最末端。此时会执行传入的 <code>complete</code> 闭包，并将结果作为该方法的返回值。这样在对路径最末端的节点值做出修改后就可以逐层同步上去，最后完成对整条路径的修改。</p>
+<p>如果能直接给 <code>value[A][B][C]</code> 赋值就好了，但是这是不可能的。因为路径内容是未知的，这样的代码不可能写死的，只能动态地递归进去，并在调用后将修改内容返回上层。</p>
+<p>之前提到过 JSON 文件格式中包含三种命令：<code>insert</code>、<code>remove</code> 和 <code>modify</code>。所以在实现 <code>complete</code> 方法的时候需要针对这三种命令分别处理，每种命令还要区分字典和数组两种数据类型。这里处理的逻辑基本是上一步的逆逻辑，很容易理解。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div></pre></td><td class="code"><pre><div class="line">/// 这个方法可厉（dan）害（teng）咯，把 json 配置数据应用到工程文件数据上</div><div class="line">///</div><div class="line">/// - parameter json:        配置文件数据，用于对工程文件的增删改操作</div><div class="line">/// - parameter projectData: 工程文件数据，project.pbxproj 的内容</div><div class="line">class func apply(json: [String: [String: Any]], onProjectData projectData: [String: Any]) -&gt; [String: Any] &#123;</div><div class="line">    var appliedData = projectData</div><div class="line">    // 遍历 JSON 中的三个命令</div><div class="line">    for (command, arguments) in json &#123;</div><div class="line">	     // 遍历每个命令中的路径</div><div class="line">        for (keyPath, data) in arguments &#123;</div><div class="line">            let keys = keyPath.components(separatedBy: &quot;.&quot;)</div><div class="line">            </div><div class="line">            func walkIn(atIndex index: Int, withCurrentValue value: Any, complete: (Any) -&gt; Any?) -&gt; Any? &#123;</div><div class="line">            ... 此处省略</div><div class="line">            &#125;</div><div class="line">            </div><div class="line">            // 调用 `walkIn` 方法，</div><div class="line">            if let result = walkIn(atIndex: 0, withCurrentValue: appliedData, complete: &#123; (value) -&gt; Any? in</div><div class="line">                // value 为路径叶子节点的数据。根据 command 的不同，处理的规则也不一样：</div><div class="line">                switch command &#123;</div><div class="line">                    // 添加数据时 data 和 value 类型要统一，要么都是数组，要么都是字典，否则不做变更</div><div class="line">                case &quot;insert&quot;:</div><div class="line">                    if var dictionary = value as? [String: Any],</div><div class="line">                        let dicData = data as? [String: Any] &#123;</div><div class="line">                        for (dataKey, dataValue) in dicData &#123;</div><div class="line">                            dictionary[dataKey] = dataValue</div><div class="line">                        &#125;</div><div class="line">                        return dictionary</div><div class="line">                    &#125;</div><div class="line">                    if var array = value as? [Any],</div><div class="line">                        let arrayData = data as? [Any] &#123;</div><div class="line">                        array.append(contentsOf: arrayData)</div><div class="line">                        return array</div><div class="line">                    &#125;</div><div class="line">                    return value</div><div class="line">                    // 移除数据时被移除的 data 为包含数据或键的数组，否则不做变更</div><div class="line">                case &quot;remove&quot;:</div><div class="line">                    if var dictionary = value as? [String: Any],</div><div class="line">                        let arrayData = data as? [Any] &#123;</div><div class="line">                        for removeData in arrayData &#123;</div><div class="line">                            if let removeKey = removeData as? String &#123;</div><div class="line">                                dictionary[removeKey] = nil</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                        return dictionary</div><div class="line">                    &#125;</div><div class="line">                    if var array = value as? [String],</div><div class="line">                        let arrayData = data as? [Any] &#123;</div><div class="line">                        for removeData in arrayData &#123;</div><div class="line">                            if let removeIndex = removeData as? Int &#123;</div><div class="line">                                if (0 ..&lt; array.count).contains(removeIndex) &#123;</div><div class="line">                                    array.remove(at: removeIndex)</div><div class="line">                                &#125;</div><div class="line">                            &#125;</div><div class="line">                            if let removeElement = removeData as? String,</div><div class="line">                                let removeIndex = array.index(of: removeElement) &#123;</div><div class="line">                                array.remove(at: removeIndex)</div><div class="line">                            &#125;</div><div class="line">                        &#125;</div><div class="line">                        return array</div><div class="line">                    &#125;</div><div class="line">                    return value</div><div class="line">                    // 直接用 data 替换 value</div><div class="line">                case &quot;modify&quot;:</div><div class="line">                    return data</div><div class="line">                default:</div><div class="line">                    return value</div><div class="line">                &#125;</div><div class="line">                </div><div class="line">            &#125;) as? [String: Any] &#123;</div><div class="line">                appliedData = result</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return appliedData</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>因为 JSON 文件内容层级较深，所以需要先遍历最外面的字典。一共有三个键值对，分别对应 <code>insert</code>、<code>remove</code> 和 <code>modify</code> 三个命令（<code>command</code>）及其参数（<code>arguments</code>）。每种命令的参数都是由『(路径:字典或数组)』这样格式的键值对组成。路径对应的值的类型需要与 JSON 文件中一样。</p>
+<p>在遍历的同时修改工程文件数据的内容，这里使用了 Swift 的嵌套方法和尾随闭包语法。这总语法虽然用着爽，但是对代码的可读性也有所降低。</p>
+<h3>操作工程文件</h3>
+<p>可以用 <code>PropertyListSerialization</code> 来（反）序列化 project.pbxproj 文件的内容：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">let fileData = try Data(contentsOf: url)</div><div class="line">let plist = try PropertyListSerialization.propertyList(from: fileData, options: .mutableContainersAndLeaves, format: nil)</div><div class="line"></div><div class="line">let data = try PropertyListSerialization.data(fromPropertyList: list, format: .xml, options: 0)</div><div class="line">try data.write(to: url, options: .atomic)</div></pre></td></tr></table></figure></p>
+<p>将工程文件数据写入磁盘表面上看起来是一件再简单不过的事情，但其实这里面包含编码问题和备份机制。</p>
+<h4>编码问题</h4>
+<p>直接把工程文件数据写入文件后，中文会有乱码。需要做的是把中文内容的 Unicode 的标量值提取出并转成 numeric character reference（NCR）。&quot;&amp;#dddd&quot; 的一串字符是 HTML、XML 等 SGML 类语言的转义序列（escape sequence），它们不是『编码』。</p>
+<p>下面的方法可以将生成的工程文件中文内容替换成 NCR：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">func handleEncode(fileURL: URL) &#123;</div><div class="line">    func encodeString(_ str: String) -&gt; String &#123;</div><div class="line">        var result = &quot;&quot;</div><div class="line">        for scalar in str.unicodeScalars &#123;</div><div class="line">            if scalar.value &gt; 0x4e00 &amp;&amp; scalar.value &lt; 0x9fff &#123;</div><div class="line">                result += String(format: &quot;&amp;#%04d;&quot;, scalar.value)</div><div class="line">            &#125;</div><div class="line">            else &#123;</div><div class="line">                result += scalar.description</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return result</div><div class="line">    &#125;</div><div class="line">    do &#123;</div><div class="line">        var txt = try String(contentsOf: fileURL, encoding: .utf8)</div><div class="line">        txt = encodeString(txt)</div><div class="line">        try txt.write(to: fileURL, atomically: true, encoding: .utf8)</div><div class="line">    &#125; catch let error &#123;</div><div class="line">        print(&quot;translate chinese characters to mathematical symbols error: \(error.localizedDescription)&quot;)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4>备份机制</h4>
+<p>既然是要生成新的工程文件来替换原来的工程文件，备份机制肯定不能少。当前的备份机制仅仅备份上次修改的文件，这是考虑到备份历史文件会占用大量磁盘的问题。比如大一些的工程文件可能占用10M 甚至更多的空间，频繁操作产生的备份会很多。</p>
+<p>在生成备份文件和使用备份文件还原时，都需要获取到当前工程文件对应的备份文件 URL。真正的主角 project.pbxproj 被包含在工程文件（夹）内部，所以要根据文件后缀名来决定如何处理。下面的私有方法会将传入的 URL 引用参数修改为真正的 project.pbxproj 文件 URL，并返回备份文件的 URL：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">/// 返回指定文件对应的备份文件路径</div><div class="line">///</div><div class="line">/// - parameter url: 文件 URL，如果是工程文件，会被修改为 project.pbxproj 文件</div><div class="line">///</div><div class="line">/// - returns: 备份文件路径</div><div class="line">fileprivate class func backupURLOf(projectURL url: inout URL) -&gt; URL &#123;</div><div class="line">    var backupURL = URL(fileURLWithPath: NSHomeDirectory()).appendingPathComponent(&quot;Documents&quot;)</div><div class="line">    if url.pathExtension == &quot;xcodeproj&quot; &#123;</div><div class="line">        backupURL.appendPathComponent(url.lastPathComponent)</div><div class="line">        backupURL.appendPathExtension(&quot;project.pbxproj&quot;)</div><div class="line">        url.appendPathComponent(&quot;project.pbxproj&quot;)</div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">        let count = url.pathComponents.count</div><div class="line">        if count &gt; 1 &#123;</div><div class="line">            backupURL.appendPathComponent(url.pathComponents[count-2])</div><div class="line">            backupURL.appendPathExtension(url.pathComponents[count-1])</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    backupURL.appendPathExtension(&quot;backup&quot;)</div><div class="line">    return backupURL</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>一个方法只干一件事，这个方法设计的很不好，干了两件事，别学我这么做。我这么做是为了省代码量。（狡辩，逃）</p>
+<h3>预览和过滤工程文件内容</h3>
+<p>主界面如下，在展示所有数据的同时，可以在 Filter 文本框中输入关键词来过滤数据：</p>
+<p><img src="https://raw.githubusercontent.com/yulingtianxia/pbxprojHelper/master/images/MainWindow%402x.png" alt="MainWindow"></p>
+<h4>预览</h4>
+<p>关于如何使用 <code>NSOutlineView</code> 展示数据，不想多说，查文档写 UI 谁都会。</p>
+<p>我定义了一个数据结构 <code>Item</code> 来表示 <code>NSOutlineView</code> 中每行节点的数据：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typealias Item = (key: String, value: Any, parent: Any?)</div></pre></td></tr></table></figure></p>
+<p>因为有了 <code>parent</code> 指向父节点，可以递归搜寻到某个 <code>Item</code> 对象所处的路径（<code>keypath</code>）：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">func keyPath(forItem item: Any?) -&gt; String &#123;</div><div class="line">    let key: String</div><div class="line">    let parent: Any?</div><div class="line">    if let tupleItem = item as? Item &#123;</div><div class="line">        key = tupleItem.key</div><div class="line">        parent = tupleItem.parent</div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">        key = &quot;&quot;</div><div class="line">        parent = nil</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    if let parentItem = parent &#123;</div><div class="line">        return &quot;\(keyPath(forItem: parentItem)).\(key)&quot;</div><div class="line">    &#125;</div><div class="line">    return &quot;\(key)&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样就可以实现双击某行数据时，自动将当前数据的路径写入 Pasteboard 中。</p>
+<h4>过滤</h4>
+<p>过滤关键字的重点就是判断一个 <code>Item</code> 及其子节点中是否包含此关键字，此时需要依然是需要 DFS 递归查找关键字。</p>
+<p>查找关键字需要忽略大小写：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">func checkAny(value: Any, containsString string: String) -&gt; Bool &#123;</div><div class="line">    return ((value is String) &amp;&amp; (value as! String).lowercased().contains(string.lowercased()))</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>递归查找很容易实现，只不过区分下数组和字典罢了：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">func dfs(propertyList list: Any) -&gt; Bool &#123;</div><div class="line">    if let dictionary = list as? [String: Any] &#123;</div><div class="line">        for (key, value) in dictionary &#123;</div><div class="line">            if checkAny(value: key, containsString: word) || checkAny(value: value, containsString: word) &#123;</div><div class="line">                return true</div><div class="line">            &#125;</div><div class="line">            else if dfs(propertyList: value) &#123;</div><div class="line">                return true</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    if let array = list as? [Any] &#123;</div><div class="line">        for value in array &#123;</div><div class="line">            if checkAny(value: value, containsString: word) &#123;</div><div class="line">                return true</div><div class="line">            &#125;</div><div class="line">            else if dfs(propertyList: value) &#123;</div><div class="line">                return true</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    return false</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>最后经过方法嵌套拼装成如下：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">func isItem(_ item: Any, containsKeyWord word: String) -&gt; Bool &#123;</div><div class="line">    if let tupleItem = item as? Item &#123;</div><div class="line">        if checkAny(value: tupleItem.key, containsString: word) || checkAny(value: tupleItem.value, containsString: word) &#123;</div><div class="line">            return true</div><div class="line">        &#125;</div><div class="line">        func dfs(propertyList list: Any) -&gt; Bool &#123;</div><div class="line">        	/// 此处省略</div><div class="line">        &#125;</div><div class="line">        return dfs(propertyList: tupleItem.value)</div><div class="line">    &#125;</div><div class="line">    return false</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>快速切换工程文件</h3>
+<p>下拉列表的 UI 实现很简单，就是一个 <code>NSView</code> 里面放几个 <code>NSTextField</code>。维护常用工程文件列表需要在每次用户选择工程文件后将其加入列表，实现 LRU 算法。</p>
+<p>这里对 LRU 缓存的需求跟 <a href="http://yulingtianxia.com/blog/2016/02/27/TFSHelper/#%E7%BC%93%E5%AD%98%E5%B8%B8%E7%94%A8%E9%93%BE%E6%8E%A5" target="_blank" rel="external">自制一款 Mac 平台 URL 辅助工具</a> 这篇文章中的 TFSHelper 的是一样的。我直接把代码搬过来了。我将其放到 Github Gist 上了，可能需要科学上网：<a href="https://gist.github.com/yulingtianxia/5d61afdb241dcd5562b211cb485883fa" target="_blank" rel="external">LRUCache</a>。</p>
+<p>下拉列表的点击操作交由 <code>NSClickGestureRecognizer</code> 捕获处理。</p>
+<h3>构造命令行工具</h3>
+<p>为了尽可能精简命令行的使用复杂度，我只把最核心的功能封装进去，一共只有这几个命令：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Usage: pbxproj [command_option] file</div><div class="line">Command options are (-convert is the default):</div><div class="line">-compare modified_file -o path          compare modified property list file with property list file and generate a json result at the given path</div><div class="line">-apply json_file                        apply a json file on property list file</div><div class="line">-revert                                 revert property list file to latest backup</div><div class="line">-convert                                rewrite property list files in xml format</div></pre></td></tr></table></figure></p>
+<p>输入的这些参数都需要自己去处理，由此会产生大量条件判断，好在我的不算复杂。需要注意的是参数列表第一个是程序名称（路径）。</p>
+<p>在 terminal 中执行 Swift 文件时获取参数内容的方式变了好多次，一开始是 <code>C_ARGC</code> 和 <code>C_ARGV</code>，到了 Swift 1.2 只能使用 <code>Process.arguments</code>，到了 Swift 3 又变了，必须用 <code>CommandLine.arguments</code>。</p>
+<p>拿到了参数后，我所做的事情只是调用 <code>PropertyListHandler</code> 中已经封装好的工具方法罢了。</p>
+<p>不是所有的人都会把 Swift 文件当做脚本去执行，所以还需要创建个 target，打包成可执行程序，这样就不依赖 Swift 命令了。</p>
+<h2>结果</h2>
+<p>我使用 pbxprojHelper 的频率十分高，因为开发同一项目的人很多，svn 的分支也多。第一次生成好我的 JSON 配置文件后以后就几乎不用再生成了，不同分支的工程都可以共用这一个 JSON 配置。每次因为种种原因 revert 了 project.pbxproj 文件后，我都可以用它一键配置好我的工程文件，**节省了至少 90% 的时间！**即便换了个其他分支的工程，也可以在常用列表中迅速切换，不用再次 select 文件。</p>
+<p>也正是在一次次的使用中发现了若干 bug 和体验问题，然后不断改进和完善。</p>
+<h2>感悟</h2>
+<p>这个项目从开始构思需求到完成基本功能花费了我大概一周的业余时间。</p>
+<p>前期调研做了些准备工作后觉得还是有可行性的，并对部分功能需求做了妥协。比如记录工程文件修改内容需要对比新旧两个文件，这就要求使用者先把工程文件保存一份，然后再修改，最后使用 pbxprojHelper 对比两个工程文件的差异。最后生成工程文件的环节也做了妥协，因为无法将数据以 OpenStep 格式写入文件，除非调用 Xcode 私有框架 <code>touch</code> 下工程文件。所以需要用户用 Xcode 打开工程后随意修改下工程再复原即可。就是在这样一次次对功能的妥协下，使得方案的看似不可行变得可行。</p>
+<p>这个项目的需求一开始并不明确，是在摸索中一点点确立的。比如一开始根本没有想到过要把修改保存成 JSON 文件，之后想的是让用户手动创建和编写 JSON 配置文件，再之后想的是自动生成 JSON 配置文件。在制定 JSON 配置的内容规则上也是调整了一阵子，几经修改最后定稿。所以说，产品经理下次改需求的时候可以适当理解下，毕竟产品成型的确需要个过程。</p>
+<p>**摸着石头过河的感觉虽然忐忑，但是我更享受攻城略地般的快感。**当时在开发的过程中遇到了一个个难题，当时连自己也不知道能否搞定，很有可能半途而废。但最终还是通过制定策略和实现算法实现了，虽然算法都挺简单并不难，但是能有针对性地给出一些解决方案还是比较有成就感的。</p>
+<p>作为一款给自己量身打造的玩票工具，使用 Swift 来开发看起来是当今标配，理所当然。也是趁着玩票的机会温（chong）习（xue）下 Swift，毕竟平时一直用 OC 写 MRC 代码，生怕落后于这个时代。</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2016/11/27/daily-active-users-estimation/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2016/11/30/when-to-use-which-css-methodology/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

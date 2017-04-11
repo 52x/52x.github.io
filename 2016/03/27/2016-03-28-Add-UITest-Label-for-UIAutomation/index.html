@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            为 UIAutomation 添加自动化测试标签的探索 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,iOS">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="为 UIAutomation 添加自动化测试标签的探索 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="iOS"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">分析&方案</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">实践&探索</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">感受&总结</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                为 UIAutomation 添加自动化测试标签的探索
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>3月 28, 2016</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/iOS/">iOS</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=为 UIAutomation 添加自动化测试标签的探索&url=http://yoursite.com//2016/03/27/2016-03-28-Add-UITest-Label-for-UIAutomation/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=为 UIAutomation 添加自动化测试标签的探索&url=http://yoursite.com//2016/03/27/2016-03-28-Add-UITest-Label-for-UIAutomation/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2016/03/27/2016-03-28-Add-UITest-Label-for-UIAutomation/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2016/03/27/2016-03-28-Add-UITest-Label-for-UIAutomation/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>UIAutomation 是苹果提供的自动化测试框架，iOS 不像 Android 那样可以在 xml 文件中自动生成唯一的 id 作为标签，需要我们手动为控件添加可访问性（Accessibility）。如何让一个控件的可访问标签在当前页面唯一且不变呢？当然纯手工在代码中插入加标签的逻辑代码肯定是可行的，但费时费力，所以我在这里做一些用程序自动化添加标签尝试性的探索。</p>
+<p>Github 传送门: <a href="https://github.com/yulingtianxia/TBUIAutoTest" target="_blank" rel="external">TBUIAutoTest</a></p>
+<p>&lt;!--more--&gt;</p>
+<h2>分析&amp;方案</h2>
+<p>首先回顾下生成标签需要符合的必要条件：（<strong>以下将“自动化测试标签”简称为“标签”</strong>）：</p>
+<ol>
+<li>页面内唯一：页面内不同视图标签不重复。</li>
+<li>运行时恒定：每次运行应用中此页面时视图的标签始终恒定，无需修改测试脚本。</li>
+</ol>
+<p>为了满足标签的必要条件，可以选择其在某个类中的属性名称作为标签，因为同一个类中是不可能有两个相同名称的属性的，并且属性名称都是固定在代码里的，也就是恒定不变的。在此总结下标签的策略流程：</p>
+<ol>
+<li>如果变量是某个类的属性，则可满足标签条件。因为代码没有改动，则标签也不会变化。即使代码有变动，也肯定是因为业务逻辑变更导致了界面上的变化，那么测试脚本肯定也是要改的，所以无需多虑此种情况。2.	如果是临时创建的局部变量，同一页面中很有可能有相同名字的局部变量。而且 Objective-C Runtime 无法获取局部变量名称，所以针对此种情况尽量采用其他来源的内容作为标签。</li>
+<li>获取代码中局部变量的变量名，并与其对象绑定起来。（绑定是指将标签赋给<code>accessibilityIdentifier</code> 之类的属性）</li>
+</ol>
+<p>对于上面第二条种的局部变量生成标签的策略，详细阐述如下：
+由于编译器对代码进行了词法分析、语法分析和语义分析，此时局部变量名早就消失了。运行的时候局部变量在内存里也只是个冰冷冷的对象罢了，不像类的实例变量或属性那样可以获取名称。既然编译阶段之后就已经拿不到局部变量名了，所以只能对源代码进行文字处理来获取局部变量名。比如使用宏定义在 <code>addSubview:</code> 方法调用的时候传入参数名，并将参数表与参数实例绑定。但是这对 Swift 算是个方案，对于语法怪异的 Objective-C 来说是不可行的。
+既然从方法外不能直接传入参数，那么尝试从方法内来获取函数调用堆栈。查找上一层函数在源码的位置，用正则表达式得到 <code>addSubview:</code> 的参数名称。从函数调用堆栈获取上一层调用函数在源码中的位置（比如文件名和行数），然后用正则匹配抓取 <code>addSubview:</code> 的参数名，看样子是个方案。获取函数调用栈对应源码位置可以用 <a href="http://stackoverflow.com/questions/3151779/how-its-better-to-invoke-gdb-from-program-to-print-its-stacktrace/4611112#4611112" target="_blank" rel="external"><code>backtrace_symbols</code></a>，或者 <code>[NSThread callStackSymbols]</code> 等，但这些操作都不是在 iOS 系统内，不能将标签绑定到 iOS 运行环境中的实例。</p>
+<p>当然也可以用脚本程序帮我们在源码指定位置中插入添加标签的逻辑代码，但这样的弊端有二：</p>
+<ol>
+<li>维护成本较高，脚本在向源码中插入加标签逻辑代码时需要判断是否已经插入过这段代码，增加了出错几率</li>
+<li>对代码内容变化的鲁棒性不高。因为重构等行为很可能把原有代码顺序弄乱，脚本需要考虑很多情况。每次新增代码都要重新跑一次脚本。</li>
+</ol>
+<p>既然局部变量的名字可能重名并难于与实例绑定，不妨另辟蹊径寻求其他方法。这里提出一种假设：程序员写代码的时候之所以将一个视图变量声明为类的属性，是因为以后还会经常用到它。而那些被声明为局部变量的，肯定是临时用一次就不用了。这种用临时变量创建的视图添加到视图层级中内容极有可能就不会变了，其大部分应该是 <code>UILabel</code>、<code>UIButton</code>、<code>UIImageView</code> 以及被当做容器视图功能的 <code>UIView</code> 实例。针对这种情况可以将其视图的内容作为标签的『特殊标识』。针对这种情况可以将其视图的内容作为标签，比如 <code>UILabel</code> 的文本内容、<code>UIButton</code> 的背景图片资源名和文本内容以及 <code>UIImageView</code> 的图片资源名。基于以上的逻辑，最后采用基础控件内容作为局部变量的标签。</p>
+<p>总结为一句话：如果视图是某个类的属性，就用属性名作为标签；否则使用其内容作为标签。</p>
+<h2>实践&amp;探索</h2>
+<p>我采用 hook 的方式来在运行时生成标签。hook <code>UIView</code> 中的<code>accessibilityIdentifier</code> 的原因是此时的视图层级更全，并且是惰性生成标签。其实使用 <code>accessibilityLabel</code> 也是可以的，但对 VoiceOver 功能会有影响，毕竟变量名不像视图文字内容那样有实际意义。</p>
+<p>PS：这里之所以不 hook <code>addSubview:</code> 是因为在添加 subview 时，视图层级树并不完整。虽然调用 <code>accessibilityIdentifier</code> 时视图层级也可能不完整（比如在 <code>addSubview:</code> 之前调用 <code>accessibilityIdentifier</code>），但这样的几率远远小于前者：很多时候是 <code>[a addSubview:b]</code>，但此时 <code>a</code> 还没有 <code>superview</code>，那么如果 hook <code>addSubview:</code>方法，就只能保留 <code>a</code> 以下的视图层级。这并不是我想看到的。所以在 <code>UIView</code> 中的 <code>accessibilityIdentifier</code> 方法中生成标签可以尽可能地保留完整的视图层级，并且是 lazy load 的方式，降低 CPU 使用峰值。</p>
+<p>放个残缺版的代码，心情好的时候更新下，重要的还是思路：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div></pre></td><td class="code"><pre><div class="line">@implementation UIView (TBUIAutoTest)</div><div class="line">+ (void)load &#123;</div><div class="line">	static dispatch_once_t onceToken;</div><div class="line">	dispatch_once(&amp;onceToken, ^&#123;</div><div class="line">	  [self swizzleSelector:@selector(accessibilityIdentifier) withAnotherSelector:@selector(tb_accessibilityIdentifier)];</div><div class="line">	  [self swizzleSelector:@selector(accessibilityLabel) withAnotherSelector:@selector(tb_accessibilityLabel)];</div><div class="line">	&#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">+ (void)swizzleSelector:(SEL)originalSelector withAnotherSelector:(SEL)swizzledSelector</div><div class="line">&#123;</div><div class="line">    Class aClass = [self class];</div><div class="line">    </div><div class="line">    Method originalMethod = class_getInstanceMethod(aClass, originalSelector);</div><div class="line">    Method swizzledMethod = class_getInstanceMethod(aClass, swizzledSelector);</div><div class="line">    </div><div class="line">    BOOL didAddMethod =</div><div class="line">    class_addMethod(aClass,</div><div class="line">                    originalSelector,</div><div class="line">                    method_getImplementation(swizzledMethod),</div><div class="line">                    method_getTypeEncoding(swizzledMethod));</div><div class="line">    </div><div class="line">    if (didAddMethod) &#123;</div><div class="line">        class_replaceMethod(aClass,</div><div class="line">                            swizzledSelector,</div><div class="line">                            method_getImplementation(originalMethod),</div><div class="line">                            method_getTypeEncoding(originalMethod));</div><div class="line">    &#125; else &#123;</div><div class="line">        method_exchangeImplementations(originalMethod, swizzledMethod);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">#pragma mark - Method Swizzling</div><div class="line"></div><div class="line">- (NSString *)tb_accessibilityIdentifier</div><div class="line">&#123;</div><div class="line">    NSString *accessibilityIdentifier = [self tb_accessibilityIdentifier];</div><div class="line">    if (accessibilityIdentifier.length &gt; 0 &amp;&amp; [[accessibilityIdentifier substringToIndex:1] isEqualToString:@&quot;(&quot;]) &#123;</div><div class="line">        return accessibilityIdentifier;</div><div class="line">    &#125;</div><div class="line">    else if ([accessibilityIdentifier isEqualToString:@&quot;null&quot;]) &#123;</div><div class="line">        accessibilityIdentifier = @&quot;&quot;;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    NSString *labelStr = [self.superview findNameWithInstance:self];</div><div class="line">    </div><div class="line">    if (labelStr &amp;&amp; ![labelStr isEqualToString:@&quot;&quot;]) &#123;</div><div class="line">        labelStr = [NSString stringWithFormat:@&quot;(%@)&quot;,labelStr];</div><div class="line">    &#125;</div><div class="line">    else &#123;</div><div class="line">        if ([self isKindOfClass:[UILabel class]]) &#123;//UILabel 使用 text</div><div class="line">            labelStr = [NSString stringWithFormat:@&quot;(%@)&quot;,((UILabel *)self).text?:@&quot;&quot;];</div><div class="line">        &#125;</div><div class="line">        else if ([self isKindOfClass:[UIImageView class]]) &#123;//UIImageView 使用 image 的 imageName</div><div class="line">            labelStr = [NSString stringWithFormat:@&quot;(%@)&quot;,((UIImageView *)self).image.accessibilityIdentifier?:[NSString stringWithFormat:@&quot;image%ld&quot;,(long)((UIImageView *)self).tag]];</div><div class="line">        &#125;</div><div class="line">        else if ([self isKindOfClass:[UIButton class]]) &#123;//UIButton 使用 button 的 text 和 image</div><div class="line">            labelStr = [NSString stringWithFormat:@&quot;(%@%@)&quot;,((UIButton *)self).titleLabel.text?:@&quot;&quot;,((UIButton *)self).imageView.image.accessibilityIdentifier?:@&quot;&quot;];</div><div class="line">        &#125;</div><div class="line">        else if (accessibilityIdentifier) &#123;// 已有 label，则在此基础上再次添加更多信息</div><div class="line">            labelStr = [NSString stringWithFormat:@&quot;(%@)&quot;,accessibilityIdentifier];</div><div class="line">        &#125;</div><div class="line">        if ([self isKindOfClass:[UIButton class]]) &#123;</div><div class="line">            self.accessibilityValue = [NSString stringWithFormat:@&quot;(%@)&quot;,((UIButton *)self).currentBackgroundImage.accessibilityIdentifier?:@&quot;&quot;];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    if ([labelStr isEqualToString:@&quot;()&quot;] || [labelStr isEqualToString:@&quot;(null)&quot;] || [labelStr isEqualToString:@&quot;null&quot;]) &#123;</div><div class="line">        labelStr = @&quot;&quot;;</div><div class="line">    &#125;</div><div class="line">    [self setAccessibilityIdentifier:labelStr];</div><div class="line">    return labelStr;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (NSString *)tb_accessibilityLabel</div><div class="line">&#123;</div><div class="line">    if ([self isKindOfClass:[UIImageView class]]) &#123;//UIImageView 特殊处理</div><div class="line">        NSString *name = [self.superview findNameWithInstance:self];</div><div class="line">        if (name) &#123;</div><div class="line">            self.accessibilityIdentifier = [NSString stringWithFormat:@&quot;(%@)&quot;,name];</div><div class="line">        &#125;</div><div class="line">        else &#123;</div><div class="line">            self.accessibilityIdentifier = [NSString stringWithFormat:@&quot;(%@)&quot;,((UIImageView *)self).image.accessibilityIdentifier?:[NSString stringWithFormat:@&quot;image%ld&quot;,(long)((UIImageView *)self).tag]];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    if ([self isKindOfClass:[UITableViewCell class]]) &#123;//UITableViewCell 特殊处理</div><div class="line">        self.accessibilityIdentifier = [NSString stringWithFormat:@&quot;(%@)&quot;,((UITableViewCell *)self).reuseIdentifier];</div><div class="line">    &#125;</div><div class="line">    return [self tb_accessibilityLabel];</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<p>在获取到变量名之后，还需要进行处理才能作为标签。首先在变量名外加一层括号，目的是区分下此标签是代码生成的而不是手动加上去的。方法结尾的 <code>[self setAccessibilityIdentifier:subLabelStr]</code> 用来给 <code>_accessibilityIdentifier</code> 赋值生成好的标签。</p>
+<p>对于获取不到变量名的临时变量和视图层级中一些系统私有的视图变量，才去之前分析中提到的方案特殊处理。好一长串的 <code>if-else</code> 啊，为了处理这些特殊情况写一坨脏代码我也是醉了。最后别忘处理下无意义的字符串，比如 &quot;null&quot;。</p>
+<p>在 UIAutomation 生成控件树时，大部分 <code>UIImageView</code> 和 <code>UITableViewCell</code> 无法通过 hook <code>accessibilityIdentifier</code> 来在控件树中获取到自动化测试标签，或者获得的标签不是属性名而是图片资源名。解决方案是 hook accessibilityLabel 方法，并在其中为 <code>UIImageView</code> 和 <code>UITableViewCell</code> 加自动化测试标签。</p>
+<p>为了将 <code>UIImage</code> 的图片资源名和实例绑定，我又 hook 了 <code>UIImage</code> 的 <code>imageNamed:</code> 类方法：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">+ (UIImage *)tb_imageNamed:(NSString *)imageName&#123;</div><div class="line">    UIImage *image = [UIImage tb_imageNamed:imageName];</div><div class="line">    image.accessibilityIdentifier = imageName;</div><div class="line">    return image;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下面说下获取变量名的 <code>findNameWithInstance:</code> 方法的实现：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">@implementation UIResponder (TBUIAutoTest)</div><div class="line"></div><div class="line">-(NSString *)nameWithInstance:(id)instance &#123;</div><div class="line">    unsigned int numIvars = 0;</div><div class="line">    NSString *key=nil;</div><div class="line">    Ivar * ivars = class_copyIvarList([self class], &amp;numIvars);</div><div class="line">    for(int i = 0; i &lt; numIvars; i++) &#123;</div><div class="line">        Ivar thisIvar = ivars[i];</div><div class="line">        const char *type = ivar_getTypeEncoding(thisIvar);</div><div class="line">        NSString *stringType =  [NSString stringWithCString:type encoding:NSUTF8StringEncoding];</div><div class="line">        if (![stringType hasPrefix:@&quot;@&quot;]) &#123;</div><div class="line">            continue;</div><div class="line">        &#125;</div><div class="line">        if ((object_getIvar(self, thisIvar) == instance)) &#123;//此处 crash 不要慌！</div><div class="line">            key = [NSString stringWithUTF8String:ivar_getName(thisIvar)];</div><div class="line">            break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    free(ivars);</div><div class="line">    return key;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (NSString *)findNameWithInstance:(UIView *) instance</div><div class="line">&#123;</div><div class="line">    id nextResponder = [self nextResponder];</div><div class="line">    NSString *name = [self nameWithInstance:instance];</div><div class="line">    if (!name) &#123;</div><div class="line">        return [nextResponder findNameWithInstance:instance];</div><div class="line">    &#125;</div><div class="line">    if ([name hasPrefix:@&quot;_&quot;]) &#123;  //去掉变量名的下划线前缀</div><div class="line">        name = [name substringFromIndex:1];</div><div class="line">    &#125;</div><div class="line">    return name;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>因为我们并不知道某个视图对象在哪个类中充当了属性或成员变量，所以 <code>findNameWithInstance:</code> 方法会沿着响应链向上递归查找，范围不仅涵盖 <code>UIView</code>，连 <code>UIViewController</code> 都不能放过。每找一层就要调用 <code>nameWithInstance:</code> 方法用 <a href="http://yulingtianxia.com/blog/2014/11/05/objective-c-runtime/" target="_blank" rel="external">Objective-C Runtime</a> 遍历成员变量列表的方式查找变量名。</p>
+<p>别忘去掉开头的下划线，因为在Runtime中保存的其实是成员变量的名称，默认都是带有下划线前缀的。</p>
+<p>因为 hook 的方法不是 <code>accessibilityLabel</code>，所以不能通过 Xcode 中的 View Debug 页面来查看加标签的效果。最好的方法还是通过 UIAutomation 抓取控件树，这样的效果比较真实。为了便于在真机上查看标签内容，我为所有视图增加了长按手势，长按视图后弹警告框显示自动化测试标签的内容。</p>
+<p>hook  <code>addSubview:</code> 方法，在其中添加长按手势。 <code>longPress:</code> 方法中主要是让长按的视图高亮并弹 Alert 显示自动化测试标签的内容，代码就不贴了。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (void)tb_addSubview:(UIView *)view &#123;</div><div class="line">    if (!view) &#123;</div><div class="line">        return;</div><div class="line">    &#125;</div><div class="line">    [self tb_addSubview:view];</div><div class="line">    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];</div><div class="line">    longPress.delegate = [TBUIAutoTest sharedInstance];</div><div class="line">    [self addGestureRecognizer:longPress];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>创建 <code>TBUIAutoTest</code> 单例作为所有手势的委托，并在其中实现一些手势捕获优先级的逻辑，以此解决手势冲突带来的问题:</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">@implementation TBUIAutoTest</div><div class="line"></div><div class="line">+ (instancetype)sharedInstance</div><div class="line">&#123;</div><div class="line">    static dispatch_once_t onceToken;</div><div class="line">    static TBUIAutoTest *_instance;</div><div class="line">    dispatch_once(&amp;onceToken, ^&#123;</div><div class="line">        _instance = [TBUIAutoTest new];</div><div class="line">    &#125;);</div><div class="line">    return _instance;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer</div><div class="line">&#123;</div><div class="line">    </div><div class="line">    return YES;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRequireFailureOfGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer</div><div class="line">&#123;</div><div class="line">    if ([otherGestureRecognizer.view isDescendantOfView:gestureRecognizer.view]) &#123;</div><div class="line">        return YES;</div><div class="line">    &#125;</div><div class="line">    if (![otherGestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) &#123;</div><div class="line">        return YES;</div><div class="line">    &#125;</div><div class="line">    return NO;</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure></p>
+<h2>感受&amp;总结</h2>
+<p><s>我是杨(gu)阿莫，今天我给大家要讲的是一个月前测试帅哥要求加自动化测试标签后老大开会讨论方案组内高工一致不赞同手动加并要求自动加并在最后老大钦点这个事情就交给我了的故事。这其中还经历了方案的各种改，五子棋同学的实力参(jiao)谋(ji)，以及拉屎时把本该思考人生的时间花在了改进方案。这个月博客实在不知道该写啥眼看月底了再不更新怕以后再也不想更新了呢所以你会发现这篇文章水水的科科！</s></p>
+<p>呵呵后来发现<s>大部分人</s>所有人都看不懂，但这个方案真的好用！</p>
+<p>如果大家有更好的方案，或者觉得我的方案一开始就跑偏了，甚至是已经有一个不用手动加标签代码的现成的超屌超牛逼的 iOS 自动化测试框架，请告诉我！据说整个腾讯都是手动加自动化测试标签，老大说做有挑战的事情才有意思嘛。</p>
+<p>欢迎给 <a href="https://github.com/yulingtianxia/TBUIAutoTest" target="_blank" rel="external">TBUIAutoTest</a> 提 PR 和 Issue！</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2016/03/25/Hexo-05-add-site-statistics/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2016/03/27/how-to-write-a-readme/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

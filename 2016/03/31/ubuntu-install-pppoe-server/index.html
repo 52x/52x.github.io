@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            ubuntu安装PPPoE服务器 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,ubuntu,PPPoE-server">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="ubuntu安装PPPoE服务器 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="ubuntu"> <meta property="og:article:tag" content="PPPoE-server"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">安装依赖</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">下载软件包</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">安装软件包</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">基本配置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">详细配置</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">运行PPPoE server</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">拨号</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">8.</span> <span class="post-toc-text">FAQ</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                ubuntu安装PPPoE服务器
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>3月 31, 2016</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/PPPoE-server/">PPPoE-server</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/ubuntu/">ubuntu</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=ubuntu安装PPPoE服务器&url=http://yoursite.com//2016/03/31/ubuntu-install-pppoe-server/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=ubuntu安装PPPoE服务器&url=http://yoursite.com//2016/03/31/ubuntu-install-pppoe-server/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2016/03/31/ubuntu-install-pppoe-server/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2016/03/31/ubuntu-install-pppoe-server/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h3>安装依赖</h3>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install ppp</div><div class="line">sudo apt-get install libc6-dev</div></pre></td></tr></table></figure></p>
+<h3>下载软件包</h3>
+<p><a href="https://www.roaringpenguin.com/products/pppoe/" title="https://www.roaringpenguin.com/products/pppoe/" target="_blank" rel="external">https://www.roaringpenguin.com/products/pppoe/</a></p>
+<h3>安装软件包</h3>
+<p>以<code>rp-pppoe-3.11.tar.gz</code>为例</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd rp-pppoe-3.11/src</div><div class="line">./configure</div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure></p>
+<h3>基本配置</h3>
+<p>执行<code>pppoe-setup</code>
+选择对应网卡，配置DNS（可选），大部分默认即可，防火墙选择0，即不启用防火墙。</p>
+<h3>详细配置</h3>
+<ul>
+<li><code>/etc/ppp/options</code>，如果没有此文件则创建，内容如下，<code>注释login参数</code></li>
+</ul>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div><div class="line">267</div><div class="line">268</div><div class="line">269</div><div class="line">270</div><div class="line">271</div><div class="line">272</div><div class="line">273</div><div class="line">274</div><div class="line">275</div><div class="line">276</div><div class="line">277</div><div class="line">278</div><div class="line">279</div><div class="line">280</div><div class="line">281</div><div class="line">282</div><div class="line">283</div><div class="line">284</div><div class="line">285</div><div class="line">286</div><div class="line">287</div><div class="line">288</div><div class="line">289</div><div class="line">290</div><div class="line">291</div><div class="line">292</div><div class="line">293</div><div class="line">294</div><div class="line">295</div><div class="line">296</div><div class="line">297</div><div class="line">298</div><div class="line">299</div><div class="line">300</div><div class="line">301</div><div class="line">302</div><div class="line">303</div><div class="line">304</div><div class="line">305</div><div class="line">306</div><div class="line">307</div><div class="line">308</div><div class="line">309</div><div class="line">310</div><div class="line">311</div><div class="line">312</div><div class="line">313</div><div class="line">314</div><div class="line">315</div><div class="line">316</div><div class="line">317</div><div class="line">318</div><div class="line">319</div><div class="line">320</div><div class="line">321</div><div class="line">322</div><div class="line">323</div><div class="line">324</div><div class="line">325</div><div class="line">326</div><div class="line">327</div><div class="line">328</div><div class="line">329</div><div class="line">330</div><div class="line">331</div><div class="line">332</div><div class="line">333</div><div class="line">334</div><div class="line">335</div><div class="line">336</div><div class="line">337</div><div class="line">338</div><div class="line">339</div><div class="line">340</div><div class="line">341</div><div class="line">342</div><div class="line">343</div><div class="line">344</div><div class="line">345</div><div class="line">346</div><div class="line">347</div><div class="line">348</div><div class="line">349</div><div class="line">350</div><div class="line">351</div><div class="line">352</div><div class="line">353</div><div class="line">354</div><div class="line">355</div><div class="line">356</div></pre></td><td class="code"><pre><div class="line"># /etc/ppp/options</div><div class="line">#</div><div class="line"># Originally created by Jim Knoble &lt;jmknoble@mercury.interpath.net&gt;</div><div class="line"># Modified for Debian by alvar Bray &lt;alvar@meiko.co.uk&gt;</div><div class="line"># Modified for PPP Server setup by Christoph Lameter &lt;clameter@debian.org&gt;</div><div class="line">#</div><div class="line"># To quickly see what options are active in this file, use this command:</div><div class="line">#   egrep -v &apos;#|^ *$&apos; /etc/ppp/options</div><div class="line"></div><div class="line"># Specify which DNS Servers the incoming Win95 or WinNT Connection should use</div><div class="line"># Two Servers can be remotely configured</div><div class="line">ms-dns 172.16.100.4</div><div class="line">ms-dns 172.16.100.2</div><div class="line">#ms-dns 202.96.134.133</div><div class="line"></div><div class="line"># Specify which WINS Servers the incoming connection Win95 or WinNT should use</div><div class="line"># ms-wins 192.168.1.50</div><div class="line"># ms-wins 192.168.1.51</div><div class="line"></div><div class="line"># Run the executable or shell command specified after pppd has</div><div class="line"># terminated the link.  This script could, for example, issue commands</div><div class="line"># to the modem to cause it to hang up if hardware modem control signals</div><div class="line"># were not available.</div><div class="line">#disconnect &quot;chat -- \d+++\d\c OK ath0 OK&quot;</div><div class="line"></div><div class="line"># async character map -- 32-bit hex; each bit is a character</div><div class="line"># that needs to be escaped for pppd to receive it.  0x00000001</div><div class="line"># represents &apos;\x01&apos;, and 0x80000000 represents &apos;\x1f&apos;.</div><div class="line">asyncmap 0</div><div class="line"></div><div class="line"># Require the peer to authenticate itself before allowing network</div><div class="line"># packets to be sent or received.</div><div class="line"># Please do not disable this setting. It is expected to be standard in</div><div class="line"># future releases of pppd. Use the call option (see manpage) to disable</div><div class="line"># authentication for specific peers.</div><div class="line">auth</div><div class="line">#noauth</div><div class="line"># ... Unfortunately, fixing this properly in the peers file</div><div class="line"># (/etc/ppp/peers/ppp0, typically) is apparently incompatible with the</div><div class="line"># paradigm used by gnome-system-tools and system-tools-backend for</div><div class="line"># managing the peers files.  So in Ubuntu Feisty we change the default.</div><div class="line"></div><div class="line"># Use hardware flow control (i.e. RTS/CTS) to control the flow of data</div><div class="line"># on the serial port.</div><div class="line">crtscts</div><div class="line"></div><div class="line"># Use software flow control (i.e. XON/XOFF) to control the flow of data</div><div class="line"># on the serial port.</div><div class="line">#xonxoff</div><div class="line"></div><div class="line"># Specifies that certain characters should be escaped on transmission</div><div class="line"># (regardless of whether the peer requests them to be escaped with its</div><div class="line">## async control character map).  The characters to be escaped are</div><div class="line"></div><div class="line"></div><div class="line"># specified as a list of hex numbers separated by commas.  Note that</div><div class="line"># almost any character can be specified for the escape option, unlike</div><div class="line"># the asyncmap option which only allows control characters to be</div><div class="line"># specified.  The characters which may not be escaped are those with hex</div><div class="line"># values 0x20 - 0x3f or 0x5e.</div><div class="line">#escape 11,13,ff</div><div class="line"></div><div class="line"># Don&apos;t use the modem control lines.</div><div class="line">#local</div><div class="line"></div><div class="line"># Specifies that pppd should use a UUCP-style lock on the serial device</div><div class="line"># to ensure exclusive access to the device.</div><div class="line">lock</div><div class="line"></div><div class="line"># Don&apos;t show the passwords when logging the contents of PAP packets.</div><div class="line"># This is the default.</div><div class="line">hide-password</div><div class="line"></div><div class="line"># When logging the contents of PAP packets, this option causes pppd to</div><div class="line"># show the password string in the log message.</div><div class="line">#show-password</div><div class="line"></div><div class="line"># Use the modem control lines.  On Ultrix, this option implies hardware</div><div class="line"># flow control, as for the crtscts option.  (This option is not fully</div><div class="line"># implemented.)</div><div class="line">modem</div><div class="line"></div><div class="line"># Set the MRU [Maximum Receive Unit] value to &lt;n&gt; for negotiation.  pppd</div><div class="line"># will ask the peer to send packets of no more than &lt;n&gt; bytes. The</div><div class="line"># minimum MRU value is 128.  The default MRU value is 1500.  A value of</div><div class="line"># 296 is recommended for slow links (40 bytes for TCP/IP header + 256</div><div class="line"># bytes of data).</div><div class="line">#mru 542</div><div class="line"></div><div class="line"># Set the interface netmask to &lt;n&gt;, a 32 bit netmask in &quot;decimal dot&quot;</div><div class="line"># notation (e.g. 255.255.255.0).</div><div class="line">#netmask 255.255.255.0</div><div class="line"></div><div class="line"># Disables the default behaviour when no local IP address is specified,</div><div class="line"># which is to determine (if possible) the local IP address from the</div><div class="line"># hostname. With this option, the peer will have to supply the local IP</div><div class="line"># address during IPCP negotiation (unless it specified explicitly on the</div><div class="line"># command line or in an options file).</div><div class="line">#noipdefault</div><div class="line"></div><div class="line"># Enables the &quot;passive&quot; option in the LCP.  With this option, pppd will</div><div class="line"># attempt to initiate a connection; if no reply is received from the</div><div class="line"># peer, pppd will then just wait passively for a valid LCP packet from</div><div class="line"># the peer (instead of exiting, as it does without this option).</div><div class="line">#passive</div><div class="line"></div><div class="line"># With this option, pppd will not transmit LCP packets to initiate a</div><div class="line"># connection until a valid LCP packet is received from the peer (as for</div><div class="line"># the &quot;passive&quot; option with old versions of pppd).</div><div class="line">#silent</div><div class="line"></div><div class="line"># Don&apos;t request or allow negotiation of any options for LCP and IPCP</div><div class="line"># (use default values).</div><div class="line">#-all</div><div class="line"></div><div class="line"># Disable Address/Control compression negotiation (use default, i.e.</div><div class="line"># address/control field disabled).</div><div class="line">#-ac</div><div class="line"></div><div class="line"># Disable asyncmap negotiation (use the default asyncmap, i.e. escape</div><div class="line"># all control characters).</div><div class="line">#-am</div><div class="line"></div><div class="line"># Don&apos;t fork to become a background process (otherwise pppd will do so</div><div class="line"># if a serial device is specified).</div><div class="line">#-detach</div><div class="line"></div><div class="line"># Disable IP address negotiation (with this option, the remote IP</div><div class="line"># address must be specified with an option on the command line or in</div><div class="line"># an options file).</div><div class="line">#-ip</div><div class="line"></div><div class="line"># Disable IPCP negotiation and IP communication. This option should</div><div class="line"># only be required if the peer is buggy and gets confused by requests</div><div class="line"># from pppd for IPCP negotiation.</div><div class="line">#noip</div><div class="line"></div><div class="line"># Disable magic number negotiation.  With this option, pppd cannot</div><div class="line"># detect a looped-back line.</div><div class="line">#-mn</div><div class="line"></div><div class="line"># Disable MRU [Maximum Receive Unit] negotiation (use default, i.e.</div><div class="line"># 1500).</div><div class="line">#-mru</div><div class="line"></div><div class="line"># Disable protocol field compression negotiation (use default, i.e.</div><div class="line"># protocol field compression disabled).</div><div class="line">#-pc</div><div class="line"></div><div class="line"># Require the peer to authenticate itself using PAP.</div><div class="line">#+pap</div><div class="line"></div><div class="line"># Don&apos;t agree to authenticate using PAP.</div><div class="line">-pap</div><div class="line"></div><div class="line"># Require the peer to authenticate itself using CHAP [Cryptographic</div><div class="line"># Handshake Authentication Protocol] authentication.</div><div class="line">+chap</div><div class="line"></div><div class="line"># Don&apos;t agree to authenticate using CHAP.</div><div class="line">#-chap</div><div class="line"></div><div class="line"># Disable negotiation of Van Jacobson style IP header compression (use</div><div class="line"># default, i.e. no compression).</div><div class="line">#-vj</div><div class="line"></div><div class="line"># Increase debugging level (same as -d).  If this option is given, pppd</div><div class="line"># will log the contents of all control packets sent or received in a</div><div class="line"># readable form.  The packets are logged through syslog with facility</div><div class="line"># daemon and level debug. This information can be directed to a file by</div><div class="line"># setting up /etc/syslog.conf appropriately (see syslog.conf(5)).  (If</div><div class="line"># pppd is compiled with extra debugging enabled, it will log messages</div><div class="line"># using facility local2 instead of daemon).</div><div class="line">#debug</div><div class="line"></div><div class="line"># Append the domain name &lt;d&gt; to the local host name for authentication</div><div class="line"># purposes.  For example, if gethostname() returns the name porsche,</div><div class="line"># but the fully qualified domain name is porsche.Quotron.COM, you would</div><div class="line"># use the domain option to set the domain name to Quotron.COM.</div><div class="line">#domain &lt;d&gt;</div><div class="line"></div><div class="line"># Enable debugging code in the kernel-level PPP driver.  The argument n</div><div class="line"># is a number which is the sum of the following values: 1 to enable</div><div class="line"># general debug messages, 2 to request that the contents of received</div><div class="line"># packets be printed, and 4 to request that the contents of transmitted</div><div class="line"># packets be printed.</div><div class="line">#kdebug n</div><div class="line"></div><div class="line"># Set the MTU [Maximum Transmit Unit] value to &lt;n&gt;. Unless the peer</div><div class="line"># requests a smaller value via MRU negotiation, pppd will request that</div><div class="line"># the kernel networking code send data packets of no more than n bytes</div><div class="line"># through the PPP network interface.</div><div class="line">#mtu &lt;n&gt;</div><div class="line"></div><div class="line"># Set the name of the local system for authentication purposes to &lt;n&gt;.</div><div class="line"># This is a privileged option. With this option, pppd will use lines in the</div><div class="line"># secrets files which have &lt;n&gt; as the second field when looking for a</div><div class="line"># secret to use in authenticating the peer. In addition, unless overridden</div><div class="line"># with the user option, &lt;n&gt; will be used as the name to send to the peer</div><div class="line"># when authenticating the local system to the peer. (Note that pppd does</div><div class="line"># not append the domain name to &lt;n&gt;.)</div><div class="line">#name &lt;n&gt;</div><div class="line"></div><div class="line"># Enforce the use of the hostname as the name of the local system for</div><div class="line"># authentication purposes (overrides the name option).</div><div class="line">#usehostname</div><div class="line"></div><div class="line"># Set the assumed name of the remote system for authentication purposes</div><div class="line"># to &lt;n&gt;.</div><div class="line">#remotename &lt;n&gt;</div><div class="line"></div><div class="line"># Add an entry to this system&apos;s ARP [Address Resolution Protocol]</div><div class="line"># table with the IP address of the peer and the Ethernet address of this</div><div class="line"># system.</div><div class="line">#proxyarp</div><div class="line"></div><div class="line"># Use the system password database for authenticating the peer using</div><div class="line"># PAP. Note: mgetty already provides this option. If this is specified</div><div class="line"># then dialin from users using a script under Linux to fire up ppp wont work.</div><div class="line"># login</div><div class="line"></div><div class="line"># If this option is given, pppd will send an LCP echo-request frame to the</div><div class="line"># peer every n seconds. Normally the peer should respond to the echo-request</div><div class="line"># by sending an echo-reply. This option can be used with the</div><div class="line"># lcp-echo-failure option to detect that the peer is no longer connected.</div><div class="line">lcp-echo-interval 30</div><div class="line"></div><div class="line"># If this option is given, pppd will presume the peer to be dead if n</div><div class="line"># LCP echo-requests are sent without receiving a valid LCP echo-reply.</div><div class="line"># If this happens, pppd will terminate the connection.  Use of this</div><div class="line"># option requires a non-zero value for the lcp-echo-interval parameter.</div><div class="line"># This option can be used to enable pppd to terminate after the physical</div><div class="line"># connection has been broken (e.g., the modem has hung up) in</div><div class="line"># situations where no hardware modem control lines are available.</div><div class="line">lcp-echo-failure 4</div><div class="line"></div><div class="line"># Set the LCP restart interval (retransmission timeout) to &lt;n&gt; seconds</div><div class="line"># (default 3).</div><div class="line">#lcp-restart &lt;n&gt;</div><div class="line"></div><div class="line"># Set the maximum number of LCP terminate-request transmissions to &lt;n&gt;</div><div class="line"># (default 3).</div><div class="line">#lcp-max-terminate &lt;n&gt;</div><div class="line"></div><div class="line"># Set the maximum number of LCP configure-request transmissions to &lt;n&gt;</div><div class="line"># (default 10).</div><div class="line">#lcp-max-configure &lt;n&gt;</div><div class="line"></div><div class="line"># Set the maximum number of LCP configure-NAKs returned before starting</div><div class="line"># to send configure-Rejects instead to &lt;n&gt; (default 10).</div><div class="line">#lcp-max-failure &lt;n&gt;</div><div class="line"></div><div class="line"># Set the IPCP restart interval (retransmission timeout) to &lt;n&gt;</div><div class="line"># seconds (default 3).</div><div class="line">#ipcp-restart &lt;n&gt;</div><div class="line"></div><div class="line"># Set the maximum number of IPCP terminate-request transmissions to &lt;n&gt;</div><div class="line"># (default 3).</div><div class="line">#ipcp-max-terminate &lt;n&gt;</div><div class="line"></div><div class="line"># Set the maximum number of IPCP configure-request transmissions to &lt;n&gt;</div><div class="line"># (default 10).</div><div class="line">#ipcp-max-configure &lt;n&gt;</div><div class="line"></div><div class="line"># Set the maximum number of IPCP configure-NAKs returned before starting</div><div class="line"># to send configure-Rejects instead to &lt;n&gt; (default 10).</div><div class="line">#ipcp-max-failure &lt;n&gt;</div><div class="line"></div><div class="line"># Set the PAP restart interval (retransmission timeout) to &lt;n&gt; seconds</div><div class="line"># (default 3).</div><div class="line">#pap-restart &lt;n&gt;</div><div class="line"></div><div class="line"># Set the maximum number of PAP authenticate-request transmissions to</div><div class="line"># &lt;n&gt; (default 10).</div><div class="line">#pap-max-authreq &lt;n&gt;</div><div class="line"></div><div class="line"># Set the maximum time that pppd will wait for the peer to authenticate</div><div class="line"># itself with PAP to &lt;n&gt; seconds (0 means no limit).</div><div class="line">#pap-timeout &lt;n&gt;</div><div class="line"></div><div class="line"># Set the CHAP restart interval (retransmission timeout for</div><div class="line"># challenges) to &lt;n&gt; seconds (default 3).</div><div class="line">#chap-restart &lt;n&gt;</div><div class="line"></div><div class="line"># Set the maximum number of CHAP challenge transmissions to &lt;n&gt;</div><div class="line"># (default 10).</div><div class="line">#chap-max-challenge</div><div class="line"></div><div class="line"># If this option is given, pppd will rechallenge the peer every &lt;n&gt;</div><div class="line"># seconds.</div><div class="line">#chap-interval &lt;n&gt;</div><div class="line"></div><div class="line"># With this option, pppd will accept the peer&apos;s idea of our local IP</div><div class="line"># address, even if the local IP address was specified in an option.</div><div class="line">#ipcp-accept-local</div><div class="line"></div><div class="line"># With this option, pppd will accept the peer&apos;s idea of its (remote) IP</div><div class="line"># address, even if the remote IP address was specified in an option.</div><div class="line">#ipcp-accept-remote</div><div class="line"></div><div class="line"># Disable the IPXCP and IPX protocols.</div><div class="line"># To let pppd pass IPX packets comment this out --- you&apos;ll probably also</div><div class="line"># want to install ipxripd, and have the Internal IPX Network option enabled</div><div class="line"># in your kernel.  /usr/doc/HOWTO/IPX-HOWTO.gz contains more info.</div><div class="line">noipx</div><div class="line"></div><div class="line"># Exit once a connection has been made and terminated. This is the default,</div><div class="line"># unless the `persist&apos; or `demand&apos; option has been specified.</div><div class="line">#nopersist</div><div class="line"></div><div class="line"># Do not exit after a connection is terminated; instead try to reopen</div><div class="line"># the connection.</div><div class="line">#persist</div><div class="line"></div><div class="line"># Terminate after n consecutive failed connection attempts.</div><div class="line"># A value of 0 means no limit. The default value is 10.</div><div class="line">#maxfail &lt;n&gt;</div><div class="line"></div><div class="line"># Initiate the link only on demand, i.e. when data traffic is present.</div><div class="line"># With this option, the remote IP address must be specified by the user on</div><div class="line"># the command line or in an options file.  Pppd will initially configure</div><div class="line"># the interface and enable it for IP traffic without connecting to the peer.</div><div class="line"># When traffic is available, pppd will connect to the peer and perform</div><div class="line"># negotiation, authentication, etc.  When this is completed, pppd will</div><div class="line"># commence passing data packets (i.e., IP packets) across the link.</div><div class="line">#demand</div><div class="line"></div><div class="line"># Specifies that pppd should disconnect if the link is idle for &lt;n&gt; seconds.</div><div class="line"># The link is idle when no data packets (i.e. IP packets) are being sent or</div><div class="line"># received.  Note: it is not advisable to use this option with the persist</div><div class="line"># option without the demand option.  If the active-filter option is given,</div><div class="line"># data packets which are rejected by the specified activity filter also</div><div class="line"># count as the link being idle.</div><div class="line">#idle &lt;n&gt;</div><div class="line"></div><div class="line"># Specifies how many seconds to wait before re-initiating the link after</div><div class="line"># it terminates.  This option only has any effect if the persist or demand</div><div class="line"># option is used.  The holdoff period is not applied if the link was</div><div class="line"># terminated because it was idle.</div><div class="line">#holdoff &lt;n&gt;</div><div class="line"></div><div class="line"># Wait for up n milliseconds after the connect script finishes for a valid</div><div class="line"># PPP packet from the peer.  At the end of this time, or when a valid PPP</div><div class="line"># packet is received from the peer, pppd will commence negotiation by</div><div class="line"># sending its first LCP packet.  The default value is 1000 (1 second).</div><div class="line"># This wait period only applies if the connect or pty option is used.</div><div class="line">#connect-delay &lt;n&gt;</div><div class="line"></div><div class="line"># Packet filtering: for more information, see pppd(8)</div><div class="line"># Any packets matching the filter expression will be interpreted as link</div><div class="line"># activity, and will cause a &quot;demand&quot; connection to be activated, and reset</div><div class="line"># the idle connection timer. (idle option)</div><div class="line"># The filter expression is akin to that of tcpdump(1)</div><div class="line">#active-filter &lt;filter-expression&gt;</div><div class="line"></div><div class="line"># ---&lt;End of File&gt;---</div></pre></td></tr></table></figure></p>
+<ul>
+<li><code>/etc/ppp/pppoe-server-options</code>，<code>注释login参数</code>，并使用chap认证。</li>
+</ul>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># PPP options for the PPPoE server</div><div class="line"># LIC: GPL</div><div class="line">require-chap</div><div class="line">#login</div><div class="line">lcp-echo-interval 10</div><div class="line">lcp-echo-failure 2</div></pre></td></tr></table></figure></p>
+<ul>
+<li><code>/etc/ppp/chap-secrets</code>，添加账号密码，可单独对某个账号指定IP。</li>
+</ul>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># Secrets for authentication using CHAP</div><div class="line"># client    server    secret    IP addresses</div><div class="line">&quot;test&quot;      *         &quot;test&quot;    *</div></pre></td></tr></table></figure></p>
+<h3>运行PPPoE server</h3>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pppoe-server -I eth0 -L 192.168.5.1 -R 192.168.5.2</div></pre></td></tr></table></figure></p>
+<h3>拨号</h3>
+<p>使用添加的账号拨号，即可看到分配到的IP为192.168.5.x</p>
+<h3>FAQ</h3>
+<ul>
+<li>如果运行pppoe-server不成功，或一拨号就挂掉。</li>
+<li>估计是配置不正确，建议删除/etc/ppp/文件夹，重新安装最新版rp-pppoe。</li>
+</ul>
+<ul>
+<li>出现拨号651。</li>
+<li>产生原因有：
+<ul>
+<li>没有/etc/ppp/pppoe-server-options文件。</li>
+<li>/etc/ppp/pppoe-server-options文件没有auth和require-chap参数。</li>
+<li>windows拨号时指定了服务器，要么去掉指定的服务器名称，要么pppoe-server添加-S参数指定服务器名称。</li>
+</ul>
+</li>
+</ul>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2016/03/30/Realization-of-bitmap-sort/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2016/04/02/notes/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

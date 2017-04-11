@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            R Visual. - China Map Part II | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,R,visualization,ggvis,ggplot2">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="R Visual. - China Map Part II | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="R"> <meta property="og:article:tag" content="visualization"> <meta property="og:article:tag" content="ggvis"> <meta property="og:article:tag" content="ggplot2"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">Preparation</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Raw Data</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">Coordinates of Province Capitals</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">Plot Map for One Province</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">Plot Map for Several Provinces</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">Combining Population Data</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">Add Population Data</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">Plot the Population per Province by ggplot</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">Plot the Population per Province by ggvis</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.4.</span> <span class="post-toc-text">Plot the Population per Year</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">Reference:</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                R Visual. - China Map Part II
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>10月 15, 2015</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/R/">R</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/ggplot2/">ggplot2</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/ggvis/">ggvis</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/visualization/">visualization</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=R Visual. - China Map Part II&url=http://yoursite.com//2015/10/15/Codage-11-r-visualization-2-cn-map-2/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=R Visual. - China Map Part II&url=http://yoursite.com//2015/10/15/Codage-11-r-visualization-2-cn-map-2/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2015/10/15/Codage-11-r-visualization-2-cn-map-2/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2015/10/15/Codage-11-r-visualization-2-cn-map-2/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>Keep the visualization study, try to realize the following tasks:</p>
+<ol>
+<li>Plot one province or multiple provinces</li>
+<li>Add labels to capitals</li>
+<li>Plot the provincial population based on the latest census</li>
+<li>Plot the provincial population evoluation</li>
+<li>Realize the plots above using both <code>ggplot2</code> and <code>ggvis</code></li>
+</ol>
+<p>&lt;!-- more --&gt;</p>
+<h2>Preparation</h2>
+<p>Load packages and modify local settings in case of Chinese characters not displaying.
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">library</span>(maptools)</div><div class="line"><span class="keyword">library</span>(dplyr)</div><div class="line"><span class="keyword">library</span>(ggplot2)</div><div class="line"><span class="keyword">library</span>(ggvis)</div><div class="line"></div><div class="line">Sys.setlocale(<span class="string">"LC_ALL"</span>, <span class="string">"chinese"</span>)</div></pre></td></tr></table></figure></p>
+<h3>Raw Data</h3>
+<p>Subset the polygons with <code>AREA</code> larger than 0.005 and remove the <code>N/A</code>.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cnmap &lt;- readShapePoly(<span class="string">"bou2_4p.shp"</span>)</div><div class="line"><span class="comment"># cnmap@data &lt;- na.omit(cnmap@data)</span></div><div class="line">cnmap@data$ID &lt;- row.names(cnmap@data)</div><div class="line">cnmap &lt;- subset(cnmap, AREA &gt; <span class="number">0.005</span>)</div><div class="line">cnmap@data &lt;- na.omit(cnmap@data)</div></pre></td></tr></table></figure></p>
+<p>Create a <code>data.frame</code> called <code>cnmapdf</code> which contains <code>id</code>, <code>prov_en</code> and <code>prov_cn</code> and key map plotting info:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">prov_cn &lt;- unique(cnmap$NAME)</div><div class="line">prov_en &lt;- c(<span class="string">"Heilongjiang"</span>, <span class="string">"Inner Mongolia"</span>, <span class="string">"Xinjiang"</span>, <span class="string">"Jilin"</span>,</div><div class="line">             <span class="string">"Liaoning"</span>, <span class="string">"Gansu"</span>, <span class="string">"Hebei"</span>, <span class="string">"Beijing"</span>, <span class="string">"Shanxi"</span>,</div><div class="line">             <span class="string">"Tianjin"</span>, <span class="string">"Shaanxi"</span>, <span class="string">"Ningxia"</span>, <span class="string">"Qinghai"</span>, <span class="string">"Shandong"</span>,</div><div class="line">             <span class="string">"Tibet"</span>, <span class="string">"Henan"</span>, <span class="string">"Jiangsu"</span>, <span class="string">"Anhui"</span>, <span class="string">"Sichuan"</span>, <span class="string">"Hubei"</span>,</div><div class="line">             <span class="string">"Chongqing"</span>, <span class="string">"Shanghai"</span>, <span class="string">"Zhejiang"</span>, <span class="string">"Hunan"</span>, <span class="string">"Jiangxi"</span>,</div><div class="line">             <span class="string">"Yunnan"</span>, <span class="string">"Guizhou"</span>, <span class="string">"Fujian"</span>, <span class="string">"Guangxi"</span>, <span class="string">"Taiwan"</span>, </div><div class="line">             <span class="string">"Guangdong"</span>, <span class="string">"Hong Kong"</span>, <span class="string">"Hainan"</span>)</div><div class="line"></div><div class="line">prov &lt;- data.frame(prov_cn, prov_en)</div><div class="line"></div><div class="line">id_prov &lt;- cnmap@data                                               %&gt;%</div><div class="line">  mutate(prov_en = sapply(NAME, </div><div class="line">                          <span class="keyword">function</span>(x)</div><div class="line">                            prov$prov_en[which(prov_cn == x)]))     %&gt;%</div><div class="line">  mutate(prov_cn = as.character(NAME),</div><div class="line">         prov_en = as.character(prov_en))                           %&gt;%</div><div class="line">  select(id = ID, prov_cn, prov_en)</div><div class="line"></div><div class="line"><span class="comment"># you can borrow plyr package in a more efficient way</span></div><div class="line">cnmapdf &lt;- plyr::join(fortify(cnmap), id_prov, by = <span class="string">"id"</span>)</div><div class="line"></div><div class="line"><span class="comment"># head(cnmapdf)</span></div></pre></td></tr></table></figure></p>
+<p>You can also use <code>dplyr</code> to realize the last step, but it is much slower.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cnmapdf &lt;- fortify(cnmap)                                           %&gt;%</div><div class="line">  mutate(prov_en = sapply(id,</div><div class="line">                          <span class="keyword">function</span>(x)id_prov$prov_en[which(id == x)]),</div><div class="line">         prov_cn = sapply(id,</div><div class="line">                          <span class="keyword">function</span>(x)id_prov$prov_cn[which(id == x)]))</div></pre></td></tr></table></figure></p>
+<h3>Coordinates of Province Capitals</h3>
+<p>Set the capital coordinates of each provinces.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">cap_coord &lt;- c(</div><div class="line">  <span class="string">"Beijing"</span>, <span class="string">"北京"</span>, <span class="string">"Beijing"</span>, <span class="number">116.4666667</span>, <span class="number">39.9</span>,</div><div class="line">  <span class="string">"Shanghai"</span>, <span class="string">"上海"</span>, <span class="string">"Shanghai"</span>, <span class="number">121.4833333</span>, <span class="number">31.23333333</span>,</div><div class="line">  <span class="string">"Tianjin"</span>, <span class="string">"天津"</span>, <span class="string">"Tianjin"</span>, <span class="number">117.1833333</span>, <span class="number">39.15</span>,</div><div class="line">  <span class="string">"Chongqing"</span>, <span class="string">"重庆"</span>, <span class="string">"Chongqing"</span>, <span class="number">106.5333333</span>, <span class="number">29.53333333</span>,</div><div class="line">  <span class="string">"Harbin"</span>, <span class="string">"哈尔滨"</span>, <span class="string">"Heilongjiang"</span>, <span class="number">126.6833333</span>, <span class="number">45.75</span>,</div><div class="line">  <span class="string">"Changchun"</span>, <span class="string">"长春"</span>, <span class="string">"Jilin"</span>, <span class="number">125.3166667</span>, <span class="number">43.86666667</span>,</div><div class="line">  <span class="string">"Shenyang"</span>, <span class="string">"沈阳"</span>, <span class="string">"Liaoning"</span>, <span class="number">123.4</span>, <span class="number">41.83333333</span>,</div><div class="line">  <span class="string">"Hohhot"</span>, <span class="string">"呼和浩特"</span>, <span class="string">"Inner Mongolia"</span>, <span class="number">111.8</span>, <span class="number">40.81666667</span>,</div><div class="line">  <span class="string">"Shijiazhuang"</span>, <span class="string">"石家庄"</span>, <span class="string">"Hebei"</span>, <span class="number">114.4666667</span>, <span class="number">38.03333333</span>,</div><div class="line">  <span class="string">"Taiyuan"</span>, <span class="string">"太原"</span>, <span class="string">"Shanxi"</span>, <span class="number">112.5666667</span>, <span class="number">37.86666667</span>,</div><div class="line">  <span class="string">"Jinan"</span>, <span class="string">"济南"</span>,<span class="string">"Shandong"</span>, <span class="number">117</span>, <span class="number">36.63333333</span>,</div><div class="line">  <span class="string">"Zhengzhou"</span>, <span class="string">"郑州"</span>, <span class="string">"Henan"</span>, <span class="number">113.7</span>, <span class="number">34.8</span>, </div><div class="line">  <span class="string">"Xi'an"</span>, <span class="string">"西安"</span>, <span class="string">"Shaanxi"</span>, <span class="number">108.9</span>, <span class="number">34.26666667</span>,</div><div class="line">  <span class="string">"Lanzhou"</span>, <span class="string">"兰州"</span>, <span class="string">"Gansu"</span>, <span class="number">103.8166667</span>, <span class="number">36.05</span>,</div><div class="line">  <span class="string">"Yinchuan"</span>, <span class="string">"银川"</span>, <span class="string">"Ningxia"</span>, <span class="number">106.2666667</span>, <span class="number">38.33333333</span>,</div><div class="line">  <span class="string">"Xining"</span>, <span class="string">"西宁"</span>, <span class="string">"Qinghai"</span>, <span class="number">101.75</span>, <span class="number">36.63333333</span>,</div><div class="line">  <span class="string">"Urumqi"</span>, <span class="string">"乌鲁木齐"</span>, <span class="string">"Xinjiang"</span>, <span class="number">87.6</span>, <span class="number">43.8</span>,</div><div class="line">  <span class="string">"Hefei"</span>, <span class="string">"合肥"</span>, <span class="string">"Anhui"</span>, <span class="number">117.3</span>, <span class="number">31.85</span>,</div><div class="line">  <span class="string">"Nanjing"</span>, <span class="string">"南京"</span>, <span class="string">"Jiangsu"</span>, <span class="number">118.8333333</span>, <span class="number">32.03333333</span>,</div><div class="line">  <span class="string">"Hangzhou"</span>, <span class="string">"杭州"</span>, <span class="string">"Zhejiang"</span>, <span class="number">120.15</span>, <span class="number">30.23333333</span>,</div><div class="line">  <span class="string">"Changsha"</span>, <span class="string">"长沙"</span>, <span class="string">"Hunan"</span>, <span class="number">113</span>, <span class="number">28.18333333</span>,</div><div class="line">  <span class="string">"Nanchang"</span>, <span class="string">"南昌"</span>, <span class="string">"Jiangxi"</span>, <span class="number">115.8666667</span>, <span class="number">28.68333333</span>,</div><div class="line">  <span class="string">"Wuhan"</span>, <span class="string">"武汉"</span>, <span class="string">"Hubei"</span>, <span class="number">114.35</span>, <span class="number">30.61666667</span>,</div><div class="line">  <span class="string">"Chengdu"</span>, <span class="string">"成都"</span>, <span class="string">"Sichuan"</span>, <span class="number">104.0833333</span>, <span class="number">30.65</span>,</div><div class="line">  <span class="string">"Guiyang"</span>, <span class="string">"贵阳"</span>, <span class="string">"Guizhou"</span>, <span class="number">106.7</span>, <span class="number">26.58333333</span>,</div><div class="line">  <span class="string">"Fuzhou"</span>, <span class="string">"福州"</span>, <span class="string">"Fujian"</span>, <span class="number">119.3</span>, <span class="number">26.08333333</span>,</div><div class="line">  <span class="string">"Taibei"</span>, <span class="string">"台北"</span>, <span class="string">"Taiwan"</span>, <span class="number">121.5166667</span>, <span class="number">25.05</span>,</div><div class="line">  <span class="string">"Guangzhou"</span>, <span class="string">"广州"</span>, <span class="string">"Guangdong"</span>, <span class="number">113.25</span>, <span class="number">23.13333333</span>,</div><div class="line">  <span class="string">"Haikou"</span>, <span class="string">"海口"</span>, <span class="string">"Hainan"</span>, <span class="number">110.3333333</span>, <span class="number">20.03333333</span>,</div><div class="line">  <span class="string">"Nanning"</span>, <span class="string">"南宁"</span>, <span class="string">"Guangxi"</span>, <span class="number">108.3333333</span>, <span class="number">22.8</span>,</div><div class="line">  <span class="string">"Kunming"</span>, <span class="string">"昆明"</span>, <span class="string">"Yunnan"</span>, <span class="number">102.6833333</span>, <span class="number">25</span>,</div><div class="line">  <span class="string">"Lhasa"</span>, <span class="string">"拉萨"</span>, <span class="string">"Tibet"</span>, <span class="number">91.16666667</span>, <span class="number">29.66666667</span>,</div><div class="line">  <span class="string">"Hong Kong"</span>, <span class="string">"香港"</span>, <span class="string">"Hong Kong"</span>, <span class="number">114.1666667</span>, <span class="number">22.3</span>,</div><div class="line">  <span class="string">"Macau"</span>, <span class="string">"澳门"</span>, <span class="string">"Macau"</span>, <span class="number">113.5</span>, <span class="number">22.2</span>)</div><div class="line"></div><div class="line">cap_coord &lt;- as.data.frame(matrix(cap_coord, nrow = <span class="number">34</span>, byrow = <span class="literal">TRUE</span>))</div><div class="line">names(cap_coord) &lt;- c(<span class="string">"city_en"</span>, <span class="string">"city_cn"</span>, <span class="string">"prov_en"</span>, <span class="string">"long"</span>, <span class="string">"lat"</span>)</div><div class="line"></div><div class="line">cap_coord &lt;- cap_coord                                              %&gt;%</div><div class="line">  mutate(prov_en = as.vector(prov_en),</div><div class="line">         city_en = as.vector(city_en),</div><div class="line">         city_cn = as.vector(city_cn),</div><div class="line">         cap_long = as.double(as.vector(long)),</div><div class="line">         cap_lat = as.double(as.vector(lat)))                       %&gt;%</div><div class="line">  select(prov_en, city_en, city_cn, cap_long, cap_lat)</div><div class="line"></div><div class="line"><span class="comment"># cnmapdf &lt;- plyr::join(cnmapdf, cap_coord, by = "prov_en", type = "full")</span></div></pre></td></tr></table></figure></p>
+<h2>Plot Map for One Province</h2>
+<p>Let's try to plot Shanghai first.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">shanghai &lt;- cnmapdf[cnmapdf$prov_en == <span class="string">"Shanghai"</span>,]</div><div class="line"><span class="comment"># or</span></div><div class="line"><span class="comment"># shanghai &lt;- cnmapdf[prov_cn == "浙江省",]</span></div><div class="line"></div><div class="line">shanghai                                                            %&gt;%</div><div class="line">  ggplot(aes(x = long, y = lat, group = group))                      +</div><div class="line">  geom_polygon(fill = <span class="string">"beige"</span>, color = <span class="string">"grey"</span>)                       +</div><div class="line">  ggtitle(<span class="string">"上海直辖市"</span>)                                              +</div><div class="line">  xlab(<span class="string">"经度"</span>)                                                       +</div><div class="line">  ylab(<span class="string">"维度"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis2-plot1.png" alt="vis2-plot1"></p>
+<h2>Plot Map for Several Provinces</h2>
+<p>To plot a group of provinces, say Jiangsu, Zhejiang and Shanghai, the Yangtze River Delta.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">map1 &lt;- cnmapdf                                                     %&gt;%</div><div class="line">  filter(prov_en %<span class="keyword">in</span>% c(<span class="string">"Jiangsu"</span>, <span class="string">"Zhejiang"</span>, <span class="string">"Shanghai"</span>))         %&gt;%</div><div class="line">  ggplot()                                                           +</div><div class="line">  geom_polygon(aes(x = long, y = lat, </div><div class="line">                   group = group, fill = prov_cn), </div><div class="line">               color = <span class="string">"grey"</span>)</div><div class="line"></div><div class="line">map1                                                                 +</div><div class="line">  geom_point(x = <span class="number">121.48333</span>, y = <span class="number">31.23333</span>, fill = <span class="string">"beige"</span>)            +</div><div class="line">  geom_point(x = <span class="number">120.15000</span>, y = <span class="number">30.23333</span>, fill = <span class="string">"beige"</span>)            +</div><div class="line">  geom_point(x = <span class="number">118.83333</span>, y = <span class="number">32.03333</span>, fill = <span class="string">"beige"</span>)            +</div><div class="line">  annotate(<span class="string">"text"</span>, x = <span class="number">121.48333</span>, y =  <span class="number">30.93333</span>, label = <span class="string">"上海"</span>)     +</div><div class="line">  annotate(<span class="string">"text"</span>, x = <span class="number">120.15000</span>, y =  <span class="number">29.93333</span>, label = <span class="string">"杭州"</span>)     +</div><div class="line">  annotate(<span class="string">"text"</span>, x = <span class="number">119.13333</span>, y =  <span class="number">32.03333</span>, label = <span class="string">"南京"</span>)     +</div><div class="line">  ggtitle(<span class="string">"长江三角洲"</span>)                                              +</div><div class="line">  xlab(<span class="string">"经度"</span>)                                                       +</div><div class="line">  ylab(<span class="string">"维度"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis2-plot2.png" alt="vis2-plot2"></p>
+<p>Why do we declare <code>aes()</code> inside <code>geom_polygon()</code> instead of <code>ggplot()</code>? Run the code below and try to move it to the aesthetic mapping in <code>ggplot()</code> and you will find the answer.</p>
+<p>It's apparently a bit complicated using <code>annotate()</code> to add labels to provinces. We can do that this way:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">coord_delta_cap &lt;- subset(cap_coord, prov_en %<span class="keyword">in</span>% c(<span class="string">"Zhejiang"</span>, <span class="string">"Shanghai"</span>, <span class="string">"Jiangsu"</span>))</div><div class="line"></div><div class="line">map1                                                                 +</div><div class="line">  geom_point(data = coord_delta_cap, </div><div class="line">             aes(x = cap_long, y = cap_lat))                         +</div><div class="line">  geom_text(data = coord_delta_cap, </div><div class="line">            aes(cap_long, cap_lat - <span class="number">.25</span>, label = city_cn))           +</div><div class="line">  ggtitle(<span class="string">"长江三角洲"</span>)                                              +</div><div class="line">  xlab(<span class="string">"经度"</span>)                                                       +</div><div class="line">  ylab(<span class="string">"维度"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis2-plot3.png" alt="vis2-plot3"></p>
+<p>How can we do that via <code>ggvis</code>?
+In the current version (0.4.2) there is no function like <code>ggplot2::ggtitle()</code> to directly add a title to a <code>ggvis</code> package. So we can define one ourselves.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">add_title &lt;- <span class="keyword">function</span>(vis, <span class="keyword">...</span>, x_lab = <span class="string">""</span>, title = <span class="string">"Plot Title"</span>)&#123;</div><div class="line">  add_axis(vis, <span class="string">"x"</span>, title = x_lab)                                 %&gt;% </div><div class="line">    add_axis(<span class="string">"x"</span>, orient = <span class="string">"top"</span>, ticks = <span class="number">0</span>, title = title,</div><div class="line">             properties = axis_props(</div><div class="line">               axis = list(stroke = <span class="string">"white"</span>),</div><div class="line">               title = list(fontSize = <span class="number">20</span>),</div><div class="line">               labels = list(fontSize = <span class="number">0</span>)</div><div class="line">             ), <span class="keyword">...</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Then apply <code>add_title()</code> to our plot</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">cnmapdf                                                             %&gt;%</div><div class="line">  filter(prov_en %<span class="keyword">in</span>% c(<span class="string">"Jiangsu"</span>, <span class="string">"Zhejiang"</span>, <span class="string">"Shanghai"</span>))         %&gt;%</div><div class="line">  group_by(group)                                                   %&gt;%</div><div class="line">  ggvis(x = ~long, y = ~lat, fill = ~prov_en, stroke := <span class="string">"grey"</span>)     %&gt;%</div><div class="line">  layer_paths()                                                     %&gt;%</div><div class="line">  layer_points(x = ~cap_long, y = ~cap_lat, fill:= <span class="string">"beige"</span>,</div><div class="line">               data = coord_delta_cap)                              %&gt;%</div><div class="line">  layer_text(x = ~cap_long + <span class="number">.2</span>, y = ~cap_lat - <span class="number">.2</span>, </div><div class="line">             stroke := <span class="string">"black"</span>, fontSize := <span class="number">14</span>,</div><div class="line">             text := ~city_en, data = coord_delta_cap)              %&gt;%</div><div class="line">  add_axis(<span class="string">"x"</span>, title = <span class="string">"longtitude"</span>)                               %&gt;%</div><div class="line">  add_axis(<span class="string">"y"</span>, title = <span class="string">"latitude"</span>)                                 %&gt;%</div><div class="line">  add_title(title = <span class="string">"Yangtze River Delta"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis2-plot4.png" alt="vis2-plot4"></p>
+<h2>Combining Population Data</h2>
+<h3>Add Population Data</h3>
+<p>Macau is not specified in the raw data, therefore we only plot the other 33 provinces / municipalities / autonomous regions.
+Population data is scrapped from Wikipedia based on Census. The population Hong Kong and Taiwan are independently collected, so I pick the data in the most adjacent years.
+You could download the <code>.xlsx</code> raw data <a href="">DemoChinaRaw.xlsx</a> and the <code>.csv</code> cleaned data <a href="">DemoChina.csv</a>.</p>
+<p>Need to pay attention to the changes of provinces:</p>
+<ul>
+<li>Chongqing was a city of Sichuan Province and became a municipality in 1997.</li>
+<li>Hainan was a part of Guangdong Province and became an independent province in 1988. This is not reflected in the result of Census in 1990).</li>
+<li>From 1949 to now, Tianjin is a municipality but once was a city of Hebei Province between 1958 and 1967.</li>
+</ul>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">democn &lt;- read.csv(<span class="string">"DemoChina.csv"</span>, stringsAsFactors = <span class="literal">F</span>)</div><div class="line"></div><div class="line"><span class="comment"># check the data per year and per province</span></div><div class="line"><span class="keyword">library</span>(tidyr)</div><div class="line">head(spread(democn, year, population))</div></pre></td></tr></table></figure></p>
+<h3>Plot the Population per Province by <code>ggplot</code></h3>
+<p>Combine the population from Census in 2010 with map data:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">map2df &lt;- cnmapdf                                                   %&gt;% </div><div class="line">  plyr::join(subset(democn, year == <span class="string">"Census-2010"</span>), by = <span class="string">"prov_en"</span>) %&gt;%</div><div class="line">  mutate(population = as.numeric(population))</div><div class="line"></div><div class="line">map2df                                                              %&gt;%</div><div class="line">  ggplot(aes(x = long, y = lat, group = group, fill = population))   +</div><div class="line">  geom_polygon(color = <span class="string">"grey"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis2-plot5.png" alt="vis2-plot5"></p>
+<p>To make the heat map by another color scale:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">map2df                                                              %&gt;%</div><div class="line">  ggplot(aes(x = long, y = lat, group = group, fill = population))   +</div><div class="line">  geom_polygon(color = <span class="string">"grey"</span>)                                       +</div><div class="line">  scale_fill_gradient(low = <span class="string">"red"</span>, high = <span class="string">"yellow"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis2-plot6.png" alt="vis2-plot6"></p>
+<h3>Plot the Population per Province by <code>ggvis</code></h3>
+<p>Let's try <code>ggvis</code>:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">map2df                                                              %&gt;%</div><div class="line">  group_by(group)                                                   %&gt;%</div><div class="line">  ggvis(x = ~long, y = ~lat)                                        %&gt;%</div><div class="line">  layer_paths(fill = ~population, stroke := <span class="string">"grey"</span>)                 %&gt;%</div><div class="line">  scale_numeric(<span class="string">"fill"</span>, range = c(<span class="string">"red"</span>, <span class="string">"yellow"</span>))</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis2-plot7.png" alt="vis2-plot7"></p>
+<h3>Plot the Population per Year</h3>
+<p>To check the population evolution per each census by <code>ggplot2</code>.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">map3df &lt;- cnmapdf                                                   %&gt;% </div><div class="line">  plyr::join(democn, by = <span class="string">"prov_en"</span>)                                %&gt;%</div><div class="line">  mutate(population = as.numeric(population))                       %&gt;%</div><div class="line">  na.omit()</div><div class="line"></div><div class="line">map3df                                                              %&gt;%</div><div class="line">  ggplot(aes(x = long, y = lat, group = group, fill = population))   +</div><div class="line">  geom_polygon(color = <span class="string">"grey"</span>, lwd = <span class="number">.1</span>)                             +</div><div class="line">  coord_equal()                                                      +</div><div class="line">  facet_wrap(~year)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis2-plot8.png" alt="vis2-plot8"></p>
+<p>Based on the census in 1982 and 1990, the population in Sichuan Province is even higher than in the following years. Should be aware that before the census in 2000, Chongqing is a city of Sichuan. That is how the illusion comes.</p>
+<p>It is a shame that <code>ggvis</code> cannot do faceting yet.</p>
+<hr>
+<h2>Reference:</h2>
+<ol>
+<li><a href="http://stackoverflow.com/questions/25018598/add-a-plot-title-to-ggvis" target="_blank" rel="external">Add a plot title to ggvis</a></li>
+<li><a href="http://spatialanalysis.co.uk/wp-content/uploads/2013/04/james_cheshire_ggplot_intro_blog.pdf" target="_blank" rel="external">Introduction to ggplot2</a></li>
+</ol>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2015/10/11/LaVie-5-suzhou/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2015/10/18/Codage-12-r-visualization-3-bubble-bar-on-map/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

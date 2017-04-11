@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            linux设备模型 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,设备模型">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="linux设备模型 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="设备模型"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">内核中USB子系统的结构</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">USB子系统与设备模型</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                linux设备模型
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>4月 17, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/设备模型/">设备模型</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=linux设备模型&url=http://yoursite.com//2014/04/17/linux-driver-model/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=linux设备模型&url=http://yoursite.com//2014/04/17/linux-driver-model/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/04/17/linux-driver-model/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/04/17/linux-driver-model/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>参考原文：
+<a href="http://blog.csdn.net/fudan_abc/article/details/5410486" target="_blank" rel="external">《Linux内核修炼之道》精华分享与讨论（11）——设备模型（上） </a>
+<a href="http://blog.csdn.net/fudan_abc/article/details/5417879" target="_blank" rel="external">《Linux内核修炼之道》精华分享与讨论（12）——设备模型（下） </a></p>
+<p>对于驱动开发来说，设备模型的理解是根本，毫不夸张得说，理解了设备模型，再去看那些五花八门的驱动程序，你会发现自己站在了另一个高度，从而有了一种俯视的感觉。
+顾名而思义，设备模型是关于设备的模型，对咱们写驱动的和不写驱动的人来说，设备的概念就是总线和与其相连的各种设备。电脑城的IT工作者都会知道设备是通过总线连到计算机上的，而且还需要对应的驱动才能用，可是总线是如何发现设备的，设备又是如何和驱动对应起来的，它们经过怎样的艰辛才找到命里注定的那个他，它们的关系如何，白头偕老型的还是朝三暮四型的，这些问题就不是他们关心的了，而是咱们需要关心的。这些疑问的中心思想中心词汇就是总线、设备和驱动，没错，它们就是咱们这里要聊的Linux设备模型的名角。
+&lt;!--more--&gt;
+总线、设备、驱动，也就是bus、device、driver，既然是名角，在内核里都会有它们自己专属的结构，在include/linux/device.h里定义。
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> bus_type &#123;</div><div class="line">  <span class="keyword">const</span> <span class="keyword">char</span>              * name;</div><div class="line">    <span class="keyword">struct</span> <span class="keyword">module</span>           * owner;</div><div class="line"></div><div class="line">     <span class="keyword">struct</span> kset             subsys;</div><div class="line">     <span class="keyword">struct</span> kset             drivers;</div><div class="line">     <span class="keyword">struct</span> kset             devices;</div><div class="line">     <span class="keyword">struct</span> klist            klist_devices;</div><div class="line">     <span class="keyword">struct</span> klist            klist_drivers;</div><div class="line"></div><div class="line">     <span class="keyword">struct</span> blocking_notifier_head bus_notifier;</div><div class="line"></div><div class="line">     <span class="keyword">struct</span> bus_attribute    * bus_attrs;</div><div class="line">     <span class="keyword">struct</span> device_attribute * dev_attrs;</div><div class="line">     <span class="keyword">struct</span> driver_attribute * drv_attrs;</div><div class="line">     <span class="keyword">struct</span> bus_attribute drivers_autoprobe_attr;</div><div class="line">     <span class="keyword">struct</span> bus_attribute drivers_probe_attr;</div><div class="line"></div><div class="line">     <span class="keyword">int</span> (*match)(<span class="keyword">struct</span> device * dev, <span class="keyword">struct</span> device_driver * drv);</div><div class="line">     <span class="keyword">int</span> (*uevent)(<span class="keyword">struct</span> device *dev, <span class="keyword">char</span> **envp,</div><div class="line">     <span class="keyword">int</span> num_envp, <span class="keyword">char</span> *buffer, <span class="keyword">int</span> buffer_size);</div><div class="line">     <span class="keyword">int</span>             (*probe)(<span class="keyword">struct</span> device * dev);</div><div class="line">     <span class="keyword">int</span>             (*remove)(<span class="keyword">struct</span> device * dev);</div><div class="line">     <span class="keyword">void</span>            (*shutdown)(<span class="keyword">struct</span> device * dev);</div><div class="line"></div><div class="line">     <span class="keyword">int</span> (*suspend)(<span class="keyword">struct</span> device * dev, <span class="keyword">pm_message_t</span> state);</div><div class="line">     <span class="keyword">int</span> (*suspend_late)(<span class="keyword">struct</span> device * dev, <span class="keyword">pm_message_t</span> state);</div><div class="line">     <span class="keyword">int</span> (*resume_early)(<span class="keyword">struct</span> device * dev);</div><div class="line">     <span class="keyword">int</span> (*resume)(<span class="keyword">struct</span> device * dev);</div><div class="line"></div><div class="line">     <span class="keyword">unsigned</span> <span class="keyword">int</span> drivers_autoprobe:<span class="number">1</span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> device_driver &#123;</div><div class="line">    <span class="keyword">const</span> <span class="keyword">char</span>              * name;</div><div class="line">     <span class="keyword">struct</span> bus_type         * bus;</div><div class="line"></div><div class="line">     <span class="keyword">struct</span> kobject          kobj;</div><div class="line">     <span class="keyword">struct</span> klist            klist_devices;</div><div class="line">     <span class="keyword">struct</span> klist_node       knode_bus;</div><div class="line"></div><div class="line">     <span class="keyword">struct</span> <span class="keyword">module</span>           * owner;</div><div class="line">     <span class="keyword">const</span> <span class="keyword">char</span>              * mod_name;  <span class="comment">/* used for built-in modules */</span></div><div class="line">     <span class="keyword">struct</span> module_kobject   * mkobj;</div><div class="line"></div><div class="line">    <span class="keyword">int</span>     (*probe)        (<span class="keyword">struct</span> device * dev);</div><div class="line">    <span class="keyword">int</span>     (*remove)       (<span class="keyword">struct</span> device * dev);</div><div class="line">    <span class="keyword">void</span>    (*shutdown)     (<span class="keyword">struct</span> device * dev);</div><div class="line">    <span class="keyword">int</span>     (*suspend)      (<span class="keyword">struct</span> device * dev, <span class="keyword">pm_message_t</span> state);</div><div class="line">    <span class="keyword">int</span>     (*resume)       (<span class="keyword">struct</span> device * dev);</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> device &#123;</div><div class="line">  <span class="keyword">struct</span> klist  klist_children;</div><div class="line">  <span class="keyword">struct</span> klist_node knode_parent;  <span class="comment">/* node in sibling list */</span></div><div class="line">  <span class="keyword">struct</span> klist_node knode_driver;</div><div class="line">  <span class="keyword">struct</span> klist_node knode_bus;</div><div class="line">  <span class="keyword">struct</span> device  *parent;</div><div class="line"></div><div class="line">  <span class="keyword">struct</span> kobject kobj;</div><div class="line">  <span class="keyword">char</span> bus_id[BUS_ID_SIZE]; <span class="comment">/* position on parent bus */</span></div><div class="line">  <span class="keyword">struct</span> device_type *type;</div><div class="line">  <span class="keyword">unsigned</span>  is_registered:<span class="number">1</span>;</div><div class="line">  <span class="keyword">unsigned</span>  uevent_suppress:<span class="number">1</span>;</div><div class="line"></div><div class="line">  <span class="keyword">struct</span> semaphore sem; <span class="comment">/* semaphore to synchronize calls to</span></div><div class="line">        * its driver.</div><div class="line">        */</div><div class="line"></div><div class="line">  <span class="keyword">struct</span> bus_type * bus;  <span class="comment">/* type of bus device is on */</span></div><div class="line">  <span class="keyword">struct</span> device_driver *driver; <span class="comment">/* which driver has allocated this</span></div><div class="line">         device */</div><div class="line">  <span class="keyword">void</span>  *driver_data; <span class="comment">/* data private to the driver */</span></div><div class="line">  <span class="keyword">void</span>  *platform_data; <span class="comment">/* Platform specific data, device</span></div><div class="line">         core doesn't touch it */</div><div class="line">  <span class="keyword">struct</span> dev_pm_info power;</div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_NUMA</span></div><div class="line">  <span class="keyword">int</span>  numa_node; <span class="comment">/* NUMA node this device is close to */</span></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></div><div class="line">  u64  *dma_mask; <span class="comment">/* dma mask (if dma'able device) */</span></div><div class="line">  u64  coherent_dma_mask;<span class="comment">/* Like dma_mask, but for</span></div><div class="line">           alloc_coherent mappings as</div><div class="line">           not all hardware supports</div><div class="line">           64 bit addresses for consistent</div><div class="line">           allocations such descriptors. */</div><div class="line"></div><div class="line">  <span class="keyword">struct</span> list_head dma_pools; <span class="comment">/* dma pools (if dma'ble) */</span></div><div class="line"></div><div class="line">  <span class="keyword">struct</span> dma_coherent_mem *dma_mem; <span class="comment">/* internal for coherent mem</span></div><div class="line">           override */</div><div class="line">  <span class="comment">/* arch specific additions */</span></div><div class="line">  <span class="keyword">struct</span> dev_archdata archdata;</div><div class="line"></div><div class="line">  <span class="keyword">spinlock_t</span>  devres_lock;</div><div class="line">  <span class="keyword">struct</span> list_head devres_head;</div><div class="line"></div><div class="line">  <span class="comment">/* class_device migration path */</span></div><div class="line">  <span class="keyword">struct</span> list_head node;</div><div class="line">  <span class="keyword">struct</span> <span class="keyword">class</span>  *<span class="keyword">class</span>;</div><div class="line">  <span class="keyword">dev_t</span>   devt;  <span class="comment">/* dev_t, creates the sysfs "dev" */</span></div><div class="line">  <span class="keyword">struct</span> attribute_group **groups; <span class="comment">/* optional groups */</span></div><div class="line"></div><div class="line">  <span class="keyword">void</span> (*release)(<span class="keyword">struct</span> device * dev);</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>我知道进入了21世纪，最缺的就是耐性，房价股价都让咱们没有耐性，内核的代码也让人没有耐性。不过做为最没有耐性的一代人，还是要平心静气的扫一下上面的结构，我们会发现，<code>struct bus_type</code>中有成员<code>struct kset drivers</code>和<code>struct kset devices</code>，同时<code>struct device</code>中有两个成员<code>struct bus_type * bus</code>和<code>struct device_driver *driver</code>，<code>struct device_driver</code>中有两个成员<code>struct bus_type * bus</code>和<code>struct klist klist_devices</code>。先不说什么是<code>klist</code>、<code>kset</code>，光从成员的名字看，它们就是一个完美的三角关系。我们每个人心中是不是都有两个她？一个梦中的她，一个现实中的她。</p>
+<p>凭一个男人的直觉，我们可以知道，<code>struct device</code>中的<code>bus</code>表示这个设备连到哪个总线上，<code>driver</code>表示这个设备的驱动是什么，<code>struct device_driver</code>中的<code>bus</code>表示这个驱动属于哪个总线，<code>klist_devices</code>表示这个驱动都支持哪些设备，因为这里<code>device</code>是复数，又是<code>list</code>，更因为一个驱动可以支持多个设备，而一个设备只能绑定一个驱动。当然，<code>struct bus_type</code>中的<code>drivers</code>和<code>devices</code>分别表示了这个总线拥有哪些设备和哪些驱动。</p>
+<p>单凭直觉，张钰红不了。我们还需要看看什么是<code>klist</code>、<code>kset</code>。还有上面<code>device</code>和<code>driver</code>结构里出现的<code>kobject</code>结构是什么？作为一个五星红旗下长大的孩子，我可以肯定的告诉你，<code>kobject</code>和<code>kset</code>都是Linux设备模型中最基本的元素，总线、设备、驱动是西瓜，<code>kobjcet</code>、<code>kset</code>是种瓜的人，没有幕后种瓜人的汗水不会有清爽解渴的西瓜，我们不能光知道西瓜的的甜，还要知道种瓜人的辛苦。<code>kobject</code>和<code>kset</code>不会在意自己的得失，它们存在的意义在于把总线、设备和驱动这样的对象连接到设备模型上。种瓜的人也不会在意自己的汗水，在意的只是能不能送出甜蜜的西瓜。</p>
+<p>一般来说应该这么理解，整个Linux的设备模型是一个OO的体系结构，总线、设备和驱动都是其中鲜活存在的对象，<code>kobject</code>是它们的基类，所实现的只是一些公共的接口，<code>kset</code>是同种类型<code>kobject</code>对象的集合，也可以说是对象的容器。只是因为C里不可能会有C++里类的class继承、组合等的概念，只有通过<code>kobject</code>嵌入到对象结构里来实现。这样，内核使用<code>kobject</code>将各个对象连接起来组成了一个分层的结构体系，就好像马列主义将我们13亿人也连接成了一个分层的社会体系一样。<code>kobject</code>结构里包含了<code>parent</code>成员，指向了另一个<code>kobject</code>结构，也就是这个分层结构的上一层结点。而<code>kset</code>是通过链表来实现的，这样就可以明白，<code>struct bus_type</code>结构中的成员<code>drivers</code>和<code>devices</code>表示了一条总线拥有两条链表，一条是设备链表，一条是驱动链表。我们知道了总线对应的数据结构，就可以找到这条总线关联了多少设备，又有哪些驱动来支持这类设备。</p>
+<p>那么<code>klist</code>呢？其实它就包含了一个链表和一个自旋锁，我们暂且把它看成链表也无妨，本来在2.6.11内核里，<code>struct device_driver</code>结构的<code>devices</code>成员就是一个链表类型。这么一说，咱们上面的直觉都是正确的，如果买股票，摸彩票时直觉都这么管用，就不会有咱们这被压扁的一代了。</p>
+<p>现在的人都知道，三角关系很难处。那么总线、设备和驱动之间是如何和谐共处那？先说说总线中的那两条链表是怎么形成的。内核要求每次出现一个设备就要向总线汇报，或者说注册，每次出现一个驱动，也要向总线汇报，或者说注册。比如系统初始化的时候，会扫描连接了哪些设备，并为每一个设备建立起一个<code>struct device</code>的变量，每一次有一个驱动程序，就要准备一个<code>struct device_driver</code>结构的变量。把这些变量统统加入相应的链表，<code>device</code>插入<code>devices</code>链表，<code>driver</code>插入<code>drivers</code>链表。这样通过总线就能找到每一个设备，每一个驱动。然而，假如计算机里只有设备却没有对应的驱动，那么设备无法工作。反过来，倘若只有驱动却没有设备，驱动也起不了任何作用。在他们遇见彼此之前，双方都如同路埂的野草，一个飘啊飘，一个摇啊摇，谁也不知道未来在哪里，只能在生命的风里飘摇。于是总线上的两张表里慢慢的就挂上了那许多孤单的灵魂。<code>devices</code>开始多了，<code>drivers</code>开始多了，他们像是来自两个世界，<code>devices</code>们彼此取暖，<code>drivers</code>们一起狂欢，但他们有一点是相同的，都只是在等待属于自己的那个另一半。</p>
+<p>现在，总线上的两条链表已经有了，这个三角关系三个边已经有了两个，剩下的那个呢？链表里的设备和驱动又是如何联系呢？先有设备还是先有驱动？很久很久以前，在那激情燃烧的岁月里，先有的是设备，每一个要用的设备在计算机启动之前就已经插好了，插放在它应该在的位置上，然后计算机启动，然后操作系统开始初始化，总线开始扫描设备，每找到一个设备，就为其申请一个<code>struct device</code>结构，并且挂入总线中的<code>devices</code>链表中来，然后每一个驱动程序开始初始化，开始注册其<code>struct device_driver</code>结构，然后它去总线的<code>devices</code>链表中去寻找(遍历)，去寻找每一个还没有绑定驱动的设备，即<code>struct device</code>中的<code>struct device_driver</code>指针仍为空的设备，然后它会去观察这种设备的特征，看是否是他所支持的设备，如果是，那么调用一个叫做<code>device_bind_driver</code>的函数，然后他们就结为了秦晋之好。换句话说，把<code>struct device</code>中的<code>struct device_driver driver</code>指向这个驱动，而<code>struct device_driver driver</code>把<code>struct device</code>加入他的那张<code>struct klist klist_devices</code>链表中来。就这样，<code>bus</code>、<code>device</code>和<code>driver</code>，这三者之间或者说他们中的两两之间，就给联系上了。知道其中之一，就能找到另外两个。一荣俱荣，一损俱损。</p>
+<p>但现在情况变了，在这红莲绽放的日子里，在这樱花伤逝的日子里，出现了一种新的名词，叫热插拔。设备可以在计算机启动以后在插入或者拔出计算机了。因此，很难再说是先有设备还是先有驱动了。因为都有可能。设备可以在任何时刻出现，而驱动也可以在任何时刻被加载，所以，出现的情况就是，每当一个<code>struct device</code>诞生，它就会去<code>bus</code>的<code>drivers</code>链表中寻找自己的另一半，反之，每当一个<code>struct device_driver</code>诞生，它就去<code>bus</code>的<code>devices</code>链表中寻找它的那些设备。如果找到了合适的，那么OK，和之前那种情况一样，调用<code>device_bind_driver</code>绑定好。如果找不到，没有关系，等待吧，等到昙花再开，等到风景看透，心中相信，这世界上总有一个人是你所等的，只是还没有遇到而已。</p>
+<p>设备模型拍得再玄幻，它也只是个模型，必须得落实在具体的子系统，否则就只能抱着个最佳技术奖空遗恨。既然前面已经以USB子系统的实现分析示例了分析内核源码应该如何入手，那么这里就仍然以USB子系统为例，看看设备模型是如何软着陆的。</p>
+<h2>内核中USB子系统的结构</h2>
+<p>我们已经知道了USB子系统的代码都位于drivers/usb目录下面，也认识了一个很重要的目录——core子目录。现在，我们再来看一个很重要的模块 —— usbcore。</p>
+<p>core就是核心，基本上你要在你的电脑里用USB设备，那么两个模块是必须的：一个是usbcore，这就是核心模块；另一个是主机控制器的驱动程序，比如ehci_hcd和uhci_hcd。你的USB设备要工作，合适的USB主机控制器模块也是必不可少的。</p>
+<p>usbcore负责实现一些核心的功能，为别的设备驱动程序提供服务，提供一个用于访问和控制USB硬件的接口，而不用去考虑系统当前存在哪种主机控制器。至于core、主机控制器和USB驱动三者之间的关系，如下图所示。</p>
+<p></p>
+<p>USB驱动和主机控制器就像core的两个保镖，协议里也说了，主机控制器的驱动（HCD）必须位于USB软件的最下一层。HCD提供主机控制器硬件的抽象，隐藏硬件的细节，在主机控制器之下是物理的USB及所有与之连接的USB设备。而HCD只有一个客户，对一个人负责，就是usbcore。usbcore将用户的请求映射到相关的HCD，用户不能直接访问HCD。</p>
+<p>core为咱们完成了大部分的工作，因此咱们写USB驱动的时候，只能调用core的接口，core会将咱们的请求发送给相应的HCD。</p>
+<h2>USB子系统与设备模型</h2>
+<p>关于设备模型，最主要的问题就是，bus、device、driver是如何建立联系的？换言之，这三个数据结构中的指针是如何被赋值的？绝对不可能发生的事情是，一旦为一条总线申请了一个<code>struct bus_type</code>的数据结构之后，它就知道它的<code>devices</code>链表和<code>drivers</code>链表会包含哪些东西，这些东西一定不会是先天就有的，只能是后天填进来的。</p>
+<p>具体到USB子系统，完成这个工作的就是USB core。USB core的代码会进行整个USB系统的初始化，比如申请<code>struct bus_type usb_bus_type</code>，然后会扫描USB总线，看线上连接了哪些USB设备，或者说Root Hub上连了哪些USB设备，比如说连了一个USB键盘，那么就为它准备一个<code>struct device</code>，根据它的实际情况，为这个<code>struct device</code>赋值，并插入<code>devices</code>链表中来。</p>
+<p>又比如Root Hub上连了一个普通的Hub，那么除了要为这个Hub本身准备一个<code>struct device</code>以外，还得继续扫描看这个Hub上是否又连了别的设备，有的话继续重复之前的事情，这样一直进行下去，直到完成整个扫描，最终就把<code>usb_bus_type</code>中的<code>devices</code>链表给建立了起来。</p>
+<p>那么<code>drivers</code>链表呢？这个就不用bus方面主动了，而该由每一个driver本身去bus上面登记，或者说挂牌。具体到USB子系统，每一个USB设备的驱动程序都会对应一个<code>struct usb_driver</code>结构，其中有一个<code>struct device_driver driver</code>成员，USB core为每一个设备驱动准备了一个函数，让它把自己的这个<code>struct device_driver driver</code>插入到<code>usb_bus_type</code>中的<code>drivers</code>链表中去。而这个函数正是我们此前看到的<code>usb_registeri</code>。而与之对应的<code>usb_deregister</code>所从事的正是与之相反的工作，把这个结构体从<code>drivers</code>链表中删除。</p>
+<p>而<code>struct bus_type</code>结构的match函数在USB子系统里就是<code>usb_device_match</code>函数，它充当了一个红娘的角色，在USB总线的USB设备和USB驱动之间牵线搭桥，类似于交大BBS上的鹊桥版，虽然它们上面的条件都琳琅满目的，但明显这里match的条件不是那么的苛刻，要更为实际些。</p>
+<p>可以说，USB core的确是用心良苦，为每一个USB设备驱动做足了功课，正因为如此，作为一个实际的USB设备驱动，它在初始化阶段所要做的事情就很少、很简单了，直接调用<code>usb_register</code>即可。事实上，没有人是理所当然应该为你做什么的，但USB core这么做了。所以每一个写USB设备驱动的人应该铭记，USB设备驱动绝不是一个人在工作，在他身后，是USB core所提供的默默无闻又不可或缺的支持。</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/04/17/how-to-analysis-kernel-source-2/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/04/17/spec-datasheet-and-kernel-source/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            R Visual. - Bubbles and Bar Charts on China Map | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,R,visualization,ggvis,ggplot2">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="R Visual. - Bubbles and Bar Charts on China Map | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="R"> <meta property="og:article:tag" content="visualization"> <meta property="og:article:tag" content="ggvis"> <meta property="og:article:tag" content="ggplot2"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">Preparation</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">Bubbles on A Map</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">Bubbles with A Single Color - ggplot2</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">Bubbles with Effect of Heat Map - ggplot2</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">Bubbles by ggvis</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">Bar Charts on A Map</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">Bar Charts by ggplot2</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">Bar Charts by ggvis</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">Reference</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                R Visual. - Bubbles and Bar Charts on China Map
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>10月 18, 2015</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/R/">R</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/ggplot2/">ggplot2</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/ggvis/">ggvis</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/visualization/">visualization</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=R Visual. - Bubbles and Bar Charts on China Map&url=http://yoursite.com//2015/10/18/Codage-12-r-visualization-3-bubble-bar-on-map/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=R Visual. - Bubbles and Bar Charts on China Map&url=http://yoursite.com//2015/10/18/Codage-12-r-visualization-3-bubble-bar-on-map/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2015/10/18/Codage-12-r-visualization-3-bubble-bar-on-map/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2015/10/18/Codage-12-r-visualization-3-bubble-bar-on-map/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>Keep exploring the things we can do on a map with <code>ggplot2</code> and <code>ggvis</code>.</p>
+<p>&lt;!-- more --&gt;</p>
+<p>About visualization on a map:</p>
+<ul>
+<li><a href="http://papacochon.com/2015/10/10/Codage-10-r-visualization-1-cn-map-1/" target="_blank" rel="external">R Visualization Series - China Map Part I</a></li>
+<li><a href="http://papacochon.com/2015/10/15/Codage-11-r-visualization-2-cn-map-2/" target="_blank" rel="external">R Visualization Series - China Map Part II</a></li>
+</ul>
+<p>The data to be used:</p>
+<ul>
+<li>
+<p>China map shape file:</p>
+<ul>
+<li><a href="http://note.youdao.com/share/?id=1d7447acad7976a355d795f1dea6abbf&amp;type=note" target="_blank" rel="external"><code>bou2_4p.shp</code></a></li>
+<li><a href="http://note.youdao.com/share/?id=ea75b3342d26a4b93def35635899d8dd&amp;type=note" target="_blank" rel="external"><code>bou2_4p.dbf</code></a></li>
+<li><a href="http://note.youdao.com/share/?id=3d1e0c02ab9cde35125880a6e440e9c2&amp;type=note" target="_blank" rel="external"><code>bou2_4p.shx</code></a></li>
+</ul>
+</li>
+<li>
+<p>China demographic of 6 censuses:</p>
+<ul>
+<li><a href="http://note.youdao.com/share/?id=81c4a0e4ea281d0ff96e61f7cc1f88f9&amp;type=note" target="_blank" rel="external"><code>DemoChina.csv</code></a></li>
+</ul>
+</li>
+<li>
+<p>The coordinates of province capitals in China:</p>
+<ul>
+<li><a href="http://note.youdao.com/share/?id=3fa56717b7f98bacdcde045a2254b365&amp;type=note" target="_blank" rel="external"><code>prov_capital.csv</code></a></li>
+</ul>
+</li>
+<li>
+<p>The private vehicle ownership per province (source: <a href="http://data.stats.gov.cn/easyquery.htm?cn=E0103" target="_blank" rel="external">NBSC</a>, Unit: k; Year: 1998, 2003, 2008, 2013; Hong Kong, Macau &amp; Taiwan excl.):</p>
+<ul>
+<li><a href="http://note.youdao.com/share/?id=ce748a9f4ee26786eb4f945eef17f56a&amp;type=note" target="_blank" rel="external"><code>car_ownership.csv</code></a></li>
+</ul>
+</li>
+</ul>
+<h2>Preparation</h2>
+<p>Load packages and set the language environment:
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">library</span>(maptools)</div><div class="line"><span class="keyword">library</span>(dplyr)</div><div class="line"><span class="keyword">library</span>(ggplot2)</div><div class="line"><span class="keyword">library</span>(ggvis)</div><div class="line"></div><div class="line">Sys.setlocale(<span class="string">"LC_ALL"</span>, <span class="string">"chinese"</span>)</div></pre></td></tr></table></figure></p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">## [1] &quot;LC_COLLATE=Chinese (Simplified)_People&apos;s Republic of China.936;LC_CTYPE=Chinese (Simplified)_People&apos;s Republic of China.936;LC_MONETARY=Chinese (Simplified)_People&apos;s Republic of China.936;LC_NUMERIC=C;LC_TIME=Chinese (Simplified)_People&apos;s Republic of China.936&quot;</div></pre></td></tr></table></figure></p>
+<p>Load and clean the raw data. Get 2 data frame <code>cnmapdf</code> and <code>cap_coord</code> as we did in the <a href="http://papacochon.com/2015/10/15/Codage-11-r-visualization-2-cn-map-2/" target="_blank" rel="external">previous visualization article</a>.</p>
+<p>As we are going to draw pie and bar chart for each province, we need to add a bit more information to <code>cap_coord</code>.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">car_prov &lt;- read.csv(<span class="string">"car_ownership.csv"</span>, stringsAsFactors = <span class="literal">F</span>)</div><div class="line"></div><div class="line">cap_bubble &lt;- cap_coord                                                 %&gt;%</div><div class="line">  plyr::join(subset(car_prov, year == <span class="number">2013</span>), by = <span class="string">"prov_en"</span>)            %&gt;%</div><div class="line">  na.omit()</div><div class="line"></div><div class="line">cap_bar &lt;- cap_coord                                                    %&gt;%</div><div class="line">  plyr::join(car_prov, by = <span class="string">"prov_en"</span>)                                  %&gt;%</div><div class="line">  na.omit()                                                             %&gt;%</div><div class="line">  filter(city_en %<span class="keyword">in</span>% c(<span class="string">"Beijing"</span>, <span class="string">"Shanghai"</span>, <span class="string">"Guangzhou"</span>, <span class="string">"Chengdu"</span>)) %&gt;%</div><div class="line">  mutate(year = paste(<span class="string">"Y"</span>, year, sep = <span class="string">""</span>))                             %&gt;%</div><div class="line">  tidyr::spread(year, no_car_k)</div></pre></td></tr></table></figure></p>
+<h2>Bubbles on A Map</h2>
+<h3>Bubbles with A Single Color - <code>ggplot2</code></h3>
+<p>A bubble can be considered as a point, of which the size is controlled by the car ownership statistics.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ggplot()                                                                 +</div><div class="line">  geom_polygon(data = cnmapdf, aes(long, lat, group = group), </div><div class="line">               fill = <span class="string">"skyblue"</span>, colour = <span class="string">"grey"</span>)                        +</div><div class="line">  geom_point(data = cap_bubble, aes(cap_long, cap_lat, size = no_car_k), </div><div class="line">             shape = <span class="number">21</span>, fill = <span class="string">"red"</span>, alpha = <span class="number">.5</span>)                       +</div><div class="line">  scale_size_area(max_size=<span class="number">20</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis3-plot1.png" alt="vis3-plot1"></p>
+<h3>Bubbles with Effect of Heat Map - <code>ggplot2</code></h3>
+<p>Calculate the growth rate the private car from 2008 to 2013, assign the data to argument <code>fill</code> of <code>geom_point()</code>.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">cap_bubble[<span class="string">"growth"</span>] &lt;- subset(car_prov, year == <span class="number">2013</span>)[,<span class="number">3</span>,drop = <span class="literal">F</span>] / </div><div class="line">  subset(car_prov, year == <span class="number">2008</span>)[,<span class="number">3</span>,drop = <span class="literal">F</span>]-<span class="number">1</span></div><div class="line"></div><div class="line">ggplot()                                                                 +</div><div class="line">  geom_polygon(data = cnmapdf, aes(long, lat, group = group), </div><div class="line">               fill = <span class="string">"skyblue"</span>, colour = <span class="string">"grey"</span>)                        +</div><div class="line">  geom_point(data = cap_bubble, shape = <span class="number">21</span>,</div><div class="line">             aes(cap_long, cap_lat, size = no_car_k,</div><div class="line">                                 fill = growth, alpha = <span class="number">.5</span>))             +</div><div class="line">  scale_fill_gradient(low = <span class="string">"red"</span>, high = <span class="string">"yellow"</span>)                      +</div><div class="line">  scale_size_area(max_size=<span class="number">20</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis3-plot2.png" alt="vis3-plot2"></p>
+<p>The bubbles with transparency cannot display the difference clearly when the growth rates are similar across provinces. Let's try smaller bubbles without specifying the transparency. We can also remove the legend to keep the map simple and clear.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ggplot()                                                                 +</div><div class="line">  geom_polygon(data = cnmapdf, aes(long, lat, group = group), </div><div class="line">               fill = <span class="string">"skyblue"</span>, colour = <span class="string">"grey"</span>)                        +</div><div class="line">  geom_point(data = cap_bubble, shape = <span class="number">21</span>, colour = <span class="string">"white"</span>,</div><div class="line">             aes(cap_long, cap_lat, size = no_car_k, fill = growth))     +</div><div class="line">  scale_fill_gradient(low = <span class="string">"red"</span>, high = <span class="string">"yellow"</span>)                      +</div><div class="line">  scale_size_area(max_size=<span class="number">15</span>)                                           +</div><div class="line">  theme(legend.position = <span class="string">"none"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis3-plot3.png" alt="vis3-plot3"></p>
+<p>It seems that from 2008 to 2013, Hainan and Gansu are the 2 provinces with the quickest growth.</p>
+<h3>Bubbles by <code>ggvis</code></h3>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">cnmapdf                                                                 %&gt;%</div><div class="line">  group_by(group)                                                       %&gt;%</div><div class="line">  ggvis(x = ~long, y = ~lat)                                            %&gt;%</div><div class="line">  layer_paths(fill := <span class="string">"skyblue"</span>, stroke := <span class="string">"grey"</span>)                      %&gt;%</div><div class="line">  layer_points(data = cap_bubble, x = ~cap_long, y = ~cap_lat,</div><div class="line">               fill = ~growth, size = ~no_car_k, stroke := <span class="string">"white"</span>)     %&gt;%</div><div class="line">  scale_numeric(<span class="string">"fill"</span>, range = c(<span class="string">"red"</span>, <span class="string">"yellow"</span>))                     %&gt;%</div><div class="line">  scale_numeric(<span class="string">"size"</span>, range = c(<span class="number">50</span>, <span class="number">500</span>))                             %&gt;%</div><div class="line">  hide_legend(scales = c(<span class="string">"fill"</span>, <span class="string">"size"</span>))                               %&gt;%</div><div class="line">  add_axis(<span class="string">"x"</span>, title = <span class="string">"Longitude"</span>)                                    %&gt;%</div><div class="line">  add_axis(<span class="string">"y"</span>, title = <span class="string">"Latitude"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis3-plot4.png" alt="vis3-plot4"></p>
+<p>To remove the legend, <code>ggvis</code> provides <code>hide_legend()</code>, within this function, you can specify the names of scales to be hidden.</p>
+<h2>Bar Charts on A Map</h2>
+<h3>Bar Charts by <code>ggplot2</code></h3>
+<p>It is more complicated to place a bar chart than plot just a bubble on certain spot.
+To locate a bubble, you just need to give <code>aes()</code> the coordinates which have nothing to do with the size and color of bubble.
+Regarding bar chart, we need to assign at least 2 pairs of <code>x</code> and <code>y</code>, one for bar chart location and the other for the height and width of the bar chart. In other words, we need to know the coordinates of 4 corners for a bar.</p>
+<p>Since a bar chart may takes more space and looks more complicated than a bubble, we just plot 4 cities.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">p1 &lt;- ggplot()                                                           +</div><div class="line">  geom_polygon(data = cnmapdf, aes(long, lat, group = group), </div><div class="line">               fill = <span class="string">"beige"</span>, colour = <span class="string">"grey"</span>)                          +</div><div class="line">  geom_errorbar(data = cap_bar, size =<span class="number">3</span>, colour = <span class="string">"brown"</span>, </div><div class="line">                alpha = <span class="number">.8</span>, width = <span class="number">0</span>,</div><div class="line">                aes(x = cap_long - <span class="number">1</span>, ymin = cap_lat,</div><div class="line">                    ymax = cap_lat + Y2003 / Y2013 * <span class="number">3</span>))                 +</div><div class="line">  geom_errorbar(data = cap_bar, size =<span class="number">3</span>, colour = <span class="string">"red"</span>, </div><div class="line">                alpha = <span class="number">.8</span>, width = <span class="number">0</span>,</div><div class="line">                aes(x = cap_long, ymin = cap_lat,</div><div class="line">                    ymax = cap_lat + Y2008 / Y2013 * <span class="number">3</span>))                 +</div><div class="line">  geom_errorbar(data = cap_bar, size =<span class="number">3</span>, colour = <span class="string">"orange"</span>, </div><div class="line">                alpha = <span class="number">.9</span>, width = <span class="number">0</span>,</div><div class="line">                aes(x = cap_long + <span class="number">1</span>, ymin = cap_lat,</div><div class="line">                    ymax = cap_lat + Y2013 / Y2013 * <span class="number">3</span>))                 +</div><div class="line">  geom_text(aes(<span class="number">85</span>, <span class="number">24</span>), colour = <span class="string">"brown"</span>, </div><div class="line">            label = <span class="string">"Car Ownership - 2003"</span>)                              +</div><div class="line">  geom_text(aes(<span class="number">85</span>, <span class="number">22</span>), colour = <span class="string">"red"</span>, </div><div class="line">            label = <span class="string">"Car Ownership - 2008"</span>)                              +</div><div class="line">  geom_text(aes(<span class="number">85</span>, <span class="number">20</span>), colour = <span class="string">"orange"</span>, </div><div class="line">            label = <span class="string">"Car Ownership - 2013"</span>)</div><div class="line"></div><div class="line">p1</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis3-plot5.png" alt="vis3-plot5"></p>
+<p>We could add more details, i.e. the avg. growth rate in the from 2003 to 2013.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># define a function to find the root</span></div><div class="line">root10find &lt;- <span class="keyword">function</span>(x, y)&#123;</div><div class="line">  </div><div class="line">  low &lt;- <span class="number">0</span></div><div class="line">  high &lt;- y/x</div><div class="line">  ans &lt;- (low + high)/<span class="number">2</span></div><div class="line">  </div><div class="line">  <span class="keyword">while</span> (abs(x * ans^<span class="number">10</span> - y) &gt; <span class="number">0.001</span>)&#123;</div><div class="line">    <span class="keyword">if</span> (x * ans^<span class="number">10</span> &lt; y)&#123;</div><div class="line">      low &lt;- ans</div><div class="line">    &#125;<span class="keyword">else</span>&#123;</div><div class="line">      high &lt;- ans</div><div class="line">    &#125;</div><div class="line">    ans &lt;- (high + low)/<span class="number">2</span></div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span>(ans)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">for</span> (i <span class="keyword">in</span> <span class="number">1</span>:<span class="number">4</span>)&#123;</div><div class="line">  cap_bar[i,<span class="string">"growth_10y"</span>] &lt;- root10find(cap_bar[i,<span class="string">"Y2003"</span>], cap_bar[i,<span class="string">"Y2013"</span>])-<span class="number">1</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">p1                                                                       +</div><div class="line">  ggtitle(<span class="string">"Yearly Growth of Private Vehicles"</span>)                           +</div><div class="line">  geom_text(data = cap_bar, </div><div class="line">            aes(cap_long, cap_lat - <span class="number">0.5</span>,</div><div class="line">                label = paste(prov_en, <span class="string">": "</span>, </div><div class="line">                              round(growth_10y * <span class="number">100</span>, <span class="number">2</span>),</div><div class="line">                              <span class="string">"%"</span>, sep = <span class="string">""</span>)))</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis3-plot6.png" alt="vis3-plot6"></p>
+<h3>Bar Charts by <code>ggvis</code></h3>
+<p>It is the same logic to plot by <code>ggvis</code>.
+<figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">year_labels &lt;- data.frame(long = c(<span class="number">80</span>, <span class="number">80</span>, <span class="number">80</span>),</div><div class="line">                          lat = c(<span class="number">24</span>, <span class="number">22</span>, <span class="number">20</span>),</div><div class="line">                          label = c(<span class="string">"Car Ownership - 2003"</span>,</div><div class="line">                                    <span class="string">"Car Ownership - 2008"</span>,</div><div class="line">                                    <span class="string">"Car Ownership - 2013"</span>),</div><div class="line">                          fill = c(<span class="string">"brown"</span>, <span class="string">"red"</span>, <span class="string">"orange"</span>))</div><div class="line"></div><div class="line">cnmapdf                                                                 %&gt;%</div><div class="line">  group_by(group)                                                       %&gt;%</div><div class="line">  ggvis(x = ~long, y = ~lat, fill := <span class="string">"beige"</span>, stroke := <span class="string">"grey"</span>)         %&gt;%</div><div class="line">  layer_paths()                                                         %&gt;%</div><div class="line">  add_axis(<span class="string">"x"</span>, title = <span class="string">"longtitude"</span>)                                   %&gt;%</div><div class="line">  add_axis(<span class="string">"y"</span>, title = <span class="string">"latitude"</span>)                                     %&gt;%</div><div class="line">  layer_rects(data = cap_bar, fill := <span class="string">"brown"</span>, stroke := <span class="string">"white"</span>,</div><div class="line">              x = ~cap_long - <span class="number">1.5</span>, x2 = ~cap_long - <span class="number">.5</span>,</div><div class="line">              y = ~cap_lat, y2 = ~cap_lat + Y2003 / Y2013 * <span class="number">3</span>)          %&gt;%</div><div class="line">  layer_rects(data = cap_bar, fill := <span class="string">"red"</span>, stroke := <span class="string">"white"</span>,</div><div class="line">              x = ~cap_long - <span class="number">.5</span>, x2 = ~cap_long + <span class="number">.5</span>,</div><div class="line">              y = ~cap_lat, y2 = ~cap_lat + Y2008 / Y2013 * <span class="number">3</span>)          %&gt;%</div><div class="line">  layer_rects(data = cap_bar, fill := <span class="string">"orange"</span>, stroke := <span class="string">"white"</span>,</div><div class="line">              x = ~cap_long + <span class="number">.5</span>, x2 = ~cap_long + <span class="number">1.5</span>,</div><div class="line">              y = ~cap_lat, y2 = ~cap_lat + Y2013 / Y2013 * <span class="number">3</span>)          %&gt;%</div><div class="line">  layer_text(data = year_labels, x = ~long, y = ~lat, </div><div class="line">             text := ~label, stroke := ~fill)                            %&gt;%</div><div class="line">  scale_nominal(<span class="string">"fill"</span>, range = c(<span class="string">"brown"</span>, <span class="string">"red"</span>, <span class="string">"orange"</span>))            %&gt;%</div><div class="line">  layer_text(data = cap_bar, x = ~cap_long -<span class="number">.5</span>, y = ~cap_lat - <span class="number">1</span>,</div><div class="line">             text := ~prov_en, stroke:= <span class="string">"black"</span>, align:=<span class="string">"right"</span>)        %&gt;%</div><div class="line">  layer_text(data = cap_bar, x = ~cap_long +<span class="number">.5</span>, y = ~cap_lat - <span class="number">1</span>,</div><div class="line">             text := ~round(growth_10y*<span class="number">100</span> ,<span class="number">2</span>), </div><div class="line">             stroke:= <span class="string">"black"</span>, align:=<span class="string">"left"</span>)</div></pre></td></tr></table></figure></p>
+<p><img src="http://7xndoy.com1.z0.glb.clouddn.com/vis3-plot7.png" alt="vis3-plot7"></p>
+<p>I tried to combine the last 2 <code>layer_text()</code> functions together (the chunk below) and add a &quot;%&quot; to the end of the percentage point but it returns <code>undefined</code> at the position which is supposed to be like <code>Beijing 14.78%</code>. Need to figure out why the function does not support multiple embedding.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">layer_text(data = cap_bar, x = ~cap_long -<span class="number">.5</span>, y = ~cap_lat - <span class="number">1</span>,</div><div class="line">           text := ~paste(prov_en, <span class="string">": "</span>, round(growth_10y * <span class="number">100</span>, <span class="number">2</span>),</div><div class="line">                          <span class="string">"%"</span>, sep = <span class="string">""</span>),</div><div class="line">           fill := <span class="string">"black"</span>, align := <span class="string">"center"</span>)</div></pre></td></tr></table></figure></p>
+<hr>
+<h2>Reference</h2>
+<ol>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MzA5OTM1NDQwOA==&amp;mid=301839416&amp;idx=1&amp;sn=f301a6e1bde4fd33a7cf5ae26c1488f8&amp;scene=1&amp;srcid=1016dQkNwckBmrGkS36herzL&amp;key=b410d3164f5f798e38fef99f9c537830722ae774347c2d03dc14da24dc3fdf784c5999cba9699fb48fc46911d15bad42&amp;ascene=1&amp;uin=MTU5MzIwMTkxNQ%3D%3D&amp;devicetype=Windows+7&amp;version=61050016&amp;pass_ticket=R%2Bn5ah4D6uROw3ZEyFq5kUficdfwc8CkaKox2zMOP5pj5oAL8M2XaXXXUqT6Mcff" target="_blank" rel="external">刘万祥: ggplot绘制商务图表--热力气泡中国地图</a></li>
+<li><a href="http://mp.weixin.qq.com/s?__biz=MzA5OTM1NDQwOA==&amp;mid=308574860&amp;idx=1&amp;sn=d75ec36b8adc1aca2d7947f4df3a9c72&amp;scene=1&amp;srcid=1016YR3jAkt87MM5BrdkdBBU&amp;key=b410d3164f5f798e54adf1f73ea22fd8d4ac056586b21647b2560e8c531c10ff39641ede580b1466863aaccecd48a3ea&amp;ascene=1&amp;uin=MTU5MzIwMTkxNQ%3D%3D&amp;devicetype=Windows+7&amp;version=61050016&amp;pass_ticket=R%2Bn5ah4D6uROw3ZEyFq5kUficdfwc8CkaKox2zMOP5pj5oAL8M2XaXXXUqT6Mcff" target="_blank" rel="external">刘万祥: ggplot绘制商务图表--地图上的迷你柱形图</a></li>
+</ol>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2015/10/15/Codage-11-r-visualization-2-cn-map-2/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2015/10/20/2015-10-20-Try-to-implement-picture-browser-mode-on-webview/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

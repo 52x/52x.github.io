@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            JavaScript 读书心得之二：核心（一） | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,JavaScript">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="JavaScript 读书心得之二：核心（一） | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="JavaScript"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">基础知识</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">JavaScript or ECMAScript ?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">ECMAScript 标准</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">变量命名规则</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">变量命名方式</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">注释</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.4.</span> <span class="post-toc-text">区块及作用域</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.5.</span> <span class="post-toc-text">结尾的分号</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">数据类型及处理方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">数值</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.1.</span> <span class="post-toc-text">转换</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.2.</span> <span class="post-toc-text">常用方法</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">字符串</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.1.</span> <span class="post-toc-text">转换</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.2.</span> <span class="post-toc-text">常用方法</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">布尔值</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">null 与 undefined</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">小结</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">运算符</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">加法运算符（+）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">余数运算符（%）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">数值运算符（+）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">赋值运算符（=）</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.5.</span> <span class="post-toc-text">比较运算符</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.6.</span> <span class="post-toc-text">布尔运算符</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.6.1.</span> <span class="post-toc-text">取反运算符（!）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.6.2.</span> <span class="post-toc-text">且运算符（&&）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.6.3.</span> <span class="post-toc-text">或运算符（||）</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.6.4.</span> <span class="post-toc-text">三元运算符 Ternary Operator（?:）</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.7.</span> <span class="post-toc-text">其他运算符</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.8.</span> <span class="post-toc-text">运算符的优先级</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.9.</span> <span class="post-toc-text">类型转换</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">控制结构</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">条件</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.1.1.</span> <span class="post-toc-text">if 语句</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.1.2.</span> <span class="post-toc-text">switch 语句</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">循环（迭代 Iterative）语句</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.2.1.</span> <span class="post-toc-text">while 循环</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.2.2.</span> <span class="post-toc-text">for 循环</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.2.3.</span> <span class="post-toc-text">do...while 循环</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.2.4.</span> <span class="post-toc-text">break 与 continue 的区别</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">try/catch 语句</span></a></li></ol></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                JavaScript 读书心得之二：核心（一）
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>9月 18, 2015</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/JavaScript/">JavaScript</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=JavaScript 读书心得之二：核心（一）&url=http://yoursite.com//2015/09/17/05.ecma02/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=JavaScript 读书心得之二：核心（一）&url=http://yoursite.com//2015/09/17/05.ecma02/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2015/09/17/05.ecma02/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2015/09/17/05.ecma02/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h2>基础知识</h2>
+<h3>JavaScript or ECMAScript ?</h3>
+<p>JavaScript 核心是由 ECMA（欧洲计算机制造商协会）负责制定标准，其 ECMA-262 条款就是关于 ECMAScript 的 <a href="http://www.ecma-international.org/publications/standards/Ecma-262.htm" target="_blank" rel="external">语言规范</a>。
+所以 JavaScript 核心也被称为 ECMAScript。</p>
+<p>ECMAScript 为不同的宿主环境提供了核心的脚本编程能力，而目前这些宿主环境包括了 Web 浏览器（JavaScript）、Web 服务器（Node.js）、Nombas（ScriptEase）、Flash 和 Director（ActionScript）等。</p>
+<p>ECMAScript 版本：v1（对应 JavaScript1.3），v2（仅做了一些澄清）、v3（对应 JavaScript1.5）、v4（关于语言的复杂性出现分歧，被放弃）、v5（对应 JavaScript1.6～1.8）、v6（对应 JavaScript2.0）。</p>
+<p>目前浏览器支持情况：</p>
+<ol>
+<li>ECMAScript v3（下文简称 ES3）：IE5.5+、Firefox、Opera7.2+、Chrome/Safari1.0+</li>
+<li>ECMAScript v5（下文简称 ES5）：IE9+、Firefox4+、Opera12+、Chrome13/Safari5.1+</li>
+<li>ECMAScript v6（下文简称 ES6）：IE12（Edge）+、Firefox38+、Chrome42+</li>
+</ol>
+<h3>ECMAScript 标准</h3>
+<p>ECMAScript 标准描述了以下内容：
+语法、类型、语句、关键字、保留字、运算符、对象（全局、内置）、严格模式（&quot;use strict&quot;）、错误处理机制、继承机制（基于原型）</p>
+<ul>
+<li>按照一定的语法（Syntax）写成的句子叫做语句（Statement）</li>
+<li>使用变量（Variable）前要声明（Declare），然后才可以给其赋值（Assignment）</li>
+</ul>
+<blockquote>
+<p>注：在正常模式中，如果一个变量没有声明就赋值，默认是全局变量；严格模式禁止这种用法，全局变量必须使用 var 命令进行显式声明。</p>
+</blockquote>
+<h4>变量命名规则</h4>
+<p>即标识符（Identifier）命名的两个规则：</p>
+<ol>
+<li>第一个字符必须是 Unicode 字母、下划线（_）、美元符号（$）</li>
+<li>其余字符同上，还可以用阿拉伯数字</li>
+</ol>
+<blockquote>
+<p>注：JavaScript 有一些保留字，不能用作标识符 (ES5 标准)：</p>
+</blockquote>
+<ol>
+<li>关键字：break、case、catch、class、const、continue、debugger、default、delete、do、else、export、extends、finally、for、function、if、import、in、instanceof、new、return、super、switch、this、throw、try、typeof、var、void、while、with</li>
+<li>字面量：null、true、false</li>
+<li>未来保留字：await、enum</li>
+<li>严格模式下的保留字：implements、interface、let、package、private、protected、public、static、yield</li>
+<li>其他非严格意义的保留字：arguments、eval
+另外，还有三个词虽然不是保留字，但是因为具有特别含义，也不应该用作标识符：Infinity、NaN、undefined。</li>
+</ol>
+<h4>变量命名方式</h4>
+<ol>
+<li>Camel 驼峰命名法——首字母是小写，接下来的单词都是大写字母开头（用于变量）
+如：myTestValue theFirst</li>
+<li>Pascal 命名法——首字母是大写，接下来的单词都是大写字母开头（用于构造函数）
+如：MyTestValue TheFirst</li>
+<li>匈牙利命名法——在以命名的变量前附加一个小写字母，说明变量类型（一般用于 Windows 编程）
+例如，i 表示整数，f 表示浮点数，s 表示字符串，b 表示布尔型，a 表示数组，fn 表示函数，o 表示对象，re 表示正则表达式
+如：iMyTestValue fnTheFirst</li>
+</ol>
+<h4>注释</h4>
+<p>Javascript 提供两种注释：一种是单行注释，用 // 起头；另一种是多行注释，放在 /* 和 */ 之间。</p>
+<h4>区块及作用域</h4>
+<p>JavaScript 使用大括号，将多个相关的语句组合在一起，称为 “区块”（block）。
+与大多数编程语言不一样，JavaScript 的区块不构成单独的作用域（scope）。也就是说，区块中的变量与区块外的变量，属于同一个作用域。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="keyword">var</span> a = <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line">a <span class="comment">// 1</span></div></pre></td></tr></table></figure></p>
+<p>上面代码在区块内部，声明并赋值了变量 a，然后在区块外部，变量 a 依然有效，这说明区块不构成单独的作用域，与不使用区块的情况没有任何区别。所以，单独使用的区块在 JavaScript 中意义不大，很少出现。区块往往用来构成其他更复杂的语法结构，比如 for、if、while、functions 等。</p>
+<h4>结尾的分号</h4>
+<p>分号表示一条语句的结尾，最好不要省略，因为解释引擎自动添加分号（Automatic Semicolon Insertion）的行为难以预测，会产生不可预知的结果。
+但是，有一些语法结构不需要在语句的结尾添加分号，主要是以下三种情况。</p>
+<ol>
+<li>for 和 while 循环
+需要注意的是 do...while 循环是有分号的。</li>
+<li>分支语句：if， switch， try</li>
+<li>函数的声明语句</li>
+</ol>
+<h2>数据类型及处理方法</h2>
+<p>变量有三种基础类型（Primitive Type）：Number（数值）、String（字符串）、Boolean（布尔值），两种特殊值：Null（空）、Undefined（未定义），三种复合类型（Complex Type）：Object（对象）、Array（数组）、Function（函数），其它特殊类型（Date、Math、RegExp、JSON）</p>
+<p>对象和数组是两种不同的数据组合方式，而函数其实是处理数据的方法。JavaScript 把函数当成一种数据类型，可以像其他类型的数据一样，进行赋值和传递，这为编程带来了很大的灵活性，体现了 JavaScript 作为 “函数式语言” 的本质。</p>
+<p>typeof 运算符可以检测以下变量的类型：Number、String、Boolean、Undefined、Object、Function，它的返回值为字符串。</p>
+<blockquote>
+<p>注 1：对于 undefined 变量，typeof 可以用来检查一个没有声明的变量，而不报错。常用于判断语句
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 错误的写法</span></div><div class="line">    <span class="keyword">if</span> (v)&#123;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// ReferenceError: v is not defined</span></div><div class="line"><span class="comment">// 正确的写法</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">typeof</span> v === <span class="string">"undefined"</span>)&#123;</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>注 2：null 的类型也是 object，这是由于历史原因造成的，为了兼容以前的代码，后来延续下来了，并不是说 null 就属于对象，本质上 null 是一个类似于 undefined 的特殊值。
+注 3：JavaScript 中所有变量都是对象，除了两个例外 null 和 undefined。</p>
+</blockquote>
+<h3>数值</h3>
+<ul>
+<li>JavaScript 内部，所有数字都是以 64 位浮点数形式储存，即使整数也是如此。所以，1 与 1.0 是相等的，而且 1 加上 1.0 得到的还是一个整数，不会像有些语言那样变成小数。
+由于浮点数不是精确的值，所以涉及小数的比较和运算要特别小心。如：0.1 + 0.2
+定义浮点数必须带小数点和后一位数字，而用它计算时，真正存储的是字符串。</li>
+<li>据国际标准 IEEE 754，64 位浮点数格式的 64 个二进制位中，第 0 位到第 51 位储存有效数字部分，第 52 到第 62 位储存指数部分，第 63 位是符号位，0 表示正数，1 表示负数。
+因此，JavaScript 提供的有效数字的精度为 53 个二进制位（IEEE 754 规定有效数字第一位默认为 1，再加上后面的 52 位），也就是说，绝对值小于等于 2 的 53 次方的整数都可以精确表示。</li>
+<li>常量 NaN 表示非数字，通常发生在其他变量类型转换成数值时，但是它和自身不相等，所以常用 isNaN() 函数来检测变量是否为非数字。</li>
+<li>常量 Infinity 表示无穷大。除了 0 除以 0 得到 NaN，其他任意数除以 0，得到 Infinity。Infinity 是 JavaScript 中最大的值（NaN 除外），-Infinity 是最小的值（NaN 除外）。isFinite() 函数可以检测数值是否为正常值，Infinity、NaN 均非正常值。</li>
+<li>null 参与数值运算时，其值会自动转换为 0；undefined 参与数值计算时，其结果一定是 NaN。</li>
+<li>NaN 是 Window 对象的一个特殊属性，Infinity 也是，undefined 也是。这些特殊属性都不是 JavaScript 的保留关键字，而 null 是！</li>
+</ul>
+<blockquote>
+<p>注：以 0x 开始的字面量（Literal）表示 16 进制，以 0 开始的字面量表示 8 进制（这个不是 ECMAScript 标准，不推荐使用）</p>
+</blockquote>
+<h4>转换</h4>
+<ul>
+<li>
+<p>parseInt() 函数可以将字符串或小数转化为整数。如果字符串头部有空格，空格会被自动去除。
+如果字符串包含不能转化为数字的字符，则不再进行转化，返回已经转好的部分。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">parseInt</span>(<span class="string">"8a"</span>) <span class="comment">// 8</span></div><div class="line"><span class="built_in">parseInt</span>(<span class="string">"12.34"</span>) <span class="comment">// 12</span></div></pre></td></tr></table></figure></p>
+<p>如果字符串的第一个字符不能转化为数字（正负号除外），返回 NaN。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">parseInt</span>(<span class="string">".3"</span>) <span class="comment">// NaN</span></div><div class="line"><span class="built_in">parseInt</span>(<span class="string">""</span>) <span class="comment">// NaN</span></div></pre></td></tr></table></figure></p>
+<p>parseInt() 函数还可以接受第二个参数（2 到 36 之间），表示被解析的值的进制。</p>
+</li>
+<li>
+<p>parseFloat() 函数用于将一个字符串转为浮点数。如果字符串头部有空格，空格会被自动去除。
+如果字符串包含不能转化为浮点数的字符，则不再进行转化，返回已经转好的部分。</p>
+</li>
+</ul>
+<h4>常用方法</h4>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Number</span>.prototype.toString([radix]) <span class="comment">// 表示将一个数字转化成某个进制的字符串，默认为 10。</span></div><div class="line"><span class="built_in">Number</span>.prototype.toFixed([digits]) <span class="comment">// 用于将一个数转为指定位数的小数，默认为 0。</span></div><div class="line"><span class="built_in">Number</span>.prototype.toPrecision(precision) <span class="comment">// 用于将一个数转为指定位数的有效数字。</span></div></pre></td></tr></table></figure></p>
+<h3>字符串</h3>
+<ul>
+<li>字符串就是放在单引号或者双引号里面的字符，要在字符串内使用同类引号，必须加上反斜杠，用来转义</li>
+<li>字符串默认只能写在一行内，分成多行将会报错。如果必须分成多行，可以在每一行的尾部使用反斜杠。</li>
+</ul>
+<blockquote>
+<p>这是 ES5 新添加的，IE8- 不支持，其次，反斜杠的后面必须是换行符，而不能有其他字符（比如空格），否则会报错。
+连接运算符（+）可以连接多个单行字符串，用来模拟多行字符串。</p>
+</blockquote>
+<ul>
+<li>常见字符字面量：\n 换行、\t 制表符、\b 后退、\r 回车、\f 换页、\ 反斜杠、'单引号、&quot; 双引号</li>
+<li>JavaScript 使用 Unicode 字符集。ES3 要求使用 Unicode 2.1 或以上版本，ES5 则要求使用 Unicode 3 及以上版本。
+不仅 JavaScript 内部使用 Unicode 储存字符，而且还可以直接在程序中使用 Unicode，所有字符都可以写成 &quot;\uxxxx&quot; 的形式，其中 xxxx 代表该字符的 Unicode 编码。</li>
+</ul>
+<h4>转换</h4>
+<ul>
+<li>把纯数值字符串转为数值有两种方法：*1 或者 -0，也可以使用 parseInt()/parseFloat() 函数</li>
+<li>把其他值转为字符串值可以连接一个空字符串：+&quot;&quot;，也可以使用所有对象都有的 toString() 方法</li>
+</ul>
+<h4>常用方法</h4>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">String</span>.fromCharCode() <span class="comment">// 根据 Unicode 编码，生成一个字符串。注：该方法不支持编号大于 0xFFFF 的字符。</span></div><div class="line"><span class="built_in">String</span>.prototype.length <span class="comment">// 该属性返回字符串的长度</span></div><div class="line"><span class="built_in">String</span>.prototype.indexOf(str) 和 <span class="built_in">String</span>.prototype.lastIndexOf(str) <span class="comment">// 返回指定字符串在一个字符串中的位置，如果返回 -1，就表示不匹配。 前者从头部进行匹配，后者从尾部进行匹配。</span></div><div class="line"><span class="built_in">String</span>.prototype.charAt(index) <span class="comment">// 返回字符串指定位置的字符，位置从 0 开始编号。相当于 string[index]</span></div><div class="line"><span class="built_in">String</span>.prototype.charCodeAt(index) <span class="comment">// 返回指定位置字符的 Unicode 编码（十进制表示）。注：返回值不大于 65536（0xFFFF）</span></div><div class="line"><span class="built_in">String</span>.prototype.concat(str) <span class="comment">// 用于连接两个字符串。原字符串不变，返回一个新字符串。注：字符串连接运算推荐使用连接运算符（+）。</span></div><div class="line"></div><div class="line"><span class="built_in">String</span>.prototype.substr(begin[, length]) <span class="comment">// 如果负数出现在第一个参数，表示从尾部开始计算的字符位置；负数出现在第二个参数，将被转为 0。</span></div><div class="line"><span class="built_in">String</span>.prototype.substring(begin[, end]) <span class="comment">// 第一个参数为起始位置（从 0 开始），第二个参数为终止位置（但该位置的元素本身不包括在内）。第二个参数应该大于第一个参数，如果不是，会自动更换两个参数的位置。如果参数为负，会自动转为 0。</span></div><div class="line"><span class="built_in">String</span>.prototype.slice(begin[, end]) <span class="comment">// 第二个参数应该大于第一个参数，如果不是，会返回空字符串。如果参数为负，表示字符位置从尾部开始计算。</span></div><div class="line">上面三种方法类似，用来截取字符串，如果省略第二个参数，则表示新字符串一直持续到原字符串结束。</div><div class="line"></div><div class="line"><span class="built_in">String</span>.prototype.trim() <span class="comment">// 去除字符串两端的空格。</span></div><div class="line"><span class="built_in">String</span>.prototype.toLowerCase() 和 <span class="built_in">String</span>.prototype.toUpperCase() <span class="comment">// 将一个字符串分别转为小写和大写。</span></div><div class="line"><span class="built_in">String</span>.prototype.match(regexp) <span class="comment">// 返回一个符合指定匹配条件的元素组成的数组。如果没有找到匹配，则返回 null。</span></div><div class="line"><span class="built_in">String</span>.prototype.search(regexp) <span class="comment">// 返回符合指定匹配条件的第一个元素位置。如果没有找到匹配，则返回 -1。</span></div><div class="line"><span class="built_in">String</span>.prototype.replace(regexp/substr) <span class="comment">// 替换匹配的子字符串，一般情况下只替换第一个匹配（除非使用正则表达式）。</span></div><div class="line"><span class="built_in">String</span>.prototype.split([separator][, limit]) <span class="comment">// 将字符串按指定分隔符转换为子字符串组成的数组</span></div></pre></td></tr></table></figure></p>
+<h3>布尔值</h3>
+<ul>
+<li>布尔值代表 “真” 和 “假” 两个状态。“真” 用关键字 true 表示，“假” 用关键字 false 表示。布尔值只有这两个值。</li>
+<li>把其他值转为布尔值可以用!!，获得对象的布尔值有三种方法：
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> <span class="built_in">Boolean</span>(o).valueOf()</div><div class="line"><span class="built_in">Boolean</span>(o)</div><div class="line">!!o</div></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>注：特殊值 undefined 和 null、数值 0 和 NaN、空字符串转换为 false，其他任何值都为 true（包括空数组 [] 和空对象 {} 对应的布尔值）</p>
+</blockquote>
+<h3>null 与 undefined</h3>
+<ul>
+<li>null 表示 “空”，即变量已经存在，只是定义为空值而已。转换数值为 0。典型用法是：（1）作为函数的参数、（2）作为对象原型链的终点</li>
+<li>undefined 表示 “无”，即变量已经存在，但是还没有定义值。转换数值为 NaN。典型用法有四种情况：（1）声明而未赋值的变量、（2）对象的未定义属性、（3）函数内部未赋值的参数、（4）没有明确返回值的函数，默认返回 undefined</li>
+<li>另外还要特别注意的是未声明的变量（undeclared），其 typeof 结果也是 “undefined”，和 undefined 变量的类型是相同的，但直接使用未声明的变量会报错（因为其不存在）</li>
+<li>只能使用 === 运算符来检测变量是否是 null 值或者 undefined 值，因为 == 运算符认为 undefined、null 两值相等</li>
+</ul>
+<blockquote>
+<p>注：为了性能计，我们常常自定义局部 undefined 变量：var undefined，防止每次进行比较时在 Window 对象的众多属性中搜索 undefined 属性</p>
+</blockquote>
+<h3>小结</h3>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">data</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> num = <span class="number">13</span>;</div><div class="line">    <span class="comment">// 把数值转换成一个四舍五入为指定小数位数的字符串</span></div><div class="line">    <span class="keyword">var</span> price = num.toFixed(<span class="number">2</span>);</div><div class="line">    <span class="built_in">console</span>.log(price +<span class="string">" 类型是 "</span>+ <span class="keyword">typeof</span> price);</div><div class="line">    <span class="comment">// 把数值转换成一个以指定进制表示的字符串</span></div><div class="line">    <span class="keyword">var</span> str = num.toString(<span class="number">16</span>);</div><div class="line">    <span class="built_in">console</span>.log(str +<span class="string">" 类型是 "</span>+ <span class="keyword">typeof</span> str);</div><div class="line">    <span class="comment">// 类型自动转换</span></div><div class="line">    num += <span class="string">""</span>;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span> num);</div><div class="line"></div><div class="line">    <span class="keyword">var</span> string = <span class="string">"0123456789"</span>;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span> string);</div><div class="line">    <span class="built_in">console</span>.log(string.indexOf(<span class="string">"2"</span>));</div><div class="line">    <span class="built_in">console</span>.log(string.charAt(<span class="number">3</span>));</div><div class="line">    <span class="built_in">console</span>.log(string.substring(<span class="number">2</span>, <span class="number">5</span>));</div><div class="line">    <span class="comment">// 类型自动转换</span></div><div class="line">    string -= <span class="number">0</span>;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span> string);</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span> string.constructor);</div><div class="line"></div><div class="line">    <span class="keyword">var</span> exam = <span class="string">"吾家有女初长成；聪明乖巧似玲珑；他日冲天三万里；轻颦浅笑动九重"</span>;</div><div class="line">    <span class="built_in">console</span>.log(exam.split(<span class="string">'；'</span>));</div><div class="line"></div><div class="line">    <span class="keyword">var</span> birth = <span class="string">"1998.03.14 北京 朝阳"</span>;</div><div class="line">    birth = <span class="built_in">parseInt</span>(birth);</div><div class="line">    <span class="built_in">console</span>.log(birth);</div><div class="line"></div><div class="line">    <span class="comment">//null 与 undefined 的区别</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="literal">null</span> == <span class="literal">undefined</span>);</div><div class="line">    <span class="keyword">var</span> m = <span class="built_in">document</span>.getElementById(<span class="string">"test"</span>);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"不存在的对象"</span> + m + <span class="string">"，其类型"</span> + <span class="keyword">typeof</span> m);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"未声明的变量，其类型"</span> + <span class="keyword">typeof</span> k); <span class="comment">// 不可直接使用，会报错</span></div><div class="line">    <span class="keyword">var</span> k;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"声明未赋值的变量"</span> + k + <span class="string">"，其类型"</span> + <span class="keyword">typeof</span> k);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"对象的未定义属性"</span> + <span class="built_in">window</span>.k + <span class="string">"，其类型"</span> + <span class="keyword">typeof</span> <span class="built_in">window</span>.k);</div><div class="line">    k = <span class="literal">null</span>;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"声明为 null 的变量"</span> + k + <span class="string">"，其类型"</span> + <span class="keyword">typeof</span> k);</div><div class="line"></div><div class="line">    <span class="comment">// 各种类型变量的 typeof 结果</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="number">1</span>));</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="literal">NaN</span>));</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="built_in">Number</span>.MIN_VALUE));</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="literal">Infinity</span>));</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="string">"123"</span>));</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="literal">true</span>));</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="built_in">window</span>));</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="built_in">document</span>));</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="literal">null</span>));</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="built_in">eval</span>));</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="built_in">Date</span>));</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(sss));</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="literal">undefined</span>));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>// 检测基础变量类型的函数，而要检测对象类型，必须使用其 constructor 属性或 instanceof 运算符
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">type</span>(<span class="params">o</span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> (o === <span class="literal">null</span>) ? <span class="string">'null'</span> : <span class="keyword">typeof</span>(o);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>运算符</h2>
+<h3>加法运算符（+）</h3>
+<ul>
+<li>需要注意的地方是，它除了用于数值的相加，还能用于字符串的连接。</li>
+<li>两个运算子之中只要有一个是字符串，加法运算符号就会变为字符串连接运算符，返回连接后的字符串。这种由于参数不同，而改变自身行为的现象，叫做 “重载”（Overload）。</li>
+<li>这种特性有时用于将一个值转为字符串。</li>
+<li>加法运算符以外的其他算术运算符，都不会发生重载。它们的规则是：所有运算子一律转为数值，再进行相应的数学运算。</li>
+</ul>
+<blockquote>
+<p>C++ 与 ++C 的区别：前者先赋值后运算，后者先运算后赋值</p>
+</blockquote>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">operate</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> a = <span class="number">1</span>;</div><div class="line">    <span class="keyword">var</span> b = a++;</div><div class="line">    <span class="keyword">var</span> c = <span class="number">1</span>;</div><div class="line">    <span class="keyword">var</span> d = ++c;</div><div class="line">    <span class="built_in">console</span>.log(a);</div><div class="line">    <span class="built_in">console</span>.log(b);</div><div class="line">    <span class="built_in">console</span>.log(c);</div><div class="line">    <span class="built_in">console</span>.log(d);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>余数运算符（%）</h3>
+<ul>
+<li>返回前一个运算子被后一个运算子除，所得的余数。</li>
+<li>需要注意的是，运算结果的正负号由第一个运算子的正负号决定。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="number">-1</span> % <span class="number">2</span> <span class="comment">// -1</span></div><div class="line"><span class="number">1</span> % <span class="number">-2</span> <span class="comment">// 1</span></div></pre></td></tr></table></figure></li>
+</ul>
+<h3>数值运算符（+）</h3>
+<ul>
+<li>同样使用加号，但是加法运算符是二元运算符（需要两个操作数），它是一元运算符。</li>
+<li>它的重要作用在于可以将任何值转为数值（与 Number() 函数的作用相同）。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">+<span class="literal">true</span> <span class="comment">// 1</span></div><div class="line">+[] <span class="comment">// 0</span></div><div class="line">+&#123;&#125; <span class="comment">// NaN</span></div></pre></td></tr></table></figure></li>
+</ul>
+<h3>赋值运算符（=）</h3>
+<p>除了常见的 =，还有 +=、-+ 等 11 个</p>
+<h3>比较运算符</h3>
+<ul>
+<li>
+<p>比较运算符比较两个值，然后返回一个布尔值，表示是否满足比较条件。
+JavaScript 提供了 8 个比较运算符。</p>
+<blockquote>
+<p>== 相等
+=== 严格相等
+!= 不相等
+!== 严格不相等
+&lt; 小于
+&lt;= 小于或等于
+&gt; 大于
+&gt;= 大于或等于</p>
+</blockquote>
+</li>
+<li>
+<p>相等运算符（==）比较两个 “值” 是否相等，严格相等运算符（===）比较它们是否为 “同一个值”。
+两者的一个重要区别是，如果两个值不是同一类型，严格相等运算符（===）直接返回 false，而相等运算符（==）会将它们转化成同一个类型，再用严格相等运算符进行比较。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="number">0</span> == <span class="string">''</span> vs <span class="number">0</span> === <span class="string">''</span></div><div class="line"><span class="literal">false</span> == <span class="string">'0'</span> vs <span class="literal">false</span> === <span class="string">'0'</span></div><div class="line"><span class="literal">null</span> == <span class="literal">undefined</span> vs <span class="literal">null</span> === <span class="literal">undefined</span></div></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<h3>布尔运算符</h3>
+<h4>取反运算符（!）</h4>
+<ul>
+<li>用于将布尔值变为相反值，即 true 变成 false，false 变成 true。</li>
+<li>对于非布尔值的数据，取反运算符会自动将其转为布尔值。规则是，以下六个值取反后为 true，其他值取反后都为 false。
+<blockquote>
+<p>undefined
+null
+false
+0（包括 +0 和 -0）
+NaN
+空字符串（&quot;&quot;）</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>这意味着，取反运算符有转换数据类型的作用。如果对一个值连续做两次取反运算!!，等于将其转为对应的布尔值，与 Boolean() 函数的作用相同。</p>
+</blockquote>
+<h4>且运算符（&amp;&amp;）</h4>
+<p>且运算符的运算规则是：如果第一个运算子的布尔值为 true，则返回第二个运算子的值（注意是值，不是布尔值）；如果第一个运算子的布尔值为 false，则直接返回第一个运算子的值，且不再对第二个运算子求值。
+这种跳过第二个运算子的机制，被称为 “短路”。有些程序员喜欢用它取代 if 结构。但是这种写法不容易看出目的，也不容易除错，建议谨慎使用。</p>
+<h4>或运算符（||）</h4>
+<p>或运算符的运算规则是：如果第一个运算子的布尔值为 true，则返回第一个运算子的值，且不再对第二个运算子求值；如果第一个运算子的布尔值为 false，则返回第二个运算子的值。</p>
+<blockquote>
+<p>注：返回值是最后一次被求值的表达式的值</p>
+</blockquote>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">booleans</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> W3CDOM = <span class="built_in">document</span>.getElementsByTagName &amp;&amp; <span class="built_in">document</span>.createElement;</div><div class="line">    <span class="built_in">console</span>.log(W3CDOM);</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span> W3CDOM);</div><div class="line"></div><div class="line">    <span class="keyword">var</span> x = <span class="literal">true</span>;</div><div class="line">    <span class="keyword">var</span> y = <span class="built_in">document</span>.getElementById(<span class="string">"test"</span>);</div><div class="line">    <span class="keyword">var</span> a = x || y;</div><div class="line">    <span class="keyword">var</span> b = x &amp;&amp; y;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"a = "</span> + a);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"a 类型 "</span> + <span class="keyword">typeof</span> a);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"b = "</span> + b);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"b 类型 "</span> + <span class="keyword">typeof</span> b);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4>三元运算符 Ternary Operator（?:）</h4>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">terOper</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> a = (b == <span class="number">1</span>) ? <span class="number">0</span> : <span class="number">1</span>;</div><div class="line">    <span class="comment">// 相当于</span></div><div class="line">    <span class="keyword">if</span> (b == <span class="number">1</span>) &#123;</div><div class="line">        <span class="keyword">var</span> a = <span class="number">0</span>;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">var</span> a = <span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">var</span> x = y ? y : z;</div><div class="line">    <span class="comment">// 相当于</span></div><div class="line">    <span class="keyword">var</span> x = y || z;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>其他运算符</h3>
+<ul>
+<li>圆括号运算符，它有两种用法：如果把表达式放在圆括号之中，作用是求值；如果跟在函数的后面，作用是调用函数。</li>
+<li>void 运算符，作用是执行一个表达式，然后返回 undefined。表达式可以不带括号。建议总是使用括号。因为 void 运算符的优先性很高，如果不使用括号，容易造成错误的结果。</li>
+<li>逗号运算符，用于对两个表达式求值，并返回后一个表达式的值。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"a"</span>, <span class="string">"b"</span> <span class="comment">// "b"</span></div></pre></td></tr></table></figure></li>
+</ul>
+<h3>运算符的优先级</h3>
+<ul>
+<li>JavaScript 各种运算符的优先级别（Operator Precedence）是不一样的。优先级高的运算符先执行，优先级低的运算符后执行。</li>
+<li>圆括号可以用来提高运算的优先级，即圆括号中的运算符会第一个运算。</li>
+<li>对于优先级别相同的运算符，大多数情况，计算顺序总是从左到右，这叫做运算符的 “左结合”（left-to-right associativity）。但是少数运算符的计算顺序是从右到左，这叫做运算符的 “右结合”（right-to-left associativity）。其中，最主要的是赋值运算符（=）和三元条件运算符（?:）。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">w = x = y = z; <span class="comment">// w = (x = (y = z));</span></div><div class="line">q = a?b:c?d:e?f:g; <span class="comment">// q = a?b:(c?d:(e?f:g));</span></div></pre></td></tr></table></figure></li>
+</ul>
+<h3>类型转换</h3>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[] + [] <span class="comment">// ''</span></div><div class="line">[] + &#123;&#125; <span class="comment">// [object Object]</span></div><div class="line">&#123;&#125; + [] <span class="comment">// 0</span></div><div class="line">&#123;&#125; + &#123;&#125; <span class="comment">// NaN</span></div></pre></td></tr></table></figure></p>
+<h2>控制结构</h2>
+<h3>条件</h3>
+<h4>if 语句</h4>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (expression) &#123;</div><div class="line">    statement</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line">    statement</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注：else 代码块总是跟随离自己最近的那个 if 语句。
+注：多个 if...else 连在一起使用的时候，可以转为使用更方便的 switch 结构。</p>
+</blockquote>
+<h4>switch 语句</h4>
+<blockquote>
+<p>注：每个 case 代码块内部的 break 语句不能少，否则会接下去执行下一个 case 代码块，而不是跳出 switch 结构。
+注：在多选择条件的情况下，switch 的性能比 if else if 好。可以有些时候（比如是很多的计算表达式）判断的条件比较特殊，好像 switch 起来比较麻烦。其实只要 switch 一个 true，然后把每个表达式作为 case 去匹配就 ok 了</p>
+</blockquote>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">switchShow</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> tj = <span class="string">"c"</span>;</div><div class="line">    <span class="keyword">switch</span> (<span class="literal">true</span>) &#123;</div><div class="line">        <span class="keyword">case</span> tj == <span class="string">"a"</span>:</div><div class="line">            <span class="built_in">console</span>.log(<span class="string">"haha"</span>);</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> tj == <span class="string">"b"</span>:</div><div class="line">            <span class="built_in">console</span>.log(<span class="string">"bobo"</span>);</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> tj == <span class="string">"c"</span>:</div><div class="line">            <span class="built_in">console</span>.log(<span class="string">"cool"</span>);</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>循环（迭代 Iterative）语句</h3>
+<h4>while 循环</h4>
+<p>包括一个循环条件，只要该条件为真，就不断循环。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">while</span> (expression)&#123;</div><div class="line">    statement</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4>for 循环</h4>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (initialize; test; increment) &#123;</div><div class="line">    statement</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>初始化（initialize）：确定循环的初始值，只在循环开始时执行一次;
+测试（test）：检查循环条件，只要为真就进行后续操作;
+递增（increment）：完成后续操作，然后返回上一步，再一次检查循环条件。</p>
+</blockquote>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, len = arr.length; i &lt; len; ++i) &#123;</div><div class="line">    <span class="built_in">console</span>.log(i);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注：所有 for 循环，都可以改写成 while 循环。
+注：for 语句表达式的三个部分（initialize，test，increment），可以省略任何一个，也可以全部省略。</p>
+</blockquote>
+<h4>do...while 循环</h4>
+<p>与 while 循环类似，唯一的区别就是先运行一次循环体，然后判断循环条件。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">do</span> &#123;</div><div class="line">    statement</div><div class="line">&#125; <span class="keyword">while</span>(expression);</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注：不管条件是否为真，do..while 循环至少运行一次。
+注：while 语句后面的分号不能省略。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> x = <span class="number">0</span>;</div><div class="line"><span class="keyword">while</span> (x != <span class="number">0</span>) &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"不是零"</span>);</div><div class="line">&#125;</div><div class="line"><span class="keyword">do</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"不是零也要执行"</span>);</div><div class="line">&#125; <span class="keyword">while</span> (x != <span class="number">0</span>);</div></pre></td></tr></table></figure></p>
+</blockquote>
+<h4>break 与 continue 的区别</h4>
+<ul>
+<li>break 可以用在 switch 或循环语句中；当它用在循环语句中时，表示结束整个循环，它针对的作用域是包含它的最内层的代码块</li>
+<li>continue 只能用在循环语句中，表示结束这次循环，开始下一个循环，它针对的作用域也是包含它的最内层的代码块</li>
+</ul>
+<blockquote>
+<p>注：如果要退出外层的循环，可以使用标签（文本 + 冒号：）来指定作用域，如下面九九乘法表中 “outerloop”，这样就可以使用 break 或 continue 来退出指定的循环</p>
+</blockquote>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">multiplicationTable</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> tables = <span class="string">""</span>;</div><div class="line">    <span class="keyword">var</span> count = <span class="number">0</span>;</div><div class="line">    outerloop: <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">1</span>; j &lt; <span class="number">10</span>; j++) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> k = <span class="number">1</span>; k &lt; <span class="number">10</span>; k++) &#123;</div><div class="line">            <span class="keyword">if</span> (k &lt; j) &#123;</div><div class="line">                <span class="keyword">continue</span>;</div><div class="line">                <span class="comment">//break outerloop;</span></div><div class="line">            &#125;</div><div class="line">            tables += j + <span class="string">"×"</span> + k + <span class="string">"＝"</span> + (j * k) + <span class="string">"\n"</span>;</div><div class="line">            count++;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> [count, tables];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>try/catch 语句</h3>
+<p>用于确保用户不会看到错误消息
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">tryTest</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="built_in">console</span>.log(l);</div><div class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">"不存在这个变量"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2015/09/16/04.ecma01/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2015/09/18/06.ecma03/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

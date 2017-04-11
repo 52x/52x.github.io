@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            data.table Way - Learning Note Part 2 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,R,data.table">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="data.table Way - Learning Note Part 2 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="R"> <meta property="og:article:tag" content="data.table"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">The set() family</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">set()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">setnames()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">setorder() and setcolorder()</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">setkey()</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.4.1.</span> <span class="post-toc-text">set character column as key</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.4.2.</span> <span class="post-toc-text">set numeric column as key</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.4.3.</span> <span class="post-toc-text">set multiple columns as keys</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.4.4.</span> <span class="post-toc-text">select groups</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.4.5.</span> <span class="post-toc-text">Rolling joins</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">Other data.table functions</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">fread() fast read</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">others</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">Reference</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                data.table Way - Learning Note Part 2
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>9月 25, 2015</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/R/">R</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/data-table/">data.table</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=data.table Way - Learning Note Part 2&url=http://yoursite.com//2015/09/25/Codage-4-data-table-way-2/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=data.table Way - Learning Note Part 2&url=http://yoursite.com//2015/09/25/Codage-4-data-table-way-2/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2015/09/25/Codage-4-data-table-way-2/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2015/09/25/Codage-4-data-table-way-2/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>We resume the <a href="http://papacochon.com/2015/09/23/Codage-3-data-table-way-1/" target="_blank" rel="external">learning note</a>.
+&lt;!-- more --&gt;</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">library</span>(data.table)</div><div class="line">dtm &lt;- as.data.table(mtcars)</div></pre></td></tr></table></figure></p>
+<h2>The set() family</h2>
+<p>Overview of set family * <code>set()</code> is a loopable low overhead version of <code>:=</code>; * You can use <code>setnames()</code> to set or change column names; * <code>setorder()</code> and <code>setcolorder()</code> reorder the rows, columns of a <code>data.table</code>. * <code>setkey()</code> set keys in a <code>data.table</code></p>
+<h3>set()</h3>
+<p>To assign the column <code>am</code> to 1:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">set(dtm, j = which(colnames(dtm)==<span class="string">'am'</span>), value = <span class="number">1</span>)</div><div class="line">head(dtm)</div></pre></td></tr></table></figure></p>
+<pre><code>##     mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## 1: 21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## 2: 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## 3: 22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## 4: 21.4   6  258 110 3.08 3.215 19.44  1  1    3    1
+## 5: 18.7   8  360 175 3.15 3.440 17.02  0  1    3    2
+## 6: 18.1   6  225 105 2.76 3.460 20.22  1  1    3    1
+</code></pre>
+<p>Now recover it.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">set(dtm, j = which(colnames(dtm)==<span class="string">'am'</span>), value = mtcars$am)</div><div class="line">head(dtm)</div></pre></td></tr></table></figure></p>
+<pre><code>##     mpg cyl disp  hp drat    wt  qsec vs am gear carb
+## 1: 21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+## 2: 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+## 3: 22.8   4  108  93 3.85 2.320 18.61  1  1    4    1
+## 4: 21.4   6  258 110 3.08 3.215 19.44  1  0    3    1
+## 5: 18.7   8  360 175 3.15 3.440 17.02  0  0    3    2
+## 6: 18.1   6  225 105 2.76 3.460 20.22  1  0    3    1
+</code></pre>
+<p>We create a random data.table and randomly change its value</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">temp &lt;- data.table(A = sample(<span class="number">1</span>:<span class="number">9</span>),</div><div class="line">                   B = sample(<span class="number">1</span>:<span class="number">9</span>),</div><div class="line">                   C = sample(<span class="number">1</span>:<span class="number">9</span>),</div><div class="line">                   D = sample(<span class="number">1</span>:<span class="number">9</span>),</div><div class="line">                   E = sample(<span class="number">1</span>:<span class="number">9</span>))</div><div class="line"></div><div class="line"><span class="comment"># for each row, randomly change 3 values to 10 </span></div><div class="line"><span class="keyword">for</span> (i <span class="keyword">in</span> <span class="number">1</span>:<span class="number">9</span>) set(temp, i, sample(<span class="number">5</span>, <span class="number">3</span>), <span class="number">10</span>)</div><div class="line">temp</div></pre></td></tr></table></figure></p>
+<pre><code>##     A  B  C  D  E
+## 1:  5 10  6 10 10
+## 2: 10  5  2 10 10
+## 3: 10 10  1  4 10
+## 4: 10  3  4 10 10
+## 5: 10  1 10 10  9
+## 6:  7  6 10 10 10
+## 7:  6 10 10  6 10
+## 8:  8  9 10 10 10
+## 9:  9  7 10 10 10
+</code></pre>
+<h3>setnames()</h3>
+<p>Still use the <code>data.table</code> we just created. Add ‘Col_’ to the column names.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># setnames(x, old, new)</span></div><div class="line">setnames(temp, names(temp), paste0(<span class="string">'Col_'</span>, names(temp)))</div><div class="line">head(temp, <span class="number">3</span>)</div></pre></td></tr></table></figure></p>
+<pre><code>##    Col_A Col_B Col_C Col_D Col_E
+## 1:     5    10     6    10    10
+## 2:    10     5     2    10    10
+## 3:    10    10     1     4    10
+</code></pre>
+<p>To remove the prefix <code>Col_</code>:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># when new is not provided, consider old as new</span></div><div class="line">setnames(temp, gsub(<span class="string">'^Col_'</span>, <span class="string">''</span>, names(temp)))</div><div class="line">head(temp, <span class="number">3</span>)</div></pre></td></tr></table></figure></p>
+<pre><code>##     A  B C  D  E
+## 1:  5 10 6 10 10
+## 2: 10  5 2 10 10
+## 3: 10 10 1  4 10
+</code></pre>
+<h3>setorder() and setcolorder()</h3>
+<p>To reorder the rows:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># wt in ascending order and mpg in descending order</span></div><div class="line">setorder(dtm, am, -mpg)</div><div class="line"><span class="comment"># check the first 6 rows of each group</span></div><div class="line">dtm[, head(.SD), by = am]</div></pre></td></tr></table></figure></p>
+<pre><code>##     am  mpg cyl  disp  hp drat    wt  qsec vs gear carb
+##  1:  0 24.4   4 146.7  62 3.69 3.190 20.00  1    4    2
+##  2:  0 22.8   4 140.8  95 3.92 3.150 22.90  1    4    2
+##  3:  0 21.5   4 120.1  97 3.70 2.465 20.01  1    3    1
+##  4:  0 21.4   6 258.0 110 3.08 3.215 19.44  1    3    1
+##  5:  0 19.2   6 167.6 123 3.92 3.440 18.30  1    4    4
+##  6:  0 19.2   8 400.0 175 3.08 3.845 17.05  0    3    2
+##  7:  1 33.9   4  71.1  65 4.22 1.835 19.90  1    4    1
+##  8:  1 32.4   4  78.7  66 4.08 2.200 19.47  1    4    1
+##  9:  1 30.4   4  75.7  52 4.93 1.615 18.52  1    4    2
+## 10:  1 30.4   4  95.1 113 3.77 1.513 16.90  1    5    2
+## 11:  1 27.3   4  79.0  66 4.08 1.935 18.90  1    4    1
+## 12:  1 26.0   4 120.3  91 4.43 2.140 16.70  0    5    2
+</code></pre>
+<p>To reorder the columns by alphabetic order.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">setcolorder(dtm, sort(names(dtm)))</div><div class="line">head(dtm)</div></pre></td></tr></table></figure></p>
+<pre><code>##    am carb cyl  disp drat gear  hp  mpg  qsec vs    wt
+## 1:  0    2   4 146.7 3.69    4  62 24.4 20.00  1 3.190
+## 2:  0    2   4 140.8 3.92    4  95 22.8 22.90  1 3.150
+## 3:  0    1   4 120.1 3.70    3  97 21.5 20.01  1 2.465
+## 4:  0    1   6 258.0 3.08    3 110 21.4 19.44  1 3.215
+## 5:  0    4   6 167.6 3.92    4 123 19.2 18.30  1 3.440
+## 6:  0    2   8 400.0 3.08    3 175 19.2 17.05  0 3.845
+</code></pre>
+<h3>setkey()</h3>
+<h4>set character column as key</h4>
+<p>To make the <code>data.table</code> a database table. According to the document:</p>
+<blockquote>
+<p>setkey() sorts a data.table and marks it as sorted (with an attribute sorted). The sorted columns are the key. The key can be any columns in any order. The columns are sorted in ascending order always.</p>
+</blockquote>
+<blockquote>
+<p>setkey reorders (or sorts) the rows of a data.table by the columns provided. In versions 1.9+, for integer columns… It is extremely fast, but is limited by the range of integer values being &lt;= 1e5.</p>
+</blockquote>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">dti &lt;- as.data.table(iris)</div><div class="line"></div><div class="line"><span class="comment"># Set Species as key</span></div><div class="line">setkey(dti, Species)</div><div class="line"></div><div class="line"><span class="comment"># Query by Species == 'setosa'</span></div><div class="line">head(dti[<span class="string">'setosa'</span>])</div></pre></td></tr></table></figure></p>
+<pre><code>##    Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1:          5.1         3.5          1.4         0.2  setosa
+## 2:          4.9         3.0          1.4         0.2  setosa
+## 3:          4.7         3.2          1.3         0.2  setosa
+## 4:          4.6         3.1          1.5         0.2  setosa
+## 5:          5.0         3.6          1.4         0.2  setosa
+## 6:          5.4         3.9          1.7         0.4  setosa
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Select 'setosa' and 'versicolor' in the same time</span></div><div class="line">dti[c(<span class="string">'setosa'</span>, <span class="string">'versicolor'</span>)][, head(.SD, <span class="number">3</span>), by = Species]</div></pre></td></tr></table></figure></p>
+<pre><code>##       Species Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1:     setosa          5.1         3.5          1.4         0.2
+## 2:     setosa          4.9         3.0          1.4         0.2
+## 3:     setosa          4.7         3.2          1.3         0.2
+## 4: versicolor          7.0         3.2          4.7         1.4
+## 5: versicolor          6.4         3.2          4.5         1.5
+## 6: versicolor          6.9         3.1          4.9         1.5
+</code></pre>
+<h4>set numeric column as key</h4>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">dtm &lt;- data.table(model = rownames(mtcars), mtcars)</div><div class="line"></div><div class="line"><span class="comment"># Set gear as key</span></div><div class="line">setkey(dtm, gear)</div><div class="line"></div><div class="line"><span class="comment"># Select records with gear == 5</span></div><div class="line">dtm[J(<span class="number">5</span>)]</div></pre></td></tr></table></figure></p>
+<pre><code>##             model  mpg cyl  disp  hp drat    wt qsec vs am gear carb
+## 1:  Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.7  0  1    5    2
+## 2:   Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.9  1  1    5    2
+## 3: Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.5  0  1    5    4
+## 4:   Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.5  0  1    5    6
+## 5:  Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.6  0  1    5    8
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># or </span></div><div class="line">dtm[.(<span class="number">5</span>)]</div></pre></td></tr></table></figure></p>
+<pre><code>##             model  mpg cyl  disp  hp drat    wt qsec vs am gear carb
+## 1:  Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.7  0  1    5    2
+## 2:   Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.9  1  1    5    2
+## 3: Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.5  0  1    5    4
+## 4:   Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.5  0  1    5    6
+## 5:  Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.6  0  1    5    8
+</code></pre>
+<p>Be aware that dtm[5] only returns the 5th row.</p>
+<h4>set multiple columns as keys</h4>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># add a column: brand</span></div><div class="line">dtm[, brand:=sapply(.SD[,model], <span class="keyword">function</span>(x) strsplit(x, <span class="string">' '</span>)[[<span class="number">1</span>]][<span class="number">1</span>])]</div><div class="line"></div><div class="line">setkey(dtm, brand, cyl)</div><div class="line">dtm[.(<span class="string">'Merc'</span>, <span class="number">8</span>)]</div></pre></td></tr></table></figure></p>
+<pre><code>##          model  mpg cyl  disp  hp drat   wt qsec vs am gear carb brand
+## 1:  Merc 450SE 16.4   8 275.8 180 3.07 4.07 17.4  0  0    3    3  Merc
+## 2:  Merc 450SL 17.3   8 275.8 180 3.07 3.73 17.6  0  0    3    3  Merc
+## 3: Merc 450SLC 15.2   8 275.8 180 3.07 3.78 18.0  0  0    3    3  Merc
+</code></pre>
+<p>What if there is no such key?</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dtm[.(<span class="string">'Renault'</span>, <span class="number">8</span>)]</div></pre></td></tr></table></figure></p>
+<pre><code>##    model mpg cyl disp hp drat wt qsec vs am gear carb   brand
+## 1:    NA  NA   8   NA NA   NA NA   NA NA NA   NA   NA Renault
+</code></pre>
+<p>It returns NA in all columns but the 2 keys.</p>
+<h4>select groups</h4>
+<p>By default, subsetting <code>data.table</code> returns all the records, it is related to argument <code>mult</code> of which the default value is <code>all</code>. You can also specify ‘first’ or ‘last’.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Introduce argument mult</span></div><div class="line">dti[c(<span class="string">'setosa'</span>, <span class="string">'versicolor'</span>), mult = <span class="string">'first'</span>]</div></pre></td></tr></table></figure></p>
+<pre><code>##    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 1:          5.1         3.5          1.4         0.2     setosa
+## 2:          7.0         3.2          4.7         1.4 versicolor
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dti[c(<span class="string">'setosa'</span>, <span class="string">'versicolor'</span>), mult = <span class="string">'last'</span>]</div></pre></td></tr></table></figure></p>
+<pre><code>##    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+## 1:          5.0         3.3          1.4         0.2     setosa
+## 2:          5.7         2.8          4.1         1.3 versicolor
+</code></pre>
+<p>You could also specify certain rows (<code>i</code>). To display each i, you need to specify <code>by = .EACHI</code>.</p>
+<blockquote>
+<p>When i is a data.table, DT[i,j,by=.EACHI] evaluates j for the groups in ‘DT’ that each row in i joins to. That is, you can join (in i) and aggregate (in j) simultaneously. We call this <strong>grouping by each i</strong>.</p>
+</blockquote>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dti[c(<span class="string">'setosa'</span>, <span class="string">'versicolor'</span>), .SD[c(<span class="number">1</span>, .N)], by = .EACHI]</div></pre></td></tr></table></figure></p>
+<pre><code>##       Species Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1:     setosa          5.1         3.5          1.4         0.2
+## 2:     setosa          5.0         3.3          1.4         0.2
+## 3: versicolor          7.0         3.2          4.7         1.4
+## 4: versicolor          5.7         2.8          4.1         1.3
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dti[c(<span class="string">'setosa'</span>, <span class="string">'versicolor'</span>), &#123;print(.SD[<span class="number">3</span>:<span class="number">5</span>]); .SD[c(<span class="number">1</span>, .N)]&#125;, by = .EACHI]</div></pre></td></tr></table></figure></p>
+<pre><code>##    Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1:          4.7         3.2          1.3         0.2
+## 2:          4.6         3.1          1.5         0.2
+## 3:          5.0         3.6          1.4         0.2
+##    Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1:          6.9         3.1          4.9         1.5
+## 2:          5.5         2.3          4.0         1.3
+## 3:          6.5         2.8          4.6         1.5
+
+##       Species Sepal.Length Sepal.Width Petal.Length Petal.Width
+## 1:     setosa          5.1         3.5          1.4         0.2
+## 2:     setosa          5.0         3.3          1.4         0.2
+## 3: versicolor          7.0         3.2          4.7         1.4
+## 4: versicolor          5.7         2.8          4.1         1.3
+</code></pre>
+<h4>Rolling joins</h4>
+<p>Let’s check the records of brand ‘Merc’ and 7 cylinders.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dtm[.(<span class="string">'Merc'</span>, <span class="number">5</span>)]</div></pre></td></tr></table></figure></p>
+<pre><code>##    model mpg cyl disp hp drat wt qsec vs am gear carb brand
+## 1:    NA  NA   5   NA NA   NA NA   NA NA NA   NA   NA  Merc
+</code></pre>
+<p>There is no such record. How to return records without <code>NA</code>? Use argument <code>roll</code>.</p>
+<p><code>roll = TRUE</code>: i’s row matches to all but the last x join column, and its value in the last i join column falls in a gap (including after the last observation in x for that group), then the <em>prevailing</em> value in x is rolled <strong>forward</strong>.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dtm[.(c(<span class="string">'Merc'</span>, <span class="string">'Toyota'</span>), <span class="number">5</span>), roll = <span class="literal">TRUE</span>]</div></pre></td></tr></table></figure></p>
+<pre><code>##             model  mpg cyl  disp hp drat    wt qsec vs am gear carb  brand
+## 1:       Merc 230 22.8   5 140.8 95 3.92 3.150 22.9  1  0    4    2   Merc
+## 2: Toyota Corolla 33.9   5  71.1 65 4.22 1.835 19.9  1  1    4    1 Toyota
+</code></pre>
+<p><code>roll = 'nearest'</code>: the nearest value is joined to.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># compare the commands below</span></div><div class="line">dtm[.(c(<span class="string">'Merc'</span>, <span class="string">'Toyota'</span>), <span class="number">3</span>), roll = <span class="literal">TRUE</span>]</div></pre></td></tr></table></figure></p>
+<pre><code>##    model mpg cyl disp hp drat wt qsec vs am gear carb  brand
+## 1:    NA  NA   3   NA NA   NA NA   NA NA NA   NA   NA   Merc
+## 2:    NA  NA   3   NA NA   NA NA   NA NA NA   NA   NA Toyota
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dtm[.(c(<span class="string">'Merc'</span>, <span class="string">'Toyota'</span>), <span class="number">3</span>), roll = <span class="string">'nearest'</span>]</div></pre></td></tr></table></figure></p>
+<pre><code>##            model  mpg cyl  disp hp drat    wt  qsec vs am gear carb  brand
+## 1:     Merc 240D 24.4   3 146.7 62 3.69 3.190 20.00  1  0    4    2   Merc
+## 2: Toyota Corona 21.5   3 120.1 97 3.70 2.465 20.01  1  0    3    1 Toyota
+</code></pre>
+<p><code>roll</code> can also be a finite number.</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># compare the commands below</span></div><div class="line">dtm[.(<span class="string">'Merc'</span>, <span class="number">6</span>:<span class="number">10</span>)]</div></pre></td></tr></table></figure></p>
+<pre><code>##          model  mpg cyl  disp  hp drat   wt qsec vs am gear carb brand
+## 1:    Merc 280 19.2   6 167.6 123 3.92 3.44 18.3  1  0    4    4  Merc
+## 2:   Merc 280C 17.8   6 167.6 123 3.92 3.44 18.9  1  0    4    4  Merc
+## 3:          NA   NA   7    NA  NA   NA   NA   NA NA NA   NA   NA  Merc
+## 4:  Merc 450SE 16.4   8 275.8 180 3.07 4.07 17.4  0  0    3    3  Merc
+## 5:  Merc 450SL 17.3   8 275.8 180 3.07 3.73 17.6  0  0    3    3  Merc
+## 6: Merc 450SLC 15.2   8 275.8 180 3.07 3.78 18.0  0  0    3    3  Merc
+## 7:          NA   NA   9    NA  NA   NA   NA   NA NA NA   NA   NA  Merc
+## 8:          NA   NA  10    NA  NA   NA   NA   NA NA NA   NA   NA  Merc
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dtm[.(<span class="string">'Merc'</span>, <span class="number">6</span>:<span class="number">10</span>), roll = <span class="number">1</span>]</div></pre></td></tr></table></figure></p>
+<pre><code>##          model  mpg cyl  disp  hp drat   wt qsec vs am gear carb brand
+## 1:    Merc 280 19.2   6 167.6 123 3.92 3.44 18.3  1  0    4    4  Merc
+## 2:   Merc 280C 17.8   6 167.6 123 3.92 3.44 18.9  1  0    4    4  Merc
+## 3:   Merc 280C 17.8   7 167.6 123 3.92 3.44 18.9  1  0    4    4  Merc
+## 4:  Merc 450SE 16.4   8 275.8 180 3.07 4.07 17.4  0  0    3    3  Merc
+## 5:  Merc 450SL 17.3   8 275.8 180 3.07 3.73 17.6  0  0    3    3  Merc
+## 6: Merc 450SLC 15.2   8 275.8 180 3.07 3.78 18.0  0  0    3    3  Merc
+## 7: Merc 450SLC 15.2   9 275.8 180 3.07 3.78 18.0  0  0    3    3  Merc
+## 8:          NA   NA  10    NA  NA   NA   NA   NA NA NA   NA   NA  Merc
+</code></pre>
+<p>There is no Mercedez with 7, 9 and 10 cylinders, but we allow it to roll for distance of 1. So 7 and 9 cylinders are both joined but 10 because it’s more than 1 from the prevailing observation.</p>
+<p>Now we take a look on argument <code>rollends</code>. This argument is actually a vector of two logical values (a single logical is recycled).</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># compare the commands below</span></div><div class="line">setkey(dtm, am, carb)</div><div class="line">dtm[.(<span class="number">1</span>, (-<span class="number">1</span>):<span class="number">8</span>)]</div></pre></td></tr></table></figure></p>
+<pre><code>##              model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb    brand
+##  1:             NA   NA  NA    NA  NA   NA    NA    NA NA  1   NA   -1       NA
+##  2:             NA   NA  NA    NA  NA   NA    NA    NA NA  1   NA    0       NA
+##  3:     Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1   Datsun
+##  4:       Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1     Fiat
+##  5:      Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1     Fiat
+##  6: Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1   Toyota
+##  7:    Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2    Honda
+##  8:   Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2    Lotus
+##  9:  Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2  Porsche
+## 10:     Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2    Volvo
+## 11:             NA   NA  NA    NA  NA   NA    NA    NA NA  1   NA    3       NA
+## 12: Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4     Ford
+## 13:      Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4    Mazda
+## 14:  Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4    Mazda
+## 15:             NA   NA  NA    NA  NA   NA    NA    NA NA  1   NA    5       NA
+## 16:   Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6  Ferrari
+## 17:             NA   NA  NA    NA  NA   NA    NA    NA NA  1   NA    7       NA
+## 18:  Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8 Maserati
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dtm[.(<span class="number">1</span>, (-<span class="number">1</span>):<span class="number">8</span>), roll = <span class="literal">TRUE</span>]</div></pre></td></tr></table></figure></p>
+<pre><code>##              model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb    brand
+##  1:             NA   NA  NA    NA  NA   NA    NA    NA NA  1   NA   -1       NA
+##  2:             NA   NA  NA    NA  NA   NA    NA    NA NA  1   NA    0       NA
+##  3:     Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1   Datsun
+##  4:       Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1     Fiat
+##  5:      Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1     Fiat
+##  6: Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1   Toyota
+##  7:    Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2    Honda
+##  8:   Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2    Lotus
+##  9:  Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2  Porsche
+## 10:     Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2    Volvo
+## 11:     Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    3    Volvo
+## 12: Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4     Ford
+## 13:      Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4    Mazda
+## 14:  Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4    Mazda
+## 15:  Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    5    Mazda
+## 16:   Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6  Ferrari
+## 17:   Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    7  Ferrari
+## 18:  Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8 Maserati
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dtm[.(<span class="number">1</span>, (-<span class="number">1</span>):<span class="number">8</span>), roll = <span class="literal">TRUE</span>, rollends = <span class="literal">TRUE</span>]</div></pre></td></tr></table></figure></p>
+<pre><code>##              model  mpg cyl  disp  hp drat    wt  qsec vs am gear carb    brand
+##  1:     Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4   -1   Datsun
+##  2:     Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    0   Datsun
+##  3:     Datsun 710 22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1   Datsun
+##  4:       Fiat 128 32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1     Fiat
+##  5:      Fiat X1-9 27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1     Fiat
+##  6: Toyota Corolla 33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1   Toyota
+##  7:    Honda Civic 30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2    Honda
+##  8:   Lotus Europa 30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2    Lotus
+##  9:  Porsche 914-2 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2  Porsche
+## 10:     Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2    Volvo
+## 11:     Volvo 142E 21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    3    Volvo
+## 12: Ford Pantera L 15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4     Ford
+## 13:      Mazda RX4 21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4    Mazda
+## 14:  Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4    Mazda
+## 15:  Mazda RX4 Wag 21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    5    Mazda
+## 16:   Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6  Ferrari
+## 17:   Ferrari Dino 19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    7  Ferrari
+## 18:  Maserati Bora 15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8 Maserati
+</code></pre>
+<p>This argument allows <code>NA</code> records to look forward to the nearest‘matching’ records</p>
+<h2>Other data.table functions</h2>
+<h3>fread() fast read</h3>
+<p>Borrow the example from <code>data.table</code> document:</p>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">n=<span class="number">1e6</span></div><div class="line">DT = data.table( a=sample(<span class="number">1</span>:<span class="number">1000</span>,n,replace=<span class="literal">TRUE</span>),</div><div class="line">                 b=sample(<span class="number">1</span>:<span class="number">1000</span>,n,replace=<span class="literal">TRUE</span>),</div><div class="line">                 c=rnorm(n),</div><div class="line">                 d=sample(c(<span class="string">"foo"</span>,<span class="string">"bar"</span>,<span class="string">"baz"</span>,<span class="string">"qux"</span>,<span class="string">"quux"</span>),n,replace=<span class="literal">TRUE</span>),</div><div class="line">                 e=rnorm(n),</div><div class="line">                 f=sample(<span class="number">1</span>:<span class="number">1000</span>,n,replace=<span class="literal">TRUE</span>) )</div><div class="line">DT[<span class="number">2</span>,b:=<span class="literal">NA_integer_</span>]</div><div class="line">DT[<span class="number">4</span>,c:=<span class="literal">NA_real_</span>]</div><div class="line">DT[<span class="number">3</span>,d:=<span class="literal">NA_character_</span>]</div><div class="line">DT[<span class="number">5</span>,d:=<span class="string">""</span>]</div><div class="line">DT[<span class="number">2</span>,e:=+<span class="literal">Inf</span>]</div><div class="line">DT[<span class="number">3</span>,e:=-<span class="literal">Inf</span>]</div><div class="line"></div><div class="line">write.table(DT,<span class="string">"test.csv"</span>,sep=<span class="string">","</span>,row.names=<span class="literal">FALSE</span>,quote=<span class="literal">FALSE</span>)</div><div class="line">cat(<span class="string">"File size (MB):"</span>, round(file.info(<span class="string">"test.csv"</span>)$size/<span class="number">1024</span>^<span class="number">2</span>),<span class="string">"\n"</span>)</div></pre></td></tr></table></figure></p>
+<pre><code>## File size (MB): 50
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">system.time(DF1 &lt;-read.csv(<span class="string">"test.csv"</span>,stringsAsFactors=<span class="literal">FALSE</span>))</div></pre></td></tr></table></figure></p>
+<pre><code>##    user  system elapsed 
+##  21.556   0.196  21.760
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># first time in fresh R session</span></div><div class="line"></div><div class="line">system.time(DF1 &lt;- read.csv(<span class="string">"test.csv"</span>,stringsAsFactors=<span class="literal">FALSE</span>))</div></pre></td></tr></table></figure></p>
+<pre><code>##    user  system elapsed 
+##  11.728   0.144  11.873
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># immediate repeat is faster, varies</span></div><div class="line"></div><div class="line">system.time(DF2 &lt;- read.table(<span class="string">"test.csv"</span>,header=<span class="literal">TRUE</span>,sep=<span class="string">","</span>,quote=<span class="string">""</span>,</div><div class="line">					stringsAsFactors=<span class="literal">FALSE</span>,comment.char=<span class="string">""</span>,nrows=n,</div><div class="line">					colClasses=c(<span class="string">"integer"</span>,<span class="string">"integer"</span>,<span class="string">"numeric"</span>,</div><div class="line">					             <span class="string">"character"</span>,<span class="string">"numeric"</span>,<span class="string">"integer"</span>)))</div></pre></td></tr></table></figure></p>
+<pre><code>##    user  system elapsed 
+##   7.324   0.040   7.369
+</code></pre>
+<p><figure class="highlight r"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">require</span>(data.table)</div><div class="line">system.time(DT &lt;- fread(<span class="string">"test.csv"</span>))</div></pre></td></tr></table></figure></p>
+<pre><code>##    user  system elapsed 
+##   1.988   0.008   1.993
+</code></pre>
+<p>This is a powerful file reading function.</p>
+<h3>others</h3>
+<p>Enter the command <code>library(help = data.table)</code> and you could see many other small functions, like <code>frank</code>, <code>foverlaps</code>, etc. All of them are aiming at speeding up the available functions with similar effect in <code>base</code> or other packages. You could take a look on them when necessary.</p>
+<hr>
+<h2>Reference</h2>
+<ul>
+<li><a href="https://www.datacamp.com/courses/data-table-data-manipulation-r-tutorial" target="_blank" rel="external">Data Analysis in R, the data.table Way</a>.</li>
+</ul>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2015/09/24/12.ecma09/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2015/09/27/13.css/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            Linux文件系统之sysfs | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,设备模型,VFS">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Linux文件系统之sysfs | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="设备模型"> <meta property="og:article:tag" content="VFS"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">sysfs的初始化和挂载</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">在sysfs文件系统中创建目录</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">在sysfs中创建一般属性文件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">在sysfs中创建二进制属性文件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">6.</span> <span class="post-toc-text">sysfs文件系统中的链接文件</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">7.</span> <span class="post-toc-text">小结</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Linux文件系统之sysfs
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>2月 28, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/VFS/">VFS</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/设备模型/">设备模型</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Linux文件系统之sysfs&url=http://yoursite.com//2014/02/28/linux-sysfs/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Linux文件系统之sysfs&url=http://yoursite.com//2014/02/28/linux-sysfs/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/02/28/linux-sysfs/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/02/28/linux-sysfs/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>原文链接：<a href="http://blog.chinaunix.net/uid-20543183-id-1930812.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-20543183-id-1930812.html</a></p>
+<p>源码文件：
+<code>./fs/sysfs/</code></p>
+<h2>前言</h2>
+<p>在设备模型中，sysfs文件系统用来表示设备的结构，将设备的层次结构形象的反应到用户空间中。用户空间可以修改sysfs中的文件属性来修改设备的属性值，今天我们就来详细分析一下sysfs的实现。
+&lt;!--more--&gt;</p>
+<h2>sysfs的初始化和挂载</h2>
+<p>sysfs文件系统的初始化是在<code>sysfs_init()</code>中完成的,代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> __<span class="function">init <span class="title">sysfs_init</span><span class="params">(<span class="keyword">void</span>)</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">int</span> err = -ENOMEM;</div><div class="line">       <span class="comment">//创建一个分配sysfs_dirent的cache</span></div><div class="line">       sysfs_dir_cachep = kmem_cache_create(<span class="string">"sysfs_dir_cache"</span>,</div><div class="line">                                         <span class="keyword">sizeof</span>(<span class="keyword">struct</span> sysfs_dirent),</div><div class="line">                                         <span class="number">0</span>, <span class="number">0</span>, <span class="literal">NULL</span>);</div><div class="line">       <span class="keyword">if</span> (!sysfs_dir_cachep)</div><div class="line">              <span class="keyword">goto</span> out;</div><div class="line"></div><div class="line">       err = sysfs_inode_init();</div><div class="line">       <span class="keyword">if</span> (err)</div><div class="line">              <span class="keyword">goto</span> out_err;</div><div class="line">       <span class="comment">//注册sysfs文件系统s</span></div><div class="line">       err = register_filesystem(&amp;sysfs_fs_type);</div><div class="line">       <span class="keyword">if</span> (!err) &#123;</div><div class="line">              <span class="comment">//挂载sysfs文件系统</span></div><div class="line">              sysfs_mount = kern_mount(&amp;sysfs_fs_type);</div><div class="line">              <span class="keyword">if</span> (IS_ERR(sysfs_mount)) &#123;</div><div class="line">                     printk(KERN_ERR <span class="string">"sysfs: could not mount!\n"</span>);</div><div class="line">                     err = PTR_ERR(sysfs_mount);</div><div class="line">                     sysfs_mount = <span class="literal">NULL</span>;</div><div class="line">                     unregister_filesystem(&amp;sysfs_fs_type);</div><div class="line">                     <span class="keyword">goto</span> out_err;</div><div class="line">              &#125;</div><div class="line">       &#125; <span class="keyword">else</span></div><div class="line">              <span class="keyword">goto</span> out_err;</div><div class="line">out:</div><div class="line">       <span class="keyword">return</span> err;</div><div class="line">out_err:</div><div class="line">       kmem_cache_destroy(sysfs_dir_cachep);</div><div class="line">       sysfs_dir_cachep = <span class="literal">NULL</span>;</div><div class="line">       <span class="keyword">goto</span> out;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>每个<code>kobject</code>对应sysfs中的一个目录，<code>kobject</code>的每个属性对应sysfs文件系统中的文件。
+<code>struct sysfs_dirent</code>就是用来做<code>kobject</code>与<code>dentry</code>的互相转换用的，它们的关系如下图所示:
+
+上图表示的是一个<code>kobject</code>的层次结构，<code>dentry</code>的<code>d_fsdata</code>字段指定该结点所表示的<code>sysfs_dirent</code>，<code>sysfs_dirent.s_parent</code>表示它的父<code>kobject</code>，<code>sysfs_dirent</code>.<code>s_sibling</code>表示它的兄弟结点，<code>sysfs_dirent.s_dir.children</code>表示它所属的子节点。</p>
+<p>从上图可知，如果要遍历一个结点下面的子结点，只需要找到<code>sysfs_dirent.s_dir.children</code>结点，然后按着子节点的<code>s_sibling</code>域遍历即可。当然，有时候也需要从<code>struct sysfs_dirent</code>导出它所属的<code>dentry</code>结点，我们在代码中遇到的时候再进行分析。
+sysfs文件系统的<code>file_system_type</code>定义如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">struct</span> file_system_type sysfs_fs_type = &#123;</div><div class="line">       .name       = <span class="string">"sysfs"</span>,</div><div class="line">       .get_sb     = sysfs_get_sb,</div><div class="line">       .kill_sb    = kill_anon_super,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>通过前面文件系统的相关分析,我们知道在<code>sys_mount()</code>中最终会调用<code>struct file_system_type</code>的<code>get_sb</code>函数来实现文件系统的挂载.它的代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">sysfs_get_sb</span><span class="params">(<span class="keyword">struct</span> file_system_type *fs_type,</span></span></div><div class="line">       <span class="keyword">int</span> flags, <span class="keyword">const</span> <span class="keyword">char</span> *dev_name, <span class="keyword">void</span> *data, <span class="keyword">struct</span> vfsmount *mnt)</div><div class="line">&#123;</div><div class="line">       <span class="keyword">return</span> get_sb_single(fs_type, flags, data, sysfs_fill_super, mnt);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>get_sb_single()</code>的代码在前面已经涉及到,它对<code>super_block</code>以及挂载的<code>dentry</code>和<code>inode</code>的赋值是在回调函数<code>sysfs_fill_super</code>、<code>mnt</code>中完成的.代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">sysfs_fill_super</span><span class="params">(<span class="keyword">struct</span> super_block *sb, <span class="keyword">void</span> *data, <span class="keyword">int</span> silent)</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">struct</span> inode *inode;</div><div class="line">       <span class="keyword">struct</span> dentry *root;</div><div class="line"></div><div class="line">       sb-&gt;s_blocksize = PAGE_CACHE_SIZE;</div><div class="line">       sb-&gt;s_blocksize_bits = PAGE_CACHE_SHIFT;</div><div class="line">       sb-&gt;s_magic = SYSFS_MAGIC;</div><div class="line">       sb-&gt;s_op = &amp;sysfs_ops;</div><div class="line">       sb-&gt;s_time_gran = <span class="number">1</span>;</div><div class="line">       sysfs_sb = sb;</div><div class="line"></div><div class="line">       <span class="comment">/* get root inode, initialize and unlock it */</span></div><div class="line">       inode = sysfs_get_inode(&amp;sysfs_root);</div><div class="line">       <span class="keyword">if</span> (!inode) &#123;</div><div class="line">              pr_debug(<span class="string">"sysfs: could not get root inode\n"</span>);</div><div class="line">              <span class="keyword">return</span> -ENOMEM;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="comment">/* instantiate and link root dentry */</span></div><div class="line">       root = d_alloc_root(inode);</div><div class="line">       <span class="keyword">if</span> (!root) &#123;</div><div class="line">              pr_debug(<span class="string">"%s: could not get root dentry!\n"</span>,__FUNCTION__);</div><div class="line">              iput(inode);</div><div class="line">              <span class="keyword">return</span> -ENOMEM;</div><div class="line">       &#125;</div><div class="line">       <span class="comment">//将sysfs_root关联到root</span></div><div class="line">       root-&gt;d_fsdata = &amp;sysfs_root;</div><div class="line">       sb-&gt;s_root = root;</div><div class="line">       <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里要注意几个全局量. <code>sysfs_sb</code>表示sysfs文件系统的<code>super_block</code>，<code>sysfs_root</code>表示sysfs文件系统根目录的<code>struct sysfs_dirent</code>。<code>sysfs_get_inode(&amp;sysfs_root)</code>用来将<code>sysfs_root</code>导出相应的<code>inode</code>，代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">struct</span> inode * <span class="title">sysfs_get_inode</span><span class="params">(<span class="keyword">struct</span> sysfs_dirent *sd)</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">struct</span> inode *inode;</div><div class="line">       <span class="comment">//以super_block和sd-&gt;s_ino为哈希值,到哈希表中寻找相应的inode.如果不存在,则新建</span></div><div class="line">       inode = iget_locked(sysfs_sb, sd-&gt;s_ino);</div><div class="line">       <span class="comment">//对新生成的inode进行初始化</span></div><div class="line">       <span class="keyword">if</span> (inode &amp;&amp; (inode-&gt;i_state &amp; I_NEW))</div><div class="line">              sysfs_init_inode(sd, inode);</div><div class="line"></div><div class="line">       <span class="keyword">return</span> inode;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>首先,它以sysfs文件系统的<code>super_block</code>和<code>struct sysfs_dirent</code>的<code>s_ino</code>成员的值做为哈希值到哈希表中寻找相应的<code>inode</code>。如果在哈希表中不存在这个<code>inode</code>,那就新建一个,并将它链入到哈希表.之后,调用<code>sysfs_init_inode()</code>对生成的<code>inode</code>进行初始化.显然.在mount的时候是不会生成<code>inode</code>的.必定会进入<code>sysfs_init_inode()</code>函数.代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sysfs_init_inode</span><span class="params">(<span class="keyword">struct</span> sysfs_dirent *sd, <span class="keyword">struct</span> inode *inode)</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">struct</span> bin_attribute *bin_attr;</div><div class="line"></div><div class="line">       inode-&gt;i_blocks = <span class="number">0</span>;</div><div class="line">       inode-&gt;i_mapping-&gt;a_ops = &amp;sysfs_aops;</div><div class="line">       inode-&gt;i_mapping-&gt;backing_dev_info = &amp;sysfs_backing_dev_info;</div><div class="line">       inode-&gt;i_op = &amp;sysfs_inode_operations;</div><div class="line">       inode-&gt;i_ino = sd-&gt;s_ino;</div><div class="line">       lockdep_set_class(&amp;inode-&gt;i_mutex, &amp;sysfs_inode_imutex_key);</div><div class="line"></div><div class="line">       <span class="keyword">if</span> (sd-&gt;s_iattr) &#123;</div><div class="line">              <span class="comment">/* sysfs_dirent has non-default attributes</span></div><div class="line">               * get them for the new inode from persistent copy</div><div class="line">               * in sysfs_dirent</div><div class="line">               */</div><div class="line">              set_inode_attr(inode, sd-&gt;s_iattr);</div><div class="line">       &#125; <span class="keyword">else</span></div><div class="line">              set_default_inode_attr(inode, sd-&gt;s_mode);</div><div class="line"></div><div class="line">       <span class="comment">/* initialize inode according to type */</span></div><div class="line">       <span class="keyword">switch</span> (sysfs_type(sd)) &#123;</div><div class="line">       <span class="keyword">case</span> SYSFS_DIR:</div><div class="line">              inode-&gt;i_op = &amp;sysfs_dir_inode_operations;</div><div class="line">              inode-&gt;i_fop = &amp;sysfs_dir_operations;</div><div class="line">              inode-&gt;i_nlink = sysfs_count_nlink(sd);</div><div class="line">              <span class="keyword">break</span>;</div><div class="line">       <span class="keyword">case</span> SYSFS_KOBJ_ATTR:</div><div class="line">              inode-&gt;i_size = PAGE_SIZE;</div><div class="line">              inode-&gt;i_fop = &amp;sysfs_file_operations;</div><div class="line">              <span class="keyword">break</span>;</div><div class="line">       <span class="keyword">case</span> SYSFS_KOBJ_BIN_ATTR:</div><div class="line">              bin_attr = sd-&gt;s_bin_attr.bin_attr;</div><div class="line">              inode-&gt;i_size = bin_attr-&gt;size;</div><div class="line">              inode-&gt;i_fop = &amp;bin_fops;</div><div class="line">              <span class="keyword">break</span>;</div><div class="line">       <span class="keyword">case</span> SYSFS_KOBJ_LINK:</div><div class="line">              inode-&gt;i_op = &amp;sysfs_symlink_inode_operations;</div><div class="line">              <span class="keyword">break</span>;</div><div class="line">       <span class="keyword">default</span>:</div><div class="line">              BUG();</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       unlock_new_inode(inode);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里,我们可以看到sysfs文件系统中的各种操作函数了..</p>
+<p>在syfs文件系统中,怎么样判断一个目录下是否有这个文件呢?
+在前面有关文件系统的分析中我们可以看.有关文件的查找实际上都会由<code>inod-&gt;i_op-&gt;lookup()</code>函数进行判断.在sysfs中,这个函数对应为<code>sysfs_lookup()</code>.代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">struct</span> dentry * <span class="title">sysfs_lookup</span><span class="params">(<span class="keyword">struct</span> inode *dir, <span class="keyword">struct</span> dentry *dentry,</span></span></div><div class="line">                            <span class="keyword">struct</span> nameidata *nd)</div><div class="line">&#123;</div><div class="line">       <span class="keyword">struct</span> dentry *ret = <span class="literal">NULL</span>;</div><div class="line">       <span class="comment">//取得父结点对应的sysfs_dirent</span></div><div class="line">       <span class="keyword">struct</span> sysfs_dirent *parent_sd = dentry-&gt;d_parent-&gt;d_fsdata;</div><div class="line">       <span class="keyword">struct</span> sysfs_dirent *sd;</div><div class="line">       <span class="keyword">struct</span> inode *inode;</div><div class="line"></div><div class="line">       mutex_lock(&amp;sysfs_mutex);</div><div class="line">       <span class="comment">//父结点的sysfs_dirent中是否有相应的子结点</span></div><div class="line">       sd = sysfs_find_dirent(parent_sd, dentry-&gt;d_name.name);</div><div class="line"></div><div class="line">       <span class="comment">/* no such entry */</span></div><div class="line">       <span class="comment">//如果没有.这个结点是不存在的</span></div><div class="line">       <span class="keyword">if</span> (!sd) &#123;</div><div class="line">              ret = ERR_PTR(-ENOENT);</div><div class="line">              <span class="keyword">goto</span> out_unlock;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="comment">/* attach dentry and inode */</span></div><div class="line">       <span class="comment">//如果有这个结点,为之生成inod结构.</span></div><div class="line">       inode = sysfs_get_inode(sd);</div><div class="line">       <span class="keyword">if</span> (!inode) &#123;</div><div class="line">              ret = ERR_PTR(-ENOMEM);</div><div class="line">              <span class="keyword">goto</span> out_unlock;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="comment">/* instantiate and hash dentry */</span></div><div class="line">       dentry-&gt;d_op = &amp;sysfs_dentry_ops;</div><div class="line">       <span class="comment">//关联dentry与sysfs_dirent</span></div><div class="line">       dentry-&gt;d_fsdata = sysfs_get(sd);</div><div class="line">       d_instantiate(dentry, inode);</div><div class="line">       d_rehash(dentry);</div><div class="line"></div><div class="line"> out_unlock:</div><div class="line">       mutex_unlock(&amp;sysfs_mutex);</div><div class="line">       <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>由此可见,它的判断会转入到相应的<code>sysfs_dirent</code>中进行判断.如果设备模型在创建目录/文件的时候并不会创建<code>dentry</code>或者<code>inode</code>.只会操作<code>sysfs_dirent</code>结构. 如果找到了这个结构,就为这个结构生成<code>inode</code>,并将其关联到<code>denry</code>中.
+<code>sysfs_find_dirent()</code>如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">struct</span> sysfs_dirent *<span class="title">sysfs_find_dirent</span><span class="params">(<span class="keyword">struct</span> sysfs_dirent *parent_sd,</span></span></div><div class="line">                                   <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *name)</div><div class="line">&#123;</div><div class="line">       <span class="keyword">struct</span> sysfs_dirent *sd;</div><div class="line"></div><div class="line">       <span class="keyword">for</span> (sd = parent_sd-&gt;s_dir.children; sd; sd = sd-&gt;s_sibling)</div><div class="line">              <span class="keyword">if</span> (!<span class="built_in">strcmp</span>(sd-&gt;s_name, name))</div><div class="line">                     <span class="keyword">return</span> sd;</div><div class="line">       <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>它用的搜索方法就是我们在之前分析<code>sysfs_dirent</code>结构所讲述的.分析到这里,sysfs的大概轮廓就出现在我们的眼前了.^_^.接下来分析sysfs文件系统中目录的创建过程</p>
+<h2>在sysfs文件系统中创建目录</h2>
+<p>在linux设备模型中,每注册一个<code>kobject</code>.就会为之创建一个目录.具体的流程在分析linux设备模型的时候再给出详细的分析.创建目录的接口为: <code>sysfs_create_dir()</code>。代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">sysfs_create_dir</span><span class="params">(<span class="keyword">struct</span> kobject * kobj)</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">struct</span> sysfs_dirent *parent_sd, *sd;</div><div class="line">       <span class="keyword">int</span> error = <span class="number">0</span>;</div><div class="line"></div><div class="line">       BUG_ON(!kobj);</div><div class="line"></div><div class="line">       <span class="comment">//如果kobject没有指定父结点,则将其父结点指定为sysfs的根目录syfs_root</span></div><div class="line">       <span class="keyword">if</span> (kobj-&gt;parent)</div><div class="line">              parent_sd = kobj-&gt;parent-&gt;sd;</div><div class="line">       <span class="keyword">else</span></div><div class="line">              parent_sd = &amp;sysfs_root;</div><div class="line"></div><div class="line">       <span class="comment">//创建目录</span></div><div class="line">       error = create_dir(kobj, parent_sd, kobject_name(kobj), &amp;sd);</div><div class="line">       <span class="comment">//kobj-&gt;sd 指向对应的sysfs_dirent</span></div><div class="line">       <span class="keyword">if</span> (!error)</div><div class="line">              kobj-&gt;sd = sd;</div><div class="line">       <span class="keyword">return</span> error;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里,先为结点指定父目录,然后调用<code>create_dir()</code>在父目录下生成结点.代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">create_dir</span><span class="params">(<span class="keyword">struct</span> kobject *kobj, <span class="keyword">struct</span> sysfs_dirent *parent_sd,</span></span></div><div class="line">                    <span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">struct</span> sysfs_dirent **p_sd)</div><div class="line">&#123;</div><div class="line">       <span class="comment">//指定目录的模式</span></div><div class="line">       <span class="keyword">umode_t</span> mode = S_IFDIR| S_IRWXU | S_IRUGO | S_IXUGO;</div><div class="line">       <span class="keyword">struct</span> sysfs_addrm_cxt acxt;</div><div class="line">       <span class="keyword">struct</span> sysfs_dirent *sd;</div><div class="line">       <span class="keyword">int</span> rc;</div><div class="line"></div><div class="line">       <span class="comment">/* allocate */</span></div><div class="line">       <span class="comment">//分配并初始化一个sysfs_dirent</span></div><div class="line">       sd = sysfs_new_dirent(name, mode, SYSFS_DIR);</div><div class="line">       <span class="keyword">if</span> (!sd)</div><div class="line">              <span class="keyword">return</span> -ENOMEM;</div><div class="line">       <span class="comment">//初始化sd-&gt;s_dir.kobj字段</span></div><div class="line">       sd-&gt;s_dir.kobj = kobj;</div><div class="line"></div><div class="line">       <span class="comment">/* link in */</span></div><div class="line">       <span class="comment">//acxt是一个临时变量.它用来存放父结点的相关信息</span></div><div class="line"></div><div class="line">       <span class="comment">//设置acxt-&gt;parent_sd为父结点的sysfs_dirent, acxt-&gt;parent_inode为父结点的inode</span></div><div class="line">       sysfs_addrm_start(&amp;acxt, parent_sd);</div><div class="line">       <span class="comment">//设置sd-&gt;s_parent.并按inod值按顺序链入父结点的children链表</span></div><div class="line">       rc = sysfs_add_one(&amp;acxt, sd);</div><div class="line">       sysfs_addrm_finish(&amp;acxt);</div><div class="line"></div><div class="line">       <span class="keyword">if</span> (rc == <span class="number">0</span>)</div><div class="line">              *p_sd = sd;</div><div class="line">       <span class="keyword">else</span></div><div class="line">              sysfs_put(sd);</div><div class="line"></div><div class="line">       <span class="keyword">return</span> rc;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里,为子节点生成了对应的<code>sysfs_dirent</code>.设置了它的父结点域,并将其链入到父结点的<code>children</code>链表.这样,在文件系统中查找父目录下面的子结点了.</p>
+<h2>在sysfs中创建一般属性文件</h2>
+<p><code>kobject</code>的每一项属性都对应在sysfs文件系统中<code>kobject</code>对应的目录下的一个文件，文件名称与属性名称相同。
+创建一般属性的接口为<code>sysfs_create_file()</code>，代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">sysfs_create_file</span><span class="params">(<span class="keyword">struct</span> kobject * kobj, <span class="keyword">const</span> <span class="keyword">struct</span> attribute * attr)</span></span></div><div class="line">&#123;</div><div class="line">       BUG_ON(!kobj || !kobj-&gt;sd || !attr);</div><div class="line"></div><div class="line">       <span class="comment">//kobject-&gt;sd: 为kobject表示目录的struct sysfs_dirent结构</span></div><div class="line">       <span class="keyword">return</span> sysfs_add_file(kobj-&gt;sd, attr, SYSFS_KOBJ_ATTR);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>最终会调用<code>sysfs_add_file()</code>, 参数<code>attr</code>是要生成文件的属性值.
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">sysfs_add_file</span><span class="params">(<span class="keyword">struct</span> sysfs_dirent *dir_sd, <span class="keyword">const</span> <span class="keyword">struct</span> attribute *attr,</span></span></div><div class="line">                 <span class="keyword">int</span> type)</div><div class="line">&#123;</div><div class="line">       <span class="comment">//文件对应的属性</span></div><div class="line">       <span class="keyword">umode_t</span> mode = (attr-&gt;mode &amp; S_IALLUGO) | S_IFREG;</div><div class="line">       <span class="keyword">struct</span> sysfs_addrm_cxt acxt;</div><div class="line">       <span class="keyword">struct</span> sysfs_dirent *sd;</div><div class="line">       <span class="keyword">int</span> rc;</div><div class="line"></div><div class="line">       <span class="comment">//创建一个新的sysfs_dirent.对应的名称为attr-&gt;name.即属性的名称</span></div><div class="line">       sd = sysfs_new_dirent(attr-&gt;name, mode, type);</div><div class="line">       <span class="keyword">if</span> (!sd)</div><div class="line">              <span class="keyword">return</span> -ENOMEM;</div><div class="line">       <span class="comment">//设置属性值</span></div><div class="line">       sd-&gt;s_attr.attr = (<span class="keyword">void</span> *)attr;</div><div class="line"></div><div class="line">       <span class="comment">//将子结点的struct sysfs_dirent结构关链到父结点</span></div><div class="line">       sysfs_addrm_start(&amp;acxt, dir_sd);</div><div class="line">       rc = sysfs_add_one(&amp;acxt, sd);</div><div class="line">       sysfs_addrm_finish(&amp;acxt);</div><div class="line"></div><div class="line">       <span class="keyword">if</span> (rc)</div><div class="line">              sysfs_put(sd);</div><div class="line"></div><div class="line">       <span class="keyword">return</span> rc;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个流程与创建目录的流程大部份相同.不相同的只是创建目录时,它的父目录为上一层结点,创建文件时,它的父目录就是<code>kobject</code>对应的<code>struct sysfs_dirent</code>.
+这样,在<code>kobject</code>对应的目录下面就可以看到这个文件了.^_^</p>
+<p>文件建好之后,要怎么样去读写呢? 回忆一下,在sysfs文件系统中,<code>inode</code>的初始化:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sysfs_init_inode</span><span class="params">(<span class="keyword">struct</span> sysfs_dirent *sd, <span class="keyword">struct</span> inode *inode)</span></span></div><div class="line">&#123;</div><div class="line">       ……</div><div class="line">       …….</div><div class="line">       <span class="keyword">case</span> SYSFS_KOBJ_ATTR:</div><div class="line">       inode-&gt;i_size = PAGE_SIZE;</div><div class="line">       inode-&gt;i_fop = &amp;sysfs_file_operations;</div><div class="line">       ……</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>sysfs_file_operations</code>的定义如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">struct</span> file_operations sysfs_file_operations = &#123;</div><div class="line">       .read       = sysfs_read_file,</div><div class="line">       .write      = sysfs_write_file,</div><div class="line">       .llseek     = generic_file_llseek,</div><div class="line">       .open       = sysfs_open_file,</div><div class="line">       .release    = sysfs_release,</div><div class="line">       .poll       = sysfs_poll,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>文件的操作全部都在这里了,我们从打开文件说起.
+<code>sysfs_open_file()</code>代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">sysfs_open_file</span><span class="params">(<span class="keyword">struct</span> inode *inode, <span class="keyword">struct</span> file *file)</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">struct</span> sysfs_dirent *attr_sd = file-&gt;f_path.dentry-&gt;d_fsdata;</div><div class="line">       <span class="keyword">struct</span> kobject *kobj = attr_sd-&gt;s_parent-&gt;s_dir.kobj;</div><div class="line">       <span class="keyword">struct</span> sysfs_buffer *buffer;</div><div class="line">       <span class="keyword">struct</span> sysfs_ops *ops;</div><div class="line">       <span class="keyword">int</span> error = -EACCES;</div><div class="line"></div><div class="line">       <span class="comment">/* need attr_sd for attr and ops, its parent for kobj */</span></div><div class="line">       <span class="keyword">if</span> (!sysfs_get_active_two(attr_sd))</div><div class="line">              <span class="keyword">return</span> -ENODEV;</div><div class="line"></div><div class="line">       <span class="comment">/* every kobject with an attribute needs a ktype assigned */</span></div><div class="line">       <span class="comment">//将buffer-&gt;ops设置为kobj-&gt;ktype-&gt;sysfs_ops</span></div><div class="line">       <span class="keyword">if</span> (kobj-&gt;ktype &amp;&amp; kobj-&gt;ktype-&gt;sysfs_ops)</div><div class="line">              ops = kobj-&gt;ktype-&gt;sysfs_ops;</div><div class="line">       <span class="keyword">else</span> &#123;</div><div class="line">              printk(KERN_ERR <span class="string">"missing sysfs attribute operations for "</span></div><div class="line">                     <span class="string">"kobject: %s\n"</span>, kobject_name(kobj));</div><div class="line">              WARN_ON(<span class="number">1</span>);</div><div class="line">              <span class="keyword">goto</span> err_out;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="comment">/* File needs write support.</span></div><div class="line">        * The inode's perms must say it's ok,</div><div class="line">        * and we must have a store method.</div><div class="line">        */</div><div class="line">       <span class="keyword">if</span> (file-&gt;f_mode &amp; FMODE_WRITE) &#123;</div><div class="line">              <span class="keyword">if</span> (!(inode-&gt;i_mode &amp; S_IWUGO) || !ops-&gt;store)</div><div class="line">                     <span class="keyword">goto</span> err_out;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="comment">/* File needs read support.</span></div><div class="line">        * The inode's perms must say it's ok, and we there</div><div class="line">        * must be a show method for it.</div><div class="line">        */</div><div class="line">       <span class="keyword">if</span> (file-&gt;f_mode &amp; FMODE_READ) &#123;</div><div class="line">              <span class="keyword">if</span> (!(inode-&gt;i_mode &amp; S_IRUGO) || !ops-&gt;show)</div><div class="line">                     <span class="keyword">goto</span> err_out;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="comment">/* No error? Great, allocate a buffer for the file, and store it</span></div><div class="line">        * it in file-&gt;private_data for easy access.</div><div class="line">        */</div><div class="line">       error = -ENOMEM;</div><div class="line">       buffer = kzalloc(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> sysfs_buffer), GFP_KERNEL);</div><div class="line">       <span class="keyword">if</span> (!buffer)</div><div class="line">              <span class="keyword">goto</span> err_out;</div><div class="line"></div><div class="line">       mutex_init(&amp;buffer-&gt;mutex);</div><div class="line">       buffer-&gt;needs_read_fill = <span class="number">1</span>;</div><div class="line">       buffer-&gt;ops = ops;</div><div class="line">       file-&gt;private_data = buffer;</div><div class="line"></div><div class="line">       <span class="comment">/* make sure we have open dirent struct */</span></div><div class="line">       <span class="comment">//将buffer链至attr_sd-&gt;s_attr.open链表上</span></div><div class="line">       error = sysfs_get_open_dirent(attr_sd, buffer);</div><div class="line">       <span class="keyword">if</span> (error)</div><div class="line">              <span class="keyword">goto</span> err_free;</div><div class="line"></div><div class="line">       <span class="comment">/* open succeeded, put active references */</span></div><div class="line">       sysfs_put_active_two(attr_sd);</div><div class="line">       <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line"></div><div class="line"> err_free:</div><div class="line">       kfree(buffer);</div><div class="line"> err_out:</div><div class="line">       sysfs_put_active_two(attr_sd);</div><div class="line">       <span class="keyword">return</span> error;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这段代码中,需要注意以下几个操作,
+1、<code>buffer</code>链接在<code>file-&gt;private_data</code>，<code>buffer</code>还被链接在<code>sysfs_dirent-&gt;s_attr.open</code>，这样，VFS通过<code>file</code>，设备模型通过<code>kobject-&gt;sd-&gt;s_attr.open</code>都能找到这个要操作的 <code>buffer</code>。
+2、<code>buffer-&gt;ops</code>被设置为了<code>kobject-&gt;ktype-&gt;sysfs_ops</code>。</p>
+<p>文件的写操作入口如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> ssize_t</span></div><div class="line"><span class="title">sysfs_write_file</span><span class="params">(<span class="keyword">struct</span> file *file, <span class="keyword">const</span> <span class="keyword">char</span> __user *buf, <span class="keyword">size_t</span> count, <span class="keyword">loff_t</span> *ppos)</span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">struct</span> sysfs_buffer * buffer = file-&gt;private_data;</div><div class="line">       <span class="keyword">ssize_t</span> len;</div><div class="line"></div><div class="line">       mutex_lock(&amp;buffer-&gt;mutex);</div><div class="line">       <span class="comment">//将buf中的内容copy到了buffer-&gt;page</span></div><div class="line">       len = fill_write_buffer(buffer, buf, count);</div><div class="line">       <span class="comment">//与设备模型的交互</span></div><div class="line">       <span class="keyword">if</span> (len &gt; <span class="number">0</span>)</div><div class="line">              len = flush_write_buffer(file-&gt;f_path.dentry, buffer, len);</div><div class="line">       <span class="comment">//更新ppos</span></div><div class="line">       <span class="keyword">if</span> (len &gt; <span class="number">0</span>)</div><div class="line">              *ppos += len;</div><div class="line">       mutex_unlock(&amp;buffer-&gt;mutex);</div><div class="line">       <span class="keyword">return</span> len;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>首先，调用<code>fill_write_buffer()</code>将用户空间传值下来的数值copy到<code>buffer-&gt;page</code>，然后再调用<code>flush_write_buffer()</code>与设备模型进行交互。
+<code>flush_wirte_buffer()</code>代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span></span></div><div class="line"><span class="title">flush_write_buffer</span><span class="params">(<span class="keyword">struct</span> dentry * dentry, <span class="keyword">struct</span> sysfs_buffer * buffer, <span class="keyword">size_t</span> count)</span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">struct</span> sysfs_dirent *attr_sd = dentry-&gt;d_fsdata;</div><div class="line">       <span class="keyword">struct</span> kobject *kobj = attr_sd-&gt;s_parent-&gt;s_dir.kobj;</div><div class="line">       <span class="keyword">struct</span> sysfs_ops * ops = buffer-&gt;ops;</div><div class="line">       <span class="keyword">int</span> rc;</div><div class="line"></div><div class="line">       <span class="comment">/* need attr_sd for attr and ops, its parent for kobj */</span></div><div class="line">       <span class="keyword">if</span> (!sysfs_get_active_two(attr_sd))</div><div class="line">              <span class="keyword">return</span> -ENODEV;</div><div class="line"></div><div class="line">       rc = ops-&gt;store(kobj, attr_sd-&gt;s_attr.attr, buffer-&gt;page, count);</div><div class="line"></div><div class="line">       sysfs_put_active_two(attr_sd);</div><div class="line"></div><div class="line">       <span class="keyword">return</span> rc;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>我们在分析<code>open()</code>操作的时候曾分析到，<code>buffer</code>的<code>ops</code>是<code>kobject-&gt;ktype-&gt;ops</code>.在这里,它相当于调用了<code>kobject-&gt;ktype-&gt;ops-&gt;store()</code>.参数分别为:操作的<code>kobject</code>，文件对应的属性，写入的值和值的长度。
+Sysfs这样设计,主要是在VFS保持一个统一的接口,因为每一个<code>kobject</code>对应的属性值都不相同,相应的,操作方法也不一样,这样,在<code>ktype</code>中就区别开来了.</p>
+<p>文件的读操作相应接口为<code>sysfs_read_file()</code>，代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> ssize_t</span></div><div class="line"><span class="title">sysfs_read_file</span><span class="params">(<span class="keyword">struct</span> file *file, <span class="keyword">char</span> __user *buf, <span class="keyword">size_t</span> count, <span class="keyword">loff_t</span> *ppos)</span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">struct</span> sysfs_buffer * buffer = file-&gt;private_data;</div><div class="line">       <span class="keyword">ssize_t</span> retval = <span class="number">0</span>;</div><div class="line"></div><div class="line">       mutex_lock(&amp;buffer-&gt;mutex);</div><div class="line">       <span class="comment">//从设备模型中将值取出.并存入buffer-&gt;page中</span></div><div class="line">       <span class="keyword">if</span> (buffer-&gt;needs_read_fill) &#123;</div><div class="line">              retval = fill_read_buffer(file-&gt;f_path.dentry,buffer);</div><div class="line">              <span class="keyword">if</span> (retval)</div><div class="line">                     <span class="keyword">goto</span> out;</div><div class="line">       &#125;</div><div class="line">       <span class="comment">//将buffer-&gt;page中的值copy到用户空间的buf</span></div><div class="line">       pr_debug(<span class="string">"%s: count = %zd, ppos = %lld, buf = %s\n"</span>,</div><div class="line">               __FUNCTION__, count, *ppos, buffer-&gt;page);</div><div class="line">       retval = simple_read_from_buffer(buf, count, ppos, buffer-&gt;page,</div><div class="line">                                    buffer-&gt;count);</div><div class="line">out:</div><div class="line">       mutex_unlock(&amp;buffer-&gt;mutex);</div><div class="line">       <span class="keyword">return</span> retval;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>读操作的流程刚好和写操作流程相反.它先从设备模型中取值,然后再copy到用户空间.
+<code>fill_read_buffer</code>的代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">fill_read_buffer</span><span class="params">(<span class="keyword">struct</span> dentry * dentry, <span class="keyword">struct</span> sysfs_buffer * buffer)</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">struct</span> sysfs_dirent *attr_sd = dentry-&gt;d_fsdata;</div><div class="line">       <span class="keyword">struct</span> kobject *kobj = attr_sd-&gt;s_parent-&gt;s_dir.kobj;</div><div class="line">       <span class="keyword">struct</span> sysfs_ops * ops = buffer-&gt;ops;</div><div class="line">       <span class="keyword">int</span> ret = <span class="number">0</span>;</div><div class="line">       <span class="keyword">ssize_t</span> count;</div><div class="line"></div><div class="line">       <span class="keyword">if</span> (!buffer-&gt;page)</div><div class="line">              buffer-&gt;page = (<span class="keyword">char</span> *) get_zeroed_page(GFP_KERNEL);</div><div class="line">       <span class="keyword">if</span> (!buffer-&gt;page)</div><div class="line">              <span class="keyword">return</span> -ENOMEM;</div><div class="line"></div><div class="line">       <span class="comment">/* need attr_sd for attr and ops, its parent for kobj */</span></div><div class="line">       <span class="keyword">if</span> (!sysfs_get_active_two(attr_sd))</div><div class="line">              <span class="keyword">return</span> -ENODEV;</div><div class="line"></div><div class="line">       buffer-&gt;event = atomic_read(&amp;attr_sd-&gt;s_attr.open-&gt;event);</div><div class="line">       count = ops-&gt;show(kobj, attr_sd-&gt;s_attr.attr, buffer-&gt;page);</div><div class="line"></div><div class="line">       sysfs_put_active_two(attr_sd);</div><div class="line"></div><div class="line">       <span class="comment">/*</span></div><div class="line">        * The code works fine with PAGE_SIZE return but it's likely to</div><div class="line">        * indicate truncated result or overflow in normal use cases.</div><div class="line">        */</div><div class="line">       <span class="keyword">if</span> (count &gt;= (<span class="keyword">ssize_t</span>)PAGE_SIZE) &#123;</div><div class="line">              print_symbol(<span class="string">"fill_read_buffer: %s returned bad count\n"</span>,</div><div class="line">                     (<span class="keyword">unsigned</span> <span class="keyword">long</span>)ops-&gt;show);</div><div class="line">              <span class="comment">/* Try to struggle along */</span></div><div class="line">              count = PAGE_SIZE - <span class="number">1</span>;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">if</span> (count &gt;= <span class="number">0</span>) &#123;</div><div class="line">              buffer-&gt;needs_read_fill = <span class="number">0</span>;</div><div class="line">              buffer-&gt;count = count;</div><div class="line">       &#125; <span class="keyword">else</span> &#123;</div><div class="line">              ret = count;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> ret;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在这里,我们看到,最终会调用<code>kobject-&gt;ktype-&gt;ops-&gt;show()</code>方法.参数含义同写操作中是一样的.</p>
+<h2>在sysfs中创建二进制属性文件</h2>
+<p>二制制属性通常用于firmware中，它用来更新firmware的固件。
+它的接口为<code>sysfs_create_bin_file()</code>，代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">sysfs_create_bin_file</span><span class="params">(<span class="keyword">struct</span> kobject * kobj, <span class="keyword">struct</span> bin_attribute * attr)</span></span></div><div class="line">&#123;</div><div class="line">       BUG_ON(!kobj || !kobj-&gt;sd || !attr);</div><div class="line"></div><div class="line">       <span class="keyword">return</span> sysfs_add_file(kobj-&gt;sd, &amp;attr-&gt;attr, SYSFS_KOBJ_BIN_ATTR);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>sysfs_add_file()</code>这个函数我们在之前已经分析过,在这个地方,可能会引起迷糊,因为在<code>sysfs_add_file()</code>中有:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">sysfs_add_file</span><span class="params">(<span class="keyword">struct</span> sysfs_dirent *dir_sd, <span class="keyword">const</span> <span class="keyword">struct</span> attribute *attr,</span></span></div><div class="line">                 <span class="keyword">int</span> type)</div><div class="line">&#123;</div><div class="line">       ……</div><div class="line">       sd-&gt;s_attr.attr = (<span class="keyword">void</span> *)attr;</div><div class="line">       ……</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里为什么是<code>sd-&gt;s_attr</code>呢? 应该是<code>sd-&gt; s_bin_attr</code>才对吧!
+仔细观察<code>struct sysfs_dirent</code>的结构,如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> sysfs_dirent &#123;</div><div class="line">       <span class="keyword">atomic_t</span>         s_count;</div><div class="line">       <span class="keyword">atomic_t</span>         s_active;</div><div class="line">       <span class="keyword">struct</span> sysfs_dirent  *s_parent;</div><div class="line">       <span class="keyword">struct</span> sysfs_dirent  *s_sibling;</div><div class="line">       <span class="keyword">const</span> <span class="keyword">char</span>           *s_name;</div><div class="line"></div><div class="line">       <span class="keyword">union</span> &#123;</div><div class="line">              <span class="keyword">struct</span> sysfs_elem_dir        s_dir;</div><div class="line">              <span class="keyword">struct</span> sysfs_elem_symlink    s_symlink;</div><div class="line">              <span class="keyword">struct</span> sysfs_elem_attr       s_attr;</div><div class="line">              <span class="keyword">struct</span> sysfs_elem_bin_attr   s_bin_attr;</div><div class="line">       &#125;;</div><div class="line"></div><div class="line">       <span class="keyword">unsigned</span> <span class="keyword">int</span>           s_flags;</div><div class="line">       <span class="keyword">ino_t</span>                  s_ino;</div><div class="line">       <span class="keyword">umode_t</span>                s_mode;</div><div class="line">       <span class="keyword">struct</span> iattr           *s_iattr;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>注意中间是一个<code>union</code>结构，实际上只占用一个内存空间，而且<code>s_attr</code>与<code>s_bin_attr</code>的第一个属性都为<code>struct attribute</code>，所以在这里,<code>sd-&gt;s_attr</code>与<code>sd-&gt; s_bin_attr</code>;的效果是一样的。内核这样处理，又少用了一个接口。看来作者在设计的时候,花了很多的心思.</p>
+<p>二进制的文件读写与普通属性的文件读写方式大部份都一样，所不同的是，二进制文件的读写接口分别是:<code>sysfs_dirent-&gt;s_bin_attr.bin_attr-&gt;read</code>和<code>sysfs_dirent-&gt;s_bin_attr.bin_attr-&gt;write</code>。</p>
+<h2>sysfs文件系统中的链接文件</h2>
+<p>创建链接文件的接口为:<code>sysfs_create_link()</code>.代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">sysfs_create_link</span><span class="params">(<span class="keyword">struct</span> kobject * kobj, <span class="keyword">struct</span> kobject * target, <span class="keyword">const</span> <span class="keyword">char</span> * name)</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">struct</span> sysfs_dirent *parent_sd = <span class="literal">NULL</span>;</div><div class="line">       <span class="keyword">struct</span> sysfs_dirent *target_sd = <span class="literal">NULL</span>;</div><div class="line">       <span class="keyword">struct</span> sysfs_dirent *sd = <span class="literal">NULL</span>;</div><div class="line">       <span class="keyword">struct</span> sysfs_addrm_cxt acxt;</div><div class="line">       <span class="keyword">int</span> error;</div><div class="line"></div><div class="line">       BUG_ON(!name);</div><div class="line"></div><div class="line">       <span class="keyword">if</span> (!kobj)</div><div class="line">              parent_sd = &amp;sysfs_root;</div><div class="line">       <span class="keyword">else</span></div><div class="line">              parent_sd = kobj-&gt;sd;</div><div class="line"></div><div class="line">       error = -EFAULT;</div><div class="line">       <span class="keyword">if</span> (!parent_sd)</div><div class="line">              <span class="keyword">goto</span> out_put;</div><div class="line"></div><div class="line">       <span class="comment">/* target-&gt;sd can go away beneath us but is protected with</span></div><div class="line">        * sysfs_assoc_lock.  Fetch target_sd from it.</div><div class="line">        */</div><div class="line">       spin_lock(&amp;sysfs_assoc_lock);</div><div class="line">       <span class="keyword">if</span> (target-&gt;sd)</div><div class="line">              target_sd = sysfs_get(target-&gt;sd);</div><div class="line">       spin_unlock(&amp;sysfs_assoc_lock);</div><div class="line"></div><div class="line">       error = -ENOENT;</div><div class="line">       <span class="keyword">if</span> (!target_sd)</div><div class="line">              <span class="keyword">goto</span> out_put;</div><div class="line"></div><div class="line">       error = -ENOMEM;</div><div class="line">       sd = sysfs_new_dirent(name, S_IFLNK|S_IRWXUGO, SYSFS_KOBJ_LINK);</div><div class="line">       <span class="keyword">if</span> (!sd)</div><div class="line">              <span class="keyword">goto</span> out_put;</div><div class="line"></div><div class="line">       sd-&gt;s_symlink.target_sd = target_sd;</div><div class="line">       target_sd = <span class="literal">NULL</span>; <span class="comment">/* reference is now owned by the symlink */</span></div><div class="line"></div><div class="line">       sysfs_addrm_start(&amp;acxt, parent_sd);</div><div class="line">       error = sysfs_add_one(&amp;acxt, sd);</div><div class="line">       sysfs_addrm_finish(&amp;acxt);</div><div class="line"></div><div class="line">       <span class="keyword">if</span> (error)</div><div class="line">              <span class="keyword">goto</span> out_put;</div><div class="line"></div><div class="line">       <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line"></div><div class="line"> out_put:</div><div class="line">       sysfs_put(target_sd);</div><div class="line">       sysfs_put(sd);</div><div class="line">       <span class="keyword">return</span> error;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的操作大部份都与普通文件的创建相似,所不同的只是下面这段代码的区别:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sd-&gt;s_symlink.target_sd = target_sd;</div></pre></td></tr></table></figure></p>
+<p>就是在<code>sd-&gt;s_symlink.target_sd</code>保存到链接目的地的<code>sysfs_dirent</code>.
+符号链接的操作如下所示:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> <span class="keyword">struct</span> inode_operations sysfs_symlink_inode_operations = &#123;</div><div class="line">       .readlink = generic_readlink,</div><div class="line">       .follow_link = sysfs_follow_link,</div><div class="line">       .put_link = sysfs_put_link,</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>在通过符号链接查找文件的时候,在VFS中会调用<code>inod-&gt;i_op-&gt;readlink()</code>进行操作.它的代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">generic_readlink</span><span class="params">(<span class="keyword">struct</span> dentry *dentry, <span class="keyword">char</span> __user *buffer, <span class="keyword">int</span> buflen)</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">struct</span> nameidata nd;</div><div class="line">       <span class="keyword">void</span> *cookie;</div><div class="line"></div><div class="line">       nd.depth = <span class="number">0</span>;</div><div class="line">       cookie = dentry-&gt;d_inode-&gt;i_op-&gt;follow_link(dentry, &amp;nd);</div><div class="line">       <span class="keyword">if</span> (!IS_ERR(cookie)) &#123;</div><div class="line">              <span class="keyword">int</span> res = vfs_readlink(dentry, buffer, buflen, nd_get_link(&amp;nd));</div><div class="line">              <span class="keyword">if</span> (dentry-&gt;d_inode-&gt;i_op-&gt;put_link)</div><div class="line">                     dentry-&gt;d_inode-&gt;i_op-&gt;put_link(dentry, &amp;nd, cookie);</div><div class="line">              cookie = ERR_PTR(res);</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> PTR_ERR(cookie);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>它的操作和其它文件系统一样,都是通用<code>follow_link()</code>取得目的地的路径,然后保存到<code>nd-&gt;saved_names[]</code>中,然后,调用<code>vfs_readlink()</code>将目标路径copy到<code>buffer</code>中.接着,调用<code>put_link</code>进行事后处理工作.</p>
+<p><code>follow_link()</code>的操作如下示:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> *<span class="title">sysfs_follow_link</span><span class="params">(<span class="keyword">struct</span> dentry *dentry, <span class="keyword">struct</span> nameidata *nd)</span></span></div><div class="line">&#123;</div><div class="line">       <span class="keyword">int</span> error = -ENOMEM;</div><div class="line">       <span class="keyword">unsigned</span> <span class="keyword">long</span> page = get_zeroed_page(GFP_KERNEL);</div><div class="line">       <span class="keyword">if</span> (page)</div><div class="line">              error = sysfs_getlink(dentry, (<span class="keyword">char</span> *) page);</div><div class="line">       nd_set_link(nd, error ? ERR_PTR(error) : (<span class="keyword">char</span> *)page);</div><div class="line">       <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>nd_set_link()</code>是将<code>page</code>中的值copy到<code>nd-&gt;saved_name[]</code>中.
+<code>sysfs_getlink()</code>的代码如下:
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">sysfs_getlink</span><span class="params">(<span class="keyword">struct</span> dentry *dentry, <span class="keyword">char</span> * path)</span></span></div><div class="line">&#123;</div><div class="line">	<span class="keyword">struct</span> sysfs_dirent *sd = dentry-&gt;d_fsdata;</div><div class="line">	<span class="keyword">struct</span> sysfs_dirent *parent_sd = sd-&gt;s_parent;</div><div class="line">	<span class="keyword">struct</span> sysfs_dirent *target_sd = sd-&gt;s_symlink.target_sd;</div><div class="line">	<span class="keyword">int</span> error;</div><div class="line"></div><div class="line">	mutex_lock(&amp;sysfs_mutex);</div><div class="line">	error = sysfs_get_target_path(parent_sd, target_sd, path);</div><div class="line">	mutex_unlock(&amp;sysfs_mutex);</div><div class="line"></div><div class="line">	<span class="keyword">return</span> error;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><code>sysfs_get_target_path()</code>代码如下：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">sysfs_get_target_path</span><span class="params">(<span class="keyword">struct</span> sysfs_dirent *parent_sd,</span></span></div><div class="line">                             <span class="keyword">struct</span> sysfs_dirent *target_sd, <span class="keyword">char</span> *path)</div><div class="line">&#123;</div><div class="line">       <span class="keyword">struct</span> sysfs_dirent *base, *sd;</div><div class="line">       <span class="keyword">char</span> *s = path;</div><div class="line">       <span class="keyword">int</span> len = <span class="number">0</span>;</div><div class="line"></div><div class="line">       <span class="comment">/* go up to the root, stop at the base */</span></div><div class="line">       base = parent_sd;</div><div class="line">       <span class="keyword">while</span> (base-&gt;s_parent) &#123;</div><div class="line">              sd = target_sd-&gt;s_parent;</div><div class="line">              <span class="keyword">while</span> (sd-&gt;s_parent &amp;&amp; base != sd)</div><div class="line">                     sd = sd-&gt;s_parent;</div><div class="line"></div><div class="line">              <span class="keyword">if</span> (base == sd)</div><div class="line">                     <span class="keyword">break</span>;</div><div class="line"></div><div class="line">              <span class="built_in">strcpy</span>(s, <span class="string">"../"</span>);</div><div class="line">              s += <span class="number">3</span>;</div><div class="line">              base = base-&gt;s_parent;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="comment">/* determine end of target string for reverse fillup */</span></div><div class="line">       sd = target_sd;</div><div class="line">       <span class="keyword">while</span> (sd-&gt;s_parent &amp;&amp; sd != base) &#123;</div><div class="line">              len += <span class="built_in">strlen</span>(sd-&gt;s_name) + <span class="number">1</span>;</div><div class="line">              sd = sd-&gt;s_parent;</div><div class="line">       &#125;</div><div class="line">       <span class="comment">/* check limits */</span></div><div class="line">       <span class="keyword">if</span> (len &lt; <span class="number">2</span>)</div><div class="line">              <span class="keyword">return</span> -EINVAL;</div><div class="line">       len--;</div><div class="line">       <span class="keyword">if</span> ((s - path) + len &gt; PATH_MAX)</div><div class="line">              <span class="keyword">return</span> -ENAMETOOLONG;</div><div class="line">       <span class="comment">/* reverse fillup of target string from target to base */</span></div><div class="line">       sd = target_sd;</div><div class="line">       <span class="keyword">while</span> (sd-&gt;s_parent &amp;&amp; sd != base) &#123;</div><div class="line">              <span class="keyword">int</span> slen = <span class="built_in">strlen</span>(sd-&gt;s_name);</div><div class="line"></div><div class="line">              len -= slen;</div><div class="line">              <span class="built_in">strncpy</span>(s + len, sd-&gt;s_name, slen);</div><div class="line">              <span class="keyword">if</span> (len)</div><div class="line">                     s[--len] = <span class="string">'/'</span>;</div><div class="line"></div><div class="line">              sd = sd-&gt;s_parent;</div><div class="line">       &#125;</div><div class="line">       <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这段代码的逻辑比较简单.它先是找到目标路径和当前路径相同的父结点,然后再沿着目标结点往相同的父结点向上走,将路径依次从缓存区后面往前面保存.
+例如: <code>/sys/eric/kernel/test</code>链接到了<code>/sys/sys/device</code>.
+它先找到两个路径共有的父结点<code>/sys</code>此时缓存区为:<code>/sys</code>然后,沿着<code>/sys/sys/device</code>往<code>/sys</code>移动,路径加从缓存区的后面往前面加.依次为:
+1: /sys/     /device
+2:/sys/sys/device
+这样就找到了目的地的路径. ^_^.
+后面<code>sysfs_put_link()</code>的操作就不再讲述了,它只是释放掉缓存区.</p>
+<h2>小结</h2>
+<p>在本小节里,我们深入探讨了sysfs文件系统的实现机理.这对于我们理解linux设备模型是很有帮助的.</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/02/27/probe-of-linux-kernel-driver-module/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/03/02/platform-bus/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

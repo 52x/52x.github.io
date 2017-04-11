@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            最长公共子串问题的几种算法 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,DP,LCS,HASH,suffix array,SAM">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="最长公共子串问题的几种算法 | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="DP"> <meta property="og:article:tag" content="LCS"> <meta property="og:article:tag" content="HASH"> <meta property="og:article:tag" content="suffix array"> <meta property="og:article:tag" content="SAM"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">一. 最长公共子串</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">二. 两个字符串的LCS</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">2.1 朴素穷举算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">2.2 动态规划算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">2.3 字符串哈希</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">三. N个字符串的LCS</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">3.1 扩展KMP</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">3.2 后缀数组</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">3.3 后缀自动机</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">四. 总结</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                最长公共子串问题的几种算法
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>4月 21, 2015</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/DP/">DP</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/HASH/">HASH</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/LCS/">LCS</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/SAM/">SAM</a></li><li class="mdl-menu__item"><a class="post_tag-link" href="/tags/suffix-array/">suffix array</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=最长公共子串问题的几种算法&url=http://yoursite.com//2015/04/21/Longest-Common-Substring/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=最长公共子串问题的几种算法&url=http://yoursite.com//2015/04/21/Longest-Common-Substring/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2015/04/21/Longest-Common-Substring/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2015/04/21/Longest-Common-Substring/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h1>一. 最长公共子串</h1>
+<p>**最长公共子串(Longest Common Substring ,简称LCS)**问题，是指求给定的一组字符串	长度最大的共有的子串的问题。例如字符串&quot;abcb&quot;,&quot;bca&quot;,&quot;acbc&quot;的LCS就是&quot;bc&quot;。<code>LCS</code>同时也是<code>Longest Common Subsequence</code>的缩写，注意区分<code>子串(Substring)</code>和<code>子序列(Subsequence)</code>的区别，子串必须连续，而子序列可以不连续。</p>
+<p>本文首先从求解<em>两个字符串</em>的LCS入手，介绍暴力穷举、DP、字符串哈希等算法在处理该问题的应用，并分析复杂度。之后扩展至求<em>多个字符串</em>的LCS，引入后缀数组、后缀自动机等工具，并分析复杂度。</p>
+<p>&lt;!-- more --&gt;</p>
+<p><em>变量说明</em>
+<code>L</code>: 字符串的最大长度
+<code>K</code>: 最长公共子串的长度
+<code>N</code>: N个字符串</p>
+<h1>二. 两个字符串的LCS</h1>
+<h2>2.1 朴素穷举算法</h2>
+<p>显然该算法极端的低效，可以枚举A串以i开始，B串以j开始，向后最长有多少相同字符。算法时间复杂度O(L^2*K)。
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">comlen</span><span class="params">(<span class="keyword">char</span> * p, <span class="keyword">char</span> * q)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> len = <span class="number">0</span>;</div><div class="line">    <span class="keyword">while</span>(*p &amp;&amp; *q &amp;&amp; *p++ == *q++) &#123;</div><div class="line">        ++len;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> len;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">LCS_base</span><span class="params">(<span class="keyword">char</span> * X, <span class="keyword">int</span> xlen, <span class="keyword">char</span> * Y, <span class="keyword">int</span> ylen)</span> </span>&#123;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; xlen; ++i) &#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; ylen; ++j) &#123;</div><div class="line">            <span class="keyword">int</span> len = comlen(&amp;X[i],&amp;Y[j]);</div><div class="line">            <span class="keyword">if</span>(len &gt; maxlen) &#123;</div><div class="line">                maxlen = len;</div><div class="line">                maxindex = i;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> maxlen;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>2.2 动态规划算法</h2>
+<p>最长公共子序列(Longest Common Subsequence)是一个经典的DP，本文谈及的最长公共子串也可以用类似的方法解决。DP状态f[i,j]代表A[0..i-1]和B[0..j-1]的最长公共子串长度。f[lenA-1,lenB-1]为所求。状态转移为:
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">f[i,j] = f[i-1,j-1]+1 (A[i]==B[j])</div><div class="line">		0 	ohterwise</div></pre></td></tr></table></figure></p>
+<p>时间复杂度为O(L^2)，空间复杂度也是O(L^2)。如果使用滚动数组或者降维的方法，可以将空间复杂度优化至O(L)，时间复杂度不变。</p>
+<p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">LCS_dp</span><span class="params">(<span class="keyword">char</span> * X, <span class="keyword">int</span> xlen, <span class="keyword">char</span> * Y, <span class="keyword">int</span> ylen)</span> </span>&#123;</div><div class="line">    <span class="built_in">memset</span>(dp,<span class="number">0</span>,<span class="keyword">sizeof</span>(dp));</div><div class="line">    <span class="keyword">int</span> maxlen =<span class="number">0</span>, maxindex = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; xlen; ++i) &#123;</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j = ylen<span class="number">-1</span>; j &gt;= <span class="number">0</span>; --j) &#123;</div><div class="line">            <span class="keyword">if</span>(X[i] == Y[j]) &#123;</div><div class="line">                <span class="keyword">if</span>(i &amp;&amp; j) &#123;</div><div class="line">                    dp[j] = dp[j<span class="number">-1</span>] + <span class="number">1</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span>(i == <span class="number">0</span> || j == <span class="number">0</span>) &#123;</div><div class="line">                    dp[j] = <span class="number">1</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span>(dp[j] &gt; maxlen) &#123;</div><div class="line">                    maxlen = dp[j];</div><div class="line">                    maxindex = i + <span class="number">1</span> - maxlen;</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                dp[j] = <span class="number">0</span>;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> maxlen;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>2.3 字符串哈希</h2>
+<p>字符串hash的方法有许多种，对一个长度为L的字符串，进行O(L)时间的预处理后，可以常数时间获得该字符串某个子串的hash值。</p>
+<p>对于LCS问题，可以二分枚举答案K，假设有长度为K的公共子串，并对K的可行性进行验证。如果验证K可行，K'(K'&lt;K)也一定可行，尝试增加K，反之尝试缩小K，至多只会尝试O(LogL)次。</p>
+<p>接下来的问题集中到，如果应用字符串哈希的算法尽可能高效的验证是否存在长度为K的公共子串。可以将A串的所有长度为K的子串hash值存入set容器，之后遍历B串中所有长度为K的子串，如果hash值在set中出现，则说明存在长度K的公共子串。长度为K的子串至多有L个，set插入和查询的复杂度为log。因此每次验证K的时间复杂度为LlogK，因此该算法总的时间复杂度为O(L<em>LogK</em>logL)。set可以用hashtable代替，时间复杂度可达到O(L*logL)。
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> ull B = <span class="number">1e8</span>+<span class="number">7</span>;	<span class="comment">/*according to the book*/</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">100000</span>+<span class="number">100</span>;</div><div class="line">ull ah[MAXN],base[MAXN];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">C</span><span class="params">(<span class="keyword">int</span> len)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> pos=m-len+<span class="number">1</span>;</div><div class="line">    ull bh=<span class="number">0</span>,tmp=<span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++)</div><div class="line">        tmp=tmp*B+a[i];</div><div class="line">    ah[<span class="number">0</span>]=tmp;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i+len&lt;=n; i++) <span class="comment">/////////</span></div><div class="line">        ah[i+<span class="number">1</span>]=ah[i]*B+a[i+len]-a[i]*base[len];</div><div class="line">    sort(ah,ah+n-len+<span class="number">1</span>);</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i&lt;len; i++)</div><div class="line">        bh=bh*B+b[i];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>; k&lt;pos; k++) &#123;</div><div class="line">        <span class="keyword">if</span>(binary_search(ah,ah+n-len+<span class="number">1</span>,bh)) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">        &#125;</div><div class="line">        bh=bh*B+b[k+len]-b[k]*base[len];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</div><div class="line">    n=<span class="built_in">strlen</span>(a),m=<span class="built_in">strlen</span>(b);<span class="comment">// a--long b-short</span></div><div class="line">    <span class="keyword">if</span>(n&lt;m) &#123;</div><div class="line">        swap(n,m);</div><div class="line">        <span class="built_in">strcpy</span>(tmp,a);</div><div class="line">        <span class="built_in">strcpy</span>(a,b);</div><div class="line">        <span class="built_in">strcpy</span>(b,tmp);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">int</span> d=<span class="number">0</span>,up=m+<span class="number">1</span>,mid;</div><div class="line">    <span class="keyword">while</span>(up&gt;d+<span class="number">1</span>) &#123;</div><div class="line">        mid=(d+up)/<span class="number">2</span>;</div><div class="line">        <span class="keyword">if</span>(C(mid))d=mid;</div><div class="line">        <span class="keyword">else</span> up=mid;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> d;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1>三. N个字符串的LCS</h1>
+<p>将问题扩展至N个字符串的最长公共子串后，DP算法时间复杂度会陡然变高。而hash算法的时间复杂度变为O(NLlogL)，仅是随着N线性增加，不过hash算法可能会损失一定的正确性。下面再介绍几种可以处理N个字符串LCS的算法，利用扩展KMP算法，时间复杂度是O(NL^2)；后缀数组的时间复杂度是O(NLlogL)；后缀自动机的复杂度甚至可以做到O(NL)，因此对于两个串的LCS，后缀自动机是线性时间复杂度算法，非常巧妙。</p>
+<h2>3.1 扩展KMP</h2>
+<p>扩展KMP，顾名思义是KMP算法的一种扩展，它可以解决这样的问题：给出串A和串B，长度分别为lenA和lenB，要求在线性时间内，对于每个A[i]（0&lt;=i&lt;lenA)，求出A[i..lenA-1]与B的最长公共前缀长度，记为ex[i]（或者说，ex[i]为满足A[i..i+z-1]==B[0..z-1]的最大的z值）。扩展KMP的时间复杂度是线性的，只是常数会比KMP更大。</p>
+<p>利用扩展KMP解决LCS问题时，假设有A、B两个字符串。可以枚举B串的每一个后缀，用这个后缀与A串做扩展KMP，遍历A[i]和这个后缀的最长公共前缀，最大值就是LCS的解。B串每个后缀做扩展KMP的时间复杂度是O(L),一共L个后缀，因此算法时间复杂度是O(L^2)，这个算法可以直接应用于N个字符串的LCS，时间复杂度为O(N*L^2)。</p>
+<p><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> next[N],extand[N];</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">getnext</span><span class="params">(<span class="keyword">char</span> *T)</span> </span>&#123; <span class="comment">// next[i]: 以第i位置开始的子串 与 T的公共前缀</span></div><div class="line">    <span class="keyword">int</span> i,length = <span class="built_in">strlen</span>(T);</div><div class="line">    next[<span class="number">0</span>] = length;</div><div class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>; i&lt;length<span class="number">-1</span> &amp;&amp; T[i]==T[i+<span class="number">1</span>]; i++);</div><div class="line">    next[<span class="number">1</span>] = i;</div><div class="line">    <span class="keyword">int</span> a = <span class="number">1</span>;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">2</span>; k &lt; length; k++) &#123;</div><div class="line">        <span class="keyword">int</span> p = a+next[a]<span class="number">-1</span>, L = next[k-a];</div><div class="line">        <span class="keyword">if</span>( (k<span class="number">-1</span>)+L &gt;= p ) &#123;</div><div class="line">            <span class="keyword">int</span> j = (p-k+<span class="number">1</span>)&gt;<span class="number">0</span>? (p-k+<span class="number">1</span>) : <span class="number">0</span>;</div><div class="line">            <span class="keyword">while</span>(k+j&lt;length &amp;&amp; T[k+j]==T[j]) j++;<span class="comment">// 枚举(p+1，length) 与(p-k+1,length) 区间比较</span></div><div class="line">            next[k] = j, a = k;</div><div class="line">        &#125; <span class="keyword">else</span> next[k] = L;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">//求出S[i..lenS-1]与T的最长公共前缀长度，记为extand[i]</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">getextand</span><span class="params">(<span class="keyword">char</span> *S,<span class="keyword">char</span> *T)</span> </span>&#123;</div><div class="line">    <span class="built_in">memset</span>(next,<span class="number">0</span>,<span class="keyword">sizeof</span>(next));</div><div class="line">    getnext(T);</div><div class="line">    <span class="keyword">int</span> Slen = <span class="built_in">strlen</span>(S), Tlen = <span class="built_in">strlen</span>(T), a = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> MinLen = Slen&gt;Tlen?Tlen:Slen;</div><div class="line">    <span class="keyword">while</span>(a&lt;MinLen &amp;&amp; S[a]==T[a]) a++;</div><div class="line">    extand[<span class="number">0</span>] = a, a = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> k = <span class="number">1</span>; k &lt; Slen; k++) &#123;</div><div class="line">        <span class="keyword">int</span> p = a+extand[a]<span class="number">-1</span>, L = next[k-a];</div><div class="line">        <span class="keyword">if</span>( (k<span class="number">-1</span>)+L &gt;= p ) &#123;</div><div class="line">            <span class="keyword">int</span> j = (p-k+<span class="number">1</span>)&gt;<span class="number">0</span>? (p-k+<span class="number">1</span>) : <span class="number">0</span>;</div><div class="line">            <span class="keyword">while</span>(k+j&lt;Slen &amp;&amp; j&lt;Tlen &amp;&amp; S[k+j]==T[j] ) j++;</div><div class="line">            extand[k] = j;</div><div class="line">            a = k;</div><div class="line">        &#125; <span class="keyword">else</span> extand[k] = L;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">char</span> a[<span class="number">3010</span>],b[<span class="number">3010</span>];</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">LCS</span><span class="params">(<span class="keyword">char</span> *a, <span class="keyword">char</span> *b)</span> </span>&#123;</div><div class="line">    <span class="keyword">int</span> ans = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> lena = <span class="built_in">strlen</span>(a), lenb = <span class="built_in">strlen</span>(b);</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> pb=<span class="number">0</span>; pb&lt;lenb; ++pb) &#123;</div><div class="line">        getextand(a,b+pb);</div><div class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j&lt;lena; ++j)</div><div class="line">            ans = max(ans, extand[j]);</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>,ans);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>3.2 后缀数组</h2>
+<p>后缀数组是解决字符串问题的有力工具！IOI国家集训队的两篇论文非常值得一读*《后缀数组》(2004年许智磊)<em>和</em>《后缀数组——处理字符串的有力工具》(2009年罗穗骞)<em>。尤其是2009年的论文，里面给出了很多经典的例题。关于<a href="https://www.byvoid.com/blog/lcs-suffix-array/" target="_blank" rel="external">最长公共子串问题的后缀数组解法</a>，byvoid在他的文章中也有详细的讲解。本文再次简要复述算法，SA[i]表示排名第i的后缀的位置，Height[i]表示后缀SA[i]和SA[i-1]的最长公共前缀(Longest Common Prefix,LCP)，简记为Height[i]=LCP(SA[i],SA[i-1])。在本文2.3节已经说明LCS问题可以二分答案，因此我们只需要讨论如何用后缀数组验证是否存在长度为K的公共子串。设N个串分别为S1,S2,S3,...,SN，首先建立一个串S，把这N个串用不同的分隔符连接起来。验证时，找出出在Height数组中找出连续的一段Height[i..j]，使得i&lt;=k&lt;=j均满足Height[k]&gt;=K，并且i-1&lt;=k&lt;=j中，SA[k]分属于原有N个串S1..SN。如果能找到这样的一段，那么K就是可行解。算法时间复杂度O(N</em>L*logL)。
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//以下为二分验证函数</span></div><div class="line"><span class="function"><span class="keyword">bool</span> <span class="title">check</span><span class="params">(<span class="keyword">int</span> K)</span></span></div><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> i,j,k;</div><div class="line">    <span class="keyword">bool</span> ba[MAXN];</div><div class="line">    <span class="keyword">for</span> (i=<span class="number">1</span>;i&lt;=SA.N;i++)</div><div class="line">    &#123;</div><div class="line">        <span class="keyword">if</span> (SA.Height[i]&gt;=K)</div><div class="line">        &#123;</div><div class="line">            <span class="keyword">for</span> (j=i;SA.Height[j]&gt;=K &amp;&amp; j&lt;=SA.N;j++);</div><div class="line">            j--;</div><div class="line">            <span class="built_in">memset</span>(ba,<span class="number">0</span>,<span class="keyword">sizeof</span>(ba));</div><div class="line">            <span class="keyword">for</span> (k=i<span class="number">-1</span>;k&lt;=j;k++)</div><div class="line">                ba[Bel[SA.SA[k]]]=<span class="literal">true</span>;</div><div class="line">            <span class="keyword">for</span> (k=<span class="number">1</span>;ba[k] &amp;&amp; k&lt;=N;k++);</div><div class="line">            <span class="keyword">if</span> (k==N+<span class="number">1</span>)</div><div class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">            i=j;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>3.3 后缀自动机</h2>
+<p>关于后缀自动机(SAM)的教程，可以参考<a href="http://wenku.baidu.com/link?url=cZvtkdkd8D1FYn6a6BTa8glhSwdCVlSoFvNfZbGCS5yp-Jt9ZK0A9WNZkQbe0WrCV3yBzYDloATSa1S1pOZWoYtvhyiX25Fgj3HFKf7IAnm" target="_blank" rel="external">2012年noi冬令营陈立杰讲稿</a>。SAM的内容相对复杂，若要展开讨论需要较长篇幅，在此不赘述SA性质和构造方法。对于串A和B，我们先构造出串A的后缀自动机，那么然后用B串去匹配，对于B，我们一位一位地扫描，维护一个ans值，表示从B串的开始到B[i]的这个子串与A的最长公共子串。假设现在到B[i-1]的最长公共子串长度为ans，然后我们来看B[i]，如果当前节点有B[i]这个孩子，那么直接就len++即可。如果没有就找一直向前找pre，直到找到有B[i]这个孩子的节点。SAM可以在线性时间内构造，因此时间复杂度为O(N*L)。虽然SAM算法较为复杂，但是代码却非常简短。
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">struct</span> SAM &#123;</div><div class="line">    SAM *pre,*son[<span class="number">26</span>];</div><div class="line">    <span class="keyword">int</span> len,g;</div><div class="line">&#125; que[N],*root,*tail;</div><div class="line"><span class="keyword">int</span> tot;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> c,<span class="keyword">int</span> l)</span> </span>&#123;</div><div class="line">    SAM *p=tail,*np=&amp;que[tot++];</div><div class="line">    np-&gt;len=l;</div><div class="line">    tail=np;</div><div class="line">    <span class="keyword">while</span>(p&amp;&amp;p-&gt;son[c]==<span class="literal">NULL</span>) p-&gt;son[c]=np,p=p-&gt;pre;</div><div class="line">    <span class="keyword">if</span>(p==<span class="literal">NULL</span>) np-&gt;pre=root;</div><div class="line">    <span class="keyword">else</span> &#123;</div><div class="line">        SAM *q=p-&gt;son[c];</div><div class="line">        <span class="keyword">if</span>(p-&gt;len+<span class="number">1</span>==q-&gt;len) np-&gt;pre=q;</div><div class="line">        <span class="keyword">else</span> &#123;</div><div class="line">            SAM *nq=&amp;que[tot++];</div><div class="line">            *nq=*q;</div><div class="line">            nq-&gt;len=p-&gt;len+<span class="number">1</span>;</div><div class="line">            np-&gt;pre=q-&gt;pre=nq;</div><div class="line">            <span class="keyword">while</span>(p&amp;&amp;p-&gt;son[c]==q) p-&gt;son[c]=nq,p=p-&gt;pre;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">char</span> a[N/<span class="number">2</span>],b[N/<span class="number">2</span>];</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">lcs</span><span class="params">(<span class="keyword">char</span> a[],<span class="keyword">char</span> b[])</span> </span>&#123;</div><div class="line">    <span class="built_in">memset</span>(que,<span class="number">0</span>,<span class="keyword">sizeof</span>(que));</div><div class="line">    tot=<span class="number">0</span>;</div><div class="line">    root=tail=&amp;que[tot++];</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; a[i]; i++) add(a[i]-<span class="string">'a'</span>,i+<span class="number">1</span>);</div><div class="line">    SAM *p=root;</div><div class="line">    <span class="keyword">int</span> ans=<span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>,l=<span class="number">0</span>; b[i]; i++,ans=max(ans,l)) &#123;</div><div class="line">        <span class="keyword">int</span> c=b[i]-<span class="string">'a'</span>;</div><div class="line">        <span class="keyword">if</span>(p-&gt;son[c]) p=p-&gt;son[c],l++;</div><div class="line">        <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">while</span>(p&amp;&amp;p-&gt;son[c]==<span class="literal">NULL</span>) p=p-&gt;pre;</div><div class="line">            <span class="keyword">if</span>(p==<span class="literal">NULL</span>) p=root,l=<span class="number">0</span>;</div><div class="line">            <span class="keyword">else</span> l=p-&gt;len+<span class="number">1</span>,p=p-&gt;son[c];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> ans;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1>四. 总结</h1>
+<p>本文利用几种常见的字符串工具实现了LCS问题，从暴力穷举算法逐步优化，直至线性时间复杂度的SAM算法。逐步寻找最优解是本文的初衷，同时也可以感知到高效的算法往往简洁而优美。</p>
+<p>本文提及的算法复杂度总结如下：
+![LCS各算法复杂度分析](http://7tsysl.com1.z0.glb.clouddn.com/LCS Complexity.png)
+<code>L</code>: 字符串的最大长度
+<code>K</code>: 最长公共子串的长度
+<code>N</code>: N个字符串</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2015/04/19/dt-basic-concept/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2015/04/22/dt-code-analysis/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

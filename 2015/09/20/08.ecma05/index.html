@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            JavaScript 读书心得之五：浏览器对象模型（BOM） | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,JavaScript">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="JavaScript 读书心得之五：浏览器对象模型（BOM） | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="JavaScript"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">概述</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">Window 对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">window.open() 方法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">跨浏览器通信</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">导航</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">几何学</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.5.</span> <span class="post-toc-text">其他对象及方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.5.1.</span> <span class="post-toc-text">navigator 对象</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.5.2.</span> <span class="post-toc-text">URL 的编码 / 解码方法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.5.3.</span> <span class="post-toc-text">其他方法</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.</span> <span class="post-toc-text">Document 对象</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">访问 Document 对象：</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">document.write() 方法</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.</span> <span class="post-toc-text">Cookie</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">cookie 信息</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">读写方法</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.</span> <span class="post-toc-text">Web Storage</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">操作方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.1.1.</span> <span class="post-toc-text">存入 / 读取数据</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.1.2.</span> <span class="post-toc-text">清除数据</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.1.3.</span> <span class="post-toc-text">遍历操作</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">storage 事件</span></a></li></ol></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                JavaScript 读书心得之五：浏览器对象模型（BOM）
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>9月 21, 2015</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/JavaScript/">JavaScript</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=JavaScript 读书心得之五：浏览器对象模型（BOM）&url=http://yoursite.com//2015/09/20/08.ecma05/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=JavaScript 读书心得之五：浏览器对象模型（BOM）&url=http://yoursite.com//2015/09/20/08.ecma05/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2015/09/20/08.ecma05/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2015/09/20/08.ecma05/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <h2>概述</h2>
+<p>这是核心和 DOM 的中间过渡层，指 JavaScript 的客户端实现，而这个客户端就是 JavaScript 的宿主对象，通常是针对 Web 浏览器，所以称之为 BOM（浏览器对象模型）。
+BOM 的核心是 Window 对象，JavaScript 的很多对象及其属性、方法并不是 DOM 的一部分，而是定义在了 Window 对象上。
+标准化方面，核心是 ECMA 标准，DOM 是 W3C 标准，而 BOM 还没有一个事实标准，目前 <a href="http://www.whatwg.org/" target="_blank" rel="external">WHAT-WG（Web 超文本应用技术工作组）</a> 正在制定一个规范。不过 BOM 的大部分重要特性都是 Netscape3 事实标准的一部分，可以被所有浏览器支持。</p>
+<h2>Window 对象</h2>
+<p>Window 对象是一个全局对象，它包含了脚本中的所有全局对象及其属性、方法；它还代表了浏览器窗口（viewport，简称视口），因此拥有一些属性、方法对其进行操作；它还包含了重要的 Document 对象，这是 DOM 的基础。</p>
+<p>当页面释放（unload）时，Window 对象中的所有对象及其属性、方法被彻底移除，但它本身没有被销毁，指向它的引用依然有效；另外还有一个 closed 属性也保留。这是一个非常重要的特性，可以让脚本进行跨浏览器通信。</p>
+<p>每个 Window 对象都是独立的，包括它里面的对象及其属性、方法。</p>
+<p>Window 对象还有一个等效的对象 self，即 <code>window.open() 相当于 self.open()、window.name 相当于 self.name</code>。</p>
+<h3>window.open() 方法</h3>
+<ul>
+<li>name 属性用于为链接的 target 属性做引导，另外 window.open() 方法的第二个参数就是 name 属性</li>
+<li>opener 属性用于弹出窗口，指向打开它的主窗口；即使弹出窗口加载了新的页面，它的 opener 属性还保存着指向</li>
+<li>closed 属性用于表示窗口是否被关闭；页面释放时，所有对象被移除，这是唯一保留的属性</li>
+<li>window.close() 方法可以关闭窗口；用户打开的窗口关闭时会让用户确认操作，而脚本打开的窗口可以直接关闭</li>
+<li><a href="http://www.quirksmode.org/js/popup.html" target="_blank" rel="external">弹出窗口特性列表</a>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> popWindow;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">popup</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">// popWindow 为指向弹出窗口对象的变量，popWindow.name 为 “google”，popWindow.opener 为弹出窗口的主窗口</span></div><div class="line">    popWindow = <span class="built_in">window</span>.open(<span class="string">"images/test1.html"</span>, <span class="string">"google"</span>, <span class="string">"width=500,height=400"</span>);</div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></li>
+</ul>
+<h3>跨浏览器通信</h3>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">communicate</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> openpop = <span class="built_in">document</span>.getElementById(<span class="string">"openpop"</span>);</div><div class="line">    <span class="keyword">if</span> (!openpop) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">    openpop.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        <span class="keyword">return</span> popup();</div><div class="line">        <span class="comment">//popWindow.alert("让弹出窗口进行动作");</span></div><div class="line">    &#125;;</div><div class="line">    <span class="keyword">var</span> newpop = <span class="built_in">document</span>.getElementById(<span class="string">"newpop"</span>);</div><div class="line">    <span class="keyword">if</span> (!newpop) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">    newpop.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        <span class="keyword">var</span> child = popWindow.document.getElementById(<span class="string">"click"</span>);</div><div class="line">        child.innerHTML = <span class="string">"haha，虽然弹出窗口加载了新内容，但是它的内容还是能被改变"</span>;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;;</div><div class="line">    <span class="keyword">var</span> closepop = <span class="built_in">document</span>.getElementById(<span class="string">"closepop"</span>);</div><div class="line">    <span class="keyword">if</span> (!closepop) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">    closepop.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        popWindow.close();</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>主窗口释放时指向弹出窗口的变量 popWindow 会破坏，所以要让弹出窗口重新恢复 popWindow 对其的指向
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">winExit</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">// 检测弹出窗口存在与否</span></div><div class="line">    <span class="keyword">if</span> (popWindow) &#123;</div><div class="line">        popWindow.resetParent();</div><div class="line">        <span class="comment">//alert("已经给弹出窗口信息了");</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>导航</h3>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">navigate</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">// 假定当前网址为 http://user:passwd@www.example.com:4097/path/a.html?x=111#part1</span></div><div class="line">    <span class="built_in">window</span>.location.href <span class="comment">// "http://user:passwd@www.example.com:4097/path/a.html?x=111#part1"</span></div><div class="line">    <span class="built_in">window</span>.location.protocol <span class="comment">// "http:"</span></div><div class="line">    <span class="built_in">window</span>.location.host <span class="comment">// "www.example.com:4097"</span></div><div class="line">    <span class="built_in">window</span>.location.hostname <span class="comment">// "www.example.com"</span></div><div class="line">    <span class="built_in">window</span>.location.port <span class="comment">// "4097"</span></div><div class="line">    <span class="built_in">window</span>.location.pathname <span class="comment">// "/path/a.html"</span></div><div class="line">    <span class="built_in">window</span>.location.search <span class="comment">// "?x=111"</span></div><div class="line">    <span class="built_in">window</span>.location.hash <span class="comment">// "#part1"</span></div><div class="line">    <span class="built_in">window</span>.location.user <span class="comment">// "user"</span></div><div class="line">    <span class="built_in">window</span>.location.password <span class="comment">// "passed"</span></div><div class="line"></div><div class="line">    <span class="comment">// 优先从本地缓存重新加载（默认值），相当于浏览器的 “刷新” 或 “重新载入” 按钮</span></div><div class="line">    <span class="built_in">window</span>.location.reload()</div><div class="line">    <span class="comment">// 优先从服务器重新加载</span></div><div class="line">    <span class="built_in">window</span>.location.reload(<span class="literal">true</span>)</div><div class="line"></div><div class="line">    <span class="comment">// 跳转到另一个网址</span></div><div class="line">    <span class="built_in">window</span>.location.assign(<span class="string">'http://www.google.com'</span>)</div><div class="line">    <span class="comment">// 跳转到另一个网址，但当前文档不保留在 history 对象中，即无法用后退按钮，回到当前文档</span></div><div class="line">    <span class="comment">// location.replace() 与 location.assign()/location.href 的区别：前者覆盖当前页面，页面历史中只有一个条目；后者相当于点击链接加载新的页面，页面历史中有两个条目</span></div><div class="line">    <span class="comment">// 从用户可用性的角度来说，在设置页面自动跳转时，推荐使用后者，避免用户无法使用 “后退” 按钮返回上一个页面，从而会造成类似的死循环</span></div><div class="line">    <span class="built_in">window</span>.location.replace(<span class="string">'http://www.google.com'</span>)</div><div class="line"></div><div class="line">    <span class="comment">// 将 location 对象转为字符串，等价于 window.location.href</span></div><div class="line">    <span class="built_in">window</span>.location.toString()</div><div class="line"></div><div class="line">    <span class="comment">// 页面历史记录，forward()、back() 方法分别相当于浏览器 “前进”“后退” 按钮，go() 方法可以前进或后退多个页面</span></div><div class="line">    <span class="keyword">var</span> his = <span class="built_in">window</span>.history;</div><div class="line">    <span class="comment">// history.length 历史记录的数量</span></div><div class="line">    <span class="comment">// his.go(1) 相当于 his.forward();</span></div><div class="line">    <span class="comment">// his.go(-1) 相当于 his.back();</span></div><div class="line">    <span class="comment">// his.go(0) 相当于 刷新页面;</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>location.href 在 IE6 中无效的解决方法：<a href="http://blog.csdn.net/walksea/archive/2008/02/04/2082244.aspx" target="_blank" rel="external">参考 1</a>、<a href="https://support.microsoft.com/en-us/kb/190244" target="_blank" rel="external">参考 2</a>
+有时候为了实现在页面间跳转，采用如下方法：
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"javascript:;"</span> <span class="attr">onclick</span>=<span class="string">"wopen('http://www.google.com/');"</span>&gt;</span>google<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">wopen</span>(<span class="params">url</span>)</span>&#123;</div><div class="line">    location.href = url;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样的语句在其他浏览器没有问题，但在 IE6 中会失效</p>
+<p>解决方法有几个：</p>
+<ol>
+<li>把 href 值换成 “#”，虽然解决了，但不完美，因为当初用 javascript:;（或者 javascript:void(0)）替换 #的初衷就是避免跳到页面顶端，现在不能重蹈覆辙</li>
+<li>在 onclick 值里添加 “return false;”，也解决了，但是如果链接多的话，需要手工添加很多代码</li>
+<li>在函数最后面添加 “window.event.returnValue = false;”，完美解决</li>
+</ol>
+<h3>几何学</h3>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">dimension</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> w = <span class="built_in">window</span>.screen.width;<span class="comment">// 屏幕宽度（硬件相关）</span></div><div class="line">    <span class="keyword">var</span> h = <span class="built_in">window</span>.screen.height;<span class="comment">// 屏幕高度（硬件相关）</span></div><div class="line">    <span class="keyword">var</span> aw = <span class="built_in">window</span>.screen.availWidth;<span class="comment">// 屏幕有效宽度，相当于屏幕宽度（Safari 还要减去Mac的Dock宽度--居左右时）</span></div><div class="line">    <span class="keyword">var</span> ah = <span class="built_in">window</span>.screen.availHeight;<span class="comment">// 屏幕有效高度，相当于屏幕高度减去系统任务栏高度（Safari 还要减去Mac的Dock高度--居底时）</span></div><div class="line">    <span class="comment">// IE11、Firefox18+、其他现代浏览器、所有移动端浏览器都支持</span></div><div class="line">    <span class="keyword">var</span> dpr = <span class="built_in">window</span>.devicePixelRatio;<span class="comment">// 设备像素比（device pixel ratio）</span></div><div class="line">    <span class="comment">// IE8- 中无下面属性</span></div><div class="line">    <span class="keyword">var</span> ow = <span class="built_in">window</span>.outerWidth;<span class="comment">// 浏览器窗口宽度(包括侧边栏和边框)</span></div><div class="line">    <span class="keyword">var</span> oh = <span class="built_in">window</span>.outerHeight;<span class="comment">// 浏览器窗口高度</span></div><div class="line">    <span class="keyword">var</span> iw = <span class="built_in">window</span>.innerWidth;<span class="comment">// 浏览器视口（viewport）宽度（包括滚动条）</span></div><div class="line">    <span class="keyword">var</span> ih = <span class="built_in">window</span>.innerHeight;<span class="comment">// 浏览器视口（viewport）高度</span></div><div class="line">    <span class="keyword">var</span> ipx = <span class="built_in">window</span>.pageXOffset;<span class="comment">// 页面的水平滚动距离</span></div><div class="line">    <span class="keyword">var</span> ipy = <span class="built_in">window</span>.pageYOffset;<span class="comment">// 页面的垂直滚动距离</span></div><div class="line"></div><div class="line">    <span class="comment">// 设置浏览器窗口尺寸的方法，to 是绝对（调整到、移动到、滚动到），by 是相对（调整了、移动了、滚动了）</span></div><div class="line">    <span class="comment">// 注：某些浏览器有禁用它的选项；Firefox7+、Chrome 无效；Safari多标签页时无效</span></div><div class="line">    <span class="comment">// 注：resizeBy() 可以解决某些浏览器 CSS 渲染问题：当 CSS 变化而不能正确渲染时，可以用 resizeBy(0,1) 来重置页面尺寸，浏览器会重新解析 CSS</span></div><div class="line">    <span class="built_in">window</span>.resizeTo(<span class="number">800</span>, <span class="number">600</span>);</div><div class="line">    <span class="comment">// 移动浏览器位置</span></div><div class="line">    <span class="built_in">window</span>.moveTo(<span class="number">200</span>, <span class="number">100</span>);</div><div class="line">    <span class="comment">// 滚动页面位置</span></div><div class="line">    <span class="built_in">window</span>.scrollTo(<span class="number">0</span>, <span class="number">100</span>);</div><div class="line"></div><div class="line">    <span class="comment">// 前置和后置窗口，注：某些浏览器有禁用它的选项</span></div><div class="line">    <span class="comment">// blur() 让窗口失去焦点，用来后置窗口；focus() 则相反，让窗口获得焦点，用来前置窗口</span></div><div class="line">    <span class="built_in">window</span>.blur();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>其他对象及方法</h3>
+<h4>navigator 对象</h4>
+<p>它的一些属性表示用户浏览器的相关信息
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">"浏览器信息："</span> + navigator.userAgent + <span class="string">" 浏览器平台："</span> + navigator.platform + <span class="string">" 浏览器名称："</span> + navigator.appName + <span class="string">" 浏览器版本："</span> + navigator.appVersion + <span class="string">" 浏览器插件："</span> + navigator.plugins);</div></pre></td></tr></table></figure></p>
+<h4>URL 的编码 / 解码方法</h4>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.decodeURI() <span class="comment">// 将已编码字符串中所有能识别的转义序列转换成原字符</span></div><div class="line"><span class="built_in">window</span>.decodeURIComponent() <span class="comment">// 将已编码字符串中所有能识别的转义序列转换成原字符</span></div><div class="line"><span class="built_in">window</span>.encodeURI() <span class="comment">// 把字符串作为 URI 进行编码。 URI 中具有特殊含义的字符（比如 ：;/?:@&amp;=+$,# 这些用于分隔 URI 组件的标点符号），encodeURI() 函数是不会进行转义的。</span></div><div class="line"><span class="built_in">window</span>.encodeURIComponent() <span class="comment">// 把字符串作为 URI 组件进行编码。URI 中具有特殊含义的字符（：;/?:@&amp;=+$,#），都是由一个或多个十六进制的转义序列替换的。</span></div><div class="line"><span class="comment">// 请注意 encodeURIComponent() 函数 与 encodeURI() 函数的区别之处，前者假定它的参数是 URI 的一部分（比如协议、主机名、路径或查询字符串）。因此 encodeURIComponent() 函数将转义用于分隔 URI 各个部分的标点符号。</span></div></pre></td></tr></table></figure></p>
+<h4>其他方法</h4>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">otherEvent</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">// 三个弹出对话框的方法</span></div><div class="line">    <span class="built_in">window</span>.alert(<span class="string">"这是 alert"</span>);</div><div class="line">    <span class="keyword">var</span> c = <span class="built_in">window</span>.confirm(<span class="string">"你想试试吗？"</span>);</div><div class="line">    <span class="keyword">var</span> p = <span class="built_in">window</span>.prompt(<span class="string">"你输入一个名字吧"</span>);</div><div class="line">    alert(c);</div><div class="line">    alert(p);</div><div class="line"></div><div class="line">    <span class="comment">// 延时运行以及移除它的方法</span></div><div class="line">    <span class="keyword">var</span> myT1 = setTimeout(<span class="string">"fn1()"</span>, <span class="number">2000</span>);</div><div class="line">    <span class="keyword">var</span> myT2 = setTimeout(fn1, <span class="number">2000</span>);</div><div class="line">    clearTimeout(myT2);</div><div class="line"></div><div class="line">    <span class="comment">// 重复运行以及移除它的方法</span></div><div class="line">    <span class="keyword">var</span> myI = setInterval(fn2, <span class="number">1000</span>);</div><div class="line">    clearInterval(myI);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn1</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    alert(<span class="string">"延时运行"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> itest = <span class="number">0</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn2</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span> (itest &lt; <span class="number">10</span>) &#123;</div><div class="line">        itest++;</div><div class="line">        alert(itest);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>Document 对象</h2>
+<p>Document 对象是 Window 对象中最重要的对象，它代表浏览器窗口包含的 HTML 文档，就是常说的 “页面”。它包含了 DOM 的所有 HTML 元素对应的对象及其属性、方法；但是还有一些不属于 DOM 的部分，用来描述文档的一些整体信息</p>
+<h3>访问 Document 对象：</h3>
+<ul>
+<li>对于正常的网页，直接使用 document。</li>
+<li>对于 iframe 载入的网页，使用 iframe 节点的 contentDocument 属性。</li>
+<li>对 Ajax 操作返回的文档，使用 XMLHttpRequest 对象的 responseXML 属性。</li>
+<li>对于某个节点包含的文档，使用该节点的 ownerDocument 属性。</li>
+</ul>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">docOther</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">// activeElement 属性，返回当前文档中获得焦点的那个元素。用户通常可以使用 tab 键移动焦点，使用空格键激活焦点。</span></div><div class="line"></div><div class="line">    <span class="comment">// defaultView 属性，在浏览器中返回 Document 对象所在的 Window 对象，否则返回 null。</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="built_in">document</span>.defaultView);</div><div class="line"></div><div class="line">    <span class="comment">// documentURI 属性和 URL 属性都返回当前文档的网址。相当于 Window 对象的 location.href（注：IE 不支持前者）</span></div><div class="line">    <span class="comment">// documentURI 属性是所有文档都具备的，URL 属性则是 HTML 文档独有的</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">"URI 属性为"</span> + <span class="built_in">document</span>.documentURI + <span class="string">" URL 属性为"</span> + <span class="built_in">document</span>.URL);</div><div class="line"></div><div class="line">    <span class="comment">// location 属性返回一个只读对象，提供了当前文档的 URL 信息。</span></div><div class="line">    <span class="comment">// document.location 属性与 window.location 属性等价，IE 曾经不允许对 document.location 赋值，建议优先使用 window.location。如果只是单纯地获取当前网址，建议使用 document.URL。</span></div><div class="line"></div><div class="line">    <span class="comment">// domain 属性，返回当前文档的域名。可以规避 JavaScript 同源策略中最严格的部分</span></div><div class="line">    <span class="comment">// 如：document.domain = "google.com"; 这样的话，help.google.com 的页面和 home.google.com 的页面就可以通信了</span></div><div class="line"></div><div class="line">    <span class="comment">// lastModified 属性，表示文档最后修改时间，注：为了避免浏览器返回的结果（字符串类型）差异，已转换为日期对象</span></div><div class="line">    <span class="keyword">var</span> lastUpdate = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="built_in">document</span>.lastModified);</div><div class="line">    <span class="built_in">console</span>.log(lastUpdate);</div><div class="line"></div><div class="line">    <span class="comment">// referrer 属性，当前页面访问来源</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="built_in">document</span>.referrer);</div><div class="line"></div><div class="line">    <span class="comment">// title 属性，返回当前文档的标题，该属性是可写的。</span></div><div class="line">    <span class="built_in">document</span>.title = <span class="string">'新标题'</span>;</div><div class="line"></div><div class="line">    <span class="comment">// doctype 属性，表示文档类型，一般为 document.firstChild。</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="built_in">document</span>.doctype);</div><div class="line"></div><div class="line">    <span class="comment">// characterSet 属性，返回渲染当前文档的字符集，比如 UTF-8</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="built_in">document</span>.characterSet);</div><div class="line"></div><div class="line">    <span class="comment">// compatMode 属性，表示当前页面采用的渲染方式（BackCompat－非标准、CSS1Compat－标准）</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="built_in">document</span>.compatMode);</div><div class="line"></div><div class="line">    <span class="comment">// readyState 属性，返回当前文档的状态，共有三种可能的值，加载 HTML 代码阶段（尚未完成解析）是 “loading”，加载外部资源阶段是 “interactive”，全部加载完成是 “complete”。</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="built_in">document</span>.readyState);</div><div class="line"></div><div class="line">    <span class="comment">// designMode 属性，控制当前 document 是否可编辑。通常会打开 iframe 的 designMode 属性，将其变为一个所见即所得的编辑器。iframe_node.contentDocument.designMode = "on";</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="built_in">document</span>.designMode);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>document.write() 方法</h3>
+<ul>
+<li>document.write() // 曾经是 JavaScript 最重要的方法之一，但随着 W3C DOM 的推广，它已经过时了</li>
+<li>document.writeln() // 表示写入内容后添加一个换行符，相当于 document.write(内容 +&quot;\n&quot;)
+<ul>
+<li>页面加载和解析的时候，它才能正确工作，另外写入的代码出现在它被调用的地方</li>
+</ul>
+</li>
+<li>document.open() // 该方法是移除当前文档内容，同时打开新文档；document.close() 是关闭 open() 打开的文档流，并显示缓存的输出内容
+<ul>
+<li>open() 方法不是必需的，文档关闭（页面完全加载或使用了 close()）后，再次执行 write() 时，浏览器会隐式地调用 open() 移除当前文档内容，并写入新的内容</li>
+<li>如果文档未关闭或没有使用 open()，write() 会直接添加内容到当前文档</li>
+<li>Firefox 中，如果执行 write() 后没有使用 close()，会一直显示 “正在载入”；而且再次执行 write() 时会忽略 open()，直接添加内容到当前文档</li>
+</ul>
+</li>
+</ul>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">debug</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span> (oDebug) &#123;</div><div class="line">        oDebug.document.open();</div><div class="line">        oDebug.document.write(<span class="string">"节点名称："</span> + <span class="keyword">this</span>.nodeName + <span class="string">" 节点文本值："</span> + <span class="keyword">this</span>.firstChild.nodeValue + <span class="string">"&lt;br&gt;"</span>);</div><div class="line">        oDebug.document.close();</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">initDebug</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> obj = <span class="built_in">document</span>.getElementById(<span class="string">"linkList"</span>);</div><div class="line">    <span class="keyword">if</span> (!obj) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> link = obj.getElementsByTagName(<span class="string">"a"</span>);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; link.length; i++) &#123;</div><div class="line">        link[i].newId = i;</div><div class="line">        link[i].onclick = debug;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> oDebug = <span class="built_in">window</span>.open(<span class="string">""</span>, <span class="string">"newWin"</span>, <span class="string">"width=400,height=300"</span>);</div><div class="line"><span class="built_in">window</span>.onload = initDebug();</div></pre></td></tr></table></figure></p>
+<h2>Cookie</h2>
+<p>HTTP 是一种无状态协议，所以 Web 服务器不会记住任何东西（注：TCP 是有状态协议，要求客户端和服务器交流时维持一个协议状态机，根据网络事件进行状态的转换）
+而为了记住用户的一些访问状态和记录，Netscape 引入了 cookie，它是存储在用户电脑的小文本文件，与某个 Web 域的某个目录关联。当用户浏览器从目录中请求了页面，cookie 会随着 HTTP 请求自动发送。
+cookie 传载的信息处理由服务器来决定，也可以用 JavaScript 来设置和检索 cookie</p>
+<h3>cookie 信息</h3>
+<p>cookie 的实际信息存储在名 / 值对中，名字是唯一的，如果给相同名字设置了新值，旧值就被覆盖</p>
+<ul>
+<li>
+<p>expires：设置 cookie 的过期时间，过期后就会消失，不会和站点关联。默认的过期时间是浏览器关闭时。过期时间按格林尼治标准时间（GMT）设置成如下格式：Thu, 09 Aug 2007 17:16:00 GMT；也叫世界协调时间（UTC）。删除一个 cookie 的简便方法，就是设置 expires 属性等于 0。</p>
+</li>
+<li>
+<p>max-age：设置 cookie 的有效期，单位为秒</p>
+</li>
+<li>
+<p>path：设置 cookie 的有效路径（绝对），默认是页面所在的目录，path=/ 即设置为服务器的根目录</p>
+</li>
+<li>
+<p>domain: 设置 cookie 的有效域（这个和 document 的 domain 作用类似）</p>
+</li>
+<li>
+<p>secure：设置 cookie 只能在加密协议 HTTPS 下发送到服务器。该属性只是一个开关，不需要设定值。在 HTTPS 协议下设定的 cookie，该开关自动打开。</p>
+</li>
+<li>
+<p>cookie 的内容由以上几个属性组成，设置语法如下（要求很精确，包括分隔参数的分号和空格以及过期时间的严格格式）：
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.cookie = <span class="string">"ppkcookie=testcookie; expires=Sat, 2 Aug 2008 20:47:11 UTC; path=/; domain=google.com"</span>;</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">document</span>.cookie);</div><div class="line"><span class="built_in">console</span>.log(readCookie(<span class="string">"ppkcookie"</span>));</div></pre></td></tr></table></figure></p>
+</li>
+<li>
+<p>cookie 限制：浏览器对 cookie 的数量和长度有限制，但是每个浏览器的规定是不一样的。</p>
+<ul>
+<li>IE6：每个域名 20 个 cookie。</li>
+<li>IE7，IE8，Firefox：每个域名 50 个 cookie</li>
+<li>Safari，Chrome：没有域名数量的限制。</li>
+</ul>
+</li>
+<li>
+<p>所有 cookie 的累加长度限制为 4KB。超过这个长度的 cookie，将被忽略，不会被设置。</p>
+</li>
+<li>
+<p>由于 cookie 的限制，目前推荐使用 HTML5 里的新特性 Window.sessionStorage 和 Window.localStorage（WHATWG DOM Storage）</p>
+</li>
+</ul>
+<h3>读写方法</h3>
+<p>通用创建、读取和移除 cookie 函数 by <a href="http://www.scottandrew.com/weblog/jsjunk#cookie" target="_blank" rel="external">Scott Andrew</a>、<a href="http://www.quirksmode.org/js/cookies.html" target="_blank" rel="external">PPK</a>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createCookie</span>(<span class="params">name, value, days</span>)</span>&#123;</div><div class="line">    <span class="keyword">if</span> (days) &#123;</div><div class="line">        <span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line">        date.setTime(date.getTime() + (days * <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>));</div><div class="line">        <span class="keyword">var</span> expires = <span class="string">"; expires="</span> + date.toGMTString();</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">var</span> expires = <span class="string">""</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="built_in">document</span>.cookie = name + <span class="string">"="</span> + value + expires + <span class="string">"; path=/"</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">readCookie</span>(<span class="params">name</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> nameEQ = name + <span class="string">"="</span>;</div><div class="line">    <span class="keyword">var</span> cookies = <span class="built_in">document</span>.cookie.split(<span class="string">';'</span>);</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; cookies.length; i++) &#123;</div><div class="line">        <span class="keyword">var</span> coo = cookies[i];</div><div class="line">        <span class="keyword">while</span> (coo.charAt(<span class="number">0</span>) == <span class="string">' '</span>) &#123;</div><div class="line">            coo = coo.substring(<span class="number">1</span>, coo.length);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> (coo.indexOf(nameEQ) == <span class="number">0</span>) &#123;</div><div class="line">            <span class="keyword">return</span> coo.substring(nameEQ.length, coo.length);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">removeCookie</span>(<span class="params">name</span>)</span>&#123;</div><div class="line">    createCookie(name, <span class="string">""</span>, <span class="number">-1</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2>Web Storage</h2>
+<p>Web 应用的发展，使得客户端存储使用得也越来越多。最简单而且兼容性最佳的方案是 Cookie，但是作为真正的客户端存储，Cookie 则存在很多致命伤。
+针对以上情况，HTML5 中给出了更加理想的解决方案：
+假如你需要存储复杂的数据则可以使用 Web Database，可以像客户端程序一样使用 SQL（不过 Web Database 标准当前正陷于僵局之中，而且目前已经实现的浏览器很有限）；
+假如你需要存储的只是简单的 key/value 对的数据则可以使用 WHAT-WG 制定的 Web Storage。</p>
+<p>与 Cookie 相比，Web Storage 存在不少的优势，概括为以下几点：</p>
+<ol>
+<li>存储空间更大：IE8 下每个独立的存储空间为 10M，其他浏览器实现略有不同（Chrome 是 2.5MB，Firefox 和 Opera 是 5MB），但都比 Cookie 要大很多。</li>
+<li>存储内容不会发送到服务器：当设置了 Cookie 后，Cookie 的内容会随着请求一并发送的服务器，这对于本地存储的数据是一种带宽浪费。而 Web Storage 中的数据则仅仅是存在本地，不会与服务器发生任何交互。</li>
+<li>更多丰富易用的接口：Web Storage 提供了一套更为丰富的接口，使得数据操作更为简便。</li>
+<li>独立的存储空间：每个域（包括子域）有独立的存储空间，各个存储空间是完全独立的，只有同域下的网页才能读取，因此不会造成数据混乱。</li>
+</ol>
+<p>Web Storage 是 HTML5 里新引入的浏览器端数据储存机制，共包括两个对象接口。
+sessionStorage 保存的数据用于浏览器的一次会话，当会话结束（通常是该窗口关闭），数据被清空；
+localStorage 保存的数据长期存在，下一次访问该网站的时候，网页可以直接读取以前保存的数据。
+除了保存期限的长短不同，这两个对象的属性和方法完全一样。</p>
+<p>通过检查 Window 对象是否包含 sessionStorage 和 localStorage 属性，可以确定浏览器是否支持这两个对象。
+目前 IE8+、现代浏览器都支持这两个对象。</p>
+<p><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkStorageSupport</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// sessionStorage</span></div><div class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.sessionStorage) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// localStorage</span></div><div class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.localStorage) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>操作方法</h3>
+<h4>存入 / 读取数据</h4>
+<p>sessionStorage 和 localStorage 保存的数据，都以 “键值对” 的形式存在。也就是说，每一项数据都有一个键名和对应的值。所有的数据都是以文本格式保存。
+存入数据使用 setItem 方法。它接受两个参数，第一个是键名，第二个是保存的数据。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sessionStorage.setItem(<span class="string">'key'</span>,<span class="string">'value'</span>);</div><div class="line">localStorage.setItem(<span class="string">'key'</span>,<span class="string">'value'</span>);</div></pre></td></tr></table></figure></p>
+<p>读取数据使用 getItem 方法。它只有一个参数，就是键名。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> valueSession = sessionStorage.getItem(<span class="string">'key'</span>);</div><div class="line"><span class="keyword">var</span> valueLocal = localStorage.getItem(<span class="string">'key'</span>);</div></pre></td></tr></table></figure></p>
+<h4>清除数据</h4>
+<p>removeItem 方法用于清除某个键名对应的数据。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sessionStorage.removeItem(<span class="string">'key'</span>);</div><div class="line">localStorage.removeItem(<span class="string">'key'</span>);</div></pre></td></tr></table></figure></p>
+<p>clear 方法用于清除所有保存的数据。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sessionStorage.clear();</div><div class="line">localStorage.clear();</div></pre></td></tr></table></figure></p>
+<h4>遍历操作</h4>
+<p>利用 length 属性和 key 方法，可以遍历所有的键。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; localStorage.length; i++)&#123;</div><div class="line">    <span class="built_in">console</span>.log(localStorage.key(i));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>其中的 key 方法，根据位置（从 0 开始）获得键值。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">localStorage.key(<span class="number">1</span>);</div></pre></td></tr></table></figure></p>
+<h3>storage 事件</h3>
+<p>当储存的数据发生变化时，会触发 storage 事件。我们可以指定这个事件的回调函数。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'storage'</span>, onStorageChange);</div></pre></td></tr></table></figure></p>
+<p>回调函数接受一个 event 对象作为参数。这个 event 对象的 key 属性，保存发生变化的键名。
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">onStorageChange</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">     <span class="built_in">console</span>.log(e.key);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>除了 key 属性，event 对象的属性还有三个：</p>
+<ul>
+<li>oldValue：更新前的值。如果该键为新增加，则这个属性为 null。</li>
+<li>newValue：更新后的值。如果该键被删除，则这个属性为 null。</li>
+<li>url：原始触发 storage 事件的那个网页的网址。</li>
+</ul>
+<p>值得特别注意的是，该事件不在导致数据变化的当前页面触发。如果浏览器同时打开一个域名下面的多个页面，当其中的一个页面改变 sessionStorage 或 localStorage 的数据时，其他所有页面的 storage 事件会被触发，而原始页面并不触发 storage 事件。可以通过这种机制，实现多个窗口之间的通信。所有浏览器之中，只有 IE 浏览器除外，它会在所有页面触发 storage 事件。</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2015/09/20/LaVie-3-hello-world/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2015/09/21/09.ecma06/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

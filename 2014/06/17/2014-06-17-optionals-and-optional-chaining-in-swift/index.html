@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            Optionals and Optional Chaining in Swift | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null,Swift">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Optionals and Optional Chaining in Swift | Hexo">
+    <meta property="og:description" content="null">
+    <meta property="og:article:tag" content="Swift"> 
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">可选类型（Optionals）</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">理论</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">if条件判断和强制解析</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">可选绑定</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">Nil Coalescing Operator</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">可选链（Optional Chaining）</span></a></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Optionals and Optional Chaining in Swift
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>6月 17, 2014</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        <a class="post_tag-link" href="/tags/Swift/">Swift</a>
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Optionals and Optional Chaining in Swift&url=http://yoursite.com//2014/06/17/2014-06-17-optionals-and-optional-chaining-in-swift/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Optionals and Optional Chaining in Swift&url=http://yoursite.com//2014/06/17/2014-06-17-optionals-and-optional-chaining-in-swift/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2014/06/17/2014-06-17-optionals-and-optional-chaining-in-swift/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2014/06/17/2014-06-17-optionals-and-optional-chaining-in-swift/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>可选类型（<code>Optionals</code>）在Swift中用于处理值可能缺失的情况，也就是说可能存在没有值的情况。C 和 Objective-C 中并没有可选类型这个概念。但在Objective-C中，一个方法的返回值可以是一个对象或<code>nil</code>值（<code>nil</code>表示缺少一个合法对象），而对象只是针对类而言，结构体、基本C类型和枚举并不适用<code>nil</code>来表示值的缺失，对于这些类型，Objective-C 方法一般会返回一个特殊值（比如<code>NSNotFound</code>）来暗示值缺失。这种表示“值缺失”方法不统一的局面使得调用方法的程序员蛋疼了-需要针对不同情况进行处理-但随着可选类型的诞生，这种情形在Swift中得到解决，<code>Optionals</code>可以表示任意类型值的缺失。(2014-8-8更新至beta5语法)<br>
+&lt;!--more--&gt;</p>
+<h2>可选类型（Optionals）</h2>
+<h3>理论</h3>
+<p><strong>Xcode6beta5发布后，<code>Optional</code>的定义有了修改：</strong></p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">enum Optional&lt;T&gt; : Reflectable, NilLiteralConvertible &#123;</div><div class="line">    case None</div><div class="line">    case Some(T)</div><div class="line">    init()</div><div class="line">    init(_ some: T)</div><div class="line">    var hasValue: Bool &#123; get &#125;</div><div class="line"></div><div class="line">    /// Haskell&apos;s fmap, which was mis-named</div><div class="line">    func map&lt;U&gt;(f: (T) -&gt; U) -&gt; U?</div><div class="line">    func getMirror() -&gt; MirrorType</div><div class="line">    static func convertFromNilLiteral() -&gt; T?</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可选类型是本质是一个枚举类型，包含两个成员：<code>None</code>和<code>Some</code>，其中<code>Some</code>成员还有一个类型为泛型<code>T</code>的关联值（Associated Values）。</p>
+<p>光凭猜测大约知道：当可选类型有值的时候其实是<code>Some</code>成员，并在构造器<code>init(_ some: T)</code>调用时将值存储在<code>Some</code>成员的关联值中，此时<code>getLogicValue()</code>方法返回true；当可选类型没有值的时候其实是<code>None</code>成员，并在构造器<code>init()</code>调用时将<code>nil</code>给了<code>None</code>成员，具体细节不是很清楚。</p>
+<p>看得出可选类型的设计借鉴了Haskell语言，至于<code>nil</code>这个字面量到底是什么：</p>
+<p>Swift 的<code>nil</code>和 Objective-C 中的<code>nil</code>并不一样。在 Objective-C 中，<code>nil</code>是一个指向不存在对象的指针。在 Swift 中，<code>nil</code>不是指针——它是一个确定的值，用来表示值缺失。任何类型的可选值都可以被设置为<code>nil</code>，不只是对象（object）类型。</p>
+<p><strong>可选类型默认值为<code>nil</code></strong></p>
+<h3>if条件判断和强制解析</h3>
+<p>在Swift中，有时候需要把内容为数字的字符串转化成数字：</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> possibleNumber = <span class="string">"123"</span></div><div class="line"><span class="keyword">let</span> convertedNumber = possibleNumber.toInt()</div><div class="line"><span class="comment">// convertedNumber 被推测为类型 "Int?"， 或者类型 "optional Int"</span></div></pre></td></tr></table></figure></p>
+<p>因为Swift是类型安全的语言，为了保证转化过程中不出错，<code>toInt()</code>方法返回的是一个<code>Optional&lt;Int&gt;</code>(也可写成<code>Int?</code>)类型的实例。如果被转化的字符串不是一个数字（比如是“hello world”），那样<code>toInt()</code>返回的内容将不含有<code>Int</code>值。这保证了整个过程不报错，下面我们可以“优雅的”检查下<code>convertedNumber</code>是否有<code>Int</code>值：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">if convertedNumber != nil &#123;</div><div class="line">    println(&quot;convertedNumber has an integer value of \(convertedNumber!).&quot;)</div><div class="line">&#125;</div><div class="line">// 输出 &quot;123 has an integer value of 123&quot;</div></pre></td></tr></table></figure></p>
+<p>当你确定可选类型确实包含值之后，你可以在可选的名字后面加一个感叹号（!）来获取值。这个惊叹号表示“我知道这个可选有值，请使用它。”这被称为可选值的<strong>强制解析（forced unwrapping）</strong></p>
+<p>PS：beta5中去掉了<code>LogicValue</code>协议，并用<code>hasValue</code>替代它来存储是否有值。也就是<code>Optional</code>不会隐式转换成<code>Bool</code>，在条件判断语句中需要用<code>==</code>或<code>!=</code>来判断是否为空。苹果取消了<code>Optional</code>的隐式<code>Bool</code>值是为了防止混淆。（新手可以无视这段话，我在讲述Swift的变更史，哈哈）</p>
+<h3>可选绑定</h3>
+<p>除了用if语句判断和强制解析来获取可选类型中的值，还可以用<strong>可选绑定</strong>的方式来来判断可选类型是否包含值：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">if let constantName = someOptional &#123;</div><div class="line">    statements</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>于是之前的例子可以可以改写为：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">if let actualNumber = possibleNumber.toInt() &#123;</div><div class="line">    println(&quot;\(possibleNumber) has an integer value of \(actualNumber)&quot;)</div><div class="line">&#125; else &#123;</div><div class="line">    println(&quot;\(possibleNumber) could not be converted to an integer&quot;)</div><div class="line">&#125;</div><div class="line">// 输出 &quot;123 has an integer value of 123&quot;</div></pre></td></tr></table></figure></p>
+<p>如果<code>possibleNumber.toInt</code>返回的可选<code>Int</code>包含一个值，创建一个叫做<code>actualNumber</code>的新常量并将可选包含的值赋给它。它已经被可选类型包含的值初始化过，所以不需要再使用<code>!</code>后缀来获取它的值。</p>
+<p>有时候在程序架构中，第一次被赋值之后，可以确定一个可选类型总会有值。在这种情况下，每次都要判断和解析可选值是非常低效的，因为可以确定它总会有值。这种类型的可选状态被定义为<strong>隐式解析可选类型</strong>（implicitly unwrapped optionals）。把想要用作可选的类型的后面的问号（<code>String?</code>）改成感叹号（<code>String!</code>）来声明一个隐式解析可选类型。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">let possibleString: String? = &quot;An optional string.&quot;</div><div class="line">println(possibleString!) // 需要惊叹号来获取值</div><div class="line">// 输出 &quot;An optional string.&quot;</div><div class="line">let assumedString: String! = &quot;An implicitly unwrapped optional string.&quot;</div><div class="line">println(assumedString)  // 不需要感叹号</div><div class="line">// 输出 &quot;An implicitly unwrapped optional string.&quot;</div></pre></td></tr></table></figure></p>
+<p>你仍然可以把隐式解析可选类型当做普通可选类型来判断它是否包含值：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">if assumedString != nil &#123;</div><div class="line">    println(assumedString)</div><div class="line">&#125;</div><div class="line">// 输出 &quot;An implicitly unwrapped optional string.&quot;</div></pre></td></tr></table></figure></p>
+<p>你也可以在可选绑定中使用隐式解析可选类型来检查并解析它的值：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">if let definiteString = assumedString &#123;</div><div class="line">    println(definiteString)</div><div class="line">&#125;</div><div class="line">// 输出 &quot;An implicitly unwrapped optional string.&quot;</div></pre></td></tr></table></figure></p>
+<p>可能看到这里你会觉得隐式解析可选类型的存在意义是什么？为何不直接用普通的非可选类型呢？其实<code>Implicitly Unwrapped Optionals</code>被用于类的初始化方法中，避免循环引用:</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">class Country &#123;</div><div class="line">    let name: String</div><div class="line">    let capitalCity: City!</div><div class="line">    init(name: String, capitalName: String) &#123;</div><div class="line">        self.name = name</div><div class="line">        self.capitalCity = City(name: capitalName, country: self)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"> </div><div class="line">class City &#123;</div><div class="line">    let name: String</div><div class="line">    unowned let country: Country</div><div class="line">    init(name: String, country: Country) &#123;</div><div class="line">        self.name = name</div><div class="line">        self.country = country</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var country = Country(name: &quot;Canada&quot;, capitalName: &quot;Ottawa&quot;)</div><div class="line">println(&quot;\(country.name)&apos;s capital city is called \(country.capitalCity.name)&quot;)</div><div class="line">// prints &quot;Canada&apos;s capital city is called Ottawa”</div></pre></td></tr></table></figure></p>
+<p>因为编译器会将其认为默认<code>nil</code>，不需赋值就可以完成类的初始化，在例子中<code>capitalCity</code>还没被赋值时<code>Country</code>类就已经初始化并可以被引用；这样就能实现一行代码建立<code>Country</code>和<code>City</code>实例而不造成强引用循环。有关ARC的更多知识可以看看这篇<a href="http://yulingtianxia.com/blog/2014/06/17/swiftzhong-de-arc/" target="_blank" rel="external">文章</a></p>
+<h3>Nil Coalescing Operator</h3>
+<p><code>??</code>是beta5新加入的一个二元运算符，<code>a ?? b</code>相当于<code>a != nil ? a! : b</code>的简写。也就是如果<code>a</code>是有值就返回<code>a</code>的值，否则返回<code>b</code>的值。</p>
+<h2>可选链（Optional Chaining）</h2>
+<p>可选链（Optional Chaining）是一种可以请求和调用属性、方法及下标的过程，它的可选性体现于请求或调用的目标当前可能为空（<code>nil</code>）。如果可选的目标有值，那么调用就会成功；相反，如果选择的目标为空（<code>nil</code>），则这种调用将返回空（<code>nil</code>）。多次请求或调用可以被链接在一起形成一个链，如果任何一个节点为空（<code>nil</code>）将导致整个链失效。</p>
+<p>可能官方的定义不接地气，先来个例子做铺垫：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">class Person &#123;</div><div class="line">    var residence: Residence?</div><div class="line">&#125;</div><div class="line"></div><div class="line">class Residence &#123;</div><div class="line">    var rooms = [Room]()</div><div class="line">    var numberOfRooms: Int &#123;</div><div class="line">        return rooms.count</div><div class="line">    &#125;</div><div class="line">    subscript(i: Int) -&gt; Room &#123;</div><div class="line">        get &#123;</div><div class="line">            return rooms[i]</div><div class="line">        &#125;</div><div class="line">        set &#123;</div><div class="line">            rooms[i] = newValue</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    func printNumberOfRooms() &#123;</div><div class="line">        println(&quot;The number of rooms is \(numberOfRooms)&quot;)</div><div class="line">    &#125;</div><div class="line">    var address: Address?</div><div class="line">&#125;</div><div class="line"></div><div class="line">class Room &#123;</div><div class="line">    let name: String</div><div class="line">    init(name: String) &#123; self.name = name &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">class Address &#123;</div><div class="line">    var buildingName: String?</div><div class="line">    var buildingNumber: String?</div><div class="line">    var street: String?</div><div class="line">    func buildingIdentifier() -&gt; String? &#123;</div><div class="line">        if buildingName != nil &#123;</div><div class="line">            return buildingName</div><div class="line">        &#125; else if buildingNumber != nil &#123;</div><div class="line">            return buildingNumber</div><div class="line">        &#125; else &#123;</div><div class="line">            return nil</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>人（<code>Person</code>）可能会拥有住所（<code>Residence</code>），一个住所肯定会有一些带名字的房间（<code>Room</code>），还有可能注明所在地址（<code>Address</code>）。住所还提供了获取房间数目的方法，并能通过下标访问某个房间，而地址包含了一些可选的信息。</p>
+<p>PS：不要嫌我墨迹，官方文档比我墨迹多了。。。</p>
+<p>现在我造个人（邪恶的孩子面壁思过去！），就叫john</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">let john = Person()</div></pre></td></tr></table></figure></p>
+<p>如果我们想知道john同学家房子大不大，有几个房间啊？但是直接问不太好，万一john家里穷漂泊不定四海为家，那不就玩脱了么？</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let roomCount = john.residence!.numberOfRooms</div><div class="line">//将导致运行时错误</div></pre></td></tr></table></figure></p>
+<p>所以还是先问问他家有没有房子吧：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">if let roomCount = john.residence?.numberOfRooms &#123;</div><div class="line">    println(&quot;John&apos;s residence has \(roomCount) room(s).&quot;)</div><div class="line">&#125; else &#123;</div><div class="line">    println(&quot;我造john的时候没给他分房子，这可怜孩子！&quot;)</div><div class="line">&#125;</div><div class="line">// 打印 &quot;我造john的时候没给他分房子，这可怜孩子！&quot;</div></pre></td></tr></table></figure></p>
+<p>可选链提供了一种另一种获得<code>numberOfRooms</code>的方法。利用可选链，使用<code>?</code>来代替原来<code>!</code>的位置，因为这种尝试获得<code>numberOfRooms</code>的操作有可能失败，可选链会返回<code>Int?</code>类型值。要注意的是，虽然<code>numberOfRooms</code>是非可选<code>Int</code>，这一点也成立。只要是通过可选链的请求就意味着最后<code>numberOfRooms</code>总是返回一个<code>Int?</code>而不是<code>Int</code>。</p>
+<p>反过来我们也可以通过可选链给属性赋值，比如当我们还不确定john有没有房子的时候就给人家房子规定好地址：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">let someAddress = Address()</div><div class="line">someAddress.buildingNumber = &quot;29&quot;</div><div class="line">someAddress.street = &quot;Acacia Road&quot;</div><div class="line">john.residence?.address = someAddress</div></pre></td></tr></table></figure></p>
+<p>现在<code>john.residence</code>还是<code>nil</code>，所以给它的<code>address</code>属性赋值只会引起地产商的不满-赋值会失败-好在这种“不满”并不会让程序崩溃。</p>
+<p>我们也可以在可选链上调用方法：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">if john.residence?.printNumberOfRooms() != nil &#123;</div><div class="line">    println(&quot;It was possible to print the number of rooms.&quot;)</div><div class="line">&#125; else &#123;</div><div class="line">    println(&quot;It was not possible to print the number of rooms.&quot;)</div><div class="line">&#125;</div><div class="line">// 打印 &quot;It was not possible to print the number of rooms.&quot;</div></pre></td></tr></table></figure></p>
+<p>虽然<code>printNumberOfRooms</code>方法无返回值，但是它有一个隐式的返回类型<code>Void</code>，在可选链上调用后返回类型就成了<code>Void?</code>，既然是可选类型，就可以放到if语句条件判断中啦！</p>
+<p>其实在可选链上给属性赋值也会返回类型为<code>Void?</code>的值，我们可以判断下返回值是否为<code>nil</code>，这样就知道赋值操作是否成功：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">if (john.residence?.address = someAddress) != nil &#123;</div><div class="line">    println(&quot;房子选址成功&quot;)</div><div class="line">&#125; else &#123;</div><div class="line">    println(&quot;地产商再次不满！&quot;)</div><div class="line">&#125;</div><div class="line">// prints &quot;地产商再次不满！&quot;</div></pre></td></tr></table></figure></p>
+<p>博主你够了地产商快被你玩坏了，好吧换个话题：</p>
+<p>接下来想看看john家第一间房子名字叫啥，但却怕人家没房子遭遇尴尬，不用怕：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">if let firstRoomName = john.residence?[0].name &#123;</div><div class="line">    println(&quot;The first room name is \(firstRoomName).&quot;)</div><div class="line">&#125; else &#123;</div><div class="line">    println(&quot;连房子都没有更别提第一间房间名了！&quot;)</div><div class="line">&#125;</div><div class="line">// 打印 &quot;连房子都没有更别提第一间房间名了！&quot;</div></pre></td></tr></table></figure></p>
+<p>在下标调用中可选链的问号直接跟在<code>john.residence</code>的后面，在下标中括号的前面，因为<code>john.residence</code>才是可选链试图获得的可选值。（关键是<code>Person</code>不一定有<code>residence</code>，但<code>Residence</code>肯定有<code>rooms</code>）</p>
+<p>但是如果下标的值本来就是可选值（如果<code>Residence</code>不一定有9号房间，正如Swift中的Dictionary类型，下标给定的key不一定能返回value：<code>subscript (key: Key) -&gt; Value?</code>），那么我们在存取下标的时候需要在下标右中括号的右边标记<code>?</code>:</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var testScores = [&quot;Dave&quot;: [86, 82, 84], &quot;Tim&quot;: [79, 94, 81]]</div><div class="line">testScores[&quot;Dave&quot;]?[0] = 91</div><div class="line">testScores[&quot;Tim&quot;]?[0]++</div><div class="line">testScores[&quot;Brian&quot;]?[0] = 72</div><div class="line">// the &quot;Dave&quot; array is now [91, 82, 84] and the &quot;Tim&quot; array is now [80, 94, 81]&quot;</div></pre></td></tr></table></figure></p>
+<p>显而易见“Brian”并不存在，更别提把它当做数组并给第一个元素赋值了。华丽丽的失败。</p>
+<p>类似前面用可选链给属性赋值，也可以给下标赋值：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">john.residence?[0] = Room(name: &quot;Bathroom&quot;)</div></pre></td></tr></table></figure></p>
+<p>当然这不会成功，因为john没房子！</p>
+<p>造个john还玩了人家这么久，还不快给人家分套房子！（其实是为了演示后面的<code>Address</code>）</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">let johnsHouse = Residence()</div><div class="line">johnsHouse.rooms.append(Room(name: &quot;Living Room&quot;))</div><div class="line">johnsHouse.rooms.append(Room(name: &quot;Kitchen&quot;))</div><div class="line">john.residence = johnsHouse</div><div class="line"> </div><div class="line">if let firstRoomName = john.residence?[0].name &#123;</div><div class="line">    println(&quot;The first room name is \(firstRoomName).&quot;)</div><div class="line">&#125; else &#123;</div><div class="line">    println(&quot;Unable to retrieve the first room name.&quot;)</div><div class="line">&#125;</div><div class="line">// prints &quot;The first room name is Living Room.&quot;</div></pre></td></tr></table></figure></p>
+<p>现在john乔迁新居奔小康了，快问问他家地址，好串个门</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">let johnsAddress = Address()</div><div class="line">johnsAddress.buildingName = &quot;The Larches&quot;</div><div class="line">johnsAddress.street = &quot;Laurel Street&quot;</div><div class="line">john.residence!.address = johnsAddress</div><div class="line">if let johnsStreet = john.residence?.address?.street &#123;</div><div class="line">    println(&quot;John&apos;s street name is \(johnsStreet).&quot;)</div><div class="line">&#125; else &#123;</div><div class="line">    println(&quot;Unable to retrieve the address.&quot;)</div><div class="line">&#125;</div><div class="line">// 打印 &quot;John&apos;s street name is Laurel Street.&quot;</div></pre></td></tr></table></figure></p>
+<p>值得注意的是<code>john.residence</code>属性是一个可选类型并且已经不为<code>nil</code>(刚刚奔小康了嘛)，因此你需要在它获取<code>address</code>属性之前使用<code>!</code>强制解析以获得它的实际值。</p>
+<p>虽然这条可选链上有两个问号（两层可选链），但其返回类型依然是可选类型（<code>String?</code>），而不是可选类型的嵌套（<code>String??</code>即<code>Optional&lt;Optional&lt;String&gt;&gt;</code>）。你可以将多层可选链连接在一起，可以掘取模型内更下层的属性方法和下标。然而多层可选链不能再添加比已经返回的可选值更多的层。 也就是说：</p>
+<p><strong>如果你试图获得的类型不是可选类型，由于使用了可选链它将变成可选类型。 如果你试图获得的类型已经是可选类型，由于可选链它也不会提高可选性。</strong></p>
+<p>前面的例子解释了如何通过可选链来获得可选类型属性值。你也可以通过可选链调用一个返回可选类型值的方法并按需链接该方法的返回值。 如上所述，<code>buildingIdentifier</code>方法在可选链调用后最终的返回值类型依然是<code>String?</code>:</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">if let buildingIdentifier = john.residence?.address?.buildingIdentifier() &#123;</div><div class="line">    println(&quot;John&apos;s building identifier is \(buildingIdentifier).&quot;)</div><div class="line">&#125;</div><div class="line">// 打印 &quot;John&apos;s building identifier is The Larches.&quot;</div></pre></td></tr></table></figure></p>
+<p>如果你还想进一步对方法返回值执行可选链，将可选链问号符放在方法括号的后面：</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">if let upper = john.residence?.address?.buildingIdentifier()?.uppercaseString &#123;</div><div class="line">    println(&quot;John&apos;s uppercase building identifier is \(upper).&quot;)</div><div class="line">&#125;</div><div class="line">// 打印 &quot;John&apos;s uppercase building identifier is THE LARCHES.&quot;</div></pre></td></tr></table></figure></p>
+<p>你将可选链问号符放在括号后面是因为你想要链接的可选值是<code>buildingIdentifier</code>方法的返回值，不是<code>buildingIdentifier</code>方法本身。</p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2014/06/16/2014-06-17-swiftzhong-de-arc/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2014/06/19/2014-06-19-rang-ruan-jian-zhi-chi-retina/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>

@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+    <!--
+        © Material Theme
+        https://github.com/viosey/hexo-theme-material
+        Version: 1.3.4 -->
+
+    <!-- Title -->
+    
+    <title>
+        
+            Developing iOS 8 Apps with Swift 学习笔记5 | 
+        
+        Hexo
+    </title>
+
+    <!-- Meta & Info -->
+    <meta charset="utf-8">
+
+    <!-- dns prefetch -->
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    
+    
+    
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0097A7">
+    <meta name="author" content="John Doe">
+    <meta name="description" content="null">
+    <meta name="keywords" content="null">
+
+    <!-- Favicons -->
+    <link rel="icon shortcut" type="image/ico" href="/img/favicon.png">
+    <link rel="icon" sizes="192x192" href="/img/favicon.png">
+    <link rel="apple-touch-icon" href="/img/favicon.png">
+
+    <!--iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-title" content="Title">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="480">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Hexo">
+
+    <!-- The Open Graph protocol -->
+    <meta property="og:url" content="http://yoursite.com">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Developing iOS 8 Apps with Swift 学习笔记5 | Hexo">
+    <meta property="og:description" content="null">
+    
+
+    <!--[if lte IE 9]>
+        <link rel="stylesheet" href="/css/ie-blocker.css">
+
+        
+            <script src="/js/ie-blocker.zhCN.js"></script>
+        
+    <![endif]-->
+
+    <!-- Import CSS & jQuery -->
+    
+        <link rel="stylesheet" href="/css/material.min.css">
+        <link rel="stylesheet" href="/css/style.min.css">
+        <!-- Config CSS -->
+
+
+<!-- Other Styles -->
+<style>
+  body, html {
+    font-family: Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  }
+
+  a {
+    color: #00838F;
+  }
+
+  .mdl-card__media,
+  #search-label,
+  #search-form-label:after,
+  #scheme-Paradox .hot_tags-count,
+  #scheme-Paradox .sidebar_archives-count,
+  #scheme-Paradox .sidebar-colored .sidebar-header,
+  #scheme-Paradox .sidebar-colored .sidebar-badge{
+    background-color: #0097A7 !important;
+  }
+
+  /* Sidebar User Drop Down Menu Text Color */
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:hover,
+  #scheme-Paradox .sidebar-colored .sidebar-nav>.dropdown>.dropdown-menu>li>a:focus {
+    color: #0097A7 !important;
+  }
+
+  #post_entry-right-info,
+  .sidebar-colored .sidebar-nav li:hover > a,
+  .sidebar-colored .sidebar-nav li:hover > a i,
+  .sidebar-colored .sidebar-nav li > a:hover,
+  .sidebar-colored .sidebar-nav li > a:hover i,
+  .sidebar-colored .sidebar-nav li > a:focus i,
+  .sidebar-colored .sidebar-nav > .open > a,
+  .sidebar-colored .sidebar-nav > .open > a:hover,
+  .sidebar-colored .sidebar-nav > .open > a:focus,
+  #ds-reset #ds-ctx .ds-ctx-entry .ds-ctx-head a {
+    color: #0097A7 !important;
+  }
+
+  .toTop {
+    background: #757575 !important;
+  }
+
+  .material-layout .material-post>.material-nav,
+  .material-layout .material-index>.material-nav,
+  .material-nav a {
+    color: #757575;
+  }
+
+  #scheme-Paradox .MD-burger-layer {
+    background-color: #757575;
+  }
+
+  #scheme-Paradox #post-toc-trigger-btn {
+    color: #757575;
+  }
+
+  .post-toc a:hover {
+    color: #00838F;
+    text-decoration: underline;
+  }
+
+</style>
+
+
+<!-- Theme Background Related-->
+
+    <style>
+      body{
+        background-color: #F5F5F5;
+      }
+
+      /* blog_info bottom background */
+      #scheme-Paradox .material-layout .something-else .mdl-card__supporting-text{
+        background-color: #fff;
+      }
+    </style>
+
+
+
+
+<!-- Fade Effect -->
+
+    <style>
+      .fade {
+        transition: all 800ms linear;
+        -webkit-transform: translate3d(0,0,0);
+        -moz-transform: translate3d(0,0,0);
+        -ms-transform: translate3d(0,0,0);
+        -o-transform: translate3d(0,0,0);
+        transform: translate3d(0,0,0);
+        opacity: 1;
+      }
+
+      .fade.out{
+        opacity: 0;
+      }
+    </style>
+
+
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/queue.js"></script>
+    
+
+    <!-- UC Browser Compatible -->
+    <script>
+        var agent = navigator.userAgent.toLowerCase();
+        if(agent.indexOf('ucbrowser')>0) {
+            document.write("<link rel=\"stylesheet\" href=\"/css/uc.css\">");
+            alert('由于 UC 浏览器使用极旧的内核，而本网站使用了一些新的特性。\n为了您能更好的浏览，推荐使用 Chrome 或 Firefox 浏览器。');
+        }
+    </script>
+
+    
+
+    
+
+
+    <!-- Bing Background -->
+    
+
+    <!-- Custom Head -->
+    
+</head>
+
+
+    
+        <body id="scheme-Paradox" class="lazy">
+            <div class="material-layout  mdl-js-layout has-drawer is-upgraded">
+                
+
+                <!-- Main Container -->
+                <main class="material-layout__content" id="main">
+
+                    <!-- Top Anchor -->
+                    <div id="top"></div>
+
+                    
+                        <!-- Hamburger Button -->
+                        <button class="MD-burger-icon sidebar-toggle">
+                            <span class="MD-burger-layer"></span>
+                        </button>
+                    
+
+                    <!-- Post TOC -->
+
+    
+    <!-- Back Button -->
+    <!--
+    <div class="material-back" id="backhome-div" tabindex="0">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+           href="#" onclick="window.history.back();return false;"
+           target="_self"
+           role="button"
+           data-upgraded=",MaterialButton,MaterialRipple">
+            <i class="material-icons" role="presentation">arrow_back</i>
+            <span class="mdl-button__ripple-container">
+                <span class="mdl-ripple"></span>
+            </span>
+        </a>
+    </div>
+    -->
+
+    <!-- Left aligned menu below button -->
+    <button id="post-toc-trigger-btn"
+        class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">format_list_numbered</i>
+    </button>
+
+    <ul class="post-toc-wrap mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="post-toc-trigger-btn" style="max-height:80vh; overflow-y:scroll;">
+        <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">Today</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">Objective-C Compatibility</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">Objective-C Compatibility</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">Bridging</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">Casting to/from bridged types</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.</span> <span class="post-toc-text">Property List</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">What is a Property List?</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.</span> <span class="post-toc-text">NSUserDefaults</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">A storage mechanism for Property List data</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">Add a public property, program, to CalculatorBrain</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">Views</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">A view (i.e. UIView subclass) represents a rectangular area</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">Hierarchical</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.3.</span> <span class="post-toc-text">UIWindow</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.4.</span> <span class="post-toc-text">The hierarchy is most often constructed in Xcode graphically</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.5.</span> <span class="post-toc-text">But it can be done in code as well</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.6.</span> <span class="post-toc-text">Where does the view hierarchy start?</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">Initializing a UIView</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">As always, try to avoid an initializer if possible</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">A UIView's initializer is different if it comes out of a storyboard</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.3.</span> <span class="post-toc-text">If you need an initializer, implement them both …</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.4.</span> <span class="post-toc-text">Another alternative to initializers in UIView …</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">Coordinate System Data Structures</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">CGFloat</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">CGRect</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">View Coordinate System</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">Origin is upper left</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">Units are points, not pixels</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.3.</span> <span class="post-toc-text">The boundaries of where drawing happens</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.4.</span> <span class="post-toc-text">Where is the UIView?</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">bounds vs frame</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">Use frame and/or center to position a UIView</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">Creating Views</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">Most often your views are created via your storyboard</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">On rare occasion, you will create a UIView via code</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.3.</span> <span class="post-toc-text">Example</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">Custom Views</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">When would I create my own UIView subclass?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">To draw, just create a UIView subclass and override drawRect:</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.3.</span> <span class="post-toc-text">NEVER call drawRect!! EVER! Or else!</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.4.</span> <span class="post-toc-text">So how do I implement my drawRect?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.5.</span> <span class="post-toc-text">Core Graphics Concepts</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.6.</span> <span class="post-toc-text">UIBezierPath</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">Defining a Path</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">Create a UIBezierPath</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">Move around, add lines or arcs to the path</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">Drawing</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">You can also draw common shapes with UIBezierPath</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">Colors can have alpha (transparency)</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.3.</span> <span class="post-toc-text">If you want to draw in your view with transparency …</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.4.</span> <span class="post-toc-text">You can make your entire UIView transparent …</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">View Transparency</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">What happens when views overlap and have transparency?</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">Completely hiding a view without removing it from hierarchy</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">Drawing Text</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">Usually we use a UILabel to put text on screen</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">To draw in drawRect, use NSAttributedString</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.3.</span> <span class="post-toc-text">Mutability is done with NSMutableAttributedString</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.4.</span> <span class="post-toc-text">NSAttributedString is not a String, nor an NSString</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">Attributed String</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">Setting attributes on an attributed string</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">Attributes</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">Fonts</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">Fonts in iOS 7 and later are very important to get right!</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">The absolutely best way to get a font in code</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.3.</span> <span class="post-toc-text">There are also "system fonts"</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.4.</span> <span class="post-toc-text">Other ways to get fonts</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">Drawing Images</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">There is a UILabel-equivalent for images</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">You can even create one by drawing with Core Graphics</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.3.</span> <span class="post-toc-text">Once you have a UIImage, you can blast its bits on screen</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">Redraw on bounds change?</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">By default, when a UIView’s bounds changes, there is no redraw</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.2.</span> <span class="post-toc-text">This is often not what you want …</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.3.</span> <span class="post-toc-text">UIViewContentMode</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#undefined"><span class="post-toc-number"></span> <span class="post-toc-text">Demo</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#undefined"><span class="post-toc-number">0.1.</span> <span class="post-toc-text">FaceView</span></a></li></ol></li></ol>
+
+        <!--
+        <li class="mdl-menu__item">
+            Some Action
+        </li>
+        -->
+    </ul>
+
+
+
+
+<!-- Layouts -->
+
+    <!-- Post Module -->
+    <div class="material-post_container">
+
+        <div class="material-post mdl-grid">
+            <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+
+                <!-- Post Header(Thumbnail & Title) -->
+                
+    <!-- Paradox Post Header -->
+    
+        
+            <!-- Random Thumbnail -->
+            <div class="post_thumbnail-random mdl-card__media mdl-color-text--grey-50">
+            <script>
+    var randomNum = Math.floor(Math.random() * 19 + 1);
+
+    $('.post_thumbnail-random').attr('data-original', '/img/random/material-' + randomNum + '.png');
+    $('.post_thumbnail-random').addClass('lazy');
+</script>
+
+        
+    
+            <p class="article-headline-p">
+                Developing iOS 8 Apps with Swift 学习笔记5
+            </p>
+        </div>
+
+
+
+
+
+                
+                    <!-- Paradox Post Info -->
+                    <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+
+    <!-- Author Avatar -->
+    <div id="author-avatar">
+        <img src="/img/avatar.png" width="44px" height="44px" alt="Author Avatar"/>
+    </div>
+    <!-- Author Name & Date -->
+    <div>
+        <strong>John Doe</strong>
+        <span>11月 03, 2015</span>
+    </div>
+
+    <div class="section-spacer"></div>
+
+    <!-- Favorite -->
+    <!--
+        <button id="article-functions-like-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon btn-like">
+            <i class="material-icons" role="presentation">favorite</i>
+            <span class="visuallyhidden">favorites</span>
+        </button>
+    -->
+
+    <!-- Qrcode -->
+    
+
+    <!-- Tags (bookmark) -->
+    
+    <button id="article-functions-viewtags-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">bookmark</i>
+        <span class="visuallyhidden">bookmark</span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-functions-viewtags-button">
+        <li class="mdl-menu__item">
+        
+    </ul>
+    
+
+    <!-- Share -->
+    <button id="article-fuctions-share-button" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+    <i class="material-icons" role="presentation">share</i>
+    <span class="visuallyhidden">share</span>
+</button>
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="article-fuctions-share-button">
+    
+
+    
+
+    <!-- Share Weibo -->
+    
+        <a class="post_share-link" href="http://service.weibo.com/share/share.php?appkey=&title=Developing iOS 8 Apps with Swift 学习笔记5&url=http://yoursite.com//2015/11/03/Developing-iOS-8-Apps-with-Swift-class-5/index.html&pic=&searchPic=false&style=simple" target="_blank">
+            <li class="mdl-menu__item">
+                分享到微博
+            </li>
+        </a>
+    
+
+    <!-- Share Twitter -->
+    
+        <a class="post_share-link" href="https://twitter.com/intent/tweet?text=Developing iOS 8 Apps with Swift 学习笔记5&url=http://yoursite.com//2015/11/03/Developing-iOS-8-Apps-with-Swift-class-5/index.html&via=John Doe" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Twitter
+            </li>
+        </a>
+    
+
+    <!-- Share Facebook -->
+    
+        <a class="post_share-link" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com//2015/11/03/Developing-iOS-8-Apps-with-Swift-class-5/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Facebook
+            </li>
+        </a>
+    
+
+    <!-- Share Google+ -->
+    
+        <a class="post_share-link" href="https://plus.google.com/share?url=http://yoursite.com//2015/11/03/Developing-iOS-8-Apps-with-Swift-class-5/index.html" target="_blank">
+            <li class="mdl-menu__item">
+                分享到 Google+
+            </li>
+        </a>
+    
+
+    <!-- Share LinkedIn -->
+    
+
+    <!-- Share QQ -->
+    
+
+    <!-- Share Telegram -->
+    
+</ul>
+
+</div>
+
+                
+
+                <!-- Post Content -->
+                <div id="post-content" class="mdl-color-text--grey-700 mdl-card__supporting-text fade out">
+    
+        <p>lecture 5. Objective-C Compatibility, Property List, Views</p>
+<p>&lt;!-- more --&gt;</p>
+<h2>Today</h2>
+<p>iOS以前的API绝大部分都是用objec写的。</p>
+<h3>Objective-C Compatibility</h3>
+<p>Bridging</p>
+<p>###Property List</p>
+<p>NSUserDefaults</p>
+<p>Demo: var programin CalculatorBrain</p>
+<p>###Views</p>
+<p>Custom Drawing</p>
+<p>###Demo</p>
+<p>FaceView</p>
+<h1>Objective-C Compatibility</h1>
+<h3>Bridging</h3>
+<p>iOS was developed in a language called Objective-C.</p>
+<p>Virtually all of the iOS API is accessible seamlessly from Swift.</p>
+<p>A few special data types are handled specially (and powerfully) via bridging.</p>
+<p>Bridging means that you can use the interchangeably.</p>
+<ul>
+<li>
+<p>NSString is bridged to String</p>
+</li>
+<li>
+<p>NSArray is bridged to Array&lt;AnyObject&gt;</p>
+</li>
+<li>
+<p>NSDictionary is bridged to Dictionary&lt;NSObject, AnyObject&gt;</p>
+</li>
+<li>
+<p>Int, Float, Double, Bool are all bridged to NSNumber (but not vice-versa)</p>
+</li>
+</ul>
+<p>To get from NSNumber to these types use doubleValue, intValue, etc.</p>
+<p>Int, Float, Double also bridged to the C types int, float, double</p>
+<h3>Casting to/from bridged types</h3>
+<ul>
+<li>You can also &quot;cast&quot; (reliably, i.e. no need for as?) to/from a bridged type</li>
+</ul>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> length = (aString <span class="keyword">as</span> <span class="type">NSString</span>).length <span class="comment">// length is an NSString method (be careful!)</span></div><div class="line">(anArray <span class="keyword">as</span> <span class="type">NSArray</span>).componentsJoinedByString(<span class="type">NSString</span>) <span class="comment">// cjbs is a NSArray method</span></div></pre></td></tr></table></figure></p>
+<ul>
+<li>
+<p>String, Array and Dictionary are structs, not objects (classes)</p>
+<p>But they can still be an AnyObject</p>
+<p>That's because they are bridged to these NS versions which are objects</p>
+</li>
+<li>
+<p>The keys in an NSDictionary are NSObject subclasses (Dictionary&lt;NSObject, AnyObject&gt;)</p>
+<p>But that does not prevent a Swift String from being a key in an NSDictionary</p>
+<p>That's because it is bridged to NSString which does inherit from NSObject</p>
+</li>
+<li>
+<p>You won't even notice this bridging 99% of the tim</p>
+</li>
+</ul>
+<h2>Property List</h2>
+<h3>What is a Property List?</h3>
+<p>Property List 可以用于泛型</p>
+<ul>
+<li>
+<p>Property List is really just the definition of a term</p>
+<p>It means an AnyObject which is known to be a collection of objects which are ONLY one of …
+NSString, NSArray, NSDictionary, NSNumber, NSData, NSDate</p>
+<p>e.g. an NSDictionary whose keys were NSString and values were NSArray of NSDate is one</p>
+</li>
+<li>
+<p>In Swift, the definition of Property List is exactly the same and the bridging all works</p>
+<p>Handling Property Lists usually requires a fair amount of casting (i.e. is and as)</p>
+<p>That's because it's an AnyObject, so you have to figure out if it's what you expect</p>
+</li>
+<li>
+<p>Property Lists are used to pass around data &quot;blindly&quot;</p>
+<p>The semantics of the contents of a Property List are known only to its creator</p>
+</li>
+<li>
+<p>Property Lists are also used as a &quot;generic data structure&quot;</p>
+<p>And so can be passed to API that reads/writes generic data …</p>
+</li>
+</ul>
+<h2>NSUserDefaults</h2>
+<h3>A storage mechanism for Property List data</h3>
+<ul>
+<li>
+<p>It's essentially a very <code>tiny database</code> that stores Propery List data.</p>
+<p>It persists between launchings of your application!</p>
+<p>Great for things like &quot;settings&quot; and such.</p>
+<p>Do not use it for anything big!</p>
+</li>
+<li>
+<p>It can store/retrieve entire Property Lists by name (keys) …</p>
+</li>
+</ul>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">setObject(<span class="type">AnyObject</span>, forKey: <span class="type">String</span>) <span class="comment">// the AnyObject must be a Property List</span></div><div class="line">objectForKey(<span class="type">String</span>) -&gt; <span class="type">AnyObject</span>?</div><div class="line">arrayForKey(<span class="type">String</span>) -&gt; <span class="type">Array</span>&lt;<span class="type">AnyObject</span>&gt;? <span class="comment">// returns nil if value is not set or not an array</span></div></pre></td></tr></table></figure></p>
+<ul>
+<li>It can also store/retrieve little pieces of data …</li>
+</ul>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">setDouble(<span class="type">Double</span>, forKey: <span class="type">String</span>)</div><div class="line">doubleForKey(<span class="type">String</span>) -&gt; <span class="type">Double</span> <span class="comment">// not an optional, returns 0 if no such key</span></div></pre></td></tr></table></figure></p>
+<p>###Using NSUserDefaults</p>
+<ul>
+<li>Get the defaults reader/writer …</li>
+</ul>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> defaults = <span class="type">NSUserDefaults</span>.standardUserDefaults()</div></pre></td></tr></table></figure></p>
+<ul>
+<li>Then read and write …</li>
+</ul>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> plist: <span class="type">AnyObject</span> = defaults.objectForKey(<span class="type">String</span>)</div><div class="line">defaults.setObject(<span class="type">AnyObject</span>, forKey: <span class="type">String</span>) <span class="comment">// AnyObject must be a PropertyList</span></div></pre></td></tr></table></figure></p>
+<ul>
+<li>
+<p>Your changes will be automatically saved.</p>
+<p>But you can be sure they are saved at any time by synchronizing …</p>
+<p>if !defaults.synchronize() { /* failed! not much you can do about it */ }</p>
+<p>(it's not &quot;free&quot; to synchronize, but it's not that expensive either)</p>
+</li>
+</ul>
+<p>#Demo</p>
+<h3>Add a public property, program, to CalculatorBrain</h3>
+<p>It sets or gets the CalculatorBrain's &quot;program&quot;.</p>
+<p>It will be a Property List (i.e. AnyObject, but built from known pieces).</p>
+<p>Callers won't have any idea what kind of object it is!</p>
+<p>The value is only good for saving/resetting the CalculatorBrain's program.</p>
+<h1>Views</h1>
+<h3>A view (i.e. UIView subclass) represents a rectangular area</h3>
+<p>Defines a coordinate space</p>
+<p>For drawing</p>
+<p>And for handling touch events</p>
+<h3>Hierarchical</h3>
+<p>A view has only one superview … var superview: UIView?</p>
+<p>But it can have many (or zero) subviews … var subviews: [UIView] *</p>
+<pre><code> * aside: it's actually [AnyObject], but on slides, I'll note what is actually in an array
+</code></pre>
+<p>The order in the subviews array matters: those later in the array are on top of those earlier</p>
+<p>A view can clip its subviews to its own bounds or not (the default is not to)</p>
+<h3>UIWindow</h3>
+<p>The UIView at the very, very top of the view hierarchy (even includes status bar)</p>
+<p>Usually only one UIWindow in an entire iOS application … it's all about views, not windows</p>
+<h3>The hierarchy is most often constructed in Xcode graphically</h3>
+<p>Even custom views are usually added to the view hierarchy using Xcode</p>
+<h3>But it can be done in code as well</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">addSubview(aView: <span class="type">UIView</span>) <span class="comment">// sent to aView's (soon to be) superview</span></div><div class="line">removeFromSuperview() <span class="comment">// this is sent to the view you want to remove (not its superview)</span></div></pre></td></tr></table></figure></p>
+<h3>Where does the view hierarchy start?</h3>
+<p>The top of the (useable) view hierarchy is the Controller's var view: UIView.</p>
+<p>This simple property is a very important thing to understand!</p>
+<p>This view is the one whose bounds will change on rotation, for example.</p>
+<p>This view is likely the one you will programmatically add subviews to (if you ever do that).</p>
+<p>All of your MVC's View's UIViews will have this view as an ancestor.</p>
+<p>It's automatically hooked up for you when you create an MVC in Xcode.</p>
+<h1>Initializing a UIView</h1>
+<h3>As always, try to avoid an initializer if possible</h3>
+<p>But having one in UIView is slightly more common than having a UIViewController initializer</p>
+<h3>A UIView's initializer is different if it comes out of a storyboard</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">init</span>(frame: <span class="type">CGRect</span>) <span class="comment">// initializer if the UIView is created in code</span></div><div class="line"><span class="keyword">init</span>(coder: <span class="type">NSCoder</span>) <span class="comment">// initializer if the UIView comes out of a storyboard</span></div></pre></td></tr></table></figure></p>
+<h3>If you need an initializer, implement them both …</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">setup</span><span class="params">()</span></span> &#123; … &#125;</div><div class="line"></div><div class="line"><span class="keyword">override</span> <span class="keyword">init</span>(frame: <span class="type">CGRect</span>) &#123; <span class="comment">// a designed initializer</span></div><div class="line">    <span class="keyword">super</span>.<span class="keyword">init</span>(frame: frame)</div><div class="line">    setup()</div><div class="line">&#125; </div><div class="line"><span class="keyword">required</span> <span class="keyword">init</span>(coder aDecoder: <span class="type">NSCoder</span>) &#123; <span class="comment">// a required initializer</span></div><div class="line">    <span class="keyword">super</span>.<span class="keyword">init</span>(coder: aDecoder)</div><div class="line">    setup()</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3>Another alternative to initializers in UIView …</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">awakeFromNib() <span class="comment">// this is only called if the UIView came out of a storyboard</span></div></pre></td></tr></table></figure></p>
+<p>This is not an initializer (it's called immediately after initialization is complete)</p>
+<p>All objects that inherit from NSObject in a storyboard are sent this (if they implement it)</p>
+<p>Order is not guaranteed, so you cannot message any other objects in the storyboard here</p>
+<h1>Coordinate System Data Structures</h1>
+<h3>CGFloat</h3>
+<ul>
+<li>
+<p>Always use this instead of Double or Float for anything to do with a UIView’s coordinate system</p>
+</li>
+<li>
+<p>You can convert from a Double or Float using</p>
+</li>
+</ul>
+<pre><code><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">     <span class="keyword">let</span> cfg = <span class="type">CGFloat</span>(aDouble)</div><div class="line">   ``` </div><div class="line"> </div><div class="line">###<span class="type">CGPoint</span></div><div class="line"> </div><div class="line">  <span class="type">Simply</span> a <span class="class"><span class="keyword">struct</span> <span class="title">with</span> <span class="title">two</span> <span class="title">CGFloats</span> <span class="title">in</span> <span class="title">it</span>: <span class="title">x</span> <span class="title">and</span> <span class="title">y</span>.</span></div><div class="line">  </div><div class="line">  ```<span class="title">swift</span></div><div class="line">  <span class="title">var</span> <span class="title">point</span> = <span class="title">CGPoint</span>(<span class="title">x</span>: 37.0, <span class="title">y</span>: 55.2)</div><div class="line">  <span class="title">point</span>.<span class="title">y</span> -= 30</div><div class="line">  <span class="title">point</span>.<span class="title">x</span> += 20.0</div></pre></td></tr></table></figure>
+</code></pre>
+<p>###CGSize</p>
+<p>Also a struct with two CGFloats in it: width and height.</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> size = <span class="type">CGSize</span>(width: <span class="number">100.0</span>, height: <span class="number">50.0</span>)</div><div class="line">size.width += <span class="number">42.5</span></div><div class="line">size.height += <span class="number">75</span></div></pre></td></tr></table></figure></p>
+<h3>CGRect</h3>
+<p>A struct with a CGPoint and a CGSize in it …
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">CGRect</span> </span>&#123;</div><div class="line">   <span class="keyword">var</span> origin: <span class="type">CGPoint</span></div><div class="line">   <span class="keyword">var</span> size: <span class="type">CGSize</span></div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> rect = <span class="type">CGRect</span>(origin: aCGPoint, size: aCGSize) <span class="comment">// there are other inits as well</span></div></pre></td></tr></table></figure></p>
+<p>Lots of convenient properties and functions on CGRect like …
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> minX: <span class="type">CGFloat</span> <span class="comment">// left edge</span></div><div class="line"><span class="keyword">var</span> midY: <span class="type">CGFloat</span> <span class="comment">// midpoint vertically</span></div><div class="line">intersects(<span class="type">CGRect</span>) -&gt; <span class="type">Bool</span> <span class="comment">// does this CGRect intersect this other one?</span></div><div class="line">intersect(<span class="type">CGRect</span>) <span class="comment">// clip the CGRect to the intersection with the other one</span></div><div class="line"><span class="built_in">contains</span>(<span class="type">CGPoint</span>) -&gt; <span class="type">Bool</span> <span class="comment">// does the CGRect contain the given CGPoint?</span></div></pre></td></tr></table></figure></p>
+<p>… and many more (make yourself a CGRect and type . after it to see more)</p>
+<h1>View Coordinate System</h1>
+<h3>Origin is upper left</h3>
+<h3>Units are points, not pixels</h3>
+<p>Pixels are the minimum-sized unit of drawing your device is capable of</p>
+<p>Points are the units in the coordinate system</p>
+<p>Most of the time there are 2 pixels per point, but it could be only 1 or something else</p>
+<p>How many pixels per point are there? UIView’s var contentScaleFactor: CGFloat</p>
+<h3>The boundaries of where drawing happens</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> bounds: <span class="type">CGRect</span> <span class="comment">// a view's internal drawing space's origin and size</span></div></pre></td></tr></table></figure></p>
+<p>This is the rectangle containing the drawing space in its own coordinate system</p>
+<p>It is up to your view's implementation to interpret what bounds.origin means (often nothing)</p>
+<h3>Where is the UIView?</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> center: <span class="type">CGPoint</span> <span class="comment">// the center of a UIView in its superview's coordinate system</span></div><div class="line"><span class="keyword">var</span> frame: <span class="type">CGRect</span> <span class="comment">// the rect containing a UIView in its superview's coordinate system</span></div></pre></td></tr></table></figure></p>
+<h1>bounds vs frame</h1>
+<h3>Use frame and/or center to position a UIView</h3>
+<ul>
+<li>
+<p>These are never used to draw inside a view's coordinate system (i.e. for positioning only)</p>
+<p>You might think frame.size is always equal to bounds.size, but you'd be wrong …</p>
+</li>
+<li>
+<p>Views can be rotated (and scaled and translated)</p>
+<p>View B's bounds = ((0,0),(200,250))</p>
+<p>View B's frame = ((140,65),(320,320))</p>
+<p>View B's center = (300,225)</p>
+</li>
+<li>
+<p>View B's middle in its own coordinates is …</p>
+<p>(bounds.midX, bounds.midY) = (100, 125)</p>
+</li>
+<li>
+<p>Views are rarely rotated, but don't misuse frame or center anyway by assuming that.</p>
+</li>
+</ul>
+<h1>Creating Views</h1>
+<h3>Most often your views are created via your storyboard</h3>
+<p>Xcode's Object Palette has a generic UIView you can drag out</p>
+<p>After you do that, you must use the Identity Inspector to changes its class to your subclass</p>
+<h3>On rare occasion, you will create a UIView via code</h3>
+<ul>
+<li>
+<p>You can use the frame initializer …</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> newView=<span class="type">UIView</span>(frame:myViewFrame)</div></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<ul>
+<li>
+<p>Or you can just use</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> newView=<span class="type">UIView</span>()(frame will be <span class="type">CGRectZero</span>)</div></pre></td></tr></table></figure></p>
+</li>
+</ul>
+<h3>Example</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// assuming this code is in a UIViewController</span></div><div class="line"><span class="keyword">let</span> labelRect=<span class="type">CGRect</span>(x:<span class="number">20</span>,y:<span class="number">20</span>,width:<span class="number">100</span>,height:<span class="number">50</span>)</div><div class="line"><span class="keyword">let</span> label=<span class="type">UILabel</span>(frame:labelRect)<span class="comment">// UILabel is a subclass of UIView</span></div><div class="line">label.text=<span class="string">"Hello"</span></div><div class="line">view.addSubview(label)</div></pre></td></tr></table></figure></p>
+<h1>Custom Views</h1>
+<h3>When would I create my own UIView subclass?</h3>
+<p>I want to do some custom drawing on screen</p>
+<p>I need to handle touch events in a special way (i.e. different than a button or slider does)</p>
+<p>We'll talk about handling touch events in a bit. First we'll focus on drawing.</p>
+<h3>To draw, just create a UIView subclass and override drawRect:</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">drawRect</span><span class="params">(regionThatNeedsToBeDrawn: CGRect)</span></span></div></pre></td></tr></table></figure></p>
+<p>You can draw outside the regionThatNeedsToBeDrawn, but it's never required</p>
+<p>The regionThatNeedsToBeDrawn is purely an optimization</p>
+<h3>NEVER call drawRect!! EVER! Or else!</h3>
+<p>Instead, if you view needs to be redrawn, let the system know that by calling …</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">setNeedsDisplay()</div><div class="line">setNeedsDisplayInRect(regionThatNeedsToBeRedrawn: <span class="type">CGRect</span>)</div></pre></td></tr></table></figure></p>
+<p>iOS will then call your drawRect at an appropriate time</p>
+<h3>So how do I implement my drawRect?</h3>
+<p>You can use a C-like (non object-oriented) API called Core Graphics</p>
+<p>Or you can use the object-oriented UIBezierPath class (which is how we’ll do it)</p>
+<h3>Core Graphics Concepts</h3>
+<p>You get a context to draw into (could be printing context, drawing context, etc.)</p>
+<p>The function UIGraphicsGetCurrentContext() gives a context you can use in drawRect</p>
+<p>Create paths (out of lines, arcs, etc.)</p>
+<p>Set drawing attributes like colors, fonts, textures, linewidths, linecaps, etc.</p>
+<p>Stroke or fill the above-created paths with the given attributes</p>
+<h3>UIBezierPath</h3>
+<p>Same as above, but captures all the drawing with a UIBezierPath instance</p>
+<p>UIBezierPath automatically draws in the &quot;current&quot; context (drawRect sets this up for you)</p>
+<p>Methods for adding to the UIBezierPath (lineto, arcs, etc.) and setting linewidth, etc.</p>
+<p>Methods to stroke or fill the UIBezierPath</p>
+<h1>Defining a Path</h1>
+<h3>Create a UIBezierPath</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> path = <span class="type">UIBezierPath</span>()</div></pre></td></tr></table></figure></p>
+<h3>Move around, add lines or arcs to the path</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">  path.moveToPoint(<span class="type">CGPoint</span>(<span class="number">80</span>, <span class="number">50</span>))       <span class="comment">// assume screen is 160x250</span></div><div class="line">  path.addLineToPoint(<span class="type">CGPoint</span>(<span class="number">140</span>, <span class="number">150</span>))</div><div class="line">  path.addLineToPoint(<span class="type">CGPoint</span>(<span class="number">10</span>, <span class="number">150</span>))</div><div class="line">```  </div><div class="line">###  <span class="type">Close</span> the path (<span class="keyword">if</span> you want)</div><div class="line"></div><div class="line">```swift</div><div class="line">  path.closePath()</div><div class="line">```  </div><div class="line">### <span class="type">Now</span> that you have a path, <span class="keyword">set</span> attributes and stroke/fill</div><div class="line"></div><div class="line">```swift</div><div class="line">  <span class="type">UIColor</span>.greenColor().setFill()  <span class="comment">// note this is a method in UIColor, not UIBezierPath</span></div><div class="line">  <span class="type">UIColor</span>.redColor().setStroke()  <span class="comment">// note this is a method in UIColor, not UIBezierPath</span></div><div class="line">  path.linewidth = <span class="number">3.0</span>            <span class="comment">// note this is a property in UIBezierPath, not UIColor</span></div><div class="line">  path.fill()</div><div class="line">  path.stroke()</div></pre></td></tr></table></figure></p>
+<h1>Drawing</h1>
+<h3>You can also draw common shapes with UIBezierPath</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">  <span class="keyword">let</span> roundRect = <span class="type">UIBezierPath</span>(roundedRect: aCGRect, cornerRadius: aCGFloat)</div><div class="line">  <span class="keyword">let</span> oval = <span class="type">UIBezierPath</span>(ovalInRect: aCGRect)</div><div class="line">```  </div><div class="line">  … and others</div><div class="line">### <span class="type">Clipping</span> your drawing to a <span class="type">UIBezierPath's</span> path </div><div class="line"></div><div class="line">```swift</div><div class="line">  addClip()</div><div class="line">```  </div><div class="line"></div><div class="line">  <span class="type">For</span> example, you could clip to a rounded rect to enforce the edges of a playing card</div><div class="line">  </div><div class="line">### <span class="type">Hit</span> detection</div><div class="line"></div><div class="line">```swift</div><div class="line">  <span class="function"><span class="keyword">func</span> <span class="title">containsPoint</span><span class="params">(CGPoint)</span></span> -&gt; <span class="type">Bool</span> <span class="comment">// returns whether the point is inside the path</span></div><div class="line">```  </div><div class="line"></div><div class="line">  <span class="type">The</span> path must be closed. <span class="type">The</span> winding rule can be <span class="keyword">set</span> with usesEvenOddFillRule property.</div><div class="line">  </div><div class="line">### <span class="type">Etc</span>.</div><div class="line"></div><div class="line">  <span class="type">Lots</span> of other stuff. <span class="type">Check</span> out the documentation.</div><div class="line"></div><div class="line"></div><div class="line"># <span class="type">UIColor</span></div><div class="line">### <span class="type">Colors</span> are <span class="keyword">set</span> using <span class="type">UIColor</span></div><div class="line">  <span class="type">There</span> are type methods <span class="keyword">for</span> standard colors, e.g. <span class="keyword">let</span> green = <span class="type">UIColor</span>.greenColor()</div><div class="line">  </div><div class="line">  <span class="type">You</span> can also create them from <span class="type">RGB</span>, <span class="type">HSB</span> or even a pattern (using <span class="type">UIImage</span>)</div><div class="line">### <span class="type">Background</span> color of a <span class="type">UIView</span></div><div class="line"></div><div class="line">```swift</div><div class="line">  <span class="keyword">var</span> backgroundColor: <span class="type">UIColor</span></div></pre></td></tr></table></figure></p>
+<h3>Colors can have alpha (transparency)</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> transparentYellow = <span class="type">UIColor</span>.yellowColor().colorWithAlphaComponent(<span class="number">0.5</span>)</div></pre></td></tr></table></figure></p>
+<p>Alpha is between 0.0 (fully transparent) and 1.0 (fully opaque)</p>
+<h3>If you want to draw in your view with transparency …</h3>
+<p>You must let the system know by setting the UIView var opaque = false</p>
+<h3>You can make your entire UIView transparent …</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> alpha: <span class="type">CGFloat</span></div></pre></td></tr></table></figure></p>
+<h1>View Transparency</h1>
+<h3>What happens when views overlap and have transparency?</h3>
+<p>As mentioned before, subviews list order determines who is in front</p>
+<p>Lower ones (earlier in the array) can &quot;show through&quot; transparent views on top of them</p>
+<p>Transparency is not cheap, by the way, so use it wisely</p>
+<h3>Completely hiding a view without removing it from hierarchy</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> hidden: <span class="type">Bool</span></div></pre></td></tr></table></figure></p>
+<p>A hidden view will draw nothing on screen and get no events either</p>
+<p>Not as uncommon as you might think to temporarily hide a view</p>
+<h1>Drawing Text</h1>
+<h3>Usually we use a UILabel to put text on screen</h3>
+<p>But there are certainly occasions where we want to draw text in our drawRect</p>
+<h3>To draw in drawRect, use NSAttributedString</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> text = <span class="type">NSAttributedString</span>(<span class="string">"hello"</span>)</div><div class="line">text.drawAtPoint(aCGPoint)</div><div class="line"><span class="keyword">let</span> textSize: <span class="type">CGSize</span> = text.size <span class="comment">// how much space the string will take up</span></div></pre></td></tr></table></figure></p>
+<h3>Mutability is done with NSMutableAttributedString</h3>
+<p>It is not like String (i.e. where let means immutable and var means mutable)</p>
+<p>You use a different class if you want to make a mutable attributed string …
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> mutableText = <span class="type">NSMutableAttributedString</span>(<span class="string">"some string"</span>)</div></pre></td></tr></table></figure></p>
+<h3>NSAttributedString is not a String, nor an NSString</h3>
+<p>You can get its contents as an NSString with its string or mutableString property</p>
+<h1>Attributed String</h1>
+<h3>Setting attributes on an attributed string</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">setAttributes</span><span class="params">(attributes: Dictionary, range: NSRange)</span></span></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">addAttributes</span><span class="params">(attributes: Dictionary, range: NSRange)</span></span></div></pre></td></tr></table></figure></p>
+<p>Warning! This is a pre-Swift API. NSRange is not a Range.</p>
+<p>And indexing into the string is using old-style indexing (not String.Index).</p>
+<h3>Attributes</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="type">NSForegroundColorAttributeName</span> : <span class="type">UIColor</span></div><div class="line"><span class="type">NSStrokeWidthAttributeName</span> : <span class="type">CGFloat</span></div><div class="line"><span class="type">NSFontAttributeName</span> : <span class="type">UIFont</span></div></pre></td></tr></table></figure></p>
+<p>See the documentation under NSAttributedString(NSStringDrawing) for (many) more.</p>
+<h1>Fonts</h1>
+<h3>Fonts in iOS 7 and later are very important to get right!</h3>
+<p>They are fundamental to the look and feel of the UI</p>
+<h3>The absolutely best way to get a font in code</h3>
+<p>Get preferred font for a given text style (e.g. body, etc.) using this UIFont type method …</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">preferredFontForTextStyle</span>(<span class="title">UIFontTextStyle</span>) -&gt; <span class="title">UIFont</span></span></div></pre></td></tr></table></figure></p>
+<p>Some of the styles (see UIFontDescriptor documentation for more) …</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="type">UIFontTextStyle</span>.<span class="type">Headline</span></div><div class="line"><span class="type">UIFontTextStyle</span>.<span class="type">Body</span></div><div class="line"><span class="type">UIFontTextStyle</span>.<span class="type">Footnote</span></div></pre></td></tr></table></figure></p>
+<h3>There are also &quot;system fonts&quot;</h3>
+<p>These appear usually on things like buttons</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">systemFontOfSize</span>(<span class="title">pointSize</span>: <span class="title">CGFloat</span>) -&gt; <span class="title">UIFont</span></span></div><div class="line"><span class="title">class</span> <span class="title">func</span> <span class="title">boldSystemFontOfSize</span>(<span class="title">pointSize</span>: <span class="title">CGFloat</span>) -&gt; <span class="title">UIFont</span></div></pre></td></tr></table></figure></p>
+<p>Don't use these for your user's content. Use preferred fonts for that.</p>
+<h3>Other ways to get fonts</h3>
+<p>Check out UIFont and UIFontDescriptor for more, but you should not need that very often</p>
+<h1>Drawing Images</h1>
+<h3>There is a UILabel-equivalent for images</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">  <span class="type">UIImageView</span></div><div class="line"> ``` </div><div class="line">  <span class="type">But</span>, again, you might want to draw the image inside your drawRect …</div><div class="line">  </div><div class="line">### <span class="type">Creating</span> a <span class="type">UIImage</span> object</div><div class="line"></div><div class="line"> ```swift</div><div class="line">  <span class="keyword">let</span> image: <span class="type">UIImage</span>? = <span class="type">UIImage</span>(named: <span class="string">"foo"</span>)    <span class="comment">// note that its optional</span></div><div class="line"> ``` </div><div class="line">  <span class="type">You</span> add foo.jpg to your project <span class="keyword">in</span> the <span class="type">Images</span>.xcassets file (we've ignored this so far)</div><div class="line">  </div><div class="line">  <span class="type">Images</span> will have different resolutions <span class="keyword">for</span> different devices (all managed <span class="keyword">in</span> <span class="type">Images</span>.xcassets)</div><div class="line">  </div><div class="line">### <span class="type">You</span> can also create one from files <span class="keyword">in</span> the file system</div><div class="line"></div><div class="line">  (<span class="type">But</span> we haven't talked about getting at files <span class="keyword">in</span> the file system … anyway …)</div><div class="line">  </div><div class="line">  ```swift</div><div class="line">  <span class="keyword">let</span> image: <span class="type">UIImage</span>? = <span class="type">UIImage</span>(contentsOfFile: aString)</div><div class="line">  <span class="keyword">let</span> image: <span class="type">UIImage</span>? = <span class="type">UIImage</span>(data: anNSData) <span class="comment">// raw jpg, png, tiff, etc. image data</span></div></pre></td></tr></table></figure></p>
+<h3>You can even create one by drawing with Core Graphics</h3>
+<p>See documentation for UIGraphicsBeginImageContext(CGSize)</p>
+<h3>Once you have a UIImage, you can blast its bits on screen</h3>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> image: <span class="type">UIImage</span> = …</div><div class="line">image.drawAtPoint(aCGPoint) <span class="comment">// the upper left corner of the image put at aCGPoint</span></div><div class="line">image.drawInRect(aCGRect) <span class="comment">// scales the image to fit aCGRect</span></div><div class="line">image.drawAsPatternInRect(aCGRect) <span class="comment">// tiles the image into aCGRect</span></div></pre></td></tr></table></figure></p>
+<h1>Redraw on bounds change?</h1>
+<h3>By default, when a UIView’s bounds changes, there is no redraw</h3>
+<p>Instead, the &quot;bits&quot; of the existing image are scaled to the new bounds size</p>
+<h3>This is often not what you want …</h3>
+<p>Luckily, there is a UIView property to control this! It can be set in Xcode too.</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> contentMode: <span class="type">UIViewContentMode</span></div></pre></td></tr></table></figure></p>
+<h3>UIViewContentMode</h3>
+<p>Don't scale the view, just place it somewhere …</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">.<span class="type">Left</span>/.<span class="type">Right</span>/.<span class="type">Top</span>/.<span class="type">Bottom</span>/.<span class="type">TopRight</span>/.<span class="type">TopLeft</span>/.<span class="type">BottomRight</span>/.<span class="type">BottomLeft</span>/.<span class="type">Center</span></div></pre></td></tr></table></figure></p>
+<p>Scale the &quot;bits&quot; of the view …</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">.<span class="type">ScaleToFill</span>/.<span class="type">ScaleAspectFill</span>/.<span class="type">ScaleAspectFit</span> <span class="comment">// .ScaleToFill is the default</span></div></pre></td></tr></table></figure></p>
+<p>Redraw by calling drawRect again</p>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">.<span class="type">Redraw</span></div></pre></td></tr></table></figure></p>
+<h1>Demo</h1>
+<h3>FaceView</h3>
+<p>Create a custom UIView subclass to draw a face with a specified amount of &quot;smiliness&quot;</p>
+<p>Property Observer
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> lineWidth:<span class="type">CGFloat</span> = <span class="number">3</span>&#123;</div><div class="line">	<span class="keyword">didSet</span>&#123;setNeedsDisplay()&#125;</div><div class="line">&#125;</div><div class="line">当property发生改变时，会响应消息</div></pre></td></tr></table></figure></p>
+
+    
+
+    
+</div>
+
+
+                
+
+                <!-- Post Comments -->
+                
+                    
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Post Prev & Next Nav -->
+            <nav class="material-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+    <!-- Prev Nav -->
+    
+        <a href="/2015/11/03/Developing-iOS-8-Apps-with-Swift-class-4/" id="post_nav-newer" class="prev-content">
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_back</i>
+            </button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            新篇
+        </a>
+    
+
+    <!-- Section Spacer -->
+    <div class="section-spacer"></div>
+
+    <!-- Next Nav -->
+    
+        <a href="/2015/11/03/Lecture-3-how-to-read-literature-3/" id="post_nav-older" class="next-content">
+            旧篇
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900" role="presentation">
+                <i class="material-icons">arrow_forward</i>
+            </button>
+        </a>
+    
+</nav>
+
+        </div>
+    </div>
+
+
+
+                    
+                        <!-- Overlay For Active Sidebar -->
+<div class="sidebar-overlay"></div>
+
+<!-- Material sidebar -->
+<aside id="sidebar" class="sidebar sidebar-colored sidebar-fixed-left" role="navigation">
+    <div id="sidebar-main">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header header-cover" style="background-image: url(/img/sidebar_header.png);">
+    <!-- Top bar -->
+    <div class="top-bar"></div>
+
+    <!-- Sidebar toggle button -->
+    <button type="button" class="sidebar-toggle mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" style="display: initial;" data-upgraded=",MaterialButton,MaterialRipple">
+        <i class="material-icons">clear_all</i>
+        <span class="mdl-button__ripple-container">
+            <span class="mdl-ripple">
+            </span>
+        </span>
+    </button>
+
+    <!-- Sidebar Avatar -->
+    <div class="sidebar-image">
+        <img src="/img/avatar.png" alt="John Doe's avatar">
+    </div>
+
+    <!-- Sidebar Email -->
+    <a data-toggle="dropdown" class="sidebar-brand" href="#settings-dropdown">
+        youremail@email.com
+        <b class="caret"></b>
+    </a>
+</div>
+
+
+        <!-- Sidebar Navigation  -->
+        <ul class="nav sidebar-nav">
+    <!-- User dropdown  -->
+    <li class="dropdown">
+        <ul id="settings-dropdown" class="dropdown-menu">
+            
+                <li>
+                    <a href="#" target="_blank" title="Email Me">
+                        
+                            <i class="material-icons sidebar-material-icons sidebar-indent-left1pc-element">email</i>
+                        
+                        Email Me
+                    </a>
+                </li>
+            
+        </ul>
+    </li>
+
+    <!-- Homepage -->
+    
+        <li id="sidebar-first-li">
+            <a href="/" target="_self">
+                
+                    <i class="material-icons sidebar-material-icons">home</i>
+                
+                主页
+            </a>
+        </li>
+        
+    
+
+    <!-- Archives  -->
+    
+        <li class="dropdown">
+            <a href="#" class="ripple-effect dropdown-toggle" data-toggle="dropdown">
+                
+                    <i class="material-icons sidebar-material-icons">inbox</i>
+                
+                    归档
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+            <li>
+                <a class="sidebar_archives-link" href="/archives/2017/04/">四月 2017<span class="sidebar_archives-count">28</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/03/">三月 2017<span class="sidebar_archives-count">37</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/02/">二月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2017/01/">一月 2017<span class="sidebar_archives-count">12</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/12/">十二月 2016<span class="sidebar_archives-count">18</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/11/">十一月 2016<span class="sidebar_archives-count">24</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/10/">十月 2016<span class="sidebar_archives-count">39</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/09/">九月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/08/">八月 2016<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/07/">七月 2016<span class="sidebar_archives-count">21</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/06/">六月 2016<span class="sidebar_archives-count">33</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/05/">五月 2016<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/04/">四月 2016<span class="sidebar_archives-count">15</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/03/">三月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/02/">二月 2016<span class="sidebar_archives-count">16</span></a></li><li><a class="sidebar_archives-link" href="/archives/2016/01/">一月 2016<span class="sidebar_archives-count">19</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/12/">十二月 2015<span class="sidebar_archives-count">20</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/11/">十一月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/10/">十月 2015<span class="sidebar_archives-count">30</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/09/">九月 2015<span class="sidebar_archives-count">27</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/08/">八月 2015<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/07/">七月 2015<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/06/">六月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/05/">五月 2015<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/04/">四月 2015<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/03/">三月 2015<span class="sidebar_archives-count">10</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/02/">二月 2015<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2015/01/">一月 2015<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/12/">十二月 2014<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/11/">十一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/10/">十月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/09/">九月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/08/">八月 2014<span class="sidebar_archives-count">9</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/07/">七月 2014<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/06/">六月 2014<span class="sidebar_archives-count">7</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/05/">五月 2014<span class="sidebar_archives-count">11</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/04/">四月 2014<span class="sidebar_archives-count">32</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/03/">三月 2014<span class="sidebar_archives-count">34</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/02/">二月 2014<span class="sidebar_archives-count">14</span></a></li><li><a class="sidebar_archives-link" href="/archives/2014/01/">一月 2014<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/12/">十二月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/07/">七月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/06/">六月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/04/">四月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/03/">三月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/02/">二月 2013<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2013/01/">一月 2013<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/12/">十二月 2012<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/10/">十月 2012<span class="sidebar_archives-count">6</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/09/">九月 2012<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/07/">七月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/06/">六月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2012/05/">五月 2012<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/08/">八月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/07/">七月 2011<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/06/">六月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/05/">五月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/04/">四月 2011<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/03/">三月 2011<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2011/02/">二月 2011<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/12/">十二月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/11/">十一月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/09/">九月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/07/">七月 2010<span class="sidebar_archives-count">4</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/06/">六月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/02/">二月 2010<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2010/01/">一月 2010<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/09/">九月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/07/">七月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/05/">五月 2009<span class="sidebar_archives-count">5</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/04/">四月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/03/">三月 2009<span class="sidebar_archives-count">1</span></a></li><li><a class="sidebar_archives-link" href="/archives/2009/02/">二月 2009<span class="sidebar_archives-count">3</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/07/">七月 2008<span class="sidebar_archives-count">2</span></a></li><li><a class="sidebar_archives-link" href="/archives/2008/06/">六月 2008<span class="sidebar_archives-count">1</span></a>
+            </ul>
+        </li>
+        
+    
+
+    <!-- Categories  -->
+    
+
+    <!-- Pages  -->
+    
+
+    <!-- Article Number  -->
+    
+</ul>
+
+
+        <!-- Sidebar Footer -->
+        <!--
+I'm glad you use this theme, the development is no so easy, I hope you can keep the copyright, I will thank you so much.
+If you still want to delete the copyrights, could you still retain the first one? Which namely "Theme Material"
+It will not impact the appearance and can give developers a lot of support :)
+
+很高兴您使用并喜欢该主题，开发不易 十分谢谢与希望您可以保留一下版权声明。
+如果您仍然想删除的话 能否只保留第一项呢？即 "Theme Material"
+它不会影响美观并可以给开发者很大的支持和动力。 :)
+-->
+
+<!-- Sidebar Divider -->
+
+    <div class="sidebar-divider"></div>
+
+
+<!-- Theme Material -->
+
+    <a href="https://github.com/viosey/hexo-theme-material"  class="sidebar-footer-text-a" target="_blank">
+        <div class="sidebar-text mdl-button mdl-js-button mdl-js-ripple-effect sidebar-footer-text-div" data-upgraded=",MaterialButton,MaterialRipple">
+            主题 - Material
+            <span class="sidebar-badge badge-circle">i</span>
+        </div>
+    </a>
+
+
+<!-- Help & Support -->
+<!--
+
+-->
+
+<!-- Feedback -->
+<!--
+
+-->
+
+<!-- About Theme -->
+<!--
+
+-->
+
+    </div>
+
+    <!-- Sidebar Image -->
+    
+
+</aside>
+
+                    
+
+                    
+                        <!-- Footer Top Button -->
+                        <div class="toTop-wrap">
+    <a href="#top" class="toTop">
+        <i class="material-icons footer_top-i">expand_less</i>
+    </a>
+</div>
+
+                    
+
+                    <!--Footer-->
+<footer class="mdl-mini-footer" id="bottom">
+    
+        <!-- Paradox Footer Left Section -->
+        <div class="mdl-mini-footer--left-section sns-list">
+    <!-- Twitter -->
+    
+        <a href="https://twitter.com/twitter" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-twitter.svg);">
+                <span class="visuallyhidden">Twitter</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Facebook -->
+    
+        <a href="https://www.facebook.com/facebook" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-facebook.svg);">
+                <span class="visuallyhidden">Facebook</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Google + -->
+    
+        <a href="https://www.google.com/" target="_blank">
+            <button class="mdl-mini-footer--social-btn social-btn" style="background-image: url(/img/footer/footer_ico-gplus.svg);">
+                <span class="visuallyhidden">Google Plus</span>
+            </button><!--
+     --></a>
+    
+
+    <!-- Weibo -->
+    
+
+    <!-- Instagram -->
+    
+
+    <!-- Tumblr -->
+    
+
+    <!-- Github -->
+    
+
+    <!-- LinkedIn -->
+    
+
+    <!-- Zhihu -->
+    
+
+    <!-- Bilibili -->
+    
+
+    <!-- Telegram -->
+    
+</div>
+
+
+        <!--Copyright-->
+        <div id="copyright">
+            Copyright&nbsp;©&nbsp;
+            <script type="text/javascript">
+                var fd = new Date();
+                document.write(fd.getFullYear());
+            </script>
+            &nbsp;Hexo
+        </div>
+
+        <!-- Paradox Footer Right Section -->
+
+        <!--
+        I am glad you use this theme, the development is no so easy, I hope you can keep the copyright.
+        It will not impact the appearance and can give developers a lot of support :)
+
+        很高兴您使用该主题，开发不易，希望您可以保留一下版权声明。
+        它不会影响美观并可以给开发者很大的支持。 :)
+        -->
+
+        <div class="mdl-mini-footer--right-section">
+            <div>
+                <div class="footer-develop-div">Powered by <a href="https://hexo.io" target="_blank" class="footer-develop-a">Hexo</a></div>
+                <div class="footer-develop-div">Theme - <a href="https://github.com/viosey/hexo-theme-material" target="_blank" class="footer-develop-a">Material</a></div>
+            </div>
+        </div>
+    
+</footer>
+
+
+                    <!-- Import File -->
+
+    <script src="/js/lazyload.min.js"></script>
+    <script src="/js/js.min.js"></script>
+
+
+
+    <script src="/js/nprogress.js"></script>
+
+
+<script type="text/javascript">
+    NProgress.configure({
+        showSpinner: true
+    });
+    NProgress.start();
+    $('#nprogress .bar').css({
+        'background': '#29d'
+    });
+    $('#nprogress .peg').css({
+        'box-shadow': '0 0 10px #29d, 0 0 15px #29d'
+    });
+    $('#nprogress .spinner-icon').css({
+        'border-top-color': '#29d',
+        'border-left-color': '#29d'
+    });
+    setTimeout(function() {
+        NProgress.done();
+        $('.fade').removeClass('out');
+    }, 800);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Window Load-->
+<script>
+    $(window).load(function() {
+        // Post_Toc parent position fixed
+        $('.post-toc-wrap').parent('.mdl-menu__container').css('position', 'fixed');
+    });
+</script>
+
+<!-- MathJax Load-->
+
+<script>
+    <!-- Offer LazyLoad -->
+    queue.offer(function(){
+        $('.lazy').lazyload({
+            effect : 'show'
+        });
+    });
+
+    <!-- Start Queue -->
+    $(document).ready(function(){
+        setInterval(function(){
+            queue.execNext();
+        },200);
+    });
+</script>
+
+                </main>
+            </div>
+        </body>
+    
+</html>
